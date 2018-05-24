@@ -1,18 +1,19 @@
 # SKB_Plattform
 Programmierpraktikum Soziale Netzwerke MERN Gruppe entwickelt eine Netzwerkplattform für die SKB
 
-Im Laufe der kommenden Woche:
-* Treffen Mittwoch 17 Uhr
-* Festelegen der Rollen
+Im Laufe der Woche:
+* Treffen Montag 14 Uhr
 
-** Product Owner - Emre, Scrum Master - Luka
-** Quality-Assurance Manager Jamina, Infrastructure Manager (?)
+- Product Owner - Emre
+- Scrum Master - Luka
+- Quality-Assurance Manager - Jamina
+- Infrastructure Manager - Ahmed
 
-* Mail an Anton
-** Gruppenname, Rollenverteilung, Technologie-Details
-* Vorbereiten für erstes Sprint Planning!
+#Run
 
-## API
+* is not running yet
+
+# API
 
 The API consists of the following endpoints:
 
@@ -97,6 +98,7 @@ A user is a JSON Object like this:
 	"isT": false,
 	"isA": false
 }
+```
 
 ## Message
 
@@ -109,7 +111,7 @@ A message is a JSON Object like this:
 	"toUser": "username",
 	"msgContent": ""
 }
-
+```
 ## Course
 
 A course is a JSON Object like this:
@@ -121,7 +123,7 @@ A course is a JSON Object like this:
 	"teacher": "username",
 	"description": ""
 }
-
+```
 ## Article
 
 A article is a JSON Object like this:
@@ -134,4 +136,4 @@ A article is a JSON Object like this:
 	"author": "username",
 	"aContent": ""
 }
-
+```
