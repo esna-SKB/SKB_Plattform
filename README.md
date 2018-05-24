@@ -93,9 +93,9 @@ A user is a JSON Object like this:
 	"unsername": "id",
 	"Surname": "surname",
 	"Name": "name",
-	"password": "password"
+	"password": "password",
 	"isT": false,
-	"isA": false, 
+	"isA": false
 }
 
 ## Message
@@ -117,7 +117,7 @@ A course is a JSON Object like this:
 ```json
 {
 	"courseID": "id",
-	"courseName": "coursename"
+	"courseName": "coursename",
 	"teacher": "username",
 	"description": ""
 }
