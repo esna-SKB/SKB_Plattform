@@ -2,7 +2,7 @@
 Programmierpraktikum Soziale Netzwerke MERN Gruppe entwickelt eine Netzwerkplattform für die SKB
 
 Im Laufe der Woche:
-* Treffen Montag 14 Uhr
+- Treffen Montag 14 Uhr
 
 - Product Owner - Emre
 - Scrum Master - Luka
@@ -11,7 +11,7 @@ Im Laufe der Woche:
 
 #Run
 
-* is not running yet
+- is not running yet
 
 # API
 
@@ -51,7 +51,7 @@ Updates a specific massage of a user by msgID
 - DELETE `/user/:id/message/:msgID`  
 Deletes a specific massage of a user by msgID 
 
-#Course
+## Course
 
 - GET `/course`  
 Returns all courses
@@ -68,7 +68,7 @@ Updates a specific course by id
 - DELETE `/course/:id`  
 Deletes a specific course by id
 
-#Article - a Post in a Course
+## Article - a Post in a Course
 
 - GET `/course/:id/article`  
 Returns all articles of a course
