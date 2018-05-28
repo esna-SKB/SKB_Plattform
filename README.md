@@ -11,7 +11,9 @@ Im Laufe der Woche:
 
 #Run
 
-- is not running yet
+- `npm install`
+- `npm run dev`
+
 
 # API
 
