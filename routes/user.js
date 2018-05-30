@@ -20,7 +20,7 @@ router.route('/:email')
 	.get((req, res, next) => {
 		var email = req.params.email; 
 		console.log(email); 
-		User.findOne({email: email},{_id:0, firstname:1, lastname:2, email:3, }, function(err, user){
+		User.findOne({email: email},{/*_id:0, firstname:1, lastname:2, email:3, isTeacher:4, isAdmin:5 */}, function(err, user){
 			if (err)
 	           console.log('error occured in the database');
 	       	else {
