@@ -20,10 +20,10 @@ Im Laufe der Woche:
 
 The API consists of the following endpoints:
 
-## Acount 
+## Acount
 
-- post `/acount/singin`
-- post `/acount/singup`
+- post `/account/singin`
+- post `/account/singup`
 
 ## User
 
@@ -57,7 +57,7 @@ Returns a specific massage of a user by msgID
 Updates a specific massage of a user by msgID
 
 - DELETE `/user/:id/message/:msgID`  
-Deletes a specific massage of a user by msgID 
+Deletes a specific massage of a user by msgID
 
 ## Course
 
@@ -104,7 +104,8 @@ A user is a JSON Object like this:
 	"email": "email",
 	"password": "password",
 	"isTeacher": false,
-	"isAdmin": false
+	"isAdmin": false,
+	"isVerified" : false
 }
 ```
 

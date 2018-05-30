@@ -7,7 +7,7 @@ router.use('/user', require('./user'))
 
 
 router.get('/', function(req, res) {
-	console.log("index call /"); 
+	console.log("index call /");
 	res.send('hello index there');
 	res.end();
 })
