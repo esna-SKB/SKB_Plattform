@@ -16,6 +16,14 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     default: ''
+  },
+  isTeacher: {
+    type: Boolean, 
+    default: false
+  },
+  isAdmin: {
+    type: Boolean, 
+    default: false
   }
 });
 UserSchema.methods.generateHash = function(password) {
