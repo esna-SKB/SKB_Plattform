@@ -104,7 +104,8 @@ Deletes a specific article of a course by aID
 A user is a JSON Object like this:
 
 ```json
-{
+{	
+	"_id": "mongooseID",
 	"firstname": "firstname",
 	"lastname": "name",
 	"email": "email",
@@ -157,12 +158,12 @@ A article is a JSON Object like this:
 
 ### Response
 
-Response Object of our *API* 
-A Response is a JSON Object like this:
+Response Object of our _API_ 
+Response is a JSON Object like this:
 
 ```json
 {
-	"success": boolean,
+	"success": "bool",
 	"message": "description"
 }
 ```

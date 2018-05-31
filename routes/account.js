@@ -100,7 +100,7 @@ router.route('/signup')
             if (err) { return res.status(500).send({ message: err.message }); }
 				});
 				//actually send email
-				var link = "http://"+req.headers.host+"/api/account/registration/verify?token=" + token.token;
+				var link = "http://"+req.headers.host+"/account/registration/verify?token=" + token.token;
 				Email.sendSignUpMail(newUser, link);
 
 				return res.send({
