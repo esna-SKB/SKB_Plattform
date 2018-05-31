@@ -21,7 +21,7 @@ router.route('/signin')
 	    console.log(password)
 	    console.log(email)
 
-	    User.find({},{_id:0, email:1, password:2},function(err,users){
+	    User.find({email: email},{_id:0, email:1, password:2},function(err,users){
 	    	if (err)
 	           console.log('error occured in the database');
 
