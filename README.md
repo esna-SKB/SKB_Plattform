@@ -84,19 +84,22 @@ Deletes a specific course by id
 
 ## Article - a Post in a Course
 
-- GET `/course/:id/article`  
+- GET `/article`
+Returns all articles
+
+- GET `/article/course/:id`
 Returns all articles of a course
 
-- Post `/course/:id/article`  
+- Post `/article/course/:id`  
 Creates a new article of a course
 
-- GET `/course/:id/article/:aID`  
+- GET `/article/:aID`  
 Returns a specific article of a courses by aID
 
-- PUT `/course/:id/article/:aID`  
+- PUT `/article/:aID`  
 Updates a specific article of a course by aID
 
-- DELETE `/course/:id/article/:aID`  
+- DELETE `/article/:aID`  
 Deletes a specific article of a course by aID
 
 ## User
