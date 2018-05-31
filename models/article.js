@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+const Course = require('./course'); 
+const User = require('./user');
 
 var articleSchema = new mongoose.Schema({
     course: {

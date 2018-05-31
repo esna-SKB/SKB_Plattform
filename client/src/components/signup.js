@@ -75,6 +75,62 @@ class Signup extends Component {
   }
 
   onSignUp() {
+	
+	let signUpFirstNameValid = document.getElementById("firstName");
+
+      if (signUpFirstNameValid.value.length == 0){
+
+        //fehlermeldung für den Nutzer
+
+        signUpFirstNameValid.style.color = 'red';
+
+        console.log('false')
+
+        return false;
+
+      }
+	  
+	let signUpLastNameValid = document.getElementById("lastName");
+
+      if (signUpLastNameValid.value.length == 0){
+
+	    //fehlermeldung für den Nutzer
+
+	    signUpLastNameValid.style.color = 'red';
+
+	    console.log('false')
+
+	    return false;
+
+      }
+	  
+	let signUpEmailValid = document.getElementById("email");
+
+      if (signUpEmailValid.value.match(/^([\w.-]+)@([\w-]+\.)+([\w]{2,})$/i) == null){
+
+        //fehlermeldung für den Nutzer
+
+        signUpEmailValid.style.color = 'red';
+
+        console.log('false')
+
+        return false;
+
+      }
+	  
+	let signUpPasswordValid = document.getElementById("password");
+
+      if (signUpPasswordValid.value.length == 0){
+
+	    //fehlermeldung für den Nutzer
+
+	    signUpPasswordValid.style.color = 'red';
+
+	    console.log('false')
+
+	    return false;
+
+      }
     // Grab state
     const {
       signUpFirstName,
@@ -148,8 +204,8 @@ class Signup extends Component {
         </div>
 
         <input id="email" className="input_login" type="text" placeholder="Email Adresse" name="email" value={signUpEmail} onChange={this.onTextboxChangeSignUpEmail}/><br />
-        <input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={signUpPassword} onChange={this.onTextboxChangeSignUpPassword}/><br />
-        <button className="center login_button" style={{marginTop:'20px'}} type="button" value="Login" onClick={this.onSignUp}>Konto erstellen</button>
+				<input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={signUpPassword} onChange={this.onTextboxChangeSignUpPassword}/><br />
+				<button className="center login_button" style={{marginTop:'20px'}} type="button" value="Login" onClick={this.onSignUp}>Konto erstellen</button>
 
         <p className="backtologin"><a href="/">zurück zum login</a></p>
         <div className="center loginfooter_parent">
