@@ -1,13 +1,12 @@
 'use strict';
-
+const port = 5000;
 const express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 const cors = require('cors');
-const User = require('./models/User');
+const User = require('./models/user');
 const UserSession = require('./models/UserSession');
-
 
 mongoose.connect('mongodb://localhost/esna')
 //var esna_db = mongodb.MongoClient.connect('mongodb://localhost:27017');
@@ -27,17 +26,18 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
+app.use(require('./routes'));
 
 // Hello message
-app.get('/', function(req, res) {
+/*app.get('/', function(req, res) {
   res.send('hello there');
   res.end();
-});
+});*/
 
 /*
  * Login
  */
-
+/*
 app.post('/api/account/signin', (req, res, next) => {
     const { body } = req;
     const {
@@ -137,12 +137,12 @@ app.post('/api/account/signin', (req, res, next) => {
   });
 
 
-
+*/
 /*
  * Sign up
  */
 
-
+/*
 app.post('/api/account/signup', (req, res, next) => {
   const { body } = req;
   const { firstname } = body;
@@ -179,6 +179,6 @@ app.post('/api/account/signup', (req, res, next) => {
 }); // end of sign up endpoint
 
 
-const port = 5000;
+*/
 
 app.listen(port, () => `Server running on port ${port}`);

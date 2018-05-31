@@ -156,7 +156,6 @@ class Signup extends Component {
         <p className="loginfooter">Impressum</p> <p>Datenschutz</p>
         </div>
       </div>
-
       </div>
     );
   }
