@@ -8,7 +8,6 @@ const cors = require('cors');
 const User = require('./models/user');
 const UserSession = require('./models/UserSession');
 
-
 mongoose.connect('mongodb://localhost/esna')
 //var esna_db = mongodb.MongoClient.connect('mongodb://localhost:27017');
 
@@ -27,7 +26,7 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-app.use(require('./routes')); 
+app.use(require('./routes'));
 
 
 app.listen(port, () => `Server running on port ${port}`);
