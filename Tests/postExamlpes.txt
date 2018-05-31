@@ -1,0 +1,8 @@
+curl -X POST -H "Content-Type: application/json" -d '{"name":"course1", "teacher":"", "description": "lalalalal"}' http://localhost:5000/course
+
+curl -X POST -H "Content-Type: application/json" -d '{"name": "lala", "teacher":"", "description": "lalalalal"}' http://localhost:5000/course
+
+curl -X "DELETE" http://localhost/course/drei
+
+
+curl -X PUT -H "Content-Type: application/json" -d '{"firstname":"l", "lastname": "luka", "email": "luka@gmail.com", "isTeacher":"true", "isAdmin": "false", "isValide" : "true"}' http://localhost:5000/user/lu

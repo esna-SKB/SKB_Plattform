@@ -7,8 +7,10 @@ router.route('/')
 	//get all users
 	.get((req, res, next) => {
 		User.find({},{}, function(err, users){
-			if (err)
+			if (err) {
 	           console.log('error occured in the database');
+	           return res.send('error occured in the database');
+			}
 	       	else {
 				return res.send(users); 
 	       	}
@@ -19,11 +21,11 @@ router.route('/:email')
 	// get one specific user by email
 	.get((req, res, next) => {
 		var email = req.params.email; 
-		console.log(email); 
 		User.findOne({email: email},{/*_id:0, firstname:1, lastname:2, email:3, isTeacher:4, isAdmin:5 */}, function(err, user){
-			if (err)
+			if (err){
 	           console.log('error occured in the database');
-	       	else {
+	           return res.send('error occured in the database');
+			} else {
 				return res.send(user); 
 	       	}
 		})
@@ -31,23 +33,36 @@ router.route('/:email')
 	//update one User 
 	.put((req, res, next) => {
 		const { body } = req; 
+		const { firstname } = body;
+		const { lastname } = body;
+		const { email } = body; //email maybe can not be updated
+		const { isTeacher } = body;
+		const { isAdmin } = body;
+		const { isValide } = body; 
 
-		var email = req.params.email; 
-		console.log(email); 
-		User.findOne({email: email},{_id:0}, function(err, user){
-			if (err)
-	           console.log('error occured in the database');
-	       	else {
-	       		User.findByIdAndUpdate(user._id, { 
-	       			$set: { 
-	       				firstname: body.firstname, lastname: body.lastname, email: body.email,
-	       				 isTeacher: body.isTeacher, isAdmin: body.isAdmin
-	       				}
-	       			}, {new: true }, function(err, updatedUser){
-	       			if (err) return handleError(err);
-	       			return res.send(updatedUser); 
-	       		})
-	       	}
+		var oldEmail = req.params.email; 
+
+		User.find({email: email}, function(err, otherUsers){ 
+			if(err) {
+				console.log("error occured in the database")
+				return res.send('error occured in the database');
+			}else if(oldEmail != email && otherUsers.length > 0){
+				return res.send({success : false, message : "user with the new email already exists"});
+			}else {
+				User.findOneAndUpdate({email: oldEmail}
+					,{firstname : firstname, lastname : lastname, email : email
+						, isTeacher : isTeacher, isAdmin : isAdmin, isValide : isValide}
+						, {new: true}, function(err, updatedUser){
+					if (err){
+						console.log('error occured in the database while updating user');
+						return res.send({success : false, message : "user is not updated"});
+					}else if(updatedUser == null){
+						return res.send({success : false, message : "user: " + oldEmail + " is not in database"});
+					} else {
+			       		return res.send({success : true, message : "user is updated", object: updatedUser});
+			       	}
+				})
+			}
 		})
 	})
 
@@ -55,12 +70,14 @@ router.route('/:email')
 	.delete((req, res, next) => {
 		var email = req.params.email; 
 
-		User.deleteOne({email: email}, function(err, user){
-			if (err)
-	           console.log('error occured in the database');
-	       	else {
-				return res.send(user); 
-	       	}
+		User.deleteOne({email: email}, function(err, affected){
+			if (err) {
+				return res.send({success : false, message : "user could no be deleted, error accured while update"});
+			} else if(affected.n == 0){
+				return res.send({success : true, message : "user to delete counld not be found"});
+			} else {
+				return res.send({success : true, message : "course is deleted"})
+			}
 		})
 	})
 

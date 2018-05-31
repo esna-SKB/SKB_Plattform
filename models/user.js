@@ -29,6 +29,10 @@ const UserSchema = new mongoose.Schema({
   isVerified: {
     type: Boolean,
     default: false
+  }, 
+  isValide: {
+    type: Boolean, 
+    default: false
   }
 });
 UserSchema.methods.generateHash = function(password) {

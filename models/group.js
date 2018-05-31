@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const UserSchema = new mongoose.Schema({
+const GroupSchema = new mongoose.Schema({
   name: {
     type: String,
     default: ''
@@ -15,4 +15,4 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Group', UserSchema);
+module.exports = module.exports = mongoose.model('Group', GroupSchema);
