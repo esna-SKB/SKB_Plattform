@@ -127,9 +127,9 @@ class Login extends Component {
       <div className="col-6">
         <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
         <p className="loginheadline">Das Lernen Platform für Lehrer und Studenten</p>
-        <input className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={signInEmail} onChange={this.onTextboxChangeSignInEmail}/><br />
-				<input className="input_login" type="password" placeholder="Passwort" name="password" value={signInPassword} onChange={this.onTextboxChangeSignInPassword}/><br />
-				<button className="center login_button" style={{marginTop:'20px'}} onClick={this.onSignIn}>login</button>
+        <input id="email" className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={signInEmail} onChange={this.onTextboxChangeSignInEmail}/><br />
+        <input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={signInPassword} onChange={this.onTextboxChangeSignInPassword}/><br />
+        <button className="center login_button" style={{marginTop:'20px'}} onClick={this.onSignIn}>login</button>
 
         <p style={{color:'#a9a8a8',textAlign: 'center', paddingTop: '10px'}}><a href="/signup">Konto erstellen</a></p>
         <div className="center loginfooter_parent">

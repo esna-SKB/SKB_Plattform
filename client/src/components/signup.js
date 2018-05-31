@@ -128,7 +128,7 @@ class Signup extends Component {
       signUpFirstName,
       signUpLastName,
       signUpEmail,
-      signUpPassowrd
+      signUpPassword
     } = this.state;
 
     return (
@@ -143,13 +143,13 @@ class Signup extends Component {
         <p className="loginheadline">Bitte tragen Sie ihre Konto Informationen ein</p>
 
         <div className="center namefield">
-          <input className="input_login firstname" type="text" placeholder="Vorname" name="vorname" value={signUpFirstName}  onChange={this.onTextboxChangeSignUpFirstName}/>
-          <input className="input_login lastname" type="text" placeholder="Nachname" name="nachname" value={signUpLastName}  onChange={this.onTextboxChangeSignUpLastName}/><br />
+          <input id="firstName" className="input_login firstname" type="text" placeholder="Vorname" name="vorname" value={signUpFirstName}  onChange={this.onTextboxChangeSignUpFirstName}/>
+          <input id="lastName" className="input_login lastname" type="text" placeholder="Nachname" name="nachname" value={signUpLastName}  onChange={this.onTextboxChangeSignUpLastName}/><br />
         </div>
 
-        <input className="input_login" type="text" placeholder="Email Adresse" name="email" value={signUpEmail} onChange={this.onTextboxChangeSignUpEmail}/><br />
-				<input className="input_login" type="password" placeholder="Passwort" name="password" value={signUpPassowrd} onChange={this.onTextboxChangeSignUpPassword}/><br />
-				<button className="center login_button" style={{marginTop:'20px'}} type="button" value="Login" onClick={this.onSignUp}>Konto erstellen</button>
+        <input id="email" className="input_login" type="text" placeholder="Email Adresse" name="email" value={signUpEmail} onChange={this.onTextboxChangeSignUpEmail}/><br />
+        <input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={signUpPassword} onChange={this.onTextboxChangeSignUpPassword}/><br />
+        <button className="center login_button" style={{marginTop:'20px'}} type="button" value="Login" onClick={this.onSignUp}>Konto erstellen</button>
 
         <p className="backtologin"><a href="/">zurück zum login</a></p>
         <div className="center loginfooter_parent">
