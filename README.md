@@ -12,9 +12,8 @@ Im Laufe der Woche:
 # Run
 
 - `SKB_Project$ npm install`
-- `client$ npm install` (eventuelle!!, should be done from the script)
+- `client$ npm install` (eventuelle!!, should accually be done from the script)
 - `npm run dev`
-
 
 # API
 
@@ -44,20 +43,20 @@ Deletes a specific user by username
 
 ## Message - messages between users
 
-- GET `/user/:id/message`  
-Returns all messages of a users
+- GET `/message`  
+Returns all messages
 
-- POST `/user/:id/message`  
-Creates a new massage of a user
+- POST `/message`  
+Creates a new massage
 
-- GET `/user/:id/message/:msgID`  
-Returns a specific massage of a user by msgID
+- GET `/message/from/:fromUser/to/:toUser`  
+Returns all massages between two users
 
-- PUT `/user/:id/message/:msgID`  
-Updates a specific massage of a user by msgID
+<!--- - PUT `/user/:id/message/:msgID`  
+Updates a specific massage of a user by msgID --->
 
-- DELETE `/user/:id/message/:msgID`  
-Deletes a specific massage of a user by msgID 
+- DELETE `/message/from/:fromUser/to/:toUser`  
+Deletes a all massages between two users
 
 ## Course
 
@@ -117,7 +116,8 @@ A message is a JSON Object like this:
 	"msgID": "id",
 	"fromUser": "username",
 	"toUser": "username",
-	"msgContent": ""
+	"text": "",
+	"created_at": "date"
 }
 ```
 ## Course
@@ -127,7 +127,7 @@ A course is a JSON Object like this:
 ```json
 {
 	"courseID": "id",
-	"courseName": "coursename",
+	"name": "coursename",
 	"teacher": "username",
 	"description": ""
 }
@@ -142,6 +142,19 @@ A article is a JSON Object like this:
 	"courseID": "courseID",
 	"headline": "heading",
 	"author": "username",
-	"aContent": ""
+	"text": "",
+	"created_at": "date"
+}
+```
+
+### Response
+
+Response Object of our *API* 
+A Response is a JSON Object like this:
+
+```json
+{
+	"success": boolean,
+	"message": "description"
 }
 ```

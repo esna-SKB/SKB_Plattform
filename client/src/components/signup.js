@@ -90,7 +90,7 @@ class Signup extends Component {
     console.log(this.state)
 
     // Post request to backend
-    fetch('/api/account/signup', {
+    fetch('/account/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -6,9 +6,10 @@ router.route('/')
 	//get all courses
 	.get((req, res, next) => {
 		Course.find({},{}, function(err, courses){
-			if (err)
-	           console.log('error occured in the database');
-	       	else {
+			if (err) {
+				console.log('error occured in the database');
+	        	return res.send('error occured in the database');
+			} else {
 				return res.send(courses); 
 	       	}
 		})
@@ -45,7 +46,7 @@ router.route('/')
 				newCourse.save(function(err){
 					if(err) handleError(err); 
 					else {
-					res.send({
+					return res.send({
 						success: true,
 						message: "new Course is saved"
 						});
@@ -53,20 +54,18 @@ router.route('/')
 				});
 			}
 		})
-
-		
 	})
 
 router.route('/:name')
 	
 	.get((req, res, next) => {
 		var name = req.params.name; 
-		console.log(name); 
-		Course.findOne({name: name},{/*_id:0, firstname:1, lastname:2, email:3, isTeacher:4, isAdmin:5 */},
+		Course.findOne({name: name},{},
 		function(err, course){
-			if (err)
-	           console.log('error occured in the database');
-	       	else {
+			if (err){
+				console.log('error occured in the database');
+	        	return res.send('error occured in the database');
+	       	}else {
 				return res.send(course); 
 	       	}
 		})
@@ -80,24 +79,56 @@ router.route('/:name')
 
 		var oldName = req.params.name; 
 
-   		Course.findOneAndUpdate({ name: oldName }, { name : name, teacher : teacher, description: description }, function(err){
-   			if (err) {
-   				console.log("error accured while course update");
-   			} else {
-   				res.send({success : true, message : "course is updated"});
-   			}
-   		});
+		if(oldName != name){
+			Course.find({name : name},{}, function(err, courses){
+				if(err){
+					return res.send({success : false, message : "error accured in database"})
+				}else if(courses.length > 0){
+					return res.send({success : false, message : "new name for course already exists"})
+				} else {
+					//valide update new name
+					Course.update(
+						{ name: oldName }, { name : name, teacher : teacher, description: description }
+						, function(err, affected){
+						if (err) {
+							return res.send({success : false, message : "course could no be updaten, error accured while update"});
+						} else if(affected.n == 0){
+							return res.send({success : true, message : "course to update counld not be found"});
+						} else {
+							return res.send({success : true, message : "course is updated"})
+						}
+					});
+				}
+			})
+		} else {
+			//valide update no new name
+	   		Course.update(
+	   			{ name: oldName }, {teacher : teacher, description: description }
+	   			, function(err, affected){
+	   			if (err) {
+	   				console.log("error accured while course update");
+	   				return res.send({success : false, message : "course could no be updaten, error accured while update"});
+	   			} else if(affected.n == 0){
+					return res.send({success : false, message : "course to update counld not be found"});
+				} else {
+					return res.send({success : true, message : "course is updated"})
+				}
+	   		});
+		}
 	})
 
-	//deletes one User from DataBase 
+	//deletes one Course from DataBase 
 	.delete((req, res, next) => {
+		console.log('delete' + req.params.name)
 		var name = req.params.name; 
 
-		User.deleteOne({name : name}, function(err, course){
+		Course.deleteOne({name : name}, function(err, affected){
 			if (err)
-	           console.log('error occured in the database');
-	       	else {
-				return res.send(course); 
+	           return res.send({success : false, message : "error accured in database"});
+	       	else if(affected.n == 0){
+	       		return res.send({success : true, message : "course is was not in database"});
+	       	} else{
+				return res.send({success : true, message : "course is deleted"}); 
 	       	}
 		})
 	})

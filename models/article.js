@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 
-var articleSchema = new Schema({
+var articleSchema = new mongoose.Schema({
     course: {
         type: Schema.Types.ObjectId,
         ref: "Course"
@@ -11,7 +10,8 @@ var articleSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     },
-    text: String
+    text: String, 
+    created_at: {type: Date, default: Date.now}
 });
 
-mongoose.model('Article', articleSchema);
+module.exports = mongoose.model('Article', articleSchema);

@@ -74,11 +74,12 @@ router.route('/signup')
 			    message: 'Error: Server error'
 			  });
 			} else if (previousUsers.length > 0) {
-			  return res.send({
-			    success: false,
-			    message: 'Error: Account already exist.'
-			  });
-		}});
+				return res.send({
+			    	success: false,
+					message: 'Error: Account already exist.'
+				});
+			}
+		});
 
 		// Save the new user
 		const newUser = new User();
