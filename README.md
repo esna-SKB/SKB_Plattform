@@ -58,6 +58,12 @@ Updates a specific massage of a user by msgID --->
 - DELETE `/message/from/:fromUser/to/:toUser`  
 Deletes a all massages between two users
 
+- GET `/message/:id`  
+Returns one specific massage between two users
+
+- DELETE `/message/:id`  
+Deletes one specific massage between two users
+
 ## Course
 
 - GET `/course`  

@@ -72,5 +72,32 @@ router.route('/from/:fromUser/to/:toUser')
 		})
 	})
 
+	router.route('/:id')
+
+		.get((req, res, next) => {
+			var id = req.params.id;
+			Message.findById(id,{}, function(err, message){
+				if (err){
+					console.log('error occured in the database');
+		        	return res.send('error occured in the database');
+		       	}else {
+					return res.send(message); 
+		       	}
+			})
+		})
+
+		.delete((req, res, next) => {
+			var id = req.params.id;
+
+			Message.deleteOne({_id:id}, function(err){
+				if (err){
+					console.log('error occured in the database');
+		        	return res.send('error occured in the database');
+		       	} else {
+					return res.send({success : true, message : "Message is deleted"}); 
+		       	}
+			})
+		})
+
 	module.exports = router
 
