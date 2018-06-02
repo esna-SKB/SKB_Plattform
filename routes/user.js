@@ -12,7 +12,7 @@ router.route('/')
 	           return res.send('error occured in the database');
 			}
 	       	else {
-				return res.send(users); 
+				return res.send(users);
 	       	}
 		})
 	})
@@ -20,29 +20,29 @@ router.route('/')
 router.route('/:email')
 	// get one specific user by email
 	.get((req, res, next) => {
-		var email = req.params.email; 
+		var email = req.params.email;
 		User.findOne({email: email},{_id:0, firstname:1, lastname:2, email:3, isTeacher:4, isAdmin:5, isValide:6}, function(err, user){
 			if (err){
 	           console.log('error occured in the database');
 	           return res.send('error occured in the database');
 			} else {
-				return res.send(user); 
+				return res.send(user);
 	       	}
 		})
 	})
-	//update one User 
+	//update one User
 	.put((req, res, next) => {
-		const { body } = req; 
+		const { body } = req;
 		const { firstname } = body;
 		const { lastname } = body;
 		const { email } = body; //email maybe can not be updated
 		const { isTeacher } = body;
 		const { isAdmin } = body;
-		const { isValide } = body; 
+		const { isValide } = body;
 
-		var oldEmail = req.params.email; 
+		var oldEmail = req.params.email;
 
-		User.find({email: email}, function(err, otherUsers){ 
+		User.find({email: email}, function(err, otherUsers){
 			if(err) {
 				console.log("error occured in the database")
 				return res.send('error occured in the database');
@@ -66,9 +66,9 @@ router.route('/:email')
 		})
 	})
 
-	//deletes one User from DataBase 
+	//deletes one User from DataBase
 	.delete((req, res, next) => {
-		var email = req.params.email; 
+		var email = req.params.email;
 
 		User.deleteOne({email: email}, function(err, affected){
 			if (err) {

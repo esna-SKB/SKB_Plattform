@@ -9,12 +9,14 @@ class Signup extends Component {
     super(props);
 
     this.state = {
-      isLoading: true,
+      //isLoading: true,
+      status: 0,
       token: '',
       signUpFirstName: '',
       signUpLastName: '',
       signUpEmail: '',
       signUpPassword: '',
+      errorMessage: ''
     };
 
     this.onTextboxChangeSignUpFirstName = this.onTextboxChangeSignUpFirstName.bind(this);
@@ -75,35 +77,45 @@ class Signup extends Component {
   }
 
   onSignUp() {
-	
+
 	let signUpFirstNameValid = document.getElementById("firstName");
 
-      if (signUpFirstNameValid.value.length == 0){
+      if (signUpFirstNameValid.value.length === 0){
 
         //fehlermeldung für den Nutzer
 
+
+
         signUpFirstNameValid.style.color = 'red';
+
+        this.setState({
+          errorMessage : "Bitte fülle alle Felder aus."
+        });
 
         console.log('false')
 
         return false;
 
       }
-	  
+
 	let signUpLastNameValid = document.getElementById("lastName");
 
-      if (signUpLastNameValid.value.length == 0){
+      if (signUpLastNameValid.value.length === 0){
 
 	    //fehlermeldung für den Nutzer
 
 	    signUpLastNameValid.style.color = 'red';
+
+      this.setState({
+      errorMessage : "Bitte fülle alle Felder aus."
+      });
 
 	    console.log('false')
 
 	    return false;
 
       }
-	  
+
 	let signUpEmailValid = document.getElementById("email");
 
       if (signUpEmailValid.value.match(/^([\w.-]+)@([\w-]+\.)+([\w]{2,})$/i) == null){
@@ -112,19 +124,27 @@ class Signup extends Component {
 
         signUpEmailValid.style.color = 'red';
 
+        this.setState({
+        errorMessage : "Bitte gib eine gültige E-Mail Adresse an."
+        });
+
         console.log('false')
 
         return false;
 
       }
-	  
+
 	let signUpPasswordValid = document.getElementById("password");
 
-      if (signUpPasswordValid.value.length == 0){
+      if (signUpPasswordValid.value.length < 8){
 
 	    //fehlermeldung für den Nutzer
 
 	    signUpPasswordValid.style.color = 'red';
+
+      this.setState({
+        errorMessage : "Dein Passwort muss aus mind. acht Zeichen bestehen."
+      });
 
 	    console.log('false')
 
@@ -162,15 +182,29 @@ class Signup extends Component {
     .then(res => res.json())
       .then(json => {
         console.log('json', json);
-        if (json.success) {
+        console.log(json.success);
+        if (json.success == true) {
           this.setState({
-            isLoading: false,
+            //isLoading: true,
+            status: 1,
             signUpEmail: '',
             signUpPassword: '',
           });
         } else {
+          if (json.message == 'Error: Account not verified yet.'){
+            this.setState({
+              //isLoading: true,
+              status: 2,
+              signUpEmail: '',
+              signUpPassword: '',
+            });
+          }
+          else if(json.message == 'Error: Account already exist.')
           this.setState({
-            isLoading: false,
+            //isLoading: false,
+            status: 3,
+            signUpEmail: '',
+            signUpPassword: ''
           });
         }
       });
@@ -187,33 +221,86 @@ class Signup extends Component {
       signUpPassword
     } = this.state;
 
-    return (
-      <div className="row">
+    //when first visiting the page
+    if (this.state.status == 0){
+      return (
 
-      <div className="col-6">
-        <img src={Classimg} style={{width: '100%', height: '100%'}} alt="classroom"/>
-      </div>
+        <div className="row">
 
-      <div className="col-6">
-        <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
-        <p className="loginheadline">Bitte tragen Sie ihre Konto Informationen ein</p>
-
-        <div className="center namefield">
-          <input id="firstName" className="input_login firstname" type="text" placeholder="Vorname" name="vorname" value={signUpFirstName}  onChange={this.onTextboxChangeSignUpFirstName}/>
-          <input id="lastName" className="input_login lastname" type="text" placeholder="Nachname" name="nachname" value={signUpLastName}  onChange={this.onTextboxChangeSignUpLastName}/><br />
+        <div className="col-6">
+          <img src={Classimg} style={{width: '100%', height: '100%'}} alt="classroom"/>
         </div>
 
-        <input id="email" className="input_login" type="text" placeholder="Email Adresse" name="email" value={signUpEmail} onChange={this.onTextboxChangeSignUpEmail}/><br />
-				<input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={signUpPassword} onChange={this.onTextboxChangeSignUpPassword}/><br />
-				<button className="center login_button" style={{marginTop:'20px'}} type="button" value="Login" onClick={this.onSignUp}>Konto erstellen</button>
+        <div className="col-6">
+          <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
+          <p className="loginheadline">Bitte trag hier deine Kontoinformationen ein</p>
 
-        <p className="backtologin"><a href="/">zurück zum login</a></p>
-        <div className="center loginfooter_parent">
-        <p className="loginfooter">Impressum</p> <p>Datenschutz</p>
+          <p class = "errorMessage">{this.state.errorMessage}</p>
+
+          <div className="center namefield">
+            <input id="firstName" className="input_login firstname" type="text" placeholder="Vorname" name="vorname" value={signUpFirstName}  onChange={this.onTextboxChangeSignUpFirstName}/>
+            <input id="lastName" className="input_login lastname" type="text" placeholder="Nachname" name="nachname" value={signUpLastName}  onChange={this.onTextboxChangeSignUpLastName}/><br />
+          </div>
+
+          <input id="email" className="input_login" type="text" placeholder="Email Adresse" name="email" value={signUpEmail} onChange={this.onTextboxChangeSignUpEmail}/><br />
+  				<input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={signUpPassword} onChange={this.onTextboxChangeSignUpPassword}/><br />
+  				<button className="center login_button" style={{marginTop:'20px'}} type="button" value="Login" onClick={this.onSignUp}>Konto erstellen</button>
+
+          <p className="backtologin"><a href="/">zurück zum login</a></p>
+          <div className="center loginfooter_parent">
+          <p className="loginfooter">Impressum</p> <p>Datenschutz</p>
+          </div>
         </div>
-      </div>
-      </div>
-    );
+        </div>
+      );
+    }
+    //when Registration was successful and Link was sent
+    else if (this.state.status == 1){
+      return (
+
+        <div className="row">
+
+        <div className="col-6">
+          <img src={Classimg} style={{width: '100%', height: '100%'}} alt="classroom"/>
+        </div>
+
+        <div className="col-6">
+          <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
+          <p className="loginheadline">Danke für deine Registrierung!</p>
+          <p >Wir haben Dir eine E-Mail mit einem Link zum Bestätigen Deines Kontos geschickt.</p>
+          <p >Solltest Du keine E-Mail erhalten haben, klicke <a>hier</a>, um den Link erneut anzuforden.</p>
+
+          <p className="backtologin"><a href="/">zurück zum login</a></p>
+
+          <div className="center loginfooter_parent">
+          <p className="loginfooter">Impressum</p> <p>Datenschutz</p>
+          </div>
+        </div>
+        </div>
+      );
+    }
+    //if account already exists and also is verified
+    else if (this.state.status == 3){
+      return (
+        <div className="row">
+
+        <div className="col-6">
+          <img src={Classimg} style={{width: '100%', height: '100%'}} alt="classroom"/>
+        </div>
+
+        <div className="col-6">
+          <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
+          <p >Ein Account mit dieser E-Mail Adresse exisitert bereits bei uns.</p>
+          <p><a>passwort vergessen?</a></p>
+          <p className="backtologin"><a href="/">zurück zum login</a></p>
+
+          <div className="center loginfooter_parent">
+          <p className="loginfooter">Impressum</p> <p>Datenschutz</p>
+          </div>
+        </div>
+        </div>
+      );
+    }
   }
 }
 

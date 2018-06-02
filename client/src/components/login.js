@@ -34,6 +34,8 @@ class Login extends Component {
 
       signInPassword: '',
 
+      errorMessage: ''
+
     };
 
 
@@ -49,7 +51,7 @@ class Login extends Component {
 
 
 
-
+  /*
   componentDidMount() {
 
     const obj = getFromStorage('login_token');
@@ -99,7 +101,7 @@ class Login extends Component {
     }
 
   }
-
+ */
 
 
 
@@ -147,7 +149,7 @@ class Login extends Component {
         return false;
 
       }
-   
+
       let signUpPasswordValid = document.getElementById("password");
 
       if (signUpPasswordValid.value.length == 0){
@@ -211,10 +213,10 @@ class Login extends Component {
 
         console.log('json', json);
 
-        if (json.success) {
+        if (json.success == true) {
 
           setInStorage('login_token', { token: json.token });
-
+          //user registered & verified and correct password -> login successful
           this.setState({
 
             signInError: json.message,
@@ -228,16 +230,28 @@ class Login extends Component {
             token: json.token,
 
           });
+          this.props.history.push("/timeline");
 
         } else {
+          //user not registered
+          if(json.message == 'No account or wrong Password'){
+            this.setState({
+              signInError: json.message,
 
-          this.setState({
+              isLoading: false,
+              errorMessage: "E-Mail Adresse oder Passwort nicht korrekt."
+            });
+          }
+          else if(json.message == 'User not verified yet'){
+            this.setState({
+              signInError: json.message,
 
-            signInError: json.message,
+              isLoading: false,
+              errorMessage: "Du hast Dein Konto noch nicht bestätigt. Solltest du keinen Link erhalten haben, kannst Du ihn <a>hier</a> noch einmal anfordern."
+            });
 
-            isLoading: false,
+          }
 
-          });
 
         }
 
@@ -287,7 +301,9 @@ class Login extends Component {
 
         <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
 
-        <p className="loginheadline">Das Lernen Platform für Lehrer und Studenten</p>
+        <p className="loginheadline">Die Lernplattform für Lehrer und Studenten</p>
+
+        <p className = "errorMessage">{this.state.errorMessage}</p>
 
         <input id="email" className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={signInEmail} onChange={this.onTextboxChangeSignInEmail}/><br />
 
@@ -298,6 +314,7 @@ class Login extends Component {
 
 
         <p style={{color:'#a9a8a8',textAlign: 'center', paddingTop: '10px'}}><a href="/signup">Konto erstellen</a></p>
+        <p style={{color:'#a9a8a8',textAlign: 'center'}}><a>Passwort vergessen?</a></p>
 
         <div className="center loginfooter_parent">
 

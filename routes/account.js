@@ -21,43 +21,50 @@ router.route('/signin')
 	    console.log(password)
 	    console.log(email)
 
-	    User.find({email: email},{_id:0, email:1, password:2},function(err,users){
+	    User.findOne({email: email},{_id:0, email:1, password:2, isVerified:3},function(err,user){
 	    	if (err)
 	           console.log('error occured in the database');
 
-			const user = users[0];
-
-	    	if (user.validPassword(password)) {
-	        	return res.send({
-	        		success: true,
-	        		message: 'Valid sign in'
-	        	});
-	       	} else {
-	        	return res.send({
-	           		success: false,
-	           		message: 'Wrong Password'
-	         	});
-	    	}
-	    	// Otherwise correct user
-	    	const userSession = new UserSession();
-	    	userSession.userId = user._id;
-	    	userSession.save((err, doc) => {
-		        if (err) {
-		          console.log(err);
-		          return res.send({
+			//const user = users[0];
+			console.log(user);
+				if (!user || !user.validPassword(password)){
+					console.log("no user / wrong passwort");
+					res.status(401).send({
+						success: false,
+						message: 'No account or wrong Password'
+					});
+				}
+				else if (user.isVerified === false){
+					console.log("not verified");
+					res.status(401).send({
+						success: false,
+						message: 'User not verified yet'
+					});
+				}
+	    	else{
+					//create new user session
+				  const userSession = new UserSession();
+		    	userSession.userId = user._id;
+		    	userSession.save((err, doc) => {
+			        if (err) {
+			          console.log(err);
+		            res.status(500).send({
 		            success: false,
 		            message: 'Error: server error'
-		          });
-		        }
-		        return res.send({
+			          });
+			        }
+			        else{
+							  res.send({
 		          	success: true,
 		          	message: 'Valid sign in',
 		          	token: doc._id
-		        });
-      		});
-    	});
-	});
-
+		        		});
+								console.log(doc._id);
+	      		 }
+				  });
+			}
+		});
+});
 router.route('/signup')
 /*
  * Sign up
@@ -72,17 +79,25 @@ router.route('/signup')
 		email = email.toLowerCase();
 		email = email.trim();
 
-		User.find({ email: email }, (err, previousUsers) => {
+		User.findOne({ email: email }, (err, user) => {
 			if (err) {
 			  return res.status(500).send({
 			    success: false,
 			    message: 'Error: Server error'
 			  });
-			} else if (previousUsers.length > 0) {
-			  return res.status(400).send({
+			} else if (user) {
+				if(user.isVerified == 0){
+					res.status(400).send({
+				    success: false,
+				    message: 'Error: Account not verified yet.'
+				  });
+				}
+			  else{
+					res.status(400).send({
 			    success: false,
 			    message: 'Error: Account already exist.'
 			  });
+				}
 			} else{
 				// Save the new user
 				const newUser = new User();
