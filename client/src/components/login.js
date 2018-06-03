@@ -8,7 +8,8 @@ import Classimg from'../img/nathan-dumlao-572049-unsplash.jpg';
 
 import { setInStorage, getFromStorage, } from '../utils/storage';
 
-
+import cookie from 'react-cookies'
+import { checkUserSession, updateUserSession, deleteUserSession, getToken, updateTimeSec } from '../utils/userSessionHelper'
 
 
 
@@ -217,6 +218,36 @@ class Login extends Component {
 
           setInStorage('login_token', { token: json.token });
           //user registered & verified and correct password -> login successful
+          
+          //Cookie mit email und expire in Sekunden -> später ändern
+          /*fetch('/user/'+signInEmail, {
+                      method: 'GET',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                    }
+          ).then(ress => ress.json())
+          .then(jsonn => {cookie.save('userID',jsonn.email, { expires: updateTimeSec(40), path: '/'})});
+          */
+
+          //cookie.save('userId', getToken(signInEmail), { expires: updateTimeSec(40), path: '/'});
+          //onsole.log(getToken(signInEmail));
+
+
+          //komischer Weise hat 'str' als return Wert aus 'UserSessionHelper' nur ein 'undefined geliefert'
+          fetch('/userSession/'+signInEmail, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          }
+          ).then(resss => resss.json())
+          .then(jsonnn => {
+            //console.log(jsonnn.token);
+            let str = jsonnn.token;
+            cookie.save('userID', str, {expires: updateTimeSec(60), path: '/'});
+          });
+
           this.setState({
 
             signInError: json.message,
@@ -230,7 +261,10 @@ class Login extends Component {
             token: json.token,
 
           });
-          this.props.history.push("/timeline");
+          //warte kurz weil cookie nicht so schnell speichert?
+          //sleep(2000);
+          document.location.reload();
+          //this.props.history.push("/timeline");
 
         } else {
           //user not registered
@@ -259,8 +293,6 @@ class Login extends Component {
 
   }
 
-
-
   render() {
 
 
@@ -279,11 +311,31 @@ class Login extends Component {
 
     } = this.state;
 
+    //Checks if there is an active UserSession
+    //console.log('Returned Bool' + checkUserSession(cookie.load('userID')));
+    
+    fetch('/userSession/check', {
 
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify( { token: cookie.load('userID') } )
+    }).then (res => {
+      
+      if(res.status == 401){
+        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
+        this.props.history.push("/timeline");
+      }
+    });
+
+
+    // if(checkUserSession(cookie.load('userID'))){
+    //   this.props.history.push("/timeline");
+    // }
 
 
 
     return (
+
 
       <div className="row">
 

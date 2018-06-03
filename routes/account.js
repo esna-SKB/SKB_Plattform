@@ -27,44 +27,81 @@ router.route('/signin')
 
 			//const user = users[0];
 			console.log(user);
-				if (!user || !user.validPassword(password)){
-					console.log("no user / wrong passwort");
-					res.status(401).send({
-						success: false,
-						message: 'No account or wrong Password'
-					});
-				}
-				else if (user.isVerified === false){
-					console.log("not verified");
-					res.status(401).send({
-						success: false,
-						message: 'User not verified yet'
-					});
-				}
+			if (!user || !user.validPassword(password)){
+				console.log("no user / wrong passwort");
+				res.status(401).send({
+					success: false,
+					message: 'No account or wrong Password'
+				});
+			}
+			else if (user.isVerified === false){
+				console.log("not verified");
+				res.status(401).send({
+					success: false,
+					message: 'User not verified yet'
+				});
+			}
 	    	else{
-					//create new user session
-				  const userSession = new UserSession();
-		    	userSession.userId = user._id;
-		    	userSession.save((err, doc) => {
-			        if (err) {
-			          console.log(err);
-		            res.status(500).send({
-		            success: false,
-		            message: 'Error: server error'
-			          });
-			        }
-			        else{
-							  res.send({
-		          	success: true,
-		          	message: 'Valid sign in',
-		          	token: doc._id
-		        		});
-								console.log(doc._id);
-	      		 }
-				  });
+	    		UserSession.findOne({userId: email},function(err, usersession){
+	    			if(err)
+						console.log('error occured in database');
+
+					if(!usersession){
+						console.log('Are you inside here?');
+						//create new user session
+						var d = new Date();
+						const userSession = new UserSession();
+			    		userSession.userId = email;
+			    		userSession.token = crypto.randomBytes(16).toString('hex');
+			    		userSession.timestamp = d;
+			    		userSession.save((err, doc) => {
+					        if (err) {
+					          	console.log(err);
+				            	res.status(500).send({
+				            		success: false,
+				            		message: 'Error: server error'
+					          	});
+					        }
+					        else{
+								res.send({
+						          	success: true,
+						          	message: 'Valid sign in',
+						          	token: userSession.token
+					        	});
+							}
+						});
+						console.log(userSession);
+					} else {
+						var d = new Date();
+						var t = crypto.randomBytes(16).toString('hex');
+						console.log('t ===== '+t);
+						usersession.token = t;
+						usersession.timestamp = d;
+						usersession.isDeleted = false;
+						usersession.save((err, doc) => {
+					        if (err) {
+					          	console.log(err);
+				            	res.status(500).send({
+				            		success: false,
+				            		message: 'Error: server error'
+					          	});
+					        }
+					        else{
+								res.send({
+						          	success: true,
+						          	message: 'Valid sign in',
+						          	token: usersession.token
+					        	});
+							}
+						});
+					}
+		    	console.log(usersession);
+	    		});
+				
 			}
 		});
-});
+	});
+
 router.route('/signup')
 /*
  * Sign up
@@ -109,19 +146,19 @@ router.route('/signup')
 
 				//Send registration Email
 				// Create a verification token for this user
-        var token = new RegistrationToken({ _userId: newUser._id, token: crypto.randomBytes(16).toString('hex') });
+       	 		var token = new RegistrationToken({ _userId: newUser._id, token: crypto.randomBytes(16).toString('hex') });
 				// Save the verification token
-        token.save(function (err) {
-            if (err) { return res.status(500).send({ message: err.message }); }
+        		token.save(function (err) {
+            		if (err) { return res.status(500).send({ message: err.message }); }
 				});
 				//actually send email
 				var link = "http://"+req.headers.host+"/account/registration/verify?token=" + token.token;
 				Email.sendSignUpMail(newUser, link);
 
 				return res.send({
-			    success: true,
-			    message: 'Account created.'
-			  });
+				    success: true,
+				    message: 'Account created.'
+			  	});
 			}
 		});
 	}); // end of sign up endpoint

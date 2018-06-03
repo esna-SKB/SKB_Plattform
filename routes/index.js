@@ -6,6 +6,7 @@ router.use('/account', require('./account'))
 router.use('/user', require('./user'))
 router.use('/course', require('./course'))
 router.use('/message', require('./message'))
+router.use('/userSession', require('./userSession'))
 //router.use('/article', require('./article'))
 
 router.get('/', function(req, res) {
