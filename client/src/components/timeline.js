@@ -5,6 +5,9 @@ import Bell from'../img/bell-icon.png';
 import Chat from'../img/chat-icon.png';
 import '../css/timeline.css';
 
+import cookie from 'react-cookies';
+import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper'; 
+
 
 class Timeline extends Component {
 
@@ -41,6 +44,25 @@ class Timeline extends Component {
   // }
 
   render() {
+
+    //Checks if there is an active UserSession
+    fetch('/userSession/check', {
+
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify( { token: cookie.load('userID') } )
+    }).then (res => {
+      
+      if(res.status == 500){
+
+
+        this.props.history.push("/");
+      }else{
+        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
+        
+      }
+    });
+
     return (
       <div>
       <nav className="navbar navbar-expand-sm">
