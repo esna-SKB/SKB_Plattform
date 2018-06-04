@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import '../main.css';
 import Logo from'../img/esna.png';
 import Classimg from'../img/nathan-dumlao-572049-unsplash.jpg';
+//import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper';
+//import cookie from 'react-cookies';
 
 class Signup extends Component {
 
@@ -9,14 +11,13 @@ class Signup extends Component {
     super(props);
 
     this.state = {
-      //isLoading: true,
       status: 0,
-      token: '',
       signUpFirstName: '',
       signUpLastName: '',
       signUpEmail: '',
       signUpPassword: '',
-      errorMessage: ''
+      errorMessage: '',
+      infoMessage: ''
     };
 
     this.onTextboxChangeSignUpFirstName = this.onTextboxChangeSignUpFirstName.bind(this);
@@ -26,31 +27,23 @@ class Signup extends Component {
     this.onSignUp = this.onSignUp.bind(this);
   }
 
-  // componentDidMount() {
-  //     const obj = getFromStorage('the_main_app');
-  //     if (obj && obj.token) {
-  //       const { token } = obj;
-  //       // Verify token
-  //       fetch('/api/account/verify?token=' + token)
-  //         .then(res => res.json())
-  //         .then(json => {
-  //           if (json.success) {
-  //             this.setState({
-  //               token,
-  //               isLoading: false
-  //             });
-  //           } else {
-  //             this.setState({
-  //               isLoading: false,
-  //             });
-  //           }
-  //         });
-  //     } else {
-  //       this.setState({
-  //         isLoading: false,
-  //       });
+  // componentDidMount(){
+  //   //Checks if there is an active UserSession
+  //   fetch('/userSession/check', {
+  //
+  //   method: 'POST',
+  //   headers: {'Content-Type': 'application/json'},
+  //   body: JSON.stringify( { token: cookie.load('userID') } )
+  //   }).then (res => {
+  //
+  //     if(res.status == 401){
+  //
+  //       cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
+  //
+  //       this.props.history.push("/timeline");
   //     }
-  //   }
+  //   });
+  // }
 
   onTextboxChangeSignUpFirstName(event) {
     this.setState({
@@ -128,8 +121,6 @@ class Signup extends Component {
         errorMessage : "Bitte gib eine gültige E-Mail Adresse an."
         });
 
-        console.log('false')
-
         return false;
 
       }
@@ -159,10 +150,6 @@ class Signup extends Component {
       signUpPassword,
     } = this.state;
 
-    this.setState({
-      isLoading: true,
-    });
-
     console.log(this.state)
 
     // Post request to backend
@@ -183,28 +170,27 @@ class Signup extends Component {
       .then(json => {
         console.log('json', json);
         console.log(json.success);
-        if (json.success == true) {
+        if (json.success === true) {
           this.setState({
-            //isLoading: true,
             status: 1,
             signUpEmail: '',
             signUpPassword: '',
           });
         } else {
-          if (json.message == 'Error: Account not verified yet.'){
+          if (json.message === 'Error: Account not verified yet.'){
             this.setState({
-              //isLoading: true,
               status: 2,
               signUpEmail: '',
               signUpPassword: '',
+              errorMessage: "Du hast deinen Account noch nicht bestätigt."
             });
           }
-          else if(json.message == 'Error: Account already exist.')
+          else if(json.message === 'Error: Account already exist.')
           this.setState({
-            //isLoading: false,
             status: 3,
             signUpEmail: '',
-            signUpPassword: ''
+            signUpPassword: '',
+            errorMessage: 'Ein Account mit dieser E-Mail Adresse exisitert bereits bei uns.'
           });
         }
       });
@@ -213,8 +199,6 @@ class Signup extends Component {
   render() {
 
     const {
-      isLoading,
-      token,
       signUpFirstName,
       signUpLastName,
       signUpEmail,
@@ -222,7 +206,7 @@ class Signup extends Component {
     } = this.state;
 
     //when first visiting the page
-    if (this.state.status == 0){
+    if (this.state.status === 0){
       return (
 
         <div className="row">
@@ -233,9 +217,9 @@ class Signup extends Component {
 
         <div className="col-6">
           <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
-          <p className="loginheadline">Bitte trag hier deine Kontoinformationen ein</p>
+          <p className="loginheadline">Bitte trag hier Deine Kontoinformationen ein</p>
 
-          <p class = "errorMessage">{this.state.errorMessage}</p>
+          <p className = "errorMessage">{this.state.errorMessage}</p>
 
           <div className="center namefield">
             <input id="firstName" className="input_login firstname" type="text" placeholder="Vorname" name="vorname" value={signUpFirstName}  onChange={this.onTextboxChangeSignUpFirstName}/>
@@ -255,7 +239,7 @@ class Signup extends Component {
       );
     }
     //when Registration was successful and Link was sent
-    else if (this.state.status == 1){
+    else if (this.state.status === 1){
       return (
 
         <div className="row">
@@ -266,9 +250,8 @@ class Signup extends Component {
 
         <div className="col-6">
           <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
-          <p className="loginheadline">Danke für deine Registrierung!</p>
-          <p >Wir haben Dir eine E-Mail mit einem Link zum Bestätigen Deines Kontos geschickt.</p>
-          <p >Solltest Du keine E-Mail erhalten haben, klicke <a>hier</a>, um den Link erneut anzuforden.</p>
+          <p className="infoMessage">Danke für Deine Registrierung!</p>
+          <p className="infoMessage">Wir haben Dir eine E-Mail mit einem Link zum Bestätigen Deines Kontos geschickt.</p>
 
           <p className="backtologin"><a href="/">zurück zum login</a></p>
 
@@ -279,8 +262,8 @@ class Signup extends Component {
         </div>
       );
     }
-    //if account already exists and also is verified
-    else if (this.state.status == 3){
+    //if account is not verified yet
+    else if (this.state.status === 2){
       return (
         <div className="row">
 
@@ -290,8 +273,30 @@ class Signup extends Component {
 
         <div className="col-6">
           <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
-          <p >Ein Account mit dieser E-Mail Adresse exisitert bereits bei uns.</p>
-          <p><a>passwort vergessen?</a></p>
+          <p className="errorMessage">{this.state.errorMessage}</p>
+          <p className="backtologin"><a href="resend">Link nochmal senden</a></p>
+          <p className="backtologin"><a href="/">zurück zum login</a></p>
+
+          <div className="center loginfooter_parent">
+          <p className="loginfooter">Impressum</p> <p>Datenschutz</p>
+          </div>
+        </div>
+        </div>
+      );
+    }
+    //if account already exists and also is verified
+    else if (this.state.status === 3 ){
+      return (
+        <div className="row">
+
+        <div className="col-6">
+          <img src={Classimg} style={{width: '100%', height: '100%'}} alt="classroom"/>
+        </div>
+
+        <div className="col-6">
+          <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
+          <p className="errorMessage">{this.state.errorMessage}</p>
+          <p className="backtologin"><a href="/forgotPassword">passwort vergessen?</a></p>
           <p className="backtologin"><a href="/">zurück zum login</a></p>
 
           <div className="center loginfooter_parent">
