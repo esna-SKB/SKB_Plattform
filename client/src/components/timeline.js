@@ -111,9 +111,9 @@ class Timeline extends Component {
           </ul>
       </div>
 
+      <div className="container-fluid">
 
-
-      <div className="background container-fluid row">
+      <div className="background row">
 
         <div className="col col-sm-3">
           <div className="row">
@@ -230,6 +230,8 @@ class Timeline extends Component {
 
       </div>
 
+      </div>
+      
       </div>
     );
   }
