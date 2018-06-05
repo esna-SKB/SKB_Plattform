@@ -99,7 +99,6 @@ router.route('/signin')
 					}
 		    	console.log(usersession);
 	    		});
-
 			}
 		});
 	});
@@ -157,7 +156,9 @@ router.route('/signup')
 				var link = "http://localhost:3000/verify?token=" + token.token;
 				Email_register.sendSignUpMail(newUser, link);
 
+
 				return res.status(201).send({
+
 				    success: true,
 				    message: 'Account created.'
 			  	});

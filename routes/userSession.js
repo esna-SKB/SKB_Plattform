@@ -13,6 +13,7 @@ router.route('/check').post((req, res, next) => {
 
 	console.log(token);
 
+  
 	UserSession.findOne({ token: token },
 		function(err, usersession){
 			if(err)
@@ -57,7 +58,9 @@ router.route('/check').post((req, res, next) => {
 				        }
 				        else{
 							console.log("checked and updated User Session");
+
 							res.status(200).send({
+
 								success: true,
 								message: 'checked and updated User Session'
 							});
@@ -105,8 +108,10 @@ router.route('/newtoken').post((req, res, next) =>{
 		        }
 		        else{
 					console.log("new token for User Session");
+
 					res.status(200).send({
-						success: true,
+
+            success: true,
 						message: 'new token for User Session'
 					});
 				}
@@ -128,7 +133,8 @@ router.route('/:emailtoken').get((req, res, next) =>{
 		if(err){
 			console.log('error occured in database');
 			return res.send('error occured in database')
-		}
+		}		
+
 		console.log(usersession);
 		if(!usersession){
 			console.log("No User Session found");
@@ -176,8 +182,10 @@ router.route('/deleteSession').post((req, res, next) =>{
 		        }
 		        else{
 					console.log("User Session deleted");
+
 					res.status(200).send({
-						success: true,
+
+            success: true,
 						message: 'User Session deleted'
 					});
 				}

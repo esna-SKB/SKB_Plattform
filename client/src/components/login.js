@@ -157,6 +157,7 @@ class Login extends Component {
           setInStorage('login_token', { token: json.token });
           //user registered & verified and correct password -> login successful
 
+          
           //Cookie mit email und expire in Sekunden -> später ändern
           /*fetch('/user/'+signInEmail, {
                       method: 'GET',
@@ -257,6 +258,10 @@ class Login extends Component {
         this.props.history.push("/timeline");
       }
     });
+
+    // if(checkUserSession(cookie.load('userID'))){
+    //   this.props.history.push("/timeline");
+    // }
 
 
     // if(checkUserSession(cookie.load('userID'))){

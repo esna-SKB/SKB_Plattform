@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import '../main.css';
 import Logo from'../img/esna.png';
 import Classimg from'../img/nathan-dumlao-572049-unsplash.jpg';
-//import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper';
-//import cookie from 'react-cookies';
+
+import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper';
+import cookie from 'react-cookies';
+
 
 class Signup extends Component {
 
@@ -204,6 +206,22 @@ class Signup extends Component {
       signUpEmail,
       signUpPassword
     } = this.state;
+
+    //Checks if there is an active UserSession
+    fetch('/userSession/check', {
+
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify( { token: cookie.load('userID') } )
+    }).then (res => {
+      
+      if(res.status == 200){
+
+        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
+
+        this.props.history.push("/timeline");
+      }
+    });
 
     //when first visiting the page
     if (this.state.status === 0){
