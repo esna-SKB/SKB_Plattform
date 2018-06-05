@@ -4,7 +4,7 @@ var crypto = require('crypto');
 
 const User = require('../models/user');
 const UserSession = require('../models/UserSession');
- 
+
 
 //check if UserSession is still active and update
 router.route('/check').post((req, res, next) => {
@@ -13,7 +13,8 @@ router.route('/check').post((req, res, next) => {
 
 	console.log(token);
 
-	UserSession.findOne({ token: token }, 
+  
+	UserSession.findOne({ token: token },
 		function(err, usersession){
 			if(err)
 				console.log('error occured in the database')
@@ -46,7 +47,7 @@ router.route('/check').post((req, res, next) => {
 					d = new Date();
 					//to UTC String?
 					usersession.timestamp = d;
-					
+
 					usersession.save((err, doc) => {
 				        if (err) {
 				          	console.log(err);
@@ -57,13 +58,15 @@ router.route('/check').post((req, res, next) => {
 				        }
 				        else{
 							console.log("checked and updated User Session");
-							res.status(401).send({
+
+							res.status(200).send({
+
 								success: true,
 								message: 'checked and updated User Session'
 							});
 						}
 					});
-					
+
 				}
 			console.log(usersession);
 			}
@@ -91,7 +94,7 @@ router.route('/newtoken').post((req, res, next) =>{
 		} else {
 			var d = new Date();
 			var t = crypto.randomBytes(16).toString('hex');
-		
+
 			usersession.token = t;
 			usersession.timestamp = d;
 			usersession.isDeleted = false;
@@ -105,13 +108,15 @@ router.route('/newtoken').post((req, res, next) =>{
 		        }
 		        else{
 					console.log("new token for User Session");
-					res.status(401).send({
-						success: true,
+
+					res.status(200).send({
+
+            success: true,
 						message: 'new token for User Session'
 					});
 				}
 			});
-			
+
 		}
 	})
 	console.log(usersession);
@@ -129,6 +134,7 @@ router.route('/:emailtoken').get((req, res, next) =>{
 			console.log('error occured in database');
 			return res.send('error occured in database')
 		}		
+
 		console.log(usersession);
 		if(!usersession){
 			console.log("No User Session found");
@@ -176,8 +182,10 @@ router.route('/deleteSession').post((req, res, next) =>{
 		        }
 		        else{
 					console.log("User Session deleted");
-					res.status(401).send({
-						success: true,
+
+					res.status(200).send({
+
+            success: true,
 						message: 'User Session deleted'
 					});
 				}
@@ -191,24 +199,3 @@ router.route('/deleteSession').post((req, res, next) =>{
 
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

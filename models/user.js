@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
+
   firstname: {
     type: String,
     default: ''
@@ -29,9 +30,9 @@ const UserSchema = new mongoose.Schema({
   isVerified: {
     type: Boolean,
     default: false
-  }, 
+  },
   isValide: {
-    type: Boolean, 
+    type: Boolean,
     default: false
   }
 });

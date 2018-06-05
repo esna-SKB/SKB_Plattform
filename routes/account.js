@@ -6,7 +6,9 @@ var nodemailer = require('nodemailer');
 const User = require('../models/user');
 const UserSession = require('../models/UserSession');
 const RegistrationToken = require('../models/registrationToken');
-const Email = require('../emails/registrationMail');
+const Email_register = require('../emails/registrationMail');
+const Email_reset = require('../emails/resetPasswordMail');
+
 
 router.route('/signin')
 
@@ -97,7 +99,6 @@ router.route('/signin')
 					}
 		    	console.log(usersession);
 	    		});
-				
 			}
 		});
 	});
@@ -152,10 +153,12 @@ router.route('/signup')
             		if (err) { return res.status(500).send({ message: err.message }); }
 				});
 				//actually send email
-				var link = "http://"+req.headers.host+"/account/registration/verify?token=" + token.token;
-				Email.sendSignUpMail(newUser, link);
+				var link = "http://localhost:3000/verify?token=" + token.token;
+				Email_register.sendSignUpMail(newUser, link);
 
-				return res.send({
+
+				return res.status(201).send({
+
 				    success: true,
 				    message: 'Account created.'
 			  	});
@@ -167,30 +170,142 @@ router.route('/registration/verify')
 /*
  * Verify Email Registration
  */
-	.get((req, res, next) => {
-		var token = req.query.token;
+	.post((req, res, next) => {
+		const { body } = req;
+		const { token } = body;
+		//var token = req.query.token;
 
 		// Find a matching token
 	 RegistrationToken.findOne({ token: token }, function (err, token) {
-			 if (!token) return res.status(400).send({ type: 'not-verified', message: 'Registrierungslink ist ungültig.' });
-
+			 if (!token) {
+				 res.status(400).send({ success: false , message: 'link not valid.' });
+			 }
+			 else{
 			 // If we found a token, find a matching user
 			 User.findOne({ _id: token._userId }, function (err, user) {
-					 if (!user) return res.status(400).send({ message: 'Der Link konnte keiner Registrierung zugeordnet werden'});
-					 //if (user.isVerified) return res.status(400).send({ type: 'already-verified', message: 'Deine Registrierung wurde bereits bestätigt.' });
-
+					if (!user){
+						 res.status(400).send({ success: false, message: 'Der Link konnte keiner Registrierung zugeordnet werden'});
+					}
+					else if(user.isVerified) {
+						 return res.status(400).send({ type: 'already-verified', message: 'Deine Registrierung wurde bereits bestätigt.'});
+					}
+					else{
 					 // Verify and save the user
 					 user.isVerified = true;
 					 user.save(function (err) {
-							 if (err) { return res.status(500).send({ msg: err.message }); }
-							 res.status(200).send("Deine Registrierung war erfolgreich. Du kannst dich jetzt einloggen.");
+							 if (err) { return res.status(500).send({ success: false, message: err.message }); }
+							 res.status(200).send({success: true, message: "verification successful"});
 					 });
+				 }
 			 });
+		  }
 	 });
-
 	}); // end of verify registration endpoint
 
+	/*
+	* Registration resend
+	* Sends out Email with registration link SendRegistrationAgain
+	*/
+	router.route('/registration/resend')
+		.post((req, res, next) => {
+			const { body } = req;
+			let { email } = body;
+			email = email.toLowerCase();
+			email = email.trim();
 
+			User.findOne({ email: email }, (err, user) => {
+				if (err) {
+						res.status(500).send({
+						success: false,
+						message: 'Error: Server error'
+						});
+				}
+				else{
+					if(user){
+						//Send registration Email
+						// Create a verification token for this user
+		       	 		var token = new RegistrationToken({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') });
+						// Save the verification token
+		        		token.save(function (err) {
+		            		if (err) { return res.status(500).send({ message: err.message }); }
+						});
+						var link = "http://localhost:3000/verify?token=" + token.token;
+						Email_register.sendSignUpMail(user, link);
+					}
+					res.status(200).send({
+					    success: true,
+					    message: 'Registration Email sent.'
+				  	});
+					}
+			});
+		});
+	/*
+	 * Forgot Password
+	 * Sends out Email with Link to reset Password
+	*/
+	router.route('/forgotPassword')
+
+	.post((req, res, next) => {
+ 		const { body } = req;
+		let { email } = body;
+		email = email.toLowerCase();
+		email = email.trim();
+
+		User.findOne({ email: email }, (err, user) => {
+			if (err) {
+			    res.status(500).send({
+			    success: false,
+			    message: 'Error: Server error'
+			  	});
+					return;
+			}
+			else{
+				if(user && user.isVerified){
+				//actually send email
+				var link = "http://localhost:3000/resetPassword/?id=" + user._id;
+				Email_reset.sendResetMail(user, link);
+				}
+				return res.status(200).send({
+				    success: true,
+				    message: 'ForgotPassword Email sent.'
+			  	});
+			}
+		});
+	});	 //end of forgotPassword endpoint
+
+	/*
+	 * Reset Password
+	 */
+	router.route('/resetPassword')
+		//change the password of a user
+		.post((req, res, next) => {
+			const { body } = req;
+			const { id } = body;
+			const { password } = body;
+			console.log(password);
+	    User.findOne({_id: id},{},function(err,user){
+				if (err) {
+		           console.log('error occured in the database');
+		           res.status(500).send('error occured in the database');
+				}
+		    else if(user){
+					//user.password = password;
+					// console.log(user);
+	        user.set({password: user.generateHash(password)});
+					user.save(function (err) {
+							if (err) {
+								res.status(500).send({success : false, message : "password could not be updated"});
+						  }
+							else{
+								res.status(200).send({success : true, message : "password updated"});
+							}
+					});
+		    }
+	      else{
+	        res.status(404).send({success : false, message : "user not found"});
+	      }
+			})
+		}); //end of reset Password endpoint
 
 
 module.exports = router

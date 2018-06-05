@@ -25,8 +25,6 @@ class Login extends Component {
 
     this.state = {
 
-      isLoading: true,
-
       token: '',
 
       signInError: '',
@@ -35,11 +33,11 @@ class Login extends Component {
 
       signInPassword: '',
 
-      errorMessage: ''
+      errorMessage: '',
+
+      infoMessage: ''
 
     };
-
-
 
     this.onTextboxChangeSignInEmail = this.onTextboxChangeSignInEmail.bind(this);
 
@@ -52,60 +50,21 @@ class Login extends Component {
 
 
 
-  /*
   componentDidMount() {
 
-    const obj = getFromStorage('login_token');
-
-    if (obj && obj.token) {
-
-      const { token } = obj;
-
-      // Verify token
-
-      fetch('/account/verify?token=' + token)
-
-        .then(res => res.json())
-
-        .then(json => {
-
-          if (json.success) {
-
-            this.setState({
-
-              token,
-
-              isLoading: false
-
-            });
-
-          } else {
-
-            this.setState({
-
-              isLoading: false,
-
-            });
-
-          }
-
+    if (this.props.location.state){
+      if (this.props.location.state.infoMessage === "Password changed"){
+        this.setState({
+          infoMessage : "Dein Passwort wurde geändert. Du kannst dich jetzt mit deinem neuen Passwort einloggen."
         });
-
-    } else {
-
-      this.setState({
-
-        isLoading: false,
-
-      });
-
+      }
+      else if (this.props.location.state.infoMessage === "Account verified"){
+        this.setState({
+          infoMessage : "Danke für die Bestätigung deines Benutzerkontos. Du kannst dich jetzt einloggen."
+        });
+      }
     }
-
   }
- */
-
-
-
 
 
 
@@ -135,38 +94,27 @@ class Login extends Component {
 
   onSignIn() {
 
-
-
       let signUpEmailValid = document.getElementById("email");
 
+      //email form validation
       if (signUpEmailValid.value.match(/^([\w.-]+)@([\w-]+\.)+([\w]{2,})$/i) == null){
-
-        //fehlermeldung für den Nutzer
-
         signUpEmailValid.style.color = 'red';
-
-        console.log('false')
-
+        this.setState({
+        errorMessage : "Bitte gib eine gültige E-Mail Adresse an."
+        });
         return false;
-
       }
 
       let signUpPasswordValid = document.getElementById("password");
 
-      if (signUpPasswordValid.value.length == 0){
-
-	    //fehlermeldung für den Nutzer
-
+      //password form validation
+      if (signUpPasswordValid.value.length === 0){
 	    signUpPasswordValid.style.color = 'red';
-
-	    console.log('false')
-
+      this.setState({
+        errorMessage : "Bitte gib dein Passwort ein."
+      });
 	    return false;
-
       }
-
-
-
 
     // Grab state
 
@@ -177,16 +125,6 @@ class Login extends Component {
       signInPassword,
 
     } = this.state;
-
-
-
-    this.setState({
-
-      isLoading: true,
-
-    });
-
-
 
     // Post request to backend
 
@@ -214,10 +152,11 @@ class Login extends Component {
 
         console.log('json', json);
 
-        if (json.success == true) {
+        if (json.success === true) {
 
           setInStorage('login_token', { token: json.token });
           //user registered & verified and correct password -> login successful
+
           
           //Cookie mit email und expire in Sekunden -> später ändern
           /*fetch('/user/'+signInEmail, {
@@ -252,8 +191,6 @@ class Login extends Component {
 
             signInError: json.message,
 
-            isLoading: false,
-
             signInPassword: '',
 
             signInEmail: '',
@@ -268,20 +205,19 @@ class Login extends Component {
 
         } else {
           //user not registered
-          if(json.message == 'No account or wrong Password'){
+          if(json.message === 'No account or wrong Password'){
             this.setState({
               signInError: json.message,
 
-              isLoading: false,
+              infoMessage: "",
               errorMessage: "E-Mail Adresse oder Passwort nicht korrekt."
             });
           }
-          else if(json.message == 'User not verified yet'){
+          else if(json.message === 'User not verified yet'){
             this.setState({
               signInError: json.message,
-
-              isLoading: false,
-              errorMessage: "Du hast Dein Konto noch nicht bestätigt. Solltest du keinen Link erhalten haben, kannst Du ihn <a>hier</a> noch einmal anfordern."
+              infoMessage: "",
+              errorMessage: "Du hast Dein Konto noch nicht bestätigt. Solltest du keinen Link erhalten haben, kannst Du ihn <a href='/resend' >hier</a> noch einmal anfordern."
             });
 
           }
@@ -295,11 +231,7 @@ class Login extends Component {
 
   render() {
 
-
-
     const {
-
-      isLoading,
 
       token,
 
@@ -313,26 +245,28 @@ class Login extends Component {
 
     //Checks if there is an active UserSession
     //console.log('Returned Bool' + checkUserSession(cookie.load('userID')));
-    
+
     fetch('/userSession/check', {
 
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify( { token: cookie.load('userID') } )
     }).then (res => {
-      
-      if(res.status == 401){
+
+      if(res.status === 200){
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
         this.props.history.push("/timeline");
       }
     });
-
 
     // if(checkUserSession(cookie.load('userID'))){
     //   this.props.history.push("/timeline");
     // }
 
 
+    // if(checkUserSession(cookie.load('userID'))){
+    //   this.props.history.push("/timeline");
+    // }
 
     return (
 
@@ -355,7 +289,9 @@ class Login extends Component {
 
         <p className="loginheadline">Die Lernplattform für Lehrer und Studenten</p>
 
-        <p className = "errorMessage">{this.state.errorMessage}</p>
+        <p className = "errorMessage" dangerouslySetInnerHTML={{ __html: this.state.errorMessage }}></p>
+        <p className = "infoMessage">{this.state.infoMessage}</p>
+
 
         <input id="email" className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={signInEmail} onChange={this.onTextboxChangeSignInEmail}/><br />
 
@@ -366,7 +302,7 @@ class Login extends Component {
 
 
         <p style={{color:'#a9a8a8',textAlign: 'center', paddingTop: '10px'}}><a href="/signup">Konto erstellen</a></p>
-        <p style={{color:'#a9a8a8',textAlign: 'center'}}><a>Passwort vergessen?</a></p>
+        <p style={{color:'#a9a8a8',textAlign: 'center'}}><a href="/forgotPassword">Passwort vergessen?</a></p>
 
         <div className="center loginfooter_parent">
 
