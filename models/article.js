@@ -2,7 +2,9 @@ var mongoose = require('mongoose');
 const Course = require('./course'); 
 const User = require('./user');
 
-var articleSchema = new mongoose.Schema({
+var Schema = mongoose.Schema;
+
+var articleSchema = new Schema({
     course: {
         type: Schema.Types.ObjectId,
         ref: "Course"

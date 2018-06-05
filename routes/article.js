@@ -4,7 +4,7 @@ const Article = require('../models/article');
 
 router.route('/')
 	//get all Articles
-	.get((req, res, next) => {
+	/*.get((req, res, next) => {
 		Article.find({},{_id:0, course:1, headline:2, author:3, text:4, created_at:5}, function(err, articles){
 			if (err) {
 				console.log('error occured in the database');
@@ -14,6 +14,22 @@ router.route('/')
 	       	}
 		})
 	})
+*/
+	// get all articles of a course, sorted by most resently post
+	.get((req, res, next) => {
+		var course = req.params.name; 
+		
+		Article.find({course: course},{_id:0, course:1, headline:2, author:3, text:4, created_at:5},
+		function(err, articles){
+			if (err){
+				console.log('error occured in the database');
+	        	return res.send('error occured in the database');
+	       	}else {
+				return res.send(articles); 
+	       	}
+		})
+	})
+
 
 	//post new Article
 	.post((req, res, next) => {
@@ -44,24 +60,8 @@ router.route('/')
 			}
 		});
 	})
-
-router.route('course/:id')
 	
-	// get all articles between course and headline sorted by most resently posted
-	.get((req, res, next) => {
-		var id = req.params.course; 
-		
-		Article.find({course: course, headline:headline},{_id:0, course:1, headline:2, author:3, text:4, created_at:5},
-		function(err, articles){
-			if (err){
-				console.log('error occured in the database');
-	        	return res.send('error occured in the database');
-	       	}else {
-				return res.send(articles); 
-	       	}
-		})
-	})
-
+	
 	router.route('/:id')
 
 		.get((req, res, next) => {

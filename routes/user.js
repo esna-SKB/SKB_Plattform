@@ -6,13 +6,13 @@ const UserSession = require('../models/UserSession');
 router.route('/')
 	//get all users
 	.get((req, res, next) => {
-		User.find({},{}, function(err, users){
+		User.find({},{_id:0, firstname:1, lastname:2, email:3, isTeacher:4, isAdmin:5, isValide:6}, function(err, users){
 			if (err) {
 	           console.log('error occured in the database');
-	           return res.send('error occured in the database');
+	           return res.status(500).send('error occured in the database');
 			}
 	       	else {
-				return res.send(users);
+				return res.status(200).send(users);
 	       	}
 		})
 	})
@@ -24,9 +24,9 @@ router.route('/:email')
 		User.findOne({email: email},{_id:0, firstname:1, lastname:2, email:3, isTeacher:4, isAdmin:5, isValide:6}, function(err, user){
 			if (err){
 	           console.log('error occured in the database');
-	           return res.send('error occured in the database');
+	           return res.status(500).send('error occured in the database');
 			} else {
-				return res.send(user);
+				return res.status(200).send(user);
 	       	}
 		})
 	})
@@ -55,11 +55,11 @@ router.route('/:email')
 						, {new: true}, function(err, updatedUser){
 					if (err){
 						console.log('error occured in the database while updating user');
-						return res.send({success : false, message : "user is not updated"});
+						return res.status(500).send({success : false, message : "user is not updated"});
 					}else if(updatedUser == null){
-						return res.send({success : false, message : "user: " + oldEmail + " is not in database"});
+						return res.status(401).send({success : false, message : "user: " + oldEmail + " is not in database"});
 					} else {
-			       		return res.send({success : true, message : "user is updated", object: updatedUser});
+			       		return res.status(200).send({success : true, message : "user is updated", object: updatedUser});
 			       	}
 				})
 			}
@@ -72,11 +72,11 @@ router.route('/:email')
 
 		User.deleteOne({email: email}, function(err, affected){
 			if (err) {
-				return res.send({success : false, message : "user could no be deleted, error accured while update"});
+				return res.status(500).send({success : false, message : "user could no be deleted, error accured while update"});
 			} else if(affected.n == 0){
-				return res.send({success : true, message : "user to delete counld not be found"});
+				return res.status(401).send({success : true, message : "user to delete counld not be found"});
 			} else {
-				return res.send({success : true, message : "course is deleted"})
+				return res.status(200).send({success : true, message : "course is deleted"})
 			}
 		})
 	})

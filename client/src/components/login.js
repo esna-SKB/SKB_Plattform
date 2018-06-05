@@ -152,7 +152,7 @@ class Login extends Component {
 
       let signUpPasswordValid = document.getElementById("password");
 
-      if (signUpPasswordValid.value.length == 0){
+      if (signUpPasswordValid.value.length === 0){
 
 	    //fehlermeldung für den Nutzer
 
