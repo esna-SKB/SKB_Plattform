@@ -84,28 +84,28 @@ router.route('/:id')
 		var id = req.params.id; 
 
 		
-			Group.find({name : name},{}, function(err, groups){
-				if(err){
-					return res.send({success : false, message : "error accured in database"})
-				}else if(groups.length > 1 ){
-					return res.send({success : false, message : "new name for group already exists"})
-				} else {
-					//valide update new name
-					Group.update(
-						{ _id: id }, { name : name, members : members, description: description }
-						, function(err, affected){
-						if (err) {
-							return res.status(500).send({success : false, message : "group could no be updaten, error accured while update"});
-						} else if(affected.n == 0){
-							return res.status(401).send({success : true, message : "group to update counld not be found"});
-						} else {
-							return res.status(200).send({success : true, message : "group is updated"})
-						}
-					});
-				}
-			})
-		}
+		Group.find({name : name},{}, function(err, groups){
+			if(err){
+				return res.send({success : false, message : "error accured in database"})
+			}else if(groups.length > 1 ){
+				return res.send({success : false, message : "new name for group already exists"})
+			} else {
+				//valide update new name
+				Group.update(
+					{ _id: id }, { name : name, members : members, description: description }
+					, function(err, affected){
+					if (err) {
+						return res.status(500).send({success : false, message : "group could no be updaten, error accured while update"});
+					} else if(affected.n == 0){
+						return res.status(401).send({success : true, message : "group to update counld not be found"});
+					} else {
+						return res.status(200).send({success : true, message : "group is updated"})
+					}
+				});
+			}
+		})
 	})
+	
 
 	//deletes one Group from DataBase 
 	.delete((req, res, next) => {

@@ -192,7 +192,7 @@ A article is a JSON Object like this:
 
 ```json
 {
-	"aID": "id",
+	"aID": "_id",
 	"courseID": "courseID",
 	"headline": "heading",
 	"author": "username",
