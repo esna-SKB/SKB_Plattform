@@ -3,7 +3,7 @@ var router = express.Router();
 const Course = require('../models/course');
 
 router.use('/:name/article', require('./article'))
-router.use('/:name/group', require('./groupe'))
+router.use('/:name/group', require('./group'))
 
 router.route('/')
 	//get all courses
