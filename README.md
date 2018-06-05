@@ -44,6 +44,22 @@ Updates a specific user by username
 - DELETE `/user/:email`  
 Deletes a specific user by username
 
+
+## User Session
+
+- GET `/userSession/:emailtoken`
+Returns the token of the userSession with your registered email
+
+- POST `/userSession/check`
+Checks if User Sessoin is still active ---(if yes)---> updates the time stamp
+
+- POST `/userSession/newtoken`
+Creates a new token for an expired User Session (body needs email)
+
+- PUT `/userSession/deleteSession`
+Closes the User Session immediately
+
+
 ## Message - messages between users
 
 - GET `/message`  
