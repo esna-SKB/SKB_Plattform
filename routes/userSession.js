@@ -4,7 +4,7 @@ var crypto = require('crypto');
 
 const User = require('../models/user');
 const UserSession = require('../models/UserSession');
-
+ 
 
 //check if UserSession is still active and update
 router.route('/check').post((req, res, next) => {
