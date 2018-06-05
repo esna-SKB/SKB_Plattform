@@ -129,7 +129,11 @@ class Signup extends Component {
 
 	let signUpPasswordValid = document.getElementById("password");
 
+<<<<<<< Updated upstream
       if (signUpPasswordValid.value.length < 8){
+=======
+      if (signUpPasswordValid.value.length === 0){
+>>>>>>> Stashed changes
 
 	    //fehlermeldung für den Nutzer
 

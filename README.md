@@ -24,6 +24,9 @@ The API consists of the following endpoints:
 - post `/account/singin`
 - post `/account/singup`
 
+-get `timeline/user/:email/course/article` 
+Returns all Articles for the timeline, newes posts form the useres courses
+
 ## User
 
 - GET `/user`  
@@ -74,10 +77,10 @@ Updates a specific massage of a user by msgID --->
 - DELETE `/message/from/:fromUser/to/:toUser`  
 Deletes a all massages between two users
 
-- GET `/message/:id`  
+- GET `/message/:_id`  
 Returns one specific massage between two users
 
-- DELETE `/message/:id`  
+- DELETE `/message/:_id`  
 Deletes one specific massage between two users
 
 
@@ -89,34 +92,57 @@ Returns all courses
 - Post `/course`  
 Creates a new course
 
-- GET `/course/:id`  
+- GET `/course/:name`  
 Returns a specific courses by id
 
-- PUT `/course/:id`  
+- PUT `/course/:name`  
 Updates a specific course by id
 
-- DELETE `/course/:id`  
+- DELETE `/course/:name`  
 Deletes a specific course by id
 
 ## Article - a Post in a Course
-
+<!--
 - GET `/article`
-Returns all articles
+Returns all articles -->
 
-- GET `/article/course/:id`
+- GET `/course/:name/article`
 Returns all articles of a course
 
-- Post `/article/course/:id`  
+- Post `course/:name/article`  
 Creates a new article of a course
 
-- GET `/article/:aID`  
+- GET `course/:name/article/:_id`  
 Returns a specific article of a courses by aID
 
-- PUT `/article/:aID`  
+- PUT `course/:name/article/:_id`  
 Updates a specific article of a course by aID
 
-- DELETE `/article/:aID`  
+- DELETE `course/:name/article/:_id`  
 Deletes a specific article of a course by aID
+
+## Group
+
+- GET `/user/:email/group`  
+Returns all groups of a user
+
+- GET `/course/:name/group`  
+Returns all groups of a course
+
+- Post `course/:name/group`  
+Creates a new goupe
+
+- GET `/course/:name/group/:_id`
+Returns a specific group from a specific courses by id
+
+- PUT `/course/group/:_id`  
+Updates a specific group from a specific course by id
+
+- DELETE `/course/group/:_id`  
+Deletes a specific group from a specific course by id
+
+#DataObjects: 
+- all data Objects carry a *_id*
 
 ## User
 
@@ -174,6 +200,8 @@ A article is a JSON Object like this:
 	"created_at": "date"
 }
 ```
+
+# Other Objects:  
 
 ### Response
 

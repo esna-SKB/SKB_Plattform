@@ -2,15 +2,18 @@ var express = require('express');
 var router = express.Router();
 const Course = require('../models/course');
 
+router.use('/:name/article', require('./article'))
+router.use('/:name/group', require('./groupe'))
+
 router.route('/')
 	//get all courses
 	.get((req, res, next) => {
 		Course.find({},{}, function(err, courses){
 			if (err) {
 				console.log('error occured in the database');
-	        	return res.send('error occured in the database');
+	        	return res.status(500).send('error occured in the database');
 			} else {
-				return res.send(courses); 
+				return res.status(200).send(courses); 
 	       	}
 		})
 	})
@@ -26,13 +29,13 @@ router.route('/')
 
 			if (err){
 	           console.log('error occured in the database');
-	           return res.send({
+	           return res.status(500).send({
 			    success: false,
 			    message: 'Error: Server error'
 			  });
 			}else if(otherCourse.length > 0){
 				console.log(otherCourse + " length is " + otherCourse.length); 
-				return res.send({
+				return res.status(401).send({
 					success: false,
 					message: "This Course exists allready"
 				}); 
@@ -46,7 +49,7 @@ router.route('/')
 				newCourse.save(function(err){
 					if(err) handleError(err); 
 					else {
-					return res.send({
+					return res.status(200).send({
 						success: true,
 						message: "new Course is saved"
 						});
@@ -64,9 +67,9 @@ router.route('/:name')
 		function(err, course){
 			if (err){
 				console.log('error occured in the database');
-	        	return res.send('error occured in the database');
+	        	return res.status(500).send('error occured in the database');
 	       	}else {
-				return res.send(course); 
+				return res.status(200).send(course); 
 	       	}
 		})
 	})
@@ -82,20 +85,20 @@ router.route('/:name')
 		if(oldName != name){
 			Course.find({name : name},{}, function(err, courses){
 				if(err){
-					return res.send({success : false, message : "error accured in database"})
+					return res.status(500).send({success : false, message : "error accured in database"})
 				}else if(courses.length > 0){
-					return res.send({success : false, message : "new name for course already exists"})
+					return res.status(401).send({success : false, message : "new name for course already exists"})
 				} else {
 					//valide update new name
 					Course.update(
 						{ name: oldName }, { name : name, teacher : teacher, description: description }
 						, function(err, affected){
 						if (err) {
-							return res.send({success : false, message : "course could no be updaten, error accured while update"});
+							return res.status(500).send({success : false, message : "course could no be updaten, error accured while update"});
 						} else if(affected.n == 0){
-							return res.send({success : true, message : "course to update counld not be found"});
+							return res.status(401).send({success : false, message : "course to update counld not be found"});
 						} else {
-							return res.send({success : true, message : "course is updated"})
+							return res.status(200).send({success : true, message : "course is updated"})
 						}
 					});
 				}
@@ -107,11 +110,11 @@ router.route('/:name')
 	   			, function(err, affected){
 	   			if (err) {
 	   				console.log("error accured while course update");
-	   				return res.send({success : false, message : "course could no be updaten, error accured while update"});
+	   				return res.status(500).send({success : false, message : "course could no be updaten, error accured while update"});
 	   			} else if(affected.n == 0){
-					return res.send({success : false, message : "course to update counld not be found"});
+					return res.status(401).send({success : false, message : "course to update counld not be found"});
 				} else {
-					return res.send({success : true, message : "course is updated"})
+					return res.status(200).send({success : true, message : "course is updated"})
 				}
 	   		});
 		}
@@ -124,11 +127,11 @@ router.route('/:name')
 
 		Course.deleteOne({name : name}, function(err, affected){
 			if (err)
-	           return res.send({success : false, message : "error accured in database"});
+	           return res.status(500).send({success : false, message : "error accured in database"});
 	       	else if(affected.n == 0){
-	       		return res.send({success : true, message : "course is was not in database"});
+	       		return res.status(401).send({success : true, message : "course is was not in database"});
 	       	} else{
-				return res.send({success : true, message : "course is deleted"}); 
+				return res.status(200).send({success : true, message : "course is deleted"}); 
 	       	}
 		})
 	})
