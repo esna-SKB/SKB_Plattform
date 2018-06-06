@@ -164,7 +164,6 @@ router.route('/deleteSession').post((req, res, next) =>{
 	const { body } = req;
 	const { token } = body;
 
-	console.log("werde ich aufgerufen??????");
 
 	UserSession.findOne({token: token}, function(err, usersession){
 		if(err){
