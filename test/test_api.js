@@ -38,12 +38,12 @@ describe('loading express', function () {
   });
   it('200 get all users of a course', function testPath(done) {
     request(server)
-      .get('/course/coucou/user')
+      .get('/course/course1/user')
       .expect(200, done);
   });
   it('post enrollment responds with json', function testPath(done) {
     request(server)
-      .post('enrollment/user/staerk12@gmail.com/course/coucou')
+      .post('/enrollment/user/staerk12@gmail.com/course/course1')
       .send({})
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)

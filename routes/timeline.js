@@ -11,25 +11,23 @@ router.route('/user/:email/course/article')
 		var email = req.params.email;
 		User.findOne({email:email},{}, function(err, user){
 			Enrollment.find({user: user._id}).exec(function(err, enroll){
-			if(err) return res.status(500).send('error occured in the database');
-			else if(enroll.length == null) return res.status(401).send('no courses found');
-			else {
-				var array = enroll.map(c => c.course._id); 
-				console.log(array); 
-				Article.find({course: {$in: array}},{},
-				{$sort: {created_at: -1}}, function(err, articles){
-					if (err){
-						console.log('error occured in the database');
-			        	return res.status(500).send('error occured in the database');
-			       	}else {
-						return res.status(200).send(articles); 
-			       	}
-				})
-			}
+				if(err) return res.status(500).send('error occured in the database');
+				else if(enroll.length == null) return res.status(404).send('no courses found');
+				else {
+					var array = enroll.map(c => c.course._id); 
+					console.log(array); 
+					Article.find({course: {$in: array}},{},{$sort: {created_at: -1}}
+						, function(err, articles){
+						if (err){
+							console.log('error occured in the database');
+				        	return res.status(500).send('error occured in the database');
+				       	}else {
+							return res.status(200).send(articles); 
+				       	}
+					})
+				}
+			})
 		})
-		})
-		
-		
 	})
 
 module.exports = router

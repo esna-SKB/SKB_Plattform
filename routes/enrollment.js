@@ -20,7 +20,7 @@ router.route('/user/:email/course/:name')
 
 				Enrollment.findOne({user:user._id, course:course._id}).exec(function(err, enroll){
 					if(err) return res.status(500).send('');
-					if(enroll != null) return res.status(404).send({success: false,message: 'enrollment allready exists'});
+					if(enroll != null) return res.status(404).send({success: false, message: 'enrollment allready exists'});
 					else{
 						var en = new Enrollment({user: user._id, course: course._id})
 						en.save(function(err){
