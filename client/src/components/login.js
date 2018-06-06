@@ -177,7 +177,7 @@ class Login extends Component {
           .then(jsonnn => {
             //console.log(jsonnn.token);
             let str = jsonnn.token;
-            cookie.save('userID', str, {expires: updateTimeSec(60), path: '/'});
+            cookie.save('userID', str, {expires: updateTimeSec(60*20), path: '/'});
           });
 
           this.setState({
@@ -247,7 +247,7 @@ class Login extends Component {
     }).then (res => {
 
       if(res.status === 200){
-        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
+        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})
         this.props.history.push("/timeline");
       }
     });

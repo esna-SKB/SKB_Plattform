@@ -21,8 +21,23 @@ export function updateUserSession (userid) {
   });
 }
 
-export function deleteUserSession (userid) {
+export function deleteUserSession (token) {
+  fetch('/userSession/deleteSession', {
 
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify( { token: token } )
+  }).then (res => {
+    
+    if(res.status == 200){
+
+      console.log("Erfolgreich ausgeloggt")
+      //this.props.history.push("/");
+    }else{
+      console.log("Problem beim Ausloggen")
+      
+    }
+  });
 }
 
 export function getToken (userid) {

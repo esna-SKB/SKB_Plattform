@@ -217,7 +217,7 @@ class Signup extends Component {
       
       if(res.status == 200){
 
-        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
+        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})
 
         this.props.history.push("/timeline");
       }
