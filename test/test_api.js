@@ -36,15 +36,26 @@ describe('loading express', function () {
       .get('/user/staerk12@gmail.com/course/')
       .expect(200, done);
   });
-  it('post enrollment responds with json', function(done) {
+  it('200 get all users of a course', function testPath(done) {
+    request(server)
+      .get('/course/coucou/user')
+      .expect(200, done);
+  });
+  it('post enrollment responds with json', function testPath(done) {
     request(server)
       .post('enrollment/user/staerk12@gmail.com/course/coucou')
-      .send({name: 'john'})
+      .send({})
       .set('Accept', 'application/json')
-      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect(404)
       .end(function(err, res) {
-        if (err) return done(err);
-        done();
-      });
+        if (err) {
+        console.log("enrollment");
+        console.log(err);
+      } else {
+        done(); 
+        return res;
+      }
+    }); 
   });
 });

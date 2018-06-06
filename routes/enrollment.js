@@ -11,13 +11,13 @@ router.route('/user/:email/course/:name')
 		var name = req.params.name; 
 		User.findOne({email: email}, {}).exec(function(err, user){
 			if (err) return res.status(500).send('1');
-			if(user == null) return res.status(404).send('course does not exists');
+			if(user == null) return res.status(404).send('user does not exists');
 			Course.findOne({name:name}, {}).exec(function(err, course){
 				if(err) return res.status(500).send('2');
 				if(course == null) return res.status(404).send('course does not exists');
 				Enrollment.findOne({user:user._id, course:course._id}).exec(function(err, enroll){
 					if(err) return res.status(500).send('');
-					if(enroll != null) return res.status(401).send('enrollment already exists');
+					if(enroll != null) return res.status(404).send({success: false,message: 'enrollment allready exists'});
 					else{
 						console.log(user._id, course._id); 
 						var en = new Enrollment({user: user._id, course: course._id})
