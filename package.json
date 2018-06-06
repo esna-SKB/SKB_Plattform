@@ -8,12 +8,16 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "mocha"
   },
   "author": "Esna",
   "license": "MIT",
   "devDependencies": {
-    "nodemon": "^1.14.6"
+    "mocha": "^5.2.0",
+    "nodemon": "^1.14.6",
+    "really-need": "^1.9.2",
+    "supertest": "^3.1.0"
   },
   "dependencies": {
     "bcrypt": "^2.0.1",

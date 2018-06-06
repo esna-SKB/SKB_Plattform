@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const Course = require('../models/course');
+const Enrollment = require('../models/enrollment');
+const User = require('../models/user');
 
 router.use('/:name/article', require('./article'))
 router.use('/:name/group', require('./group'))
@@ -136,5 +138,24 @@ router.route('/:name')
 		})
 	})
 
-	module.exports = router
+router.route(':name/user/')
+	.get((req, res, next) => {
+		var name = req.params.name; 
+		Course.findOne({name: name},{_id:0},
+		function(err, course){
+			if (err){
+				console.log('error occured in the database');
+	        	return res.status(500).send('error occured in the database');
+	       	} else if(course == null){
+	       		return res.status(401).send('user not fount');
+	       	} else {
+	       		Enrollment.find({course:course._id}).populate('user').exec(function(err, enroll){
+	       			if(err) return res.status(500).send('error occured in the database');
+	       			else return res.status(200).send(enroll.map(c => {c.user})); 
+	       		})
+	       	}
+		})
+	})
+
+module.exports = router
 

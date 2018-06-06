@@ -129,23 +129,15 @@ class Login extends Component {
     // Post request to backend
 
     fetch('/account/signin', {
-
       method: 'POST',
-
       headers: {
-
-        'Content-Type': 'application/json'
-
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
-
       body: JSON.stringify({
-
-        email: signInEmail,
-
-        password: signInPassword,
-
+        "email": signInEmail,
+        "password": signInPassword,
       }),
-
     }).then(res => res.json())
 
       .then(json => {
@@ -155,6 +147,7 @@ class Login extends Component {
         if (json.success === true) {
 
           setInStorage('login_token', { token: json.token });
+          console.log("Email: "+signInEmail); 
           //user registered & verified and correct password -> login successful
 
           
