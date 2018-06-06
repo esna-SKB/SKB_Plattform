@@ -1,13 +1,16 @@
 var mongoose = require('mongoose');
+const User = require('./user');
 
-var courseSchema = new mongoose.Schema({
+var Schema = mongoose.Schema;
+
+var courseSchema = new Schema({
     name: {
     	type: String,
     	default: ''
     },
     teacher: {
-        type: String,
-        default: ""
+        type: Schema.Types.ObjectId,
+        ref: "User"
     },
     description: {
     	type: String,

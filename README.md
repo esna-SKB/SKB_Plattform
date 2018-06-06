@@ -24,7 +24,7 @@ The API consists of the following endpoints:
 - post `/account/singin`
 - post `/account/singup`
 
--get `timeline/user/:email/course/article` 
+- get `timeline/user/:email/course/article` 
 Returns all Articles for the timeline, newes posts form the useres courses
 
 ## User
@@ -43,6 +43,10 @@ Updates a specific user by username
 
 - DELETE `/user/:email`  
 Deletes a specific user by username
+
+- GET `/user/:email/course`  
+Returns all courses of a user
+
 
 
 ## User Session
@@ -101,6 +105,9 @@ Updates a specific course by id
 - DELETE `/course/:name`  
 Deletes a specific course by id
 
+- GET `/course/:name/user`
+Returns all users of a course
+
 ## Article - a Post in a Course
 <!--
 - GET `/article`
@@ -143,6 +150,14 @@ Deletes a specific group from a specific course by id
 
 #DataObjects: 
 - all data Objects carry a *_id*
+
+## Enrollment
+
+- POST `/enrollment/user/:email/course/name`
+Enrolls a user in to a course
+
+- DELETE `/enrollment/user/:email/course/name`
+Signeds a user out of a course
 
 ## User
 
@@ -193,7 +208,7 @@ A article is a JSON Object like this:
 ```json
 {
 	"aID": "_id",
-	"courseID": "courseID",
+	"course": "courseName",
 	"headline": "heading",
 	"author": "username",
 	"text": "",

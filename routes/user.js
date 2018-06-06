@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const User = require('../models/user');
 const UserSession = require('../models/UserSession');
+const Course = require('../models/course');
+const Enrollment = require('../models/enrollment');
 
 router.route('/')
 	//get all users
@@ -80,5 +82,22 @@ router.route('/:email')
 			}
 		})
 	})
+
+router.route('/:email/course')
+	.get((req, res, next) => {
+		var email = req.params.email; 
+		User.findOne({email: email},{},function(err, user){
+			if (err) return res.status(500).send('error occured in the database');
+			else if (user == null) return res.status(401).send('user not fount');
+	       	else {
+	       		Enrollment.find({user:user._id}).populate('course').exec(function(err, enroll){
+	       			if(err) return res.status(500).send('error occured in the database');
+	       			else return res.status(200).send(enroll.map(c => c.course)); 
+	       		})
+	       	}
+		})
+	})
+
+
 
 	module.exports = router

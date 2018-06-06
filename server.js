@@ -5,8 +5,6 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 const cors = require('cors');
-const User = require('./models/user');
-const UserSession = require('./models/UserSession');
 
 mongoose.connect('mongodb://localhost/esna')
 //var esna_db = mongodb.MongoClient.connect('mongodb://localhost:27017');
@@ -29,4 +27,6 @@ app.use(function(req, res, next) {
 app.use(require('./routes'));
 
 
-app.listen(port, () => `Server running on port ${port}`);
+var server = app.listen(port, () => `Server running on port ${port}`);
+
+module.exports.server = server; 
