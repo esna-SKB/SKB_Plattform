@@ -6,13 +6,15 @@ import Chat from'../img/chat-icon.png';
 import '../css/timeline.css';
 
 import cookie from 'react-cookies';
-import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper'; 
+import { checkUserSession, updateTimeSec, deleteUserSession } from '../utils/userSessionHelper'; 
 
 
 class Timeline extends Component {
 
 
-
+  logout(){
+    deleteUserSession(cookie.load('userID'));
+  }
 
   // logout() {
   //   this.setState({
@@ -58,7 +60,7 @@ class Timeline extends Component {
 
         this.props.history.push("/");
       }else{
-        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
+        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})
         
       }
     });
@@ -69,6 +71,7 @@ class Timeline extends Component {
         <div className="container-fluid">
           <div className="navbar-header">
             <a className="navbar-brand" href="/"><img id="logo" className="logo" src={Logo} alt="Logo"/></a>
+            
           </div>
 
           <form className="navbar-form navbar-center" action="/search">
@@ -83,6 +86,18 @@ class Timeline extends Component {
           <ul className="nav navbar-nav navbar-right">
             <li><a href="#"><img id="chat" className="icon" src={Chat} alt="Chat"/></a></li>
             <li><a href="#"><img id="notifications" className="icon" src={Bell} alt="Bell"/></a></li>
+            <div class="btn-group">
+              <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Vorname Nachname
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Mein Profil</a>
+                <a class="dropdown-item" href="#">Bearbeiten?</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
+              </div>
+            </div>
           </ul>
 
         </div>
