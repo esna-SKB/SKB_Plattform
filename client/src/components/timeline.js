@@ -53,7 +53,7 @@ class Timeline extends Component {
     body: JSON.stringify( { token: cookie.load('userID') } )
     }).then (res => {
       
-      if(res.status == 500){
+      if(res.status == 500 || res.status == 202){
 
 
         this.props.history.push("/");

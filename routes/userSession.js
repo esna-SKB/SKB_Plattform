@@ -16,18 +16,21 @@ router.route('/check').post((req, res, next) => {
   
 	UserSession.findOne({ token: token },
 		function(err, usersession){
-			if(err)
-				console.log('error occured in the database')
-			console.log(usersession);
-			if(!usersession){
-				console.log("no matching User Session");
+			if(err){
+				console.log('error occured in the database');
 				res.status(500).send({
+					success: false,
+					message: 'Server Error'
+				});
+			}else if(!usersession){
+				console.log("no matching User Session");
+				res.status(202).send({
 					success: false,
 					message: 'No matching User Session'
 				});
 			} else if( usersession.isDeleted ){
 				console.log("User Session not available anymore (deleted)");
-				res.status(500).send({
+				res.status(202).send({
 					success: false,
 					message: 'User Session not available anymore (deleted)'
 				});
@@ -39,7 +42,7 @@ router.route('/check').post((req, res, next) => {
 				//korrekte Form? maybe ohne getTime..? maybe .. > d - d
 				if (d.getTime() - usersession.timestamp.getTime() > 0){
 					console.log("User Session not available anymore (timeout)");
-					res.status(500).send({
+					res.status(202).send({
 						success: false,
 						message: 'User Session not available anymore (timeout)'
 					});
@@ -82,12 +85,15 @@ router.route('/newtoken').post((req, res, next) =>{
 	console.log(email);
 
 	UserSession.findOne({userId: email}, function(err, usersession){
-		if(err)
-			console.log('error occured in database');
-		console.log(usersession);
-		if(!usersession){
-			console.log("No User Session found");
+		if(err){
+			console.log('error occured in the database');
 			res.status(500).send({
+				success: false,
+				message: 'Server Error'
+			});
+		}else if(!usersession){
+			console.log("No User Session found");
+			res.status(202).send({
 				success: false,
 				message: 'No User Session found)'
 			});
@@ -161,12 +167,15 @@ router.route('/deleteSession').post((req, res, next) =>{
 	console.log(email);
 
 	UserSession.findOne({userId: email}, function(err, usersession){
-		if(err)
-			console.log('error occured in database');
-		console.log(usersession);
-		if(!usersession){
-			console.log("No User Session found");
+		if(err){
+			console.log('error occured in the database');
 			res.status(500).send({
+				success: false,
+				message: 'Server Error'
+			});
+		}else if(!usersession){
+			console.log("No User Session found");
+			res.status(202).send({
 				success: false,
 				message: 'No User Session found)'
 			});
