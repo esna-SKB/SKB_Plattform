@@ -15,6 +15,9 @@ Im Laufe der Woche:
 - `client$ npm install` (eventuelle!!, should accually be done from the script)
 - `npm run dev`
 
+# Test 
+-`npm test`
+
 # API
 
 The API consists of the following endpoints:
@@ -51,7 +54,7 @@ Returns all courses of a user
 
 
 
-## User Session
+## UserSession
 
 - GET `/userSession/:emailtoken`
 Returns the token of the userSession with your registered email
@@ -129,6 +132,14 @@ Updates a specific article of a course by aID
 
 - DELETE `/article/:_id`  
 Deletes a specific article of a course by aID
+
+## Enrollment
+
+- POST `enrollment/user/:email/course/:name`
+When a user signs in to a course 
+
+- DELETE `enrollment/user/:email/course/:name`
+When a user signs out of a course 
 
 ## Group
 
