@@ -6,6 +6,8 @@ import Logo from'../img/esna.png';
 
 import Classimg from'../img/nathan-dumlao-572049-unsplash.jpg';
 
+const api = require('../api');
+
 const qs = require('query-string');
 
 class ResetPassword extends Component {
@@ -65,7 +67,6 @@ class ResetPassword extends Component {
          this.setState({
               errorMessage : "Dein Passwort muss aus mind. acht Zeichen bestehen."
          });
-	       console.log('false')
 	       return false;
       }
 
@@ -85,22 +86,9 @@ class ResetPassword extends Component {
       });
 
       // Post request to backend
-      console.log(this.props);
-      fetch('/account/resetPassword', {
-
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-
-        body: JSON.stringify({
-          id: userId,
-          password: signInPassword
-        }),
-      }).then(res => res.json())
-        .then(json => {
-          console.log('json', json);
-          this.props.history.push({pathname : "/", state : {infoMessage: "Password changed"}});
+        api.resetPassword(userId, signInPassword).then(json => {
+        console.log('json', json);
+        this.props.history.push({pathname : "/", state : {infoMessage: "Password changed"}});
         });
     };
 
