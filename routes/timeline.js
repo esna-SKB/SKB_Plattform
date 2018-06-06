@@ -9,14 +9,14 @@ router.route('/user/:email/course/article')
 	//get all articles for the timeline of a usere. 
 	.get((req, res, next) => {
 		var email = req.params.email;
-		User.findOne({email:email},{_id:0}, function(err, user){
+		User.findOne({email:email},{}, function(err, user){
 			Enrollment.find({user: user._id}).exec(function(err, enroll){
-			
 			if(err) return res.status(500).send('error occured in the database');
-			else if(enroll.length == 0) return res.status(401).send('no courses found');
+			else if(enroll.length == null) return res.status(401).send('no courses found');
 			else {
-				var array = enroll.map(c => {c.course}); 
-				Article.find({course: {$in: array}},{_id:0, course:1, headline:2, author:3, text:4, created_at:5},
+				var array = enroll.map(c => c.course._id); 
+				console.log(array); 
+				Article.find({course: {$in: array}},{},
 				{$sort: {created_at: -1}}, function(err, articles){
 					if (err){
 						console.log('error occured in the database');

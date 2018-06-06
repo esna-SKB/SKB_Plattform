@@ -76,7 +76,7 @@ router.route('/:email')
 			if (err) {
 				return res.status(500).send({success : false, message : "user could no be deleted, error accured while update"});
 			} else if(affected.n == 0){
-				return res.status(401).send({success : true, message : "user to delete counld not be found"});
+				return res.status(404).send({success : true, message : "user to delete counld not be found"});
 			} else {
 				return res.status(200).send({success : true, message : "course is deleted"})
 			}

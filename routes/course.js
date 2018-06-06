@@ -4,15 +4,12 @@ const Course = require('../models/course');
 const Enrollment = require('../models/enrollment');
 const User = require('../models/user');
 
-router.use('/:name/article', require('./article'))
-router.use('/:name/group', require('./group'))
 
 router.route('/')
 	//get all courses
 	.get((req, res, next) => {
 		Course.find({}).populate('teacher').exec(function(err, courses){
 			if (err) {
-				console.log('error occured in the database');
 	        	return res.status(500).send('error occured in the database');
 			} else {
 				return res.status(200).send(courses); 
@@ -29,14 +26,12 @@ router.route('/')
 
 		Course.find({name: name}).exec(function(err, otherCourse){
 			if (err){
-	           console.log('error occured in the database');
 	           return res.status(500).send({
 			    success: false,
 			    message: 'Error: Server error'
 			  });
-			}else if(otherCourse.length > 0){
-				console.log(otherCourse + " length is " + otherCourse.length); 
-				return res.status(401).send({
+			}else if(otherCourse.length > 0){ 
+				return res.status(404).send({
 					success: false,
 					message: "This Course exists allready"
 				}); 
@@ -73,7 +68,6 @@ router.route('/:name/user')
 		var name = req.params.name; 
 		Course.findOne({name: name},{}, function(err, course){
 			if (err){
-				console.log('error occured in the database');
 	        	return res.status(500).send('error occured in the database');
 	       	} else if(course == null){
 	       		return res.status(401).send('user not fount');
@@ -142,7 +136,6 @@ router.route('/:name')
 
 	//deletes one Course from DataBase 
 	.delete((req, res, next) => {
-		console.log('delete' + req.params.name)
 		var name = req.params.name; 
 
 		Course.deleteOne({name : name}, function(err, affected){

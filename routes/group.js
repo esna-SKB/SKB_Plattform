@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 const Group = require('../models/group');
 
-router.route('/')
+
+router.route('/course/:name')
 
 	//get all groups of courseX
 	.get((req, res, next) => {
