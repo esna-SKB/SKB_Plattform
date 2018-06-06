@@ -70,10 +70,11 @@ router.route('/:name/user')
 			if (err){
 	        	return res.status(500).send('error occured in the database');
 	       	} else if(course == null){
-	       		return res.status(401).send('user not fount');
+	       		return res.status(404).send('course not fount');
 	       	} else {
 	       		Enrollment.find({course:course._id}).populate('user').exec(function(err, enrolls){
 	       			if(err) return res.status(500).send('error occured in the database');
+	       			else if(enrolls == 0) res.status(204).send('there are no user in that course');
 	       			else{
 	       				var users = enrolls.map(c => c.user)
 	       				return res.status(200).send(users); 
@@ -110,7 +111,7 @@ router.route('/:name')
 			if(err){
 				return res.status(500).send({success : false, message : "error accured in database"})
 			}else if(course != null && oldname != name){
-				return res.status(401).send({success : false, message : "new name for course already exists"})
+				return res.status(404).send({success : false, message : "new name for course already exists"})
 			} else {
 				//valide update new name
 				User.findOne({email:teacher}).exec(function(err, user){
@@ -123,7 +124,7 @@ router.route('/:name')
 							if (err) {
 								return res.status(500).send({success : false, message : "course could no be updaten, error accured while update"});
 							} else if(affected.n == 0){
-								return res.status(401).send({success : false, message : "course to update counld not be found"});
+								return res.status(404).send({success : false, message : "course to update counld not be found"});
 							} else {
 								return res.status(200).send({success : true, message : "course is updated"})
 							}
@@ -142,7 +143,7 @@ router.route('/:name')
 			if (err)
 	           return res.status(500).send({success : false, message : "error accured in database"});
 	       	else if(affected.n == 0){
-	       		return res.status(401).send({success : true, message : "course is was not in database"});
+	       		return res.status(404).send({success : true, message : "course is was not in database"});
 	       	} else{
 				return res.status(200).send({success : true, message : "course is deleted"}); 
 	       	}

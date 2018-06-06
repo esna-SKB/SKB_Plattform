@@ -8,7 +8,7 @@ router.route('/course/:name')
 	//get all groups of courseX
 	.get((req, res, next) => {
 		var courseID = req.params.name; 
-		Group.find({course: courseID},{_id:0, name:1, members:2, course:4, description:5}, function(err, groups){
+		Group.find({course: courseID},{}, function(err, groups){
 			if (err) {
 				console.log('error occured in the database');
 	        	return res.status(500).send('error occured in the database');
@@ -26,7 +26,7 @@ router.route('/course/:name')
 		const { course } = body; 
 		const { description } = body;
 
-		Group.find({name: name},{_id:0}, function(err, otherGroup){
+		Group.find({name: name},{}, function(err, otherGroup){
 
 			if (err){
 	           console.log('error occured in the database');
@@ -36,7 +36,7 @@ router.route('/course/:name')
 			  });
 			}else if(otherGroup.length > 0){
 				console.log(otherGroup + " length is " + otherGroup.length); 
-				return res.status(401).send({
+				return res.status(404).send({
 					success: false,
 					message: "This Group exists allready"
 				}); 
@@ -65,12 +65,10 @@ router.route('/:id')
 	
 	.get((req, res, next) => {
 		var íd = req.params.id; 
-		Group.findOne({_id: id},{},
-		function(err, group){
-			if (err){
-				console.log('error occured in the database');
-	        	return res.status(500).send('error occured in the database');
-	       	}else {
+		Group.findOne({_id: id},{},function(err, group){
+			if (err)return res.status(500).send('error occured in the database');
+	       	else if(group == null) res.status(404).send('group could not be found');
+	       	else {
 				return res.status(200).send(group); 
 	       	}
 		})
@@ -88,7 +86,7 @@ router.route('/:id')
 		Group.find({name : name},{}, function(err, groups){
 			if(err){
 				return res.send({success : false, message : "error accured in database"})
-			}else if(groups.length > 1 ){
+			}else if(groups.length == 0 ){
 				return res.send({success : false, message : "new name for group already exists"})
 			} else {
 				//valide update new name
@@ -98,7 +96,7 @@ router.route('/:id')
 					if (err) {
 						return res.status(500).send({success : false, message : "group could no be updaten, error accured while update"});
 					} else if(affected.n == 0){
-						return res.status(401).send({success : true, message : "group to update counld not be found"});
+						return res.status(404).send({success : false, message : "group to update counld not be found"});
 					} else {
 						return res.status(200).send({success : true, message : "group is updated"})
 					}
