@@ -61,7 +61,29 @@ router.route('/')
 		})
 	})
 
-router.route('/:name')
+router.route('/:name/user')
+	.get((req, res, next) => {
+		var name = req.params.name; 
+		Course.findOne({name: name},{}, function(err, course){
+			if (err){
+				console.log('error occured in the database');
+	        	return res.status(500).send('error occured in the database');
+	       	} else if(course == null){
+	       		return res.status(401).send('user not fount');
+	       	} else {
+	       		Enrollment.find({course:course._id}).populate('user').exec(function(err, enrolls){
+	       			if(err) return res.status(500).send('error occured in the database');
+	       			else{
+	       				var users = enrolls.map(c => c.user)
+	       				return res.status(200).send(users); 
+	       			} 
+	       		})
+	       	}
+		})
+	})
+
+
+router.route('/:name/')
 	
 	.get((req, res, next) => {
 		var name = req.params.name; 
@@ -134,25 +156,6 @@ router.route('/:name')
 	       		return res.status(401).send({success : true, message : "course is was not in database"});
 	       	} else{
 				return res.status(200).send({success : true, message : "course is deleted"}); 
-	       	}
-		})
-	})
-
-router.route(':name/user/')
-	.get((req, res, next) => {
-		var name = req.params.name; 
-		Course.findOne({name: name},{_id:0},
-		function(err, course){
-			if (err){
-				console.log('error occured in the database');
-	        	return res.status(500).send('error occured in the database');
-	       	} else if(course == null){
-	       		return res.status(401).send('user not fount');
-	       	} else {
-	       		Enrollment.find({course:course._id}).populate('user').exec(function(err, enroll){
-	       			if(err) return res.status(500).send('error occured in the database');
-	       			else return res.status(200).send(enroll.map(c => {c.user})); 
-	       		})
 	       	}
 		})
 	})

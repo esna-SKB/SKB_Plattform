@@ -9,19 +9,20 @@ router.route('/user/:email/course/:name')
 	.post((req, res, next) => {
 		var email = req.params.email; 
 		var name = req.params.name; 
-		User.findOne({email: email}, {_id:0}).exec(function(err, user){
-			if (err) return res.status(500).send('');
-			Course.findOne({name:name}, {_id:0}).exec(function(err, course){
-				if(err) return res.status(500).send('');
+		User.findOne({email: email}, {}).exec(function(err, user){
+			if (err) return res.status(500).send('1');
+			if(user == null) return res.status(404).send('course does not exists');
+			Course.findOne({name:name}, {}).exec(function(err, course){
+				if(err) return res.status(500).send('2');
+				if(course == null) return res.status(404).send('course does not exists');
 				Enrollment.findOne({user:user._id, course:course._id}).exec(function(err, enroll){
 					if(err) return res.status(500).send('');
-					if(enroll != null) return res.status(401).send('');
+					if(enroll != null) return res.status(401).send('enrollment already exists');
 					else{
-						const newEnroll = new Enrollment();
-						newEnroll.user = user._id;
-						newEnroll.course = course._id; 
-						newEnroll.save(function(err){
-							if(err) handleError(err); 
+						console.log(user._id, course._id); 
+						var en = new Enrollment({user: user._id, course: course._id})
+						en.save(function(err){
+							if(err) return res.status(500).send('err'); 
 							else {
 							return res.status(200).send({
 								success: true,
