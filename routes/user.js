@@ -86,17 +86,13 @@ router.route('/:email')
 router.route('/:email/course')
 	.get((req, res, next) => {
 		var email = req.params.email; 
-		User.findOne({email: email},{_id:0},
-		function(err, user){
-			if (err){
-				console.log('error occured in the database');
-	        	return res.status(500).send('error occured in the database');
-	       	}else if(user == null){
-	       		return res.status(401).send('user not fount');
-	       	}else {
+		User.findOne({email: email},{},function(err, user){
+			if (err) return res.status(500).send('error occured in the database');
+			else if (user == null) return res.status(401).send('user not fount');
+	       	else {
 	       		Enrollment.find({user:user._id}).populate('course').exec(function(err, enroll){
 	       			if(err) return res.status(500).send('error occured in the database');
-	       			else return res.status(200).send(enroll.map(c => {c.course})); 
+	       			else return res.status(200).send(enroll.map(c => c.course)); 
 	       		})
 	       	}
 		})

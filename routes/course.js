@@ -61,6 +61,7 @@ router.route('/')
 		})
 	})
 
+//get /course/:name/user/ get all users enrolled in one course
 router.route('/:name/user')
 	.get((req, res, next) => {
 		var name = req.params.name; 
@@ -83,7 +84,7 @@ router.route('/:name/user')
 	})
 
 
-router.route('/:name/')
+router.route('/:name')
 	
 	.get((req, res, next) => {
 		var name = req.params.name; 
