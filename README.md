@@ -21,10 +21,12 @@ The API consists of the following endpoints:
 
 ## Acount
 
-- post `/account/singin`
-- post `/account/singup`
+- POST `/account/singin`
+- POST `/account/singup`
 
-- get `timeline/user/:email/course/article` 
+## Timeline
+
+- GET `timeline/user/:email/course/article` 
 Returns all Articles for the timeline, newes posts form the useres courses
 
 ## User
@@ -113,39 +115,40 @@ Returns all users of a course
 - GET `/article`
 Returns all articles -->
 
-- GET `/course/:name/article`
+- GET `/article/course/:name`
 Returns all articles of a course
 
-- Post `course/:name/article`  
+- Post `/article/course/:name`  
 Creates a new article of a course
 
-- GET `course/:name/article/:_id`  
+- GET `/article/:_id`  
 Returns a specific article of a courses by aID
 
-- PUT `course/:name/article/:_id`  
+- PUT `/article/:_id`  
 Updates a specific article of a course by aID
 
-- DELETE `course/:name/article/:_id`  
+- DELETE `/article/:_id`  
 Deletes a specific article of a course by aID
 
 ## Group
 
-- GET `/user/:email/group`  
+<!--
+- GET `/group/user/:email`  
 Returns all groups of a user
-
-- GET `/course/:name/group`  
+-->
+- GET `/group/course/:name`  
 Returns all groups of a course
 
-- Post `course/:name/group`  
+- Post `/group/course/:name`  
 Creates a new goupe
 
-- GET `/course/:name/group/:_id`
+- GET `/group/:_id`
 Returns a specific group from a specific courses by id
 
-- PUT `/course/group/:_id`  
+- PUT `/group/:_id`  
 Updates a specific group from a specific course by id
 
-- DELETE `/course/group/:_id`  
+- DELETE `/group/:_id`  
 Deletes a specific group from a specific course by id
 
 #DataObjects: 
