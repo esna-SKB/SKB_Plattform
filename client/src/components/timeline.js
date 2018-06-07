@@ -11,7 +11,25 @@ import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper';
 
 class Timeline extends Component {
 
+	componentDidMount(){
+		  //Checks if there is an active UserSession
+   /* fetch('/userSession/check', {
 
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify( { token: cookie.load('userID') } )
+    }).then (res => {
+      
+      if(res.status == 500){
+
+
+        this.props.history.push("/");
+      }else{
+        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
+        
+      }
+    });*/
+	}
 
 
   // logout() {
@@ -45,23 +63,7 @@ class Timeline extends Component {
 
   render() {
 
-    //Checks if there is an active UserSession
-    fetch('/userSession/check', {
-
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify( { token: cookie.load('userID') } )
-    }).then (res => {
-      
-      if(res.status == 500){
-
-
-        this.props.history.push("/");
-      }else{
-        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
-        
-      }
-    });
+  
 
     return (
       <div>

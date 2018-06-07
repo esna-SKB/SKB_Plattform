@@ -89,7 +89,7 @@ router.route('/newtoken').post((req, res, next) =>{
 			console.log("No User Session found");
 			res.status(500).send({
 				success: false,
-				message: 'No User Session found)'
+				message: 'No User Session found'
 			});
 		} else {
 			var d = new Date();
@@ -152,11 +152,36 @@ router.route('/:emailtoken').get((req, res, next) =>{
 	})
 });
 
+//get current email (just available for X sec after generation of new token)
+router.route('/email/:token').get((req, res, next) =>{
+	var email = req.params.token;
+
+	console.log(email);
+
+	UserSession.findOne({userId: email}, function(err, usersession){
+		if(err){
+			console.log('error occured in database');
+			return res.send('error occured in database')
+		}		
+
+		console.log(usersession);
+		if(!usersession){
+			console.log("No User Session found");
+			return res.send('No User Session found')
+		} else {
+			console.log('email'+usersession.email;
+			return res.send(usersession.email);
+		}
+	})
+});
+
+
+
 
 //delete Session
 router.route('/deleteSession').post((req, res, next) =>{
 	const { body } = req;
-	const { email } = email;
+	const { email } = body;
 
 	console.log(email);
 

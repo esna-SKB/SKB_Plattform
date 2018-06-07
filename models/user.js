@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
-
   firstname: {
     type: String,
     default: ''
@@ -30,10 +29,30 @@ const UserSchema = new mongoose.Schema({
   isVerified: {
     type: Boolean,
     default: false
-  },
+  }, 
   isValide: {
-    type: Boolean,
+    type: Boolean, 
     default: false
+  },
+   description: {
+    type: String,
+    default: ''
+  },
+  iCan: {
+    type: String,
+    default: ''
+  },
+  iLearn: {
+    type: String,
+    default: ''
+  },
+  iTeach: {
+    type: String,
+    default: ''
+  },
+  website: {
+    type: String,
+    default: ''
   }
 });
 UserSchema.methods.generateHash = function(password) {
