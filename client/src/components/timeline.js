@@ -60,8 +60,9 @@ class Timeline extends Component {
 
         this.props.history.push("/");
       }else{
-        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})
-
+        
+        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(600*20), path: '/'})
+        
       }
     });
 
@@ -103,59 +104,82 @@ class Timeline extends Component {
         </div>
       </nav>
 
-      <div className="background-fluid">
-        <ul class="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
-            <li class = "nav-item">
-                <a class="nav-link active" id="lehrer-tab" data-toggle="tab" href="#lehrer" role="tab" aria-controls="lehrer" aria-selected="true">Lehrer</a>
+      <div className="background-fluid background">
+        <ul className="nav nav-tabs justify-content-center col-12 centered" id="mytabs" role="tablist">
+            <li className= "nav-item">
+                <a className="tab-title nav-link active" id="timeline-tab" data-toggle="tab" href="#timeline" role="tab" aria-controls="timeline" aria-selected="true">Timeline</a>
             </li>
 
 
-            <li class="nav-item">
-                <a class="nav-link" id="kurse-tab" data-toggle="tab" href="#kurse" role="tab" aria-controls="kurse" aria-selected="false">Kurse</a>
+            
+            <li className="nav-item">
+                <a className="tab-title nav-link" id="kurse-tab" data-toggle="tab" href="#kurse" role="tab" aria-controls="kurse" aria-selected="false">Kurse</a>
             </li>
-
-
-            <li class="nav-item">
-                <a class="nav-link" id="gruppen-tab" data-toggle="tab" href="#gruppen" role="tab" aria-controls="gruppen" aria-selected="false">Gruppen</a>
+            
+            
+            <li className="nav-item">
+                <a className="tab-title nav-link" id="gruppen-tab" data-toggle="tab" href="#gruppen" role="tab" aria-controls="gruppen" aria-selected="false">Gruppen</a>
             </li>
+            
 
-
-            <li class="nav-item">
-                <a class="nav-link" id="kalendar-tab" data-toggle="tab" href="#kalendar" role="tab" aria-controls="kalendar" aria-selected="false">Kalendar</a>
-            </li>
           </ul>
       </div>
 
       <div className="container-fluid">
 
-      <div className="background row">
+      <div className="cols background row">
 
-        <div className="col col-sm-3">
+        <div className="col-md-3">
+          
           <div className="row">
-            <div className="box col-sm-12 text-center">
+            <div className="box col-12 text-center">
             <strong>SKB User</strong>
             </div>
           </div>
+          
           <div className="row">
-            <div className="box col-md-6 text-center">
+            <div className="box col-sm-6 text-center">
               <strong>2</strong><br /><small className="text-muted">Kurse</small>
             </div>
-            <div className="box col-md-6 text-center">
+            <div className="box col-sm-6 text-center">
               <strong>5</strong><br /><small className="text-muted">Gruppen</small>
             </div>
           </div>
 
+          <div className="row">
+            <div className="box course-box col-12">
+              <div className="box-title">
+                Meine Kurse
+              </div>
+        
+              <div className="courses">
+                <a className="course-name" href="/course"> Französisch A2.1 </a>
+                <a className="course-name" href="/course"> Italienisch A1.1 </a>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+        <div className="col-md-3 order-md-last">
+            
+          <div className="row">
+            
+            <div className="box col-12">
+              <div className="box-title">
+                Kurs Leitern Kontaktieren
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="col col-sm-6">
 
 
-
-
-          <div class="tab-content col-offset-6 centered" id="tab-content">
-
-              <div class="tab-pane fade show active" id="lehrer" role="tabpanel" aria-labelledby="lehrer-tab">
-                  <h3> Lehrer </h3>
+        <div className="col-md-6">
+          <div className="tab-content" id="tab-content">
+              <div className="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
+                <div className="box">
+                <h3> Timeline </h3>
 
                   <p>
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
@@ -169,10 +193,11 @@ class Timeline extends Component {
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                   </p>
-
+                  </div>
               </div>
 
-              <div class="tab-pane fade" id="kurse" role="tabpanel" aria-labelledby="kurse-tab">
+              <div className="tab-pane fade" id="kurse" role="tabpanel" aria-labelledby="kurse-tab">
+                  <div className="box">
                   <h3> Kurse </h3>
 
                   <p>
@@ -188,11 +213,14 @@ class Timeline extends Component {
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                   </p>
-
+                </div>
               </div>
 
 
-              <div class="tab-pane fade" id="gruppen" role="tabpanel" aria-labelledby="gruppen-tab">
+        
+              <div className="tab-pane fade" id="gruppen" role="tabpanel" aria-labelledby="gruppen-tab">
+                  <div className="box">
+
                   <h3> Gruppen </h3>
 
                   <p>
@@ -208,41 +236,12 @@ class Timeline extends Component {
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                   </p>
-
+                </div>
               </div>
-
-
-              <div class="tab-pane fade" id="kalendar" role="tabpanel" aria-labelledby="kalendar-tab">
-                  <h3> Kalendar </h3>
-
-                  <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                  </p>
-              </div>
-
           </div>
         </div>
 
-        <div className="col col-sm-3">
-            <div className="row">
-            <div className="box col-sm-12">
-              <h6>Kurs Leitern Kontaktieren</h6>
-
-
-            </div>
-          </div>
-        </div>
-
+        
       </div>
 
       </div>
