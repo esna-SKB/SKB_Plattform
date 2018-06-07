@@ -1,0 +1,45 @@
+/**i have not used menu-item, but it was there so i dont wanna delete it just yet*/
+.menu-item a {
+  display: block;
+  padding: 15px 30px;
+  text-align: center;
+  color: black;
+}
+
+.menu-item a:hover {
+    background-color: #324860;
+    color: white;
+}
+
+html, body{
+  width:100%;
+  height:100%;
+  background-color: #F7F8FA;
+}
+
+
+.col{
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+.description{
+	padding-top:15px;		
+}
+
+.lineup{
+		border-top: 1px solid #E0E0E0;
+		margin-top: 0px;
+}
+.title{
+		margin-bottom: 0px;
+}
+
+.newpart{
+	margin-top: 15px; 	
+}
+
+.edit{
+	margin-top:10px;	
+	margin-bottom:0px;
+}

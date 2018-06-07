@@ -227,7 +227,7 @@ class Signup extends Component {
 
           <p className = "errorMessage">{this.state.errorMessage}</p>
 
-          <div className="center namefield">
+          <div className="namefield">
             <input id="firstName" className="input_login firstname" type="text" placeholder="Vorname" name="vorname" value={signUpFirstName}  onChange={this.onTextboxChangeSignUpFirstName}/>
             <input id="lastName" className="input_login lastname" type="text" placeholder="Nachname" name="nachname" value={signUpLastName}  onChange={this.onTextboxChangeSignUpLastName}/><br />
           </div>

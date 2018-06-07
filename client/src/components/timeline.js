@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Logo from'../img/esna.png';
 import Bell from'../img/bell-icon.png';
 import Chat from'../img/chat-icon.png';
+import Meow from'../img/meow.png';
 import '../css/timeline.css';
 
 import cookie from 'react-cookies';
@@ -132,9 +133,10 @@ class Timeline extends Component {
         <div className="col-md-3">
           
           <div className="row">
-            <div className="box col-12 text-center">
-            <strong>SKB User</strong>
-            </div>
+            <a className="box col-12 text-center" href="/profile">
+				<div className="profilepicleft fill" ><img src={Meow} alt="meow" ></img></div>
+				<p></p><p><strong id="YourName01">SKB User</strong></p>
+            </a>
           </div>
           
           <div className="row">
