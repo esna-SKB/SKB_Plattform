@@ -6,7 +6,7 @@ import Chat from'../img/chat-icon.png';
 import '../css/timeline.css';
 
 import cookie from 'react-cookies';
-import { checkUserSession, updateTimeSec, deleteUserSession } from '../utils/userSessionHelper'; 
+import { checkUserSession, updateTimeSec, deleteUserSession } from '../utils/userSessionHelper';
 
 
 class Timeline extends Component {
@@ -54,12 +54,13 @@ class Timeline extends Component {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify( { token: cookie.load('userID') } )
     }).then (res => {
-      
+
       if(res.status == 500 || res.status == 202){
 
 
         this.props.history.push("/");
       }else{
+        
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(600*20), path: '/'})
         
       }
@@ -71,7 +72,7 @@ class Timeline extends Component {
         <div className="container-fluid">
           <div className="navbar-header">
             <a className="navbar-brand" href="/"><img id="logo" className="logo" src={Logo} alt="Logo"/></a>
-            
+
           </div>
 
           <form className="navbar-form navbar-center" action="/search">
@@ -109,6 +110,7 @@ class Timeline extends Component {
                 <a className="tab-title nav-link active" id="timeline-tab" data-toggle="tab" href="#timeline" role="tab" aria-controls="timeline" aria-selected="true">Timeline</a>
             </li>
 
+
             
             <li className="nav-item">
                 <a className="tab-title nav-link" id="kurse-tab" data-toggle="tab" href="#kurse" role="tab" aria-controls="kurse" aria-selected="false">Kurse</a>
@@ -119,6 +121,7 @@ class Timeline extends Component {
                 <a className="tab-title nav-link" id="gruppen-tab" data-toggle="tab" href="#gruppen" role="tab" aria-controls="gruppen" aria-selected="false">Gruppen</a>
             </li>
             
+
           </ul>
       </div>
 
@@ -171,6 +174,7 @@ class Timeline extends Component {
         </div>
 
 
+
         <div className="col-md-6">
           <div className="tab-content" id="tab-content">
               <div className="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
@@ -202,7 +206,7 @@ class Timeline extends Component {
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-              
+
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
@@ -212,9 +216,11 @@ class Timeline extends Component {
                 </div>
               </div>
 
+
         
               <div className="tab-pane fade" id="gruppen" role="tabpanel" aria-labelledby="gruppen-tab">
                   <div className="box">
+
                   <h3> Gruppen </h3>
 
                   <p>
@@ -223,7 +229,7 @@ class Timeline extends Component {
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                
+
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
@@ -239,7 +245,7 @@ class Timeline extends Component {
       </div>
 
       </div>
-      
+
       </div>
     );
   }

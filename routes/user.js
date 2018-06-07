@@ -74,25 +74,25 @@ router.route('/:email')
 
 		User.deleteOne({email: email}, function(err, affected){
 			if (err) {
-				return res.status(500).send({success : false, message : "user could no be deleted, error accured while update"});
+				return res.status(500).send({success : false, message : "user could no be deleted, error occured while update"});
 			} else if(affected.n == 0){
-				return res.status(404).send({success : true, message : "user to delete counld not be found"});
+				return res.status(404).send({success : true, message : "user to delete could not be found"});
 			} else {
-				return res.status(200).send({success : true, message : "course is deleted"})
+				return res.status(200).send({success : true, message : "user is deleted"})
 			}
 		})
 	})
 
 router.route('/:email/course')
 	.get((req, res, next) => {
-		var email = req.params.email; 
+		var email = req.params.email;
 		User.findOne({email: email},{},function(err, user){
 			if (err) return res.status(500).send('error occured in the database');
 			else if (user == null) return res.status(401).send('user not fount');
 	       	else {
 	       		Enrollment.find({user:user._id}).populate('course').exec(function(err, enroll){
 	       			if(err) return res.status(500).send('error occured in the database');
-	       			else return res.status(200).send(enroll.map(c => c.course)); 
+	       			else return res.status(200).send(enroll.map(c => c.course));
 	       		})
 	       	}
 		})

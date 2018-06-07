@@ -32,7 +32,7 @@ router.route('/course/:name')
 		const { headline } = body;
 		const { author } = body;
 		const { text } = body;
-		const { created_at } = body;
+		const { created_at } = body; //könnte auch automatisch gespeichert werden
 		console.log(course, author); 
 
 		Course.findOne({name: course}).exec(function(err, courseE){

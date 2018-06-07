@@ -6,6 +6,8 @@ import Logo from'../img/esna.png';
 
 import Classimg from'../img/nathan-dumlao-572049-unsplash.jpg';
 
+const api = require('../api');
+
 class ForgotPassword extends Component {
 
   constructor(props) {
@@ -45,15 +47,7 @@ class ForgotPassword extends Component {
       return;
     }
     // Post request to backend
-    fetch('/account/forgotPassword', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: requestEmail.value
-      }),
-    }).then(res => res.json())
+    api.forgotPassword(requestEmail)
       .then(json => {
         console.log('json', json);
         if (json.success === true) {
@@ -65,6 +59,7 @@ class ForgotPassword extends Component {
         }
       });
     }
+
 
   render() {
 
