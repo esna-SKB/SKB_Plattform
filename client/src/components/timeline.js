@@ -94,7 +94,7 @@ class Timeline extends Component {
               </button>
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="#">Mein Profil</a>
-                <a class="dropdown-item" href="#">Bearbeiten?</a>
+                <a class="dropdown-item" href="/settings">Einstellungen</a>
                 <a class="dropdown-item" href="#">Something else here</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
