@@ -6,7 +6,7 @@ import Chat from'../img/chat-icon.png';
 import '../css/timeline.css';
 
 import cookie from 'react-cookies';
-import { checkUserSession, updateTimeSec, deleteUserSession } from '../utils/userSessionHelper'; 
+import { checkUserSession, updateTimeSec, deleteUserSession } from '../utils/userSessionHelper';
 
 
 class Timeline extends Component {
@@ -54,14 +54,14 @@ class Timeline extends Component {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify( { token: cookie.load('userID') } )
     }).then (res => {
-      
+
       if(res.status == 500 || res.status == 202){
 
 
         this.props.history.push("/");
       }else{
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})
-        
+
       }
     });
 
@@ -71,7 +71,7 @@ class Timeline extends Component {
         <div className="container-fluid">
           <div className="navbar-header">
             <a className="navbar-brand" href="/"><img id="logo" className="logo" src={Logo} alt="Logo"/></a>
-            
+
           </div>
 
           <form className="navbar-form navbar-center" action="/search">
@@ -109,16 +109,16 @@ class Timeline extends Component {
                 <a class="nav-link active" id="lehrer-tab" data-toggle="tab" href="#lehrer" role="tab" aria-controls="lehrer" aria-selected="true">Lehrer</a>
             </li>
 
-            
+
             <li class="nav-item">
                 <a class="nav-link" id="kurse-tab" data-toggle="tab" href="#kurse" role="tab" aria-controls="kurse" aria-selected="false">Kurse</a>
             </li>
-            
-            
+
+
             <li class="nav-item">
                 <a class="nav-link" id="gruppen-tab" data-toggle="tab" href="#gruppen" role="tab" aria-controls="gruppen" aria-selected="false">Gruppen</a>
             </li>
-            
+
 
             <li class="nav-item">
                 <a class="nav-link" id="kalendar-tab" data-toggle="tab" href="#kalendar" role="tab" aria-controls="kalendar" aria-selected="false">Kalendar</a>
@@ -148,9 +148,9 @@ class Timeline extends Component {
         </div>
 
         <div className="col col-sm-6">
-          
-          
-        
+
+
+
 
           <div class="tab-content col-offset-6 centered" id="tab-content">
 
@@ -181,7 +181,7 @@ class Timeline extends Component {
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-              
+
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
@@ -191,7 +191,7 @@ class Timeline extends Component {
 
               </div>
 
-        
+
               <div class="tab-pane fade" id="gruppen" role="tabpanel" aria-labelledby="gruppen-tab">
                   <h3> Gruppen </h3>
 
@@ -201,7 +201,7 @@ class Timeline extends Component {
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                
+
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
@@ -211,7 +211,7 @@ class Timeline extends Component {
 
               </div>
 
-          
+
               <div class="tab-pane fade" id="kalendar" role="tabpanel" aria-labelledby="kalendar-tab">
                   <h3> Kalendar </h3>
 
@@ -221,7 +221,7 @@ class Timeline extends Component {
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                
+
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
@@ -246,7 +246,7 @@ class Timeline extends Component {
       </div>
 
       </div>
-      
+
       </div>
     );
   }

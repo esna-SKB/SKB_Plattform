@@ -6,6 +6,8 @@ import Logo from'../img/esna.png';
 
 import Classimg from'../img/nathan-dumlao-572049-unsplash.jpg';
 
+const api = require('../api');
+
 class SendRegistrationAgain extends Component {
 
   constructor(props) {
@@ -45,15 +47,7 @@ class SendRegistrationAgain extends Component {
       return;
     }
     // Post request to backend
-    fetch('/account/registration/resend', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: requestEmail.value
-      }),
-    }).then(res => res.json())
+    api.resendRegistration(requestEmail)
       .then(json => {
         console.log('json', json);
         if (json.success === true) {
