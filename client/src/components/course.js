@@ -111,8 +111,6 @@ class Course extends Component {
         </div>
       </div>
 
-
-
       <div className="background container-fluid row">
 
         <div className="col col-sm-9" style={{paddingRight: '0', paddingLeft: '15px'}}>
