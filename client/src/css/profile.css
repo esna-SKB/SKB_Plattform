@@ -43,3 +43,8 @@ html, body{
 	margin-top:10px;	
 	margin-bottom:0px;
 }
+
+#trueOffer{
+		border-bottom:1px solid #E0E0E0;
+		padding-top: 35px;	
+}

@@ -10,7 +10,7 @@ import '../css/profilepicture.css';
 import Meow from'../img/meow.png';
 
 import cookie from 'react-cookies';
-import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper'; 
+import { checkUserSession, updateTimeSec, deleteUserSession} from '../utils/userSessionHelper'; 
 
 const api = require('../api');
 
@@ -37,6 +37,10 @@ class Profile extends Component {
 	
 	}
 	
+	logout(){
+		deleteUserSession(cookie.load('userID'));
+		this.props.history.push("/");
+	}
 	
 	componentDidMount(){
 		//get email
@@ -51,88 +55,105 @@ class Profile extends Component {
 
 		}).then(res => res.json())
           .then(json => {
-            //console.log(jsonnn.token);
+            //set email in html
             email = json.userId;
+			document.getElementById("email").innerHTML = email;
+			document.getElementById("email").setAttribute("href","to:"+ email);
 			
 			console.log("response is: "+ json);
 			console.log("your email is: " + email);
           });
 		  
 		
-	
 		
-		//test state
-		var	firstname ="Margetha";
-		var	lastname = "Hennes";
-		var	isTeacher= false;
-		var	isAdmin= false;
-		var	description = "This is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is me";
-		var	iCan= "Französisch(B2),Deutsch";
-		var	iLearn="Spanisch";
-		var	iTeach="";
-		var	website="http://esna.de";
-		//var	email= "magii.el@hotmail.de";
-		var countCourses = 4;
-		var countGroups = 3;
-
 		
-		//get rest
-		console.log("json," + api.getUser(email));
+		//get rest : funktioniert net fur mich ...vllt hab ich da was falsch implementiert
+		/*fetch('user/' + email, {
+		  method: 'GET',
+		  headers: {
+			'Content-Type': 'application/json',
+		  }
 
+		}).then(res => res.json())
+          .then(json => {
 			//set information in html
-			document.getElementById("YourName01").innerHTML = firstname+" "+lastname;
-			document.getElementById("YourName02").innerHTML = firstname+" "+lastname;
-			document.getElementById("countCourses").innerHTML = countCourses;
-			document.getElementById("countGroups").innerHTML = countGroups;
-			document.getElementById("countCourses2").innerHTML = countCourses;
-			document.getElementById("countGroups2").innerHTML = countGroups;
-			document.getElementById("description").innerHTML = description;
-			document.getElementById("iCan").innerHTML = iCan;
-			document.getElementById("iLearn").innerHTML = iLearn;
-			document.getElementById("email").innerHTML = email;
-			document.getElementById("email").setAttribute("href","to:"+ email);
-			document.getElementById("website").innerHTML = website;
-			document.getElementById("website").setAttribute("href", website);
+				document.getElementById("YourName01").innerHTML = json.firstname+" "+json.lastname;
+				document.getElementById("YourName02").innerHTML = json.firstname+" "+json.lastname;
+				document.getElementById("btnUsername").innerHTML = json.firstname+" "+json.lastname;
+				document.getElementById("countCourses").innerHTML = json.countCourses;
+				document.getElementById("countGroups").innerHTML = json.countGroups;
+				document.getElementById("countCourses2").innerHTML = json.countCourses;
+				document.getElementById("countGroups2").innerHTML = json.countGroups;
+				document.getElementById("description").innerHTML = json.description;
+				document.getElementById("iCan").innerHTML = json.iCan;
+				document.getElementById("iLearn").innerHTML = json.iLearn;
+				document.getElementById("iTeach").innerHTML = json.iTeach;
+				document.getElementById("website").innerHTML = json.website;
+				document.getElementById("website").setAttribute("href",json.website);
 
-			//isadmin abfangen
+				
+				console.log("response is: "+ json);
+          });*/
+		  
+		  
+			//TEST :set information in html
+				//test state
+				var	firstname ="Margetha";
+				var	lastname = "Hennes";
+				var	isTeacher= true;
+				var	isAdmin= false;
+				var	description = "This is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is me";
+				var	iCan= "Französisch(B2),Deutsch";
+				var	iLearn="Spanisch";
+				var	iTeach="Das was man im Leben wissen sollte, Animegeschichte";
+				var	website="http://esna.de";
+				var countCourses = 4;
+				var countGroups = 3;
+
+				document.getElementById("YourName01").innerHTML = firstname+" "+lastname;
+				document.getElementById("YourName02").innerHTML = firstname+" "+lastname;
+				document.getElementById("btnUsername").innerHTML = firstname+" "+lastname;
+				document.getElementById("countCourses").innerHTML = countCourses;
+				document.getElementById("countGroups").innerHTML = countGroups;
+				document.getElementById("countCourses2").innerHTML = countCourses;
+				document.getElementById("countGroups2").innerHTML = countGroups;
+				document.getElementById("description").innerHTML = description;
+				document.getElementById("iCan").innerHTML = iCan;
+				document.getElementById("iLearn").innerHTML = iLearn;
+				document.getElementById("iTeach").innerHTML = iTeach;
+				document.getElementById("website").innerHTML = website;
+				document.getElementById("website").setAttribute("href",website);
+			
+			//isadmin abfangen?
 			if(isTeacher){
 				document.getElementById("role").innerHTML = "Lehrer_in";
+				
 				//ican/ilearn mit iteach und freie Kurse austauschen
+				document.getElementById("trueLearn").style.display = 'none';
+				document.getElementById("iLearn").style.display = 'none';
+				document.getElementById("trueCan").style.display = 'none';
+				document.getElementById("iCan").style.display = 'none';
+				document.getElementById("trueTeach").style.display = 'block';
+				document.getElementById("iTeach").style.display = 'block';
+				document.getElementById("trueOffer").style.display = 'block';
+				
+				
 			}else{
 				document.getElementById("role").innerHTML = "Student_in";
 	
+				// iteach/freie Kurse mit ican und ilearn austauschen
+				document.getElementById("trueLearn").style.display = 'block';
+				document.getElementById("iLearn").style.display = 'block';
+				document.getElementById("trueCan").style.display = 'block';
+				document.getElementById("iCan").style.display = 'block';
+				document.getElementById("trueTeach").style.display = 'none';
+				document.getElementById("iTeach").style.display = 'none';
+				document.getElementById("trueOffer").style.display = 'none';
+
 			}
       }
 
 
-  // logout() {
-  //   this.setState({
-  //     isLoading: true,
-  //   });
-  //   const obj = getFromStorage('the_main_app');
-  //   if (obj && obj.token) {
-  //     const { token } = obj;
-  //     // Verify token
-  //     fetch('/api/account/logout?token=' + token)
-  //       .then(res => res.json())
-  //       .then(json => {
-  //         if (json.success) {
-  //           this.setState({
-  //             token: '',
-  //             isLoading: false
-  //           });
-  //         } else {
-  //           this.setState({
-  //             isLoading: false,
-  //           });
-  //         }
-  //       });
-  //   } else {
-  //     this.setState({
-  //       isLoading: false,
-  //     });
-  //   }
-  // }
 
   render() {
 
@@ -145,8 +166,6 @@ class Profile extends Component {
     }).then (res => {
       
       if(res.status === 500){
-
-
         this.props.history.push("/");
       }else{
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
@@ -174,6 +193,17 @@ class Profile extends Component {
           <ul className="nav navbar-nav navbar-right">
             <li><a href="#"><img id="chat" className="icon" src={Chat} alt="Chat"/></a></li>
             <li><a href="#"><img id="notifications" className="icon" src={Bell} alt="Bell"/></a></li>
+			<div class="btn-group">
+              <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="btnUsername">
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Mein Profil</a>
+                <a class="dropdown-item" href="#">Bearbeiten?</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
+              </div>
+            </div>
           </ul>
 
         </div>
@@ -265,14 +295,16 @@ class Profile extends Component {
 					<div className="col-sm-12">
 						<div className="col">
 							<div className="row  text-muted">
-								<div className="col-4">ich kann:</div>
+								<div className="col-4" id="trueCan">ich kann:</div>
 								<div className="col-8" id="iCan"></div>
+								<div className="col-4" id="trueTeach">ich bringe bei:</div>
+								<div className="col-8" id="iTeach"></div>
 							</div>
-							<div className="row "><p></p></div>
-							<div className="row lineup"><p></p></div>
-							<div className="row text-muted ">
-								<div className="col-4">ich lerne:</div>
-								<div className="col-8" id="iLearn"></div>
+							
+							<div className="row  ">
+								<div className="col-4 text-muted" id="trueLearn">ich lerne:</div>
+								<div className="col-8 text-muted" id="iLearn"></div>
+								<div className="col-12" id="trueOffer"><strong>mein kostenloses Angebot:</strong></div>
 							</div>
 						</div>
 					</div>
