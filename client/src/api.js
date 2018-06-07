@@ -68,7 +68,7 @@ deleteUser: function(email){
  * returns a list of all courses
 */
   getAllCourses: function(){
-    return fetch('/user/course', {
+    return fetch('/course', {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -133,11 +133,11 @@ deleteUser: function(email){
     .then(res => res.json())
   },
   /*
-   * PUT /course/:name
+   * PUT /course/:courseName
    * updates a course object
   */
   updateCourse: function(courseName, newCourseName, teacherEmail, description){
-    return fetch('/account/signup', {
+    return fetch('/course/'+courseName, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -162,11 +162,36 @@ deleteUser: function(email){
     .then(res => res.json())
   },
 
+//ENROLLMENT
+  /*
+   * POST enrollment/user/:email/course/:coursename
+   * enrolls an user in a course
+  */
+  enrollUser: function(email, coursename){
+    return fetch('/enrollment/user/'+email+'/course/'+coursename, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(res => res.json())
+  },
+  /*
+   * DELETE /enrollment/user/:email/course/:coursename
+   * enrolls an user in a course
+  */
+  unenrollUser: function(email, coursename){
+    return fetch('/enrollment/user/'+email+'/course/'+coursename, {
+      method: 'DELETE'
+    })
+    .then(res => res.json())
+  },
 //ARTICLES
 
 /*
  * GET /article/course/:courseName
- * returns a list of all articles of a courses
+ * returns a list of all articles of a course
 */
   getAllArticlesOfCourse: function(courseName){
     return fetch('/article/course/'+courseName, {
@@ -217,9 +242,164 @@ deleteUser: function(email){
    * deletes an article object
   */
   getCourse: function(articleId){
-    return fetch('/course' + articleId, {
+    return fetch('/article' + articleId, {
       method: 'DELETE',
       })
+    .then(res => res.json())
+  },
+
+//GROUPS
+/*
+ * GET /groups/course/:courseName
+ * returns a list of all groups of a course
+*/
+  getAllGroupsOfCourse: function(courseName){
+    return fetch('/group/course/' + courseName, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+
+/*
+ * POST /groups/course/:courseName
+ * creates a new course object
+*/
+  createGroup: function(courseName, groupName, members, description){
+    return fetch('/group/course/' + courseName, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        name: groupName,
+        members: members,
+        course: courseName,
+        description: description,
+      }),
+    })
+    .then(res => res.json())
+  },
+/*
+ * GET /groups/:groupId
+ * returns a course object
+*/
+  getGroup: function(groupId){
+    return fetch('/group/' + groupId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+/*
+ * PUT /groups/:groupId
+ * updates a course object
+*/
+  updateGroup: function(groupId, groupName, members, description){
+    return fetch('/group/'+ groupId, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        name: groupName,
+        members: members,
+        description: description,
+      }),
+    })
+    .then(res => res.json())
+  },
+/*
+ * GET /groups/:groupId
+ * deletes a course object
+*/
+  deleteGroup: function(groupId){
+    return fetch('/group/' + groupId, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+
+//MESSAGES
+/*
+ * GET /messages
+ * returns a list of all messages
+*/
+  getAllMessages: function(){
+    return fetch('/message', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+/*
+* POST /message
+* creates a new message object
+*/
+createMessage: function(fromUser, toUser, text){
+return fetch('/message', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  },
+  body: JSON.stringify({
+    fromUser: fromUser,
+    toUser: toUser,
+    text: text
+  }),
+})
+.then(res => res.json())
+},
+/*
+ * GET /message/from/:fromUser/to/:toUser'
+ * returns a list of all messages between two users
+*/
+  getConversation: function(fromUser, toUser){
+    return fetch('/message/from/'+fromUser+'/to/'+toUser, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+/*
+ * DELETE /message/from/:fromUser/to/:toUser'
+ * returns a list of all messages between two users
+*/
+  deleteConversation: function(fromUser, toUser){
+    return fetch('/message/from/'+fromUser+'/to/'+toUser, {
+      method: 'DELETE',
+    })
+    .then(res => res.json())
+  },
+/*
+ * GET /message/:messageId'
+ * returns a message object
+*/
+  getMessage: function(messageId){
+    return fetch('/message/'+ messageId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+/*
+ * DELETE /message/:messageId
+ * deletes a message object
+*/
+  deleteMessage: function(messageId){
+    return fetch('/message/'+ messageId, {
+      method: 'DELETE',
+    })
     .then(res => res.json())
   },
 
@@ -228,14 +408,14 @@ deleteUser: function(email){
  * GET /user/:email/course/article
  * returns a list of all articles of a user (for the timeline)
 */
-getTimelineArticles: function(email){
-  return fetch('/user' + email + '/course/article', {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json'
-    }})
-  .then(res => res.json())
-},
+  getTimelineArticles: function(email){
+    return fetch('/user' + email + '/course/article', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
 //ACCOUNT
 /*
  * POST /account/signup
