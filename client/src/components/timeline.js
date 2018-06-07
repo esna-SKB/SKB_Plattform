@@ -4,6 +4,7 @@ import Logo from'../img/esna.png';
 import Bell from'../img/bell-icon.png';
 import Chat from'../img/chat-icon.png';
 import '../css/timeline.css';
+import AllCourses from './allCourses';
 
 import cookie from 'react-cookies';
 import { checkUserSession, updateTimeSec, deleteUserSession } from '../utils/userSessionHelper'; 
@@ -11,6 +12,19 @@ import { checkUserSession, updateTimeSec, deleteUserSession } from '../utils/use
 
 class Timeline extends Component {
 
+  constructor(props){
+  super(props);
+  this.state = {
+    emailUser: null
+    }; 
+  }
+  componentDidMount() {
+    
+    this.setState({
+      emailUser: this.props.location.state.emailUser
+    });
+    console.log("TimeLine konw the email: "+ this.state.emailUser +" "+ this.props.location.state.emailUser); 
+  }
 
   logout(){
     deleteUserSession(cookie.load('userID'));
@@ -57,7 +71,6 @@ class Timeline extends Component {
       
       if(res.status == 500 || res.status == 202){
 
-
         this.props.history.push("/");
       }else{
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})
@@ -86,16 +99,16 @@ class Timeline extends Component {
           <ul className="nav navbar-nav navbar-right">
             <li><a href="#"><img id="chat" className="icon" src={Chat} alt="Chat"/></a></li>
             <li><a href="#"><img id="notifications" className="icon" src={Bell} alt="Bell"/></a></li>
-            <div class="btn-group">
-              <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Vorname Nachname
+            <div className="btn-group">
+              <button type="button" className="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {this.props.location.state.emailUser}
               </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Mein Profil</a>
-                <a class="dropdown-item" href="#">Bearbeiten?</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
+              <div className="dropdown-menu">
+                <a className="dropdown-item" href="#">Mein Profil</a>
+                <a className="dropdown-item" href="#">Bearbeiten?</a>
+                <a className="dropdown-item" href="#">Something else here</a>
+                <div className="dropdown-divider"></div>
+                <a className="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
               </div>
             </div>
           </ul>
@@ -104,24 +117,24 @@ class Timeline extends Component {
       </nav>
 
       <div className="background-fluid">
-        <ul class="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
-            <li class = "nav-item">
-                <a class="nav-link active" id="lehrer-tab" data-toggle="tab" href="#lehrer" role="tab" aria-controls="lehrer" aria-selected="true">Lehrer</a>
+        <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
+            <li className = "nav-item">
+                <a className="nav-link active" id="lehrer-tab" data-toggle="tab" href="#lehrer" role="tab" aria-controls="lehrer" aria-selected="true">Lehrer</a>
             </li>
 
             
-            <li class="nav-item">
-                <a class="nav-link" id="kurse-tab" data-toggle="tab" href="#kurse" role="tab" aria-controls="kurse" aria-selected="false">Kurse</a>
+            <li className="nav-item">
+                <a className="nav-link" id="kurse-tab" data-toggle="tab" href="#kurse" role="tab" aria-controls="kurse" aria-selected="false">Kurse</a>
             </li>
             
             
-            <li class="nav-item">
-                <a class="nav-link" id="gruppen-tab" data-toggle="tab" href="#gruppen" role="tab" aria-controls="gruppen" aria-selected="false">Gruppen</a>
+            <li className="nav-item">
+                <a className="nav-link" id="gruppen-tab" data-toggle="tab" href="#gruppen" role="tab" aria-controls="gruppen" aria-selected="false">Gruppen</a>
             </li>
             
 
-            <li class="nav-item">
-                <a class="nav-link" id="kalendar-tab" data-toggle="tab" href="#kalendar" role="tab" aria-controls="kalendar" aria-selected="false">Kalendar</a>
+            <li className="nav-item">
+                <a className="nav-link" id="kalendar-tab" data-toggle="tab" href="#kalendar" role="tab" aria-controls="kalendar" aria-selected="false">Kalendar</a>
             </li>
           </ul>
       </div>
@@ -152,9 +165,9 @@ class Timeline extends Component {
           
         
 
-          <div class="tab-content col-offset-6 centered" id="tab-content">
+          <div className="tab-content col-offset-6 centered" id="tab-content">
 
-              <div class="tab-pane fade show active" id="lehrer" role="tabpanel" aria-labelledby="lehrer-tab">
+              <div className="tab-pane fade show active" id="lehrer" role="tabpanel" aria-labelledby="lehrer-tab">
                   <h3> Lehrer </h3>
 
                   <p>
@@ -172,7 +185,8 @@ class Timeline extends Component {
 
               </div>
 
-              <div class="tab-pane fade" id="kurse" role="tabpanel" aria-labelledby="kurse-tab">
+              <div className="tab-pane fade" id="kurse" role="tabpanel" aria-labelledby="kurse-tab">
+                  <AllCourses myEmail={this.props.location.state.emailUser}/>
                   <h3> Kurse </h3>
 
                   <p>
@@ -192,7 +206,7 @@ class Timeline extends Component {
               </div>
 
         
-              <div class="tab-pane fade" id="gruppen" role="tabpanel" aria-labelledby="gruppen-tab">
+              <div className="tab-pane fade" id="gruppen" role="tabpanel" aria-labelledby="gruppen-tab">
                   <h3> Gruppen </h3>
 
                   <p>
@@ -212,7 +226,7 @@ class Timeline extends Component {
               </div>
 
           
-              <div class="tab-pane fade" id="kalendar" role="tabpanel" aria-labelledby="kalendar-tab">
+              <div className="tab-pane fade" id="kalendar" role="tabpanel" aria-labelledby="kalendar-tab">
                   <h3> Kalendar </h3>
 
                   <p>

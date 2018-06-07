@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Login from './components/login';
@@ -16,19 +16,17 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 
 ReactDOM.render(
-
   <BrowserRouter>
     <Switch>
-      <Route exact path='/' component={Login}/>
-      <Route path='/signup' component={Signup}/>
-      <Route path='/timeline' component={Timeline}/>
-      <Route path='/forgotPassword' component={ForgotPassword}/>
-      <Route path='/resetPassword' component={ResetPassword}/>
-      <Route path='/verify' component={VerifyRegistration}/>
-      <Route path='/resend' component={SendRegistrationAgain}/>
+        <Route exact path='/' component={Login}/>
+        <Route path='/signup' component={Signup}/>
+        <Route path='/timeline' component={Timeline}/>
+        <Route path='/forgotPassword' component={ForgotPassword}/>
+        <Route path='/resetPassword' component={ResetPassword}/>
+        <Route path='/verify' component={VerifyRegistration}/>
+        <Route path='/resend' component={SendRegistrationAgain}/>
       </Switch>
   </BrowserRouter>
-
   , document.getElementById('root'));
 
 

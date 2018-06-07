@@ -25,6 +25,8 @@ class Login extends Component {
 
     this.state = {
 
+      validEmail: '',
+
       token: '',
 
       signInError: '',
@@ -124,7 +126,7 @@ class Login extends Component {
 
       signInPassword,
 
-    } = this.state;
+    } = this.state; 
 
     // Post request to backend
 
@@ -148,6 +150,9 @@ class Login extends Component {
 
           setInStorage('login_token', { token: json.token });
           console.log("Email: "+signInEmail); 
+          this.setState({
+            validEmail : signInEmail
+          });
           //user registered & verified and correct password -> login successful
 
           
@@ -184,15 +189,12 @@ class Login extends Component {
 
             signInError: json.message,
 
-            signInPassword: '',
-
-            signInEmail: '',
-
             token: json.token,
 
           });
           //warte kurz weil cookie nicht so schnell speichert?
           //sleep(2000);
+          this.props.history.push({pathname:"/", state: {emailUser: signInEmail}});
           document.location.reload();
           //this.props.history.push("/timeline");
 
@@ -226,6 +228,8 @@ class Login extends Component {
 
     const {
 
+      validEmail,
+
       token,
 
       signInError,
@@ -248,7 +252,9 @@ class Login extends Component {
 
       if(res.status === 200){
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})
-        this.props.history.push("/timeline");
+        console.log("is this the email: "+validEmail);
+        //console.log(this.props.location.state.emailUser); 
+        this.props.history.push({pathname:"/timeline", state: {emailUser: (this.props.location.state==null ? "" : this.props.location.state.emailUser)}});
       }
     });
 
