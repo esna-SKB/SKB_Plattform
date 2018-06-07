@@ -4,6 +4,7 @@ import Logo from'../img/esna.png';
 import Bell from'../img/bell-icon.png';
 import Chat from'../img/chat-icon.png';
 import '../css/timeline.css';
+import Meow from'../img/meow.png';
 
 import cookie from 'react-cookies';
 import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper'; 
@@ -119,9 +120,10 @@ class Timeline extends Component {
 
         <div className="col col-sm-3">
           <div className="row">
-            <div className="box col-sm-12 text-center">
-            <strong>SKB User</strong>
-            </div>
+            <a className="box col text-center" href="/profile">
+			<div className="profilepicleft fill" ><img src={Meow} alt="meow" ></img></div>
+				<p></p><p><strong id="YourName01">SKB User</strong></p>
+            </a>
           </div>
           <div className="row">
             <div className="box col-md-6 text-center">

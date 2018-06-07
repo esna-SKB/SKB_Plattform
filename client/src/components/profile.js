@@ -114,7 +114,7 @@ class Profile extends Component {
 
 			//isadmin abfangen
 			if(isTeacher){
-				//rolle = Lehrer_in
+				document.getElementById("role").innerHTML = "Lehrer_in";
 				//ican/ilearn mit iteach und freie Kurse austauschen
 			}else{
 				document.getElementById("role").innerHTML = "Student_in";
@@ -225,10 +225,10 @@ class Profile extends Component {
 
         <div className="col col-sm-3">
           <div className="row">
-            <div className="box col text-center">
+            <a className="box col text-center" href="/profile">
 			<div className="profilepicleft fill" ><img src={Meow} alt="meow" ></img></div>
 				<p></p><p><strong id="YourName01"></strong></p>
-            </div>
+            </a>
           </div>
           <div className="row">
             <div className="box col-md-6 text-center">
