@@ -99,8 +99,8 @@ class Login extends Component {
       //email form validation
       if (signUpEmailValid.value.match(/^([\w.-]+)@([\w-]+\.)+([\w]{2,})$/i) == null){
         signUpEmailValid.style.color = 'red';
-
         signUpEmailValid.classList.add('errorshake');
+        document.getElementById("errorMessage").setAttribute("style", "margin-top:-43px;");
         setTimeout(function() {
           let signUpEmailValid = document.getElementById("email");
           signUpEmailValid.classList.remove("errorshake");
@@ -118,6 +118,7 @@ class Login extends Component {
       //password form validation
       if (signUpPasswordValid.value.length === 0){
 	    signUpPasswordValid.style.color = 'red';
+      document.getElementById("errorMessage").setAttribute("style", "margin-top:-43px;");
 
       signUpPasswordValid.classList.add('errorshake');
         setTimeout(function() {
@@ -282,7 +283,7 @@ class Login extends Component {
 
               <p className="loginheadline">Die Lernplattform für Lehrer und Studenten</p>
 
-              <p className = "errorMessage" dangerouslySetInnerHTML={{ __html: this.state.errorMessage }}></p>
+              <p className = "errorMessage" id="errorMessage" dangerouslySetInnerHTML={{ __html: this.state.errorMessage }}></p>
               <p className = "infoMessage">{this.state.infoMessage}</p>
 
 
