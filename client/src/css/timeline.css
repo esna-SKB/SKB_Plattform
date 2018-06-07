@@ -66,9 +66,9 @@ html, body{
     color: black;
     border: none;
     background-color: #F7F8FA;
-    padding-top: 10px;
+    padding-top: 12px;
     font-size: 20px;
-    border-bottom: 4px solid #07A7DA;
+    border-bottom: 2px solid #07A7DA;
 }
 
 .box-title{
@@ -79,7 +79,7 @@ html, body{
     font-size: 14px;
     font-weight: bold;
     text-align: center;
-    
+
 }
 
 .course-box{
@@ -114,7 +114,7 @@ html, body{
 .col-md-3, .col-md-6{
     padding-right: 25px;
     padding-left: 25px;
-    margin-top: 20px; 
+    margin-top: 20px;
     background-color: #F7F8FA;
 }
 

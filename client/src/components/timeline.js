@@ -17,10 +17,10 @@ class Timeline extends Component {
   super(props);
   this.state = {
     emailUser: null
-    }; 
+    };
   }
   componentDidMount() {
-    
+
     this.setState({
       emailUser: (this.props.location.state==null) ? "" : this.props.location.state.emailUser
     });
@@ -73,15 +73,15 @@ class Timeline extends Component {
 
         this.props.history.push("/");
       }else{
-        
+
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(600*20), path: '/'})
-        
+
       }
     });
 
     return (
-      <div>
-      <nav className="navbar navbar-expand-sm">
+    <div style={{backgroundColor: '#f7f8fa'}}>
+      <nav className="navbar navbar-expand-sm" style={{backgroundColor: 'white'}}>
         <div className="container-fluid">
           <div className="navbar-header">
             <a className="navbar-brand" href="/"><img id="logo" className="logo" src={Logo} alt="Logo"/></a>
@@ -125,13 +125,13 @@ class Timeline extends Component {
             </li>
 
 
-            
+
             <li className="nav-item">
 
                 <a className="tab-title nav-link" id="kurse-tab" data-toggle="tab" href="#kurse" role="tab" aria-controls="kurse" aria-selected="false">Kurse</a>
             </li>
-            
-            
+
+
             <li className="nav-item">
 
                 <a className="tab-title nav-link" id="gruppen-tab" data-toggle="tab" href="#gruppen" role="tab" aria-controls="gruppen" aria-selected="false">Gruppen</a>
@@ -144,14 +144,14 @@ class Timeline extends Component {
       <div className="cols background row">
 
         <div className="col-md-3">
-          
+
           <div className="row">
             <a className="box col-12 text-center" href="/profile">
 				<div className="profilepicleft fill" ><img src={Meow} alt="meow" ></img></div>
 				<p></p><p><strong id="YourName01">SKB User</strong></p>
             </a>
           </div>
-          
+
           <div className="row">
             <div className="box col-sm-6 text-center">
               <strong>2</strong><br /><small className="text-muted">Kurse</small>
@@ -166,20 +166,20 @@ class Timeline extends Component {
               <div className="box-title">
                 Meine Kurse
               </div>
-        
+
               <div className="courses">
                 <a className="course-name" href="/course"> Französisch A2.1 </a>
                 <a className="course-name" href="/course"> Italienisch A1.1 </a>
               </div>
             </div>
           </div>
-          
+
         </div>
-        
+
         <div className="col-md-3 order-md-last">
-            
+
           <div className="row">
-            
+
             <div className="box col-12">
               <div className="box-title">
                 Kurs Leitern Kontaktieren
@@ -213,7 +213,7 @@ class Timeline extends Component {
               <div className="tab-pane fade" id="kurse" role="tabpanel" aria-labelledby="kurse-tab">
                   <div className="box">
                   <AllCourses myEmail={(this.props.location.state==null) ? "" : this.props.location.state.emailUser}/>
-                  
+
                   <h3> Kurse </h3>
 
                   <p>
@@ -233,7 +233,7 @@ class Timeline extends Component {
               </div>
 
 
-        
+
               <div className="tab-pane fade" id="gruppen" role="tabpanel" aria-labelledby="gruppen-tab">
 
                   <div className="box">
@@ -260,7 +260,7 @@ class Timeline extends Component {
           </div>
         </div>
 
-        
+
       </div>
 
       </div>
