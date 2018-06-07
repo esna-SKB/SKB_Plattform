@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Logo from'../img/esna.png';
 import Bell from'../img/bell-icon.png';
 import Chat from'../img/chat-icon.png';
-import '../css/timeline.css';
+//import '../css/timeline.css';
 import '../css/profile.css';
 /*add this css if you want the profile image on the left (circular)*/
 import '../css/profilepicture.css';
@@ -100,11 +100,11 @@ class Profile extends Component {
 				//test state
 				var	firstname ="Margetha";
 				var	lastname = "Hennes";
-				var	isTeacher= true;
+				var	isTeacher= false;
 				var	isAdmin= false;
-				var	description = "This is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is me";
+				var	description ="Hallo this is me. Ich bin Student_in an der TU seit 2017. Ich liebe Blumen und will deshalb Holländisch lernen. Sonne und Grüneweide ist alles was ich im leben brauche";
 				var	iCan= "Französisch(B2),Deutsch";
-				var	iLearn="Spanisch";
+				var	iLearn="Spanisch, Holländisch für Kühe";
 				var	iTeach="Das was man im Leben wissen sollte, Animegeschichte";
 				var	website="http://esna.de";
 				var countCourses = 4;
@@ -258,22 +258,22 @@ class Profile extends Component {
 					<div className="col">
 						<div className="col">
 							<div className="row center-block ">
-								<div className="col white profilepicbig fill col-md-12" >
+								<div className="col  profilepicbig fill col-md-12" >
 									<img src={Meow} alt="meow" ></img>	
 								</div>
 								<div className="col">
 									<div className="row">
 										<h4 className="title"><strong id="YourName02"></strong></h4>
 									</div>
-									<div className="row text-muted">
+									<div className="row  text-muted">
 										<p className="lineup" id="role"></p>
 									</div>
-									<div className="row white">
-										<div className="box col-md-6 text-center d-none d-md-block">
-											<strong id ="countCourses2">2</strong><br /><small className="text-muted">Kurse</small>
+									<div className=" row ">
+										<div className="col-sm-12 col-lg-6  text-center d-none d-md-block">
+											<strong id ="countCourses2">2</strong><br /><small className="text-muted ">Kurse</small>
 										</div>
-										<div className="box col-md-6 text-center d-none d-md-block">
-											<strong  id="countGroups2">5</strong><br /><small className="textstrong text-muted">Gruppen</small>
+										<div className="col-sm-12  col-lg-6  text-center d-none d-md-block">
+											<strong  id="countGroups2">5</strong><br /><small className="textstrong text-muted ">Gruppen</small>
 										</div>
 									</div>
 								</div>
@@ -301,8 +301,8 @@ class Profile extends Component {
 								<div className="col-8" id="iTeach"></div>
 							</div>
 							
-							<div className="row  ">
-								<div className="col-4 text-muted" id="trueLearn">ich lerne:</div>
+							<div className="row  lineup ">
+								<div className="col-4 text-muted " id="trueLearn">ich lerne:</div>
 								<div className="col-8 text-muted" id="iLearn"></div>
 								<div className="col-12" id="trueOffer"><strong>mein kostenloses Angebot:</strong></div>
 							</div>
@@ -318,10 +318,8 @@ class Profile extends Component {
 								<div className="col-4">E-Mail:</div>
 								<a className="col-8" id="email"></a>
 							</div>
-							<div className="row "><p></p></div>
-							<div className="row lineup"><p></p></div>
-							<div className="row text-muted ">
-								<div className="col-4">Website:</div>
+							<div className="row text-muted lineup ">
+								<div className="col-4 ">Website:</div>
 								<a className="col-8" id="website"></a>
 							</div>
 						</div>

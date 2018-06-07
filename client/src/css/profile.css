@@ -1,3 +1,82 @@
+/**baisc*/
+.center {
+  display: block;
+  margin: 0 auto;
+}
+
+.searchbutton {
+  border-radius: 18px 0 0 18px;
+  display: inline;
+  background-image: url('../img/search-icon.png');
+  background-position: 6px 6px;
+  background-repeat: no-repeat;
+  background-color: #F7F8FA;
+  width: 32px;
+  height: 32px;
+}
+
+.searchbar {
+  border-radius: 0 18px 18px 0;
+  display: block;
+  margin: 0 auto;
+  border-style: none;
+  background-color: #F7F8FA;
+  width: 50%;
+  height: 32px;
+}
+
+.icon {
+  display: block;
+  height: 32px;
+  padding-right: 14px;
+}
+
+.nav-item{
+    width: 120px;
+    height: 50px;
+    text-align: center;
+}
+
+.tab-title{
+    width: 120px;
+    height: 50px;
+    padding-top: 14px;
+    color: gray;
+    font-size: 14px;
+}
+
+.tab-title:hover{
+    color: gray;
+    border: none;
+    border-bottom: 4px solid;
+}
+
+#mytabs .active{
+    color: black;
+    border: none;
+    background-color: #F7F8FA;
+    padding-top: 12px;
+    font-size: 20px;
+    border-bottom: 2px solid #07A7DA;
+}
+
+.background{
+    background-color: #F7F8FA;
+}
+
+.box{
+    background-color: white;
+    border-style: solid;
+    border-width: thin;
+    border-color: #F7F8FA;
+    padding: 20px;
+}
+
+.whitebox{
+    background-color: white;
+    padding: 20px;
+}
+
 /**i have not used menu-item, but it was there so i dont wanna delete it just yet*/
 .menu-item a {
   display: block;
@@ -14,7 +93,6 @@
 html, body{
   width:100%;
   height:100%;
-  background-color: #F7F8FA;
 }
 
 
@@ -28,11 +106,12 @@ html, body{
 }
 
 .lineup{
-		border-top: 1px solid #E0E0E0;
-		margin-top: 0px;
+	border-top: 1px solid #E0E0E0;
+	padding-top: 5px;
+	margin-top:5px
 }
 .title{
-		margin-bottom: 0px;
+	margin-bottom: 0px;
 }
 
 .newpart{
@@ -45,6 +124,10 @@ html, body{
 }
 
 #trueOffer{
-		border-bottom:1px solid #E0E0E0;
-		padding-top: 35px;	
+	border-bottom:1px solid #E0E0E0;
+	padding-top: 35px;	
+}
+
+.colwhite{
+	background-color: white !important;	
 }
