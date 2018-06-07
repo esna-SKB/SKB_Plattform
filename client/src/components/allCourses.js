@@ -23,10 +23,12 @@ function getCourses(route, cb){
       }
 
 function Element(props) {
-	const e = props.name;
-	const type = props.ctype;  
+	const course = props.course;  
 	return (
-		<p>{e}</p>
+		<div className="w-100 course-name">
+		<a className="btn " href={"/course/"+course.name}>{course.name}</a>
+		<a className="float-right" href={"/user/"+course.teacher.email}>{course.teacher.lastname}</a>
+		</div>
 		); 
 }
 
@@ -38,14 +40,12 @@ class MyCourses extends React.Component {
 		}; 
 	}
 	componentDidMount(){
-		console.log("didMount call");
 		let i = 0; 
 		if(this.props.myEmail!=null){
 
 			getCourses('/user/'+this.props.myEmail+'/course'
 				, (courses) =>{
-					console.log("meine Kurse: " + courses); 
-					this.setState({list: courses.map((e)=>{ return( <Element key={i++} ctype={"MyCourses: "} name={e.name}/>);})});
+					this.setState({list: courses.map((e)=>{ return( <Element key={e._id} course={e}/>);})});
 				});
 		}
 	}
@@ -63,12 +63,10 @@ class OtherCourses extends React.Component {
 	}
 
 	componentDidMount(){
-		console.log("didMount call OtherCourses");
 		let i = 0; 
 		getCourses('/course'
 			, (courses) =>{
-				console.log("other Kurse: " + courses);
-				this.setState({list: courses.map((e)=>{ return( <Element key={i++} name={e.name}/>);})});
+				this.setState({list: courses.map((e)=>{ return( <Element key={e._id} course={e}/>);})});
 			});
 		
 	}
@@ -87,7 +85,6 @@ class AllCourses extends React.Component {
 		}; 
 	}
 	render(){
-		console.log("AllCourses: "+ this.props.myEmail); 
 		return(
 			<div>
 				<h3> Meine Kurse </h3>
