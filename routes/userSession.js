@@ -13,21 +13,24 @@ router.route('/check').post((req, res, next) => {
 
 	console.log(token);
 
-  
+
 	UserSession.findOne({ token: token },
 		function(err, usersession){
-			if(err)
-				console.log('error occured in the database')
-			console.log(usersession);
-			if(!usersession){
-				console.log("no matching User Session");
+			if(err){
+				console.log('error occured in the database');
 				res.status(500).send({
+					success: false,
+					message: 'Server Error'
+				});
+			}else if(!usersession){
+				console.log("no matching User Session");
+				res.status(202).send({
 					success: false,
 					message: 'No matching User Session'
 				});
 			} else if( usersession.isDeleted ){
 				console.log("User Session not available anymore (deleted)");
-				res.status(500).send({
+				res.status(202).send({
 					success: false,
 					message: 'User Session not available anymore (deleted)'
 				});
@@ -35,11 +38,11 @@ router.route('/check').post((req, res, next) => {
 				//check timestamp
 				var d = new Date();
 				//40 muss später geupdated werden
-				d.setTime(d.getTime() - (40*1000))
+				d.setTime(d.getTime() - (60*20*1000))
 				//korrekte Form? maybe ohne getTime..? maybe .. > d - d
 				if (d.getTime() - usersession.timestamp.getTime() > 0){
 					console.log("User Session not available anymore (timeout)");
-					res.status(500).send({
+					res.status(202).send({
 						success: false,
 						message: 'User Session not available anymore (timeout)'
 					});
@@ -77,17 +80,20 @@ router.route('/check').post((req, res, next) => {
 //generate new token
 router.route('/newtoken').post((req, res, next) =>{
 	const { body } = req;
-	const { email } = email;
+	const { email } = body;
 
 	console.log(email);
 
 	UserSession.findOne({userId: email}, function(err, usersession){
-		if(err)
-			console.log('error occured in database');
-		console.log(usersession);
-		if(!usersession){
-			console.log("No User Session found");
+		if(err){
+			console.log('error occured in the database');
 			res.status(500).send({
+				success: false,
+				message: 'Server Error'
+			});
+		}else if(!usersession){
+			console.log("No User Session found");
+			res.status(202).send({
 				success: false,
 				message: 'No User Session found)'
 			});
@@ -133,7 +139,7 @@ router.route('/:emailtoken').get((req, res, next) =>{
 		if(err){
 			console.log('error occured in database');
 			return res.send('error occured in database')
-		}		
+		}
 
 		console.log(usersession);
 		if(!usersession){
@@ -141,7 +147,7 @@ router.route('/:emailtoken').get((req, res, next) =>{
 			return res.send('No User Session found')
 		} else {
 			var d = new Date();
-			d.setTime(d.getTime() - (10*1000));
+			d.setTime(d.getTime() - (5*1000));
 			if(d>usersession.timestamp){
 				console.log('Time expired to get Token');
 				return res.send('Time expired to get Token');
@@ -156,17 +162,19 @@ router.route('/:emailtoken').get((req, res, next) =>{
 //delete Session
 router.route('/deleteSession').post((req, res, next) =>{
 	const { body } = req;
-	const { email } = email;
+	const { token } = body;
 
-	console.log(email);
 
-	UserSession.findOne({userId: email}, function(err, usersession){
-		if(err)
-			console.log('error occured in database');
-		console.log(usersession);
-		if(!usersession){
-			console.log("No User Session found");
+	UserSession.findOne({token: token}, function(err, usersession){
+		if(err){
+			console.log('error occured in the database');
 			res.status(500).send({
+				success: false,
+				message: 'Server Error'
+			});
+		}else if(!usersession){
+			console.log("No User Session found");
+			res.status(202).send({
 				success: false,
 				message: 'No User Session found)'
 			});
@@ -185,7 +193,7 @@ router.route('/deleteSession').post((req, res, next) =>{
 
 					res.status(200).send({
 
-            success: true,
+            			success: true,
 						message: 'User Session deleted'
 					});
 				}
@@ -193,7 +201,6 @@ router.route('/deleteSession').post((req, res, next) =>{
 		}
 	})
 
-	console.log(usersession);
 });
 
 

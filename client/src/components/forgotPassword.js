@@ -96,18 +96,17 @@ class ForgotPassword extends Component {
     }
     else{
       return (
-          <div className="row">
-          <div className="col-6">
-            <img src={Classimg} style={{width: '100%', height: '100%'}} alt="classroom"/>
-          </div>
-          <div className="col-6">
-            <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
-            <p className="loginheadline">Passwort vergessen?</p>
-            <p className = "infoMessage">{this.state.infoMessage}</p>
-            <p className = "errorMessage">{this.state.errorMessage}</p>
-            <input id="email" className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={requestEmail} onChange={this.onTextboxChangeEmail}/><br />
-    				<button className="center login_button" style={{marginTop:'20px'}} onClick={this.onSubmit}>Absenden</button>
-            <p style={{color:'#a9a8a8',textAlign: 'center', paddingTop: '10px'}}><a href="/">Zurück zum Login</a></p>
+        <div className="row heigh100" style={{backgroundColor: '#f7f8f9'}}>
+            <div className="col-12">
+            <div className='center_email_confirm' style={{height: '600px', padding: '10px'}}>
+              <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
+              <p className="loginheadline">Passwort vergessen?</p>
+              <p className = "infoMessage">{this.state.infoMessage}</p>
+              <p className = "errorMessage">{this.state.errorMessage}</p>
+              <input id="email" className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={requestEmail} onChange={this.onTextboxChangeEmail}/><br />
+      				<button className="center login_button" style={{marginTop:'20px'}} onClick={this.onSubmit}>Absenden</button>
+              <p style={{color:'#a9a8a8',textAlign: 'center', paddingTop: '10px'}}><a href="/">Zurück zum Login</a></p>
+            </div>
             <div className="center loginfooter_parent">
             <p className="loginfooter">Impressum</p> <p>Datenschutz</p>
             </div>

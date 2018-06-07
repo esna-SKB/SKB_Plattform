@@ -4,7 +4,7 @@ import '../main.css';
 
 import Logo from'../img/esna.png';
 
-import Classimg from'../img/nathan-dumlao-572049-unsplash.jpg';
+import Classimg from'../img/chinese2-min.png';
 
 import { setInStorage, getFromStorage, } from '../utils/storage';
 
@@ -47,9 +47,33 @@ class Login extends Component {
 
   }
 
+  componentWillMount(){
+
+      //Checks if there is an active UserSession
+      //console.log('Returned Bool' + checkUserSession(cookie.load('userID')));
+
+      fetch('/userSession/check', {
+
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify( { token: cookie.load('userID') } )
+      }).then (res => {
+
+        if(res.status === 200){
+          cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
+          this.props.history.push("/timeline");
+        }
+      });
+
+      // if(checkUserSession(cookie.load('userID'))){
+      //   this.props.history.push("/timeline");
+      // }
 
 
-
+      // if(checkUserSession(cookie.load('userID'))){
+      //   this.props.history.push("/timeline");
+      // }
+  }
   componentDidMount() {
 
     if (this.props.location.state){
@@ -99,6 +123,14 @@ class Login extends Component {
       //email form validation
       if (signUpEmailValid.value.match(/^([\w.-]+)@([\w-]+\.)+([\w]{2,})$/i) == null){
         signUpEmailValid.style.color = 'red';
+
+        signUpEmailValid.classList.add('errorshake');
+        setTimeout(function() {
+          let signUpEmailValid = document.getElementById("email");
+          signUpEmailValid.classList.remove("errorshake"); 
+          }
+        , 500);
+        
         this.setState({
         errorMessage : "Bitte gib eine gültige E-Mail Adresse an."
         });
@@ -110,8 +142,16 @@ class Login extends Component {
       //password form validation
       if (signUpPasswordValid.value.length === 0){
 	    signUpPasswordValid.style.color = 'red';
+
+      signUpPasswordValid.classList.add('errorshake');
+        setTimeout(function() {
+          let signUpPasswordValid = document.getElementById("password");
+          signUpPasswordValid.classList.remove("errorshake"); 
+          }
+        , 500);
+        
       this.setState({
-        errorMessage : "Bitte gib dein Passwort ein."
+        errorMessage : "Bitte gib ein Passwort ein."
       });
 	    return false;
       }
@@ -243,71 +283,40 @@ class Login extends Component {
 
     } = this.state;
 
-    //Checks if there is an active UserSession
-    //console.log('Returned Bool' + checkUserSession(cookie.load('userID')));
-
-    fetch('/userSession/check', {
-
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify( { token: cookie.load('userID') } )
-    }).then (res => {
-
-      if(res.status === 200){
-        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
-        this.props.history.push("/timeline");
-      }
-    });
-
-    // if(checkUserSession(cookie.load('userID'))){
-    //   this.props.history.push("/timeline");
-    // }
-
-
-    // if(checkUserSession(cookie.load('userID'))){
-    //   this.props.history.push("/timeline");
-    // }
-
     return (
 
 
-      <div className="row">
+      <div className="row heigh100" style={{backgroundColor: '#f7f8f9', backgroundImage: 'url('+Classimg+')', backgroundSize: '100%'}}>
 
 
 
-      <div className="col-6">
-
-        <img src={Classimg} style={{width: '100%', height: '100%'}} alt="classroom"/>
-
-      </div>
+      <div className="col-12" style={{padding: '10px 10px 10px 25px'}}>
 
 
+        <a href="/signup" className='whitehover' style={{color: 'white !important'}}><div className='registrieren_botton'>Registrieren
+        </div></a>
+        <div><p style={{float: 'right',paddingTop: '23px', fontSize: '16px'}}>noch kein Mitglied?</p></div>
+        
+        <div className='center_loginform'>
+              <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
 
-      <div className="col-6">
+              <p className="loginheadline">Die Lernplattform für Lehrer und Studenten</p>
 
-        <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
-
-        <p className="loginheadline">Die Lernplattform für Lehrer und Studenten</p>
-
-        <p className = "errorMessage" dangerouslySetInnerHTML={{ __html: this.state.errorMessage }}></p>
-        <p className = "infoMessage">{this.state.infoMessage}</p>
-
-
-        <input id="email" className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={signInEmail} onChange={this.onTextboxChangeSignInEmail}/><br />
-
-				<input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={signInPassword} onChange={this.onTextboxChangeSignInPassword}/><br />
-
-				<button className="center login_button" style={{marginTop:'20px'}} onClick={this.onSignIn}>login</button>
+              <p className = "errorMessage" dangerouslySetInnerHTML={{ __html: this.state.errorMessage }}></p>
+              <p className = "infoMessage">{this.state.infoMessage}</p>
 
 
+              <input id="email" className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={signInEmail} onChange={this.onTextboxChangeSignInEmail}/><br />
 
-        <p style={{color:'#a9a8a8',textAlign: 'center', paddingTop: '10px'}}><a href="/signup">Konto erstellen</a></p>
-        <p style={{color:'#a9a8a8',textAlign: 'center'}}><a href="/forgotPassword">Passwort vergessen?</a></p>
+      				<input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={signInPassword} onChange={this.onTextboxChangeSignInPassword}/><br />
+
+      				<button className="center login_button" style={{marginTop:'10px', marginBottom: '10px'}} onClick={this.onSignIn}>login</button>
+
+              <p style={{color:'#a9a8a8',textAlign: 'center'}}><a href="/forgotPassword">Passwort vergessen?</a></p>
+        </div>
 
         <div className="center loginfooter_parent">
-
-        <p className="loginfooter">Impressum</p> <p>Datenschutz</p>
-
+            <p className="loginfooter">Impressum</p> <p>Datenschutz</p>
         </div>
 
       </div>
