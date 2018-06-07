@@ -21,7 +21,7 @@ class Timeline extends Component {
   componentDidMount() {
     
     this.setState({
-      emailUser: this.props.location.state.emailUser
+      emailUser: (this.props.location.state==null) ? "" : this.props.location.state.emailUser
     });
   }
 
@@ -101,7 +101,7 @@ class Timeline extends Component {
             <li><a href="#"><img id="notifications" className="icon" src={Bell} alt="Bell"/></a></li>
             <div className="btn-group">
               <button type="button" className="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {this.props.location.state.emailUser}
+                {(this.props.location.state==null) ? "You seem to be logout out this is a bug" : this.props.location.state.emailUser}
               </button>
               <div className="dropdown-menu">
                 <a className="dropdown-item" href="#">Mein Profil</a>
@@ -210,7 +210,7 @@ class Timeline extends Component {
 
               <div className="tab-pane fade" id="kurse" role="tabpanel" aria-labelledby="kurse-tab">
                   <div className="box">
-                  <AllCourses myEmail={this.props.location.state.emailUser}/>
+                  <AllCourses myEmail={(this.props.location.state==null) ? "" : this.props.location.state.emailUser}/>
                   
                   <h3> Kurse </h3>
 
