@@ -42,26 +42,85 @@ html, body{
   padding-right: 14px;
 }
 
-.menu-item a {
-  display: block;
-  padding: 15px 30px;
-  text-align: center;
-  color: black;
+.nav-item{
+    width: 120px;
+    height: 50px;
+    text-align: center;
 }
 
-.menu-item a:hover {
-    background-color: #324860;
-    color: white;
+.tab-title{
+    width: 120px;
+    height: 50px;
+    padding-top: 14px;
+    color: gray;
+    font-size: 14px;
+}
+
+.tab-title:hover{
+    color: gray;
+    border: none;
+    border-bottom: 4px solid;
+}
+
+#mytabs .active{
+    color: black;
+    border: none;
+    background-color: #F7F8FA;
+    padding-top: 10px;
+    font-size: 20px;
+    border-bottom: 4px solid #07A7DA;
+}
+
+.box-title{
+    padding-top: -5px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid lightgray;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    
+}
+
+.course-box{
+    margin-top: 20px;
+}
+
+.courses{
+    padding-top: 10px;
+}
+
+.course-name{
+    display: block;
+    height: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: black;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.course-name:hover{
+    color: black;
+    font-size: 14px;
+    text-decoration: none;
+    border-bottom: 2px solid lightgray;
 }
 
 .background{
     background-color: #F7F8FA;
 }
 
-.col{
-    padding-right: 30px;
-    padding-left: 30px;
+.col-md-3, .col-md-6{
+    padding-right: 25px;
+    padding-left: 25px;
+    margin-top: 20px; 
     background-color: #F7F8FA;
+}
+
+.cols{
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .box{
@@ -70,4 +129,9 @@ html, body{
     border-width: thin;
     border-color: #F7F8FA;
     padding: 20px;
+}
+
+#tab-content .box{
+    margin-left: -15px;
+    margin-right: -15px;
 }
