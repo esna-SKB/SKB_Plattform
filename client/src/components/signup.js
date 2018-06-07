@@ -6,6 +6,7 @@ import Classimg from'../img/nathan-dumlao-572049-unsplash.jpg';
 import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper';
 import cookie from 'react-cookies';
 
+const api = require('../api');
 
 class Signup extends Component {
 
@@ -155,20 +156,7 @@ class Signup extends Component {
     console.log(this.state)
 
     // Post request to backend
-    fetch('/account/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        firstname: signUpFirstName,
-        lastname: signUpLastName,
-        email: signUpEmail,
-        password: signUpPassword,
-      }),
-    })
-    .then(res => res.json())
+    api.signUp(signUpFirstName, signUpLastName, signUpEmail, signUpPassword)
       .then(json => {
         console.log('json', json);
         console.log(json.success);
@@ -214,7 +202,7 @@ class Signup extends Component {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify( { token: cookie.load('userID') } )
     }).then (res => {
-      
+
       if(res.status == 200){
 
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})

@@ -11,6 +11,7 @@ import { setInStorage, getFromStorage, } from '../utils/storage';
 import cookie from 'react-cookies'
 import { checkUserSession, updateUserSession, deleteUserSession, getToken, updateTimeSec } from '../utils/userSessionHelper'
 
+const api = require('../api');
 
 
 class Login extends Component {
@@ -128,29 +129,17 @@ class Login extends Component {
 
     // Post request to backend
 
-    fetch('/account/signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        "email": signInEmail,
-        "password": signInPassword,
-      }),
-    }).then(res => res.json())
-
-      .then(json => {
+      api.signIn(signInEmail, signInPassword).then(json => {
 
         console.log('json', json);
 
         if (json.success === true) {
 
           setInStorage('login_token', { token: json.token });
-          console.log("Email: "+signInEmail); 
+          console.log("Email: "+signInEmail);
           //user registered & verified and correct password -> login successful
 
-          
+
           //Cookie mit email und expire in Sekunden -> später ändern
           /*fetch('/user/'+signInEmail, {
                       method: 'GET',
@@ -167,16 +156,17 @@ class Login extends Component {
 
 
           //komischer Weise hat 'str' als return Wert aus 'UserSessionHelper' nur ein 'undefined geliefert'
+
           fetch('/userSession/'+signInEmail, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
             },
           }
-          ).then(resss => resss.json())
-          .then(jsonnn => {
+          ).then(res => res.json())
+          .then(json => {
             //console.log(jsonnn.token);
-            let str = jsonnn.token;
+            let str = json.token;
             cookie.save('userID', str, {expires: updateTimeSec(60*20), path: '/'});
           });
 
