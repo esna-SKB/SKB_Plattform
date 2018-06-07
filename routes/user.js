@@ -8,7 +8,7 @@ const Enrollment = require('../models/enrollment');
 router.route('/')
 	//get all users
 	.get((req, res, next) => {
-		User.find({},{_id:0, firstname:1, lastname:2, email:3, isTeacher:4, isAdmin:5, isValide:6}, function(err, users){
+		User.find({},{_id:0, firstname:1, lastname:2, email:3, isTeacher:4, isAdmin:5, isValide:6, description:7, iCan:8, iLearn:9,iTeach:10,website:11}, function(err, users){
 			if (err) {
 	           console.log('error occured in the database');
 	           return res.status(500).send('error occured in the database');
@@ -23,7 +23,7 @@ router.route('/:email')
 	// get one specific user by email
 	.get((req, res, next) => {
 		var email = req.params.email;
-		User.findOne({email: email},{_id:0, firstname:1, lastname:2, email:3, isTeacher:4, isAdmin:5, isValide:6}, function(err, user){
+		User.findOne({email: email},{_id:0, firstname:1, lastname:2, email:3, isTeacher:4, isAdmin:5, isValide:6, description:7, iCan:8, iLearn:9,iTeach:10,website:11}, function(err, user){
 			if (err){
 	           console.log('error occured in the database');
 	           return res.status(500).send('error occured in the database');
@@ -41,6 +41,11 @@ router.route('/:email')
 		const { isTeacher } = body;
 		const { isAdmin } = body;
 		const { isValide } = body;
+		const { isCan } = body;
+		const { isLearn } = body;
+		const { isTeach } = body;
+		const { description } = body;
+		const { website } = body;
 
 		var oldEmail = req.params.email;
 
@@ -53,7 +58,7 @@ router.route('/:email')
 			}else {
 				User.findOneAndUpdate({email: oldEmail}
 					,{firstname : firstname, lastname : lastname, email : email
-						, isTeacher : isTeacher, isAdmin : isAdmin, isValide : isValide}
+						, isTeacher : isTeacher, isAdmin : isAdmin, isValide : isValide, description : description, iCan : iCan, iLearn : iLearn, iTeach : iTeach, website : website}
 						, {new: true}, function(err, updatedUser){
 					if (err){
 						console.log('error occured in the database while updating user');

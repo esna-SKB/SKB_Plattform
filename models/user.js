@@ -35,6 +35,26 @@ const UserSchema = new mongoose.Schema({
   isValide: {
     type: Boolean,
     default: false
+  },
+   description: {
+    type: String,
+    default: ''
+  },
+  iCan: {
+    type: String,
+    default: ''
+  },
+  iLearn: {
+    type: String,
+    default: ''
+  },
+  iTeach: {
+    type: String,
+    default: ''
+  },
+  website: {
+    type: String,
+    default: ''
   }
 });
 UserSchema.methods.generateHash = function(password) {

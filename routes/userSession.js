@@ -159,6 +159,29 @@ router.route('/:emailtoken').get((req, res, next) =>{
 });
 
 
+//get current email
+router.route('/:token/email').get((req, res, next) =>{
+	var token = req.params.token;
+	console.log("searching for email of token: " + token)
+
+	UserSession.findOne({token: token}, function(err, usersession){
+		if(err){
+			console.log('error occured in database');
+			return res.send('error occured in database')
+		}		
+
+		console.log(usersession);
+		if(!usersession){
+			console.log("No User Session found");
+			return res.send('No User Session found')
+		} else {
+			
+			console.log('take your email:'+usersession.userId);
+			return res.send(usersession);
+		}
+	})
+});
+
 //delete Session
 router.route('/deleteSession').post((req, res, next) =>{
 	const { body } = req;

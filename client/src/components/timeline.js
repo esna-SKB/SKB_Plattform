@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Logo from'../img/esna.png';
 import Bell from'../img/bell-icon.png';
 import Chat from'../img/chat-icon.png';
+import Meow from'../img/meow.png';
 import '../css/timeline.css';
 import AllCourses from './allCourses';
 
@@ -103,12 +104,12 @@ class Timeline extends Component {
               <button type="button" className="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {(this.props.location.state==null) ? "You seem to be logout out this is a bug" : this.props.location.state.emailUser}
               </button>
-              <div className="dropdown-menu">
-                <a className="dropdown-item" href="#">Mein Profil</a>
-                <a className="dropdown-item" href="#">Bearbeiten?</a>
-                <a className="dropdown-item" href="#">Something else here</a>
-                <div className="dropdown-divider"></div>
-                <a className="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Mein Profil</a>
+                <a class="dropdown-item" href="/settings">Einstellungen</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
               </div>
             </div>
           </ul>
@@ -145,9 +146,10 @@ class Timeline extends Component {
         <div className="col-md-3">
           
           <div className="row">
-            <div className="box col-12 text-center">
-            <strong>SKB User</strong>
-            </div>
+            <a className="box col-12 text-center" href="/profile">
+				<div className="profilepicleft fill" ><img src={Meow} alt="meow" ></img></div>
+				<p></p><p><strong id="YourName01">SKB User</strong></p>
+            </a>
           </div>
           
           <div className="row">

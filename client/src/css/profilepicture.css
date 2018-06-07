@@ -1,0 +1,50 @@
+
+.profilepicleft > img {
+	width: 20vw;
+
+	border-radius: 20vw;
+	/*box-shadow: 2px 2px #E0E0E0;*/
+}
+
+.profilepicleft{
+	width: 20vw;
+	height: 20vw;
+	
+	max-width:150px;
+	max-height:150px;
+
+	margin-right: auto;
+	margin-left: auto;
+	display: block;
+	
+	border-radius: 20vw;
+	box-shadow: 2px 2px #E0E0E0;
+}
+
+.fill {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden
+}
+
+.fill img {
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%
+}
+
+.profilepicbig{
+	width: 20vw;
+	height: 20vw;
+	
+	max-width:150px;
+	max-height:150px;
+
+	box-shadow: 2px 2px #E0E0E0;
+}
+
+.profilepicbig > img {
+	width: 20vw;
+	box-shadow: 2px 2px #E0E0E0;
+}
