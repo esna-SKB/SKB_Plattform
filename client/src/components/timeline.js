@@ -23,7 +23,6 @@ class Timeline extends Component {
     this.setState({
       emailUser: this.props.location.state.emailUser
     });
-    console.log("TimeLine konw the email: "+ this.state.emailUser +" "+ this.props.location.state.emailUser); 
   }
 
   logout(){

@@ -25,8 +25,6 @@ class Login extends Component {
 
     this.state = {
 
-      validEmail: '',
-
       token: '',
 
       signInError: '',
@@ -150,9 +148,6 @@ class Login extends Component {
 
           setInStorage('login_token', { token: json.token });
           console.log("Email: "+signInEmail); 
-          this.setState({
-            validEmail : signInEmail
-          });
           //user registered & verified and correct password -> login successful
 
           
@@ -228,8 +223,6 @@ class Login extends Component {
 
     const {
 
-      validEmail,
-
       token,
 
       signInError,
@@ -252,7 +245,6 @@ class Login extends Component {
 
       if(res.status === 200){
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})
-        console.log("is this the email: "+validEmail);
         //console.log(this.props.location.state.emailUser); 
         this.props.history.push({pathname:"/timeline", state: {emailUser: (this.props.location.state==null ? "" : this.props.location.state.emailUser)}});
       }
