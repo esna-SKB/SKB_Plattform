@@ -1,10 +1,21 @@
 html, body{
   width:100%;
   height:100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+a {
+    color: rgb(24, 86, 169);
+}
+
+.nav-tabs .nav-item {
+  margin-bottom: -4px;
+  margin-top: 5px;
 }
 
 .esna_logo{
-  padding-top: 80px;
+  padding-top: 40px;
   padding-bottom: 50px;
   display: block;
   margin: 0 auto;
@@ -22,29 +33,34 @@ html, body{
   margin: 0 auto;
   border: transparent;
   border-bottom: 1px solid black;
-  width: 300px;
+  width: 350px;
 }
 
 .login_button {
   background-color: #1856a9;
   color: white;
-  width: 150px;
+  width: 170px;
   height: 50px;
   border-radius: 160px;
 }
 
 .firstname {
-  width: 120px;
+  width: 170px;
   margin-right: 20px;
   display: 'inline-block';
   margin-right: -50px;
   margin-bottom: 30px;
+  border: transparent;
+  border-bottom: 1px solid black;
+  margin-right: 10px;
 }
 
 .lastname {
-  width: 120px;
+  width: 170px;
   display: 'inline-block';
   margin-bottom: 30px;
+  border: transparent;
+  border-bottom: 1px solid black;
 }
 
 .backtologin{
@@ -58,18 +74,13 @@ html, body{
   padding-right: 20px;
 }
 
-.namefield{
-  display: flex;
-  justifyContent: center;
-  alignItems: center;
-}
-
 .loginfooter_parent {
   bottom: 0;
   position: absolute;
   left: 50%;
-  right: 50%;
+  right: 51%;
 }
+
 
 .loginheadline {
   color: #a9a8a8;
@@ -88,4 +99,238 @@ html, body{
 .infoMessage{
   text-align: center;
   font-size : 18px;
+}
+
+.heigh100 {height:100% !important;}
+
+.center_loginform{
+    background-color: white;
+    border: 1px solid #efefef;
+    width: 500px;
+    height: 520px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+    overflow-y: hidden;
+}
+
+.center_signupform{
+    background-color: white;
+    border: 1px solid #efefef;
+    width: 580px;
+    height: 640px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+    text-align: center;
+
+}
+
+.center_email_confirm{
+    background-color: white;
+    border: 1px solid #efefef;
+    width: 580px;
+    height: 330px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+    text-align: center;
+
+}
+
+@media Screen and (max-width: 870px){
+  .center_loginform{
+    width: 450px;
+  }
+}
+
+.registrieren_botton{
+    border: 2px solid rgb(24, 86, 169);
+    margin: 10px 22px;
+    padding: 10px 22px;
+    float: right;
+}
+
+.whitehover:hover{
+  color:white;
+}
+
+.registrieren_botton:hover{
+    background-color: rgb(24, 86, 169);
+    color:white !important;
+}
+
+.errorshake {
+    position: relative;
+    animation: shake .1s linear;
+    animation-iteration-count: 3;
+}
+@keyframes shake {
+    0% { left: -5px; }
+    100% { right: -5px; }
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #495057;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+    border: transparent;
+    border-bottom: 2px solid #017fb2;
+    background-color: #f7f8fa;
+}
+
+.col {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.active {
+  font-size: 19px !important;
+  margin-top: -3px;
+}
+
+.active:hover{
+  color: #495057 !important;
+  border-color: #dee2e6 #dee2e6 #fff;
+  border: transparent;
+  border-bottom: 2px solid #017fb2 !important;
+  background-color: #f7f8fa;
+}
+
+.nav-link {
+    color: #a9a8a8;
+    font-size: 15px;
+}
+
+.nav-tabs .nav-link:hover {
+  border-color: transparent;
+  color: black;
+}
+
+/* POST STATUS STYLE*/
+#new_status {
+  background-color: #FFF;
+  border: 1px solid rgb(232, 233, 235);
+  margin-top: -16px;
+}
+
+#post_header {
+  border-bottom: solid #E8E8E8 1px;
+  margin: 0 2%;
+  padding: 0.65rem 0;
+  width: 95.75%;
+}
+#post_header li {
+  display: inline-block;
+}
+#post_header a {
+  font-size: 1.2rem;
+  padding: 1rem 0;
+  text-decoration: none;
+}
+#post_header li+li {
+  border-left: solid #E8E8E8 1px;
+}
+#post_header li:first-child a {
+  padding: 0 1rem 0 0;
+}
+#post_header li:nth-child(2) a {
+  padding: 0 1rem;
+}
+#post_header li:last-child a {
+  padding: 0 0 0 1rem;
+}
+#post_header .glyphicon {
+  margin-right: 0.5rem;
+}
+
+#post_content {
+  margin: 0 2%;
+  padding: 0;
+  width: 95.75%;
+}
+#post_content img {
+  border: solid #DDD 1px;
+  margin: 1.25rem 0;
+  padding: 0;
+}
+#post_content .textarea_wrap {
+  cursor: text;
+}
+#post_content textarea {
+  border: 0;
+  margin: 0rem 0 0.5rem 0;
+  outline: 0;
+  padding: 2.5rem 0 0 1.25rem;
+  resize: none;
+}
+
+#post_footer {
+  border-top: solid #E8E8E8 1px;
+  line-height: 3rem;
+  padding: 0 2% 0 3%;
+}
+#post_footer .navbar-nav {
+  padding: 0;
+}
+#post_footer .navbar-nav li {
+  display: inline-block;
+}
+#post_footer .navbar-nav a {
+  display: block;
+  padding: 2rem 1.25rem 2.2rem 1.25rem;
+}
+#post_footer .navbar-nav .glyphicon {
+  line-height: 0;
+}
+#post_footer :not(.btn) .glyphicon {
+  color: #999;
+}
+#post_footer div {
+  padding: 0;
+  text-align: right;
+}
+#post_footer .btn {
+  border-radius: 2px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  line-height: 2.2rem;
+  margin-top: 0.75rem;
+  padding: 0 0.75rem;
+  vertical-align: middle;
+}
+#post_footer .btn-default {
+  color: #666;
+  margin-right: 0.5rem;
+}
+#post_footer .btn-default .glyphicon {
+  color: #666;
+  margin-right: 0.5rem;
+}
+#post_footer .caret {
+  color: #666;
+  margin-left: 0.5rem;
+}
+#post_footer .btn-primary {
+  background-color: white;
+  padding: 0 2rem;
+  color: black;
+  border: 1px solid #007fb2;
 }
