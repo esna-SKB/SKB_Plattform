@@ -13,7 +13,7 @@ router.route('/check').post((req, res, next) => {
 
 	console.log(token);
 
-  
+
 	UserSession.findOne({ token: token },
 		function(err, usersession){
 			if(err)
@@ -133,7 +133,7 @@ router.route('/:emailtoken').get((req, res, next) =>{
 		if(err){
 			console.log('error occured in database');
 			return res.send('error occured in database')
-		}		
+		}
 
 		console.log(usersession);
 		if(!usersession){
@@ -162,14 +162,14 @@ router.route('/email/:token').get((req, res, next) =>{
 		if(err){
 			console.log('error occured in database');
 			return res.send('error occured in database')
-		}		
+		}
 
 		console.log(usersession);
 		if(!usersession){
 			console.log("No User Session found");
 			return res.send('No User Session found')
 		} else {
-			console.log('email'+usersession.email;
+			console.log('email'+usersession.email);
 			return res.send(usersession.email);
 		}
 	})
