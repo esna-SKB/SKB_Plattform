@@ -155,7 +155,7 @@ deleteUser: function(email){
    * DELETE /course/:name
    * deletes a course object
   */
-  getCourse: function(courseName){
+  deleteCourse: function(courseName){
     return fetch('/course' + courseName, {
       method: 'DELETE'
       })
@@ -241,7 +241,7 @@ deleteUser: function(email){
    * DELETE /article/id
    * deletes an article object
   */
-  getCourse: function(articleId){
+  deleteArticle: function(articleId){
     return fetch('/article' + articleId, {
       method: 'DELETE',
       })
