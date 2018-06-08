@@ -23,7 +23,8 @@ router.route('/')
 		const { name } = body;
 		const { teacher } = body;
 		const { description } = body;
-		const { isFree } = body;
+		const { isFree } = body; 
+
 
 		Course.find({name: name}).exec(function(err, otherCourse){
 			if (err){

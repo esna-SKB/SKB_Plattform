@@ -228,25 +228,9 @@ class Timeline extends Component {
               <div className="tab-pane fade" id="kurse" role="tabpanel" aria-labelledby="kurse-tab">
                   <div className="box">
 
-                  <div className="row">
-
-                  <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
-                      <div className='row'>
-                        <div className='col-6'>
-                          <h1 style={{fontSize: '30px'}}>Meine Kurse</h1>
-                        </div>
-                        <div className='col-6'>
-                        <a href="/createcourse" className='whitehover' style={{color: 'white !important'}}><div className='registrieren_botton' style={{marginTop: '-6px',fontSize: '16px'}}> + Kurs anlegen
-                        </div></a>
-                        </div>
-                      </div>
+                  <AllCourses myEmail={(this.props.location.state==null) ? "" : this.props.location.state.emailUser}/>
                   </div>
 
-                  </div>
-
-                  <h1 style={{fontSize: '30px'}}>Alle Kurse</h1>
-                  <div id="allcourses"></div>
-                </div>
               </div>
 
 

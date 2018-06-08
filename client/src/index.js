@@ -26,9 +26,9 @@ ReactDOM.render(
       <Route exact path='/' component={Login}/>
       <Route path='/signup' component={Signup}/>
       <Route path='/timeline' component={Timeline}/>
-	  <Route path='/profile' component={Profile}/>
-	  <Route path='/profileedit' component={Profileedit}/>
-	  <Route path='/settings' component={Settings}/>
+  	  <Route path='/profile' component={Profile}/>
+  	  <Route path='/profileedit' component={Profileedit}/>
+  	  <Route path='/settings' component={Settings}/>
       <Route path='/course' component={Course}/>
       <Route path='/createcourse' component={CreateCourse}/>
       <Route path='/forgotPassword' component={ForgotPassword}/>
