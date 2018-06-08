@@ -26,6 +26,7 @@ class Course extends Component {
   }
 
 
+
   render() {
 
     //Checks if there is an active UserSession

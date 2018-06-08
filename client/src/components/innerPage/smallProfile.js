@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom'
 import Meow from'../../img/meow.png';
 
 
@@ -17,11 +17,12 @@ class SmallProfile extends React.Component {
 		return(
 			<div>
 			  <div className="row">
-
-	            <a className="box col-12 text-center" href="/profile">
+	            <div className="box col-12 text-center">
+	            <Link to={`/profile`}>
 					<div className="profilepicleft fill" ><img src={Meow} alt="meow" ></img></div>
 					<p></p><p><strong id="YourName01">SKB User</strong></p>
-	            </a>
+	            </Link>
+	          	</div>
 	          </div>
 
 	          <div className="row">

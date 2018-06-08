@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from'../img/esna.png';
-import Bell from'../img/bell-icon.png';
-import Chat from'../img/chat-icon.png';
+import Logo from'../../img/esna.png';
+import Bell from'../../img/bell-icon.png';
+import Chat from'../../img/chat-icon.png';
 //import '../css/timeline.css';
-import '../css/profile.css';
+import '../../css/profile.css';
 /*add this css if you want the profile image on the left (circular)*/
-import '../css/profilepicture.css';
-import Meow from'../img/meow.png';
+import '../../css/profilepicture.css';
+import Meow from'../../img/meow.png';
 
 import cookie from 'react-cookies';
-import { checkUserSession, updateTimeSec, deleteUserSession} from '../utils/userSessionHelper';
+import { checkUserSession, updateTimeSec, deleteUserSession} from '../../utils/userSessionHelper';
 
-const api = require('../api');
+const api = require('../../api');
 
 
 class Profile extends Component {
@@ -20,19 +20,7 @@ class Profile extends Component {
 		super(props);
 
 		this.state = {
-		  status: 0,
-		  firstname: '',
-		  lastname: '',
-		  email: '',
-		  isTeacher: false,
-		  isAdmin: false,
-		  description: '',
-		  iCan: '',
-		  iLearn: '',
-		  iTeach: '',
-		  website: '',
-		  errorMessage: '',
-		  infoMessage: ''
+		  user: ""
 		}
 
 	}
