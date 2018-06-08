@@ -12,29 +12,81 @@ import { checkUserSession, updateTimeSec } from '../../utils/userSessionHelper';
 
 
 class Course extends Component {
+
   constructor(props){
-  super(props);
-  this.state = {
-    user: ""
-    }; 
-  }
+    super(props);
+    this.state = {
+      user: ""
+      }; 
+    }
   componentDidMount(){
     this.setState({
       user: this.props.user
     })
   }
 
+
   render() {
 
-    
+    //Checks if there is an active UserSession
+    fetch('/userSession/check', {
 
-    var angemeldet = 0;
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify( { token: cookie.load('userID') } )
+    }).then (res => {
+
+      if(res.status == 500){
+
+
+        this.props.history.push("/");
+      }else{
+        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60000), path: '/'})
+
+      }
+    });
+
+    var angemeldet = 1;
 
     if(angemeldet == 0){
     return (
       <div style={{backgroundColor: '#f7f8fa'}}>
+      <nav className="navbar navbar-expand-sm" style={{backgroundColor: 'white'}}>
+        <div className="container-fluid">
+          <div className="navbar-header">
+            <a className="navbar-brand" href="/"><img id="logo" className="logo" src={Logo} alt="Logo"/></a>
+          </div>
 
-      <p>{this.props.user}</p>
+          <form className="navbar-form navbar-center" action="/search">
+            <div className="input-group">
+              <div className="input-group-btn">
+                <button className="searchbutton btn" type="submit"></button>
+              </div>
+              <input type="text" className="searchbar form-control" placeholder="Search" name="srch-term" id="srch-term"/>
+            </div>
+          </form>
+
+          <ul className="nav navbar-nav navbar-right">
+            <li><a href="#"><img id="chat" className="icon" src={Chat} alt="Chat"/></a></li>
+            <li><a href="#"><img id="notifications" className="icon" src={Bell} alt="Bell"/></a></li>
+			<div className="btn-group">
+              <button type="button" className="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {(this.props.location.state==null) ? "You seem to be logout out this is a bug" : this.props.location.state.emailUser}
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/profile">Mein Profil</a>
+                <a class="dropdown-item" href="/settings">Einstellungen</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
+              </div>
+            </div>
+          </ul>
+
+        </div>
+      </nav>
+
+
       <div className="container-fluid" style={{marginTop: '20px', marginBottom: '20px',paddingRight: '60px', paddingLeft: '30px'}}>
         <div className="row">
 
