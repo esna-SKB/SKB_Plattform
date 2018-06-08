@@ -4,6 +4,15 @@
 //in almost all cases the function returns a json object
 
 module.exports = {
+
+getEmailFromUserSession: function(token){
+  return fetch('/userSession/'+ token+ '/email', {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json'
+    }})
+  .then(res => res.json())
+},
 //USERS
 /*
  * GET /user

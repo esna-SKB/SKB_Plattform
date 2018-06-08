@@ -1,9 +1,9 @@
 import { Component } from 'react';
 
-import '../main.css';
+import '../../main.css';
 
 const qs = require('query-string');
-const api = require('../api');
+const api = require('../../api');
 
 
 class VerifyRegistration extends Component {
