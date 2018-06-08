@@ -51,7 +51,11 @@ class MyCourses extends React.Component {
 	}
 
 	render(){
-		return(this.state.list); 
+		return(
+			<div className="courses">
+			{this.state.list}
+			</div>
+			); 
 	}
 }
 class OtherCourses extends React.Component {
@@ -73,7 +77,11 @@ class OtherCourses extends React.Component {
 
 	render(){
 
-		return(this.state.list);
+		return(
+			<div className="courses">
+			{this.state.list}
+			</div>
+			);
 	}
 }
 

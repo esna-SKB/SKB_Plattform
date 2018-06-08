@@ -196,9 +196,9 @@ A message is a JSON Object like this:
 
 ```json
 {
-	"msgID": "id",
-	"fromUser": "username",
-	"toUser": "username",
+	"_id": "id",
+	"fromUser": "email",
+	"toUser": "email",
 	"text": "",
 	"created_at": "date"
 }
@@ -209,10 +209,11 @@ A course is a JSON Object like this:
 
 ```json
 {
-	"courseID": "id",
+	"_id": "_id",
 	"name": "coursename",
-	"teacher": "username",
-	"description": ""
+	"teacher": "{teacher-obj}(for post user the teachers email)",  
+	"description": "",
+	"isFree": true 
 }
 ```
 ## Article
@@ -222,9 +223,9 @@ A article is a JSON Object like this:
 ```json
 {
 	"aID": "_id",
-	"course": "courseName",
+	"course": "{course.obj}(post use courseName)",
 	"headline": "heading",
-	"author": "username",
+	"author": "{user}(post use email)",
 	"text": "",
 	"created_at": "date"
 }
