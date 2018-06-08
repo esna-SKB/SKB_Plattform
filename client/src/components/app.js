@@ -22,6 +22,7 @@ class App extends React.Component {
 			api.getEmailFromUserSession(token)
 			.catch(err =>{console.log(err)})
 			.then(email => api.getUser(email.userId))
+			.catch(err => console.log(err))
 			.then(user => {
 				this.setState({
 				user: user
@@ -40,7 +41,7 @@ class App extends React.Component {
 	render(){
 		console.log("app: "+this.props.location);
 		console.log(this.state.user); 
-		if(typeof this.state.user.email == "string" && this.state.user!=""){
+		if(typeof this.state.user != 'undefined' && this.state.user!==""){
 			return(
 				<InnerPage location={this.props.location} user={this.state.user}/>
 			);
