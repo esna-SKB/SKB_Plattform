@@ -22,7 +22,7 @@ class Timeline extends Component {
 
   }
   componentDidMount() {
-    
+
   }
 
   logout(){
@@ -189,26 +189,105 @@ class Timeline extends Component {
         <div className="col-md-6">
           <div className="tab-content" id="tab-content">
               <div className="tab-pane fade show active" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
-                <div className="box">
-                <h3> Timeline </h3>
 
-                  <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                  </p>
-                  </div>
+              <div className='container' id="userposts">
+                <div className='row' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom:'20px'}}>
+                      <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
+                          <div className='row'>
+                            <div className='col-6'>
+                              Prof. Rolf Niedermeier
+                            </div>
+                            <div className='col-6'>
+                              <p style={{float:'right'}}>10 min</p>
+                            </div>
+                          </div>
+                      </div>
+                      <div className='col-12'>
+                          <p style={{color: '#a9a8a8'}}>Liebe Studierende, <br/><br/>
+
+                        die Anzahl der beim Sekretariat gemeldeten Krankheitsfälle und die der Abwesenden beim MCT ist nicht dieselbe.
+
+                        Ich bitte also all diejenigen, die krank waren (und natürlich ihr Attest beim Prüfungsamt abgegeben haben), mich noch zu informieren.</p>
+                      </div>
+                </div>
+
+                <div className='row' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom:'20px'}}>
+                      <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
+                          <div className='row'>
+                            <div className='col-6'>
+                              Christlinde Thielcke
+                            </div>
+                            <div className='col-6'>
+                              <p style={{float:'right'}}>10 min</p>
+                            </div>
+                          </div>
+                      </div>
+                      <div className='col-12'>
+                          <p style={{color: '#a9a8a8'}}>Lorem ipsum dolor sit amet, euismod facilisis vis cu. Pro eu eros incorrupte,
+                          mnesarchum argumentum his et. Ne alia solum similique sit, nec an soleat
+                          omnium, ad labore eruditi eum. Ius ei aliquid laoreet, ne duo accusamus
+                          splendide moderatius, eos ei movet semper elaboraret.</p>
+                      </div>
+                </div>
+
+                <div className='row' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom:'20px'}}>
+                      <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
+                          <div className='row'>
+                            <div className='col-6'>
+                              Mariano Brey
+                            </div>
+                            <div className='col-6'>
+                              <p style={{float:'right'}}>10 min</p>
+                            </div>
+                          </div>
+                      </div>
+                      <div className='col-12'>
+                          <p style={{color: '#a9a8a8'}}>Lorem ipsum dolor sit amet, euismod facilisis vis cu. Pro eu eros incorrupte,
+                          mnesarchum argumentum his et. Ne alia solum similique sit, nec an soleat
+                          omnium, ad labore eruditi eum. Ius ei aliquid laoreet, ne duo accusamus
+                          splendide moderatius, eos ei movet semper elaboraret.</p>
+                      </div>
+                </div>
+
+                <div className='row' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px'}}>
+                      <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
+                          <div className='row'>
+                            <div className='col-6'>
+                              Anton Gulenko
+                            </div>
+                            <div className='col-6'>
+                              <p style={{float:'right'}}>35 min</p>
+                            </div>
+                          </div>
+                      </div>
+                      <div className='col-12'>
+                          <p style={{color: '#a9a8a8'}}>Lorem ipsum dolor sit amet, euismod facilisis vis cu. Pro eu eros incorrupte,
+                          mnesarchum argumentum his et. Ne alia solum similique sit, nec an soleat
+                          omnium, ad labore eruditi eum. Ius ei aliquid laoreet, ne duo accusamus
+                          splendide moderatius, eos ei movet semper elaboraret.</p>
+                      </div>
+                </div>
+
+              </div>
               </div>
 
               <div className="tab-pane fade" id="kurse" role="tabpanel" aria-labelledby="kurse-tab">
                   <div className="box">
+
+                  <div className="row">
+
+                  <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
+                    <div className='row'>
+                       <div className='col-6'>
+                          <h1 style={{fontSize: '30px'}}>Meine Kurse</h1>
+                        </div>
+                       <div className='col-6'>                        <a href="/createcourse" className='whitehover' style={{color: 'white !important'}}><div className='registrieren_botton' style={{marginTop: '-6px',fontSize: '16px'}}> + Kurs anlegen
+                       </div></a>
+                       </div>
+                     </div>
+                 </div>
+
+                </div>
 
                   <AllCourses myEmail={(this.props.location.state==null) ? "" : this.props.location.state.emailUser}/>
                   </div>
