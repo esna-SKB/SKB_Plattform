@@ -122,6 +122,7 @@ Returns all articles -->
 Returns all articles of a course
 
 - Post `/article/course/:name`  
+
 Creates a new article of a course
 
 - GET `/article/:_id`  
@@ -160,6 +161,7 @@ Returns a specific group from a specific courses by id
 Updates a specific group from a specific course by id
 
 - DELETE `/group/:_id`  
+
 Deletes a specific group from a specific course by id
 
 #DataObjects: 
@@ -172,6 +174,7 @@ Enrolls a user in to a course
 
 - DELETE `/enrollment/user/:email/course/name`
 Signeds a user out of a course
+
 
 ## User
 

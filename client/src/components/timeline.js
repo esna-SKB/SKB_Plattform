@@ -22,25 +22,7 @@ class Timeline extends Component {
 
   }
   componentDidMount() {
-    var allcourses;
-    fetch('/course/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    }
-    ).then(res => res.json())
-    .then(json => {
-      allcourses = json
-      for (var key in allcourses) {
-          console.log(allcourses[key].name);
-          var target = document.getElementById('allcourses')
-          var node = document.createElement("p");                 // Create a <li> node
-          var textnode = document.createTextNode(allcourses[key].name);         // Create a text node
-          node.appendChild(textnode);
-          target.appendChild(node);
-      }
-    });
+    
   }
 
   logout(){
@@ -119,12 +101,12 @@ class Timeline extends Component {
               <button type="button" className="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {(this.props.location.state==null) ? "You seem to be logout out this is a bug" : this.props.location.state.emailUser}
               </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="/profile">Mein Profil</a>
-                <a class="dropdown-item" href="/settings">Einstellungen</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
+              <div className="dropdown-menu">
+                <a className="dropdown-item" href="/profile">Mein Profil</a>
+                <a className="dropdown-item" href="/settings">Einstellungen</a>
+                <a className="dropdown-item" href="#">Something else here</a>
+                <div className="dropdown-divider"></div>
+                <a className="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
               </div>
             </div>
           </ul>

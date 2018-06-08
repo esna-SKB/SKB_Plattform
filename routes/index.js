@@ -12,6 +12,7 @@ router.use('/timeline', require('./timeline'))
 router.use('/userSession', require('./userSession'))
 router.use('/enrollment', require('./enrollment'))
 
+
 router.get('/', function(req, res) {
 	console.log("index call /");
 	res.status(214).send('hello index there');

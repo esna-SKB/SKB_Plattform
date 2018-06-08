@@ -79,6 +79,7 @@ class Signup extends Component {
           signUpFirstNameValid.style.color = 'black';
         if (signUpFirstNameValid.value.length === 0){
 
+
           //fehlermeldung für den Nutzer
 
 
@@ -131,6 +132,7 @@ class Signup extends Component {
         if (signUpEmailValid.value.match(/^([\w.-]+)@([\w-]+\.)+([\w]{2,})$/i) == null){
 
           //fehlermeldung für den Nutzer
+
 
           signUpEmailValid.style.color = 'red';
           signUpEmailValid.classList.add('errorshake');
