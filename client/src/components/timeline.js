@@ -105,7 +105,7 @@ class Timeline extends Component {
                 {(this.props.location.state==null) ? "You seem to be logout out this is a bug" : this.props.location.state.emailUser}
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Mein Profil</a>
+                <a class="dropdown-item" href="/profile">Mein Profil</a>
                 <a class="dropdown-item" href="/settings">Einstellungen</a>
                 <a class="dropdown-item" href="#">Something else here</a>
                 <div class="dropdown-divider"></div>

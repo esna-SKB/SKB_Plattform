@@ -33,7 +33,7 @@ getUser: function(email){
  * PUT /user/:email
  * updates an user object
 */
-updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, isValide){
+updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, isValide, description, iCan, iLearn, iTeach, website){
   return fetch('/user/' + email, {
     method: 'PUT',
     headers: {
@@ -46,7 +46,12 @@ updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, i
       email: email,
       isTeacher: isTeacher,
       isAdmin: isAdmin,
-      isValide: isValide
+      isValide: isValide,
+	  description: description,
+	  iCan: iCan,
+	  iLearn: iLearn,
+	  iTeach: iTeach,
+	  website: website
     }),
   })
   .then(res => res.json())

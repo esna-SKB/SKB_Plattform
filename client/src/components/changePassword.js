@@ -173,7 +173,7 @@ class ChangePassword extends Component {
               <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="btnUsername">SKB User
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Mein Profil</a>
+                <a class="dropdown-item" href="/profile">Mein Profil</a>
                 <a class="dropdown-item" href="/settings">Einstellungen</a>
                 <a class="dropdown-item" href="#">Something else here</a>
                 <div class="dropdown-divider"></div>
@@ -233,7 +233,7 @@ class ChangePassword extends Component {
 				<div className="row box ">
 					<div className="col-sm-12">
 							<div className="row center-block">
-									<h4 className="title"><strong>Profil ändern</strong></h4>
+									<h4 className="title"><strong>Passwort ändern</strong></h4>
 							</div>	
 							
 							<form>

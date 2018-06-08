@@ -9,6 +9,8 @@ import Meow from'../img/meow.png';
 import cookie from 'react-cookies';
 import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper'; 
 
+const api = require('../api');
+
 
 class Profileedit extends Component {
 	constructor(props) {
@@ -32,122 +34,116 @@ class Profileedit extends Component {
 	
 	}
 	
-	
-	componentDidMount(){
-	/*	//get email
+	onSave(){
+		//get email
 		var token = cookie.load('userID');
-		fetch('userSession/email/${token}', {
+		var email;
+		console.log("token tosend fetch: "+ token);
+		fetch('userSession/'+ token+ '/email', {
 		  method: 'GET',
 		  headers: {
 			'Content-Type': 'application/json',
 		  }
 
-		}).then(res => {
-			if(res == 'No User Session found)'){
-				console.log("no user in session found");
-			}else{
-				this.setState({
-					email: res	
-				});
-				console.log("your email is: " + this.email);
-			}
+		}).then(res => res.json())
+			.then(json => {
+				//get current Userdata
+				//userId = email
+				api.getUser(json.userId)
+				.then(json => { 
+					var des, can, learn, teach, web;
+					
+					//check if anything is left empty
+					if(document.getElementById("description").value.length == 0){
+						des = "";	
+					}else{
+						des = document.getElementById("description").value;
+					}
+					
+					if(document.getElementById("iCan").value.length == 0){
+						can = "";
+					}else{
+						can = document.getElementById("iCan").value;
+					}
+					
+					if(document.getElementById("iLearn").value.length == 0){
+						learn = "";
+					}else{
+						learn = document.getElementById("iLearn").value;
+					}
+					
+					if(document.getElementById("iTeach").value.length == 0){
+						teach = "";	
+					}else{
+						teach = document.getElementById("iTeach").value;
+					}
+				
+					if(document.getElementById("website").value.length == 0){
+						web = ""	
+					}else{
+						web = document.getElementById("website").value;
+					}
+					
+					api.updateUser(json.email, json.firstname, json.lastname, json.email, json.isTeacher, json.isAdmin, json.isValide, des, can, learn, teach,web );
 			
-		})*/
-		
-
-		//test state
-		var	firstname ="Margetha";
-		var	lastname = "Hennes";
-		var	isTeacher= true;
-		var	isAdmin= false;
-		var	description = "This is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is me";
-		var	iCan= "Französisch(B2),Deutsch";
-		var	iLearn="Spanisch";
-		var	iTeach="Leben kennen lernen und lieben";
-		var	website="http://esna.de";
-		var	email= "magii.el@hotmail.de";
-		var countCourses = 4;
-		var countGroups = 3;
-
-		
-		//get rest
-		 /*fetch("/user/magii.el@hotmail.de", {
-
+				});
+			
+			});
+	}
+	
+	componentDidMount(){
+		//get email
+		var token = cookie.load('userID');
+		var email;
+		console.log("token tosend fetch: "+ token);
+		fetch('userSession/'+ token+ '/email', {
 		  method: 'GET',
 		  headers: {
 			'Content-Type': 'application/json',
-			
+		  }
 
-		  }}).then(res => res.json()).then(json => {
-					console.log('json', json);
-					this.setState({
-					  firstname: json.firstname,
-					  lastname: json.lastname,
-					  isTeacher: json.isTeacher,
-					  isAdmin: json.isAdmin,
-					  description: json.description,
-					  iCan: json.iCan,
-					  iLearn: json.iLearn,
-					  iTeach: json.iTeach,
-					  website: json.website,
-					  errorMessage: '',
-					  infoMessage: ''
-					});
+		}).then(res => res.json())
+      .then(json => {
+			//set email in html
+			email = json.userId;
+			console.log("response is: "+ json);
+			console.log("your email is: " + email);
+
+			api.getUser(email)
+      	.then(json => {
+					//set information in html
+					document.getElementById("description").value = json.description;
+					document.getElementById("iCan").value = json.iCan;
+					document.getElementById("iLearn").value = json.iLearn;
+					document.getElementById("iTeach").value = json.iTeach;
+					document.getElementById("website").value = json.website;
+
+					//dummy values
+					var countCourses = 4;
+					var countGroups = 3;
+					document.getElementById("countCourses").innerHTML = countCourses;
+					document.getElementById("countGroups").innerHTML = countGroups;
+					//document.getElementById("countCourses2").innerHTML = countCourses;
+					//document.getElementById("countGroups2").innerHTML = countGroups;
+
+					//isadmin abfangen?
+					if(json.isTeacher){
+						document.getElementById("learn").style.display = 'none';
+						document.getElementById("can").style.display = 'none';
+						document.getElementById("teach").style.display = 'block';
+
+
+					}else{
+						document.getElementById("learn").style.display = 'block';
+						document.getElementById("can").style.display = 'block';
+						document.getElementById("teach").style.display = 'none';
+					}
 				});
-			*/
-
-			
-			//set information in html
-			document.getElementById("description").value = description;
-			document.getElementById("iCan").value = iCan;
-			document.getElementById("iLearn").value = iLearn;
-			document.getElementById("iTeach").value = iTeach;
-
-			//isadmin abfangen
-			if(isTeacher){
-				document.getElementById("learn").style.display = 'none';
-				document.getElementById("can").style.display = 'none';
-				document.getElementById("teach").style.display = 'block';
-				//rolle = Lehrer_in
-				//ican/ilearn mit iteach und freie Kurse austauschen
-			}else{
-				document.getElementById("learn").style.display = 'block';
-				document.getElementById("can").style.display = 'block';
-				document.getElementById("teach").style.display = 'none';
-				//document.getElementById("role").innerHTML = "Student_in";
+			});
 	
-			}
-      }
+    }
 
-
-  // logout() {
-  //   this.setState({
-  //     isLoading: true,
-  //   });
-  //   const obj = getFromStorage('the_main_app');
-  //   if (obj && obj.token) {
-  //     const { token } = obj;
-  //     // Verify token
-  //     fetch('/api/account/logout?token=' + token)
-  //       .then(res => res.json())
-  //       .then(json => {
-  //         if (json.success) {
-  //           this.setState({
-  //             token: '',
-  //             isLoading: false
-  //           });
-  //         } else {
-  //           this.setState({
-  //             isLoading: false,
-  //           });
-  //         }
-  //       });
-  //   } else {
-  //     this.setState({
-  //       isLoading: false,
-  //     });
-  //   }
-  // }
+	  
 
   render() {
 
@@ -193,9 +189,10 @@ class Profileedit extends Component {
               <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="btnUsername">SKB User
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Mein Profil</a>
+                <a class="dropdown-item" href="/profile">Mein Profil</a>
                 <a class="dropdown-item" href="/settings">Einstellungen</a>
                 <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
               </div>
@@ -284,6 +281,11 @@ class Profileedit extends Component {
 											<small  id="Help2" class="form-text text-muted">zum Beispiel Englisch, Spanisch A2, Arabisch A1</small>
 										</div>
 										
+										<div class="form-group row newpart" id="teach">
+											<label  for="iTeach">Website:</label>
+											<input  type="text" class="form-control" id="website"></input>
+										</div>
+										
 									</div>
 								</div>
 								<div className="row checkBoxes">
@@ -302,7 +304,7 @@ class Profileedit extends Component {
 										</div>
 									</div>
 								</div>
-								<button type="submit" class="btn btn-primary">Speichern</button>
+								<button type="button" class="btn btn-primary" onClick={this.onSave}>Speichern</button>
 							</form>
 							<div className="row-12 text-muted text-right">
 								<div className="col-12">

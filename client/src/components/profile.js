@@ -55,7 +55,7 @@ class Profile extends Component {
 
 		}).then(res => res.json())
       .then(json => {
-      //set email in html
+		//set email in html
       	email = json.userId;
 				document.getElementById("email").innerHTML = email;
 				document.getElementById("email").setAttribute("href","to:"+ email);
@@ -64,7 +64,7 @@ class Profile extends Component {
 
 				api.getUser(email)
       	.then(json => {
-			//set information in html
+					//set information in html
 					document.getElementById("YourName01").innerHTML = json.firstname+" "+json.lastname;
 					document.getElementById("YourName02").innerHTML = json.firstname+" "+json.lastname;
 					document.getElementById("btnUsername").innerHTML = json.firstname+" "+json.lastname;
@@ -161,7 +161,7 @@ class Profile extends Component {
               <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="btnUsername">
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Mein Profil</a>
+                <a class="dropdown-item" href="/profile">Mein Profil</a>
                 <a class="dropdown-item" href="/settings">Einstellungen</a>
                 <a class="dropdown-item" href="#">Something else here</a>
                 <div class="dropdown-divider"></div>
