@@ -8,7 +8,9 @@ const Enrollment = require('../models/enrollment');
 router.route('/')
 	//get all users
 	.get((req, res, next) => {
-		User.find({},{_id:0, firstname:1, lastname:2, email:3, isTeacher:4, isAdmin:5, isValide:6, description:7, iCan:8, iLearn:9,iTeach:10,website:11}, function(err, users){
+
+		User.find({},{}, function(err, users){
+
 			if (err) {
 	           console.log('error occured in the database');
 	           return res.status(500).send('error occured in the database');
