@@ -8,6 +8,7 @@ import Profile from './components/profile';
 import Profileedit from './components/profileedit';
 import Settings from './components/settings';
 import Course from './components/course';
+import CreateCourse from './components/createcourse';
 import ForgotPassword from './components/forgotPassword';
 import ResetPassword from './components/resetPassword';
 import VerifyRegistration from './components/verifyRegistration'
@@ -29,6 +30,7 @@ ReactDOM.render(
 	  <Route path='/profileedit' component={Profileedit}/>
 	  <Route path='/settings' component={Settings}/>
       <Route path='/course' component={Course}/>
+      <Route path='/createcourse' component={CreateCourse}/>
       <Route path='/forgotPassword' component={ForgotPassword}/>
       <Route path='/resetPassword' component={ResetPassword}/>
       <Route path='/verify' component={VerifyRegistration}/>
