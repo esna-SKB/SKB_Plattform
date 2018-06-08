@@ -30,7 +30,6 @@ router.route('/:email')
 	           console.log('error occured in the database');
 	           return res.status(500).send({success:false, message:'error occured in the database'});
 			} else {
-				console.log(user)
 				return res.status(200).send(user);
 	       	}
 		})
