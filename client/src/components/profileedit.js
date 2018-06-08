@@ -9,6 +9,8 @@ import Meow from'../img/meow.png';
 import cookie from 'react-cookies';
 import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper'; 
 
+const api = require('../api');
+
 
 class Profileedit extends Component {
 	constructor(props) {
@@ -32,130 +34,121 @@ class Profileedit extends Component {
 	
 	}
 	
-	
-	componentDidMount(){
-	/*	//get email
+	onSave(){
+		//get email
 		var token = cookie.load('userID');
-		fetch('userSession/email/${token}', {
+		var email;
+		console.log("token tosend fetch: "+ token);
+		fetch('userSession/'+ token+ '/email', {
 		  method: 'GET',
 		  headers: {
 			'Content-Type': 'application/json',
 		  }
 
-		}).then(res => {
-			if(res == 'No User Session found)'){
-				console.log("no user in session found");
-			}else{
-				this.setState({
-					email: res	
-				});
-				console.log("your email is: " + this.email);
-			}
+		}).then(res => res.json())
+			.then(json => {
+				//get current Userdata
+				//userId = email
+				api.getUser(json.userId)
+				.then(json => { 
+					var des, can, learn, teach, web;
+					
+					//check if anything is left empty
+					if(document.getElementById("description").value.length == 0){
+						des = "";	
+					}else{
+						des = document.getElementById("description").value;
+					}
+					
+					if(document.getElementById("iCan").value.length == 0){
+						can = "";
+					}else{
+						can = document.getElementById("iCan").value;
+					}
+					
+					if(document.getElementById("iLearn").value.length == 0){
+						learn = "";
+					}else{
+						learn = document.getElementById("iLearn").value;
+					}
+					
+					if(document.getElementById("iTeach").value.length == 0){
+						teach = "";	
+					}else{
+						teach = document.getElementById("iTeach").value;
+					}
+				
+					if(document.getElementById("website").value.length == 0){
+						web = ""	
+					}else{
+						web = document.getElementById("website").value;
+					}
+					
+					api.updateUser(json.email, json.firstname, json.lastname, json.email, json.isTeacher, json.isAdmin, json.isValide, des, can, learn, teach,web );
 			
-		})*/
-		
-
-		//test state
-		var	firstname ="Margetha";
-		var	lastname = "Hennes";
-		var	isTeacher= false;
-		var	isAdmin= false;
-		var	description = "This is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is me";
-		var	iCan= "Französisch(B2),Deutsch";
-		var	iLearn="Spanisch";
-		var	iTeach="";
-		var	website="http://esna.de";
-		var	email= "magii.el@hotmail.de";
-		var countCourses = 4;
-		var countGroups = 3;
-
-		
-		//get rest
-		 /*fetch("/user/magii.el@hotmail.de", {
-
+				});
+			
+			});
+	}
+	
+	componentDidMount(){
+		//get email
+		var token = cookie.load('userID');
+		var email;
+		console.log("token tosend fetch: "+ token);
+		fetch('userSession/'+ token+ '/email', {
 		  method: 'GET',
 		  headers: {
 			'Content-Type': 'application/json',
-			
+		  }
 
-		  }}).then(res => res.json()).then(json => {
-					console.log('json', json);
-					this.setState({
-					  firstname: json.firstname,
-					  lastname: json.lastname,
-					  isTeacher: json.isTeacher,
-					  isAdmin: json.isAdmin,
-					  description: json.description,
-					  iCan: json.iCan,
-					  iLearn: json.iLearn,
-					  iTeach: json.iTeach,
-					  website: json.website,
-					  errorMessage: '',
-					  infoMessage: ''
-					});
+		}).then(res => res.json())
+      .then(json => {
+			//set email in html
+			email = json.userId;
+			console.log("response is: "+ json);
+			console.log("your email is: " + email);
+
+			api.getUser(email)
+      	.then(json => {
+					//set information in html
+					document.getElementById("description").value = json.description;
+					document.getElementById("iCan").value = json.iCan;
+					document.getElementById("iLearn").value = json.iLearn;
+					document.getElementById("iTeach").value = json.iTeach;
+					document.getElementById("website").value = json.website;
+
+					//dummy values
+					var countCourses = 4;
+					var countGroups = 3;
+					document.getElementById("countCourses").innerHTML = countCourses;
+					document.getElementById("countGroups").innerHTML = countGroups;
+					//document.getElementById("countCourses2").innerHTML = countCourses;
+					//document.getElementById("countGroups2").innerHTML = countGroups;
+
+					//isadmin abfangen?
+					if(json.isTeacher){
+						document.getElementById("learn").style.display = 'none';
+						document.getElementById("can").style.display = 'none';
+						document.getElementById("teach").style.display = 'block';
+
+
+					}else{
+						document.getElementById("learn").style.display = 'block';
+						document.getElementById("can").style.display = 'block';
+						document.getElementById("teach").style.display = 'none';
+					}
 				});
-			*/
-
-			
-			//set information in html
-			document.getElementById("YourName01").innerHTML = firstname+" "+lastname;
-			document.getElementById("YourName02").innerHTML = firstname+" "+lastname;
-			document.getElementById("countCourses").innerHTML = countCourses;
-			document.getElementById("countGroups").innerHTML = countGroups;
-			document.getElementById("countCourses2").innerHTML = countCourses;
-			document.getElementById("countGroups2").innerHTML = countGroups;
-			document.getElementById("description").innerHTML = description;
-			document.getElementById("iCan").innerHTML = iCan;
-			document.getElementById("iLearn").innerHTML = iLearn;
-			document.getElementById("email").innerHTML = email;
-			document.getElementById("email").setAttribute("href","to:"+ email);
-			document.getElementById("website").innerHTML = website;
-			document.getElementById("website").setAttribute("href", website);
-
-			//isadmin abfangen
-			if(isTeacher){
-				//rolle = Lehrer_in
-				//ican/ilearn mit iteach und freie Kurse austauschen
-			}else{
-				document.getElementById("role").innerHTML = "Student_in";
+			});
 	
-			}
-      }
+    }
 
-
-  // logout() {
-  //   this.setState({
-  //     isLoading: true,
-  //   });
-  //   const obj = getFromStorage('the_main_app');
-  //   if (obj && obj.token) {
-  //     const { token } = obj;
-  //     // Verify token
-  //     fetch('/api/account/logout?token=' + token)
-  //       .then(res => res.json())
-  //       .then(json => {
-  //         if (json.success) {
-  //           this.setState({
-  //             token: '',
-  //             isLoading: false
-  //           });
-  //         } else {
-  //           this.setState({
-  //             isLoading: false,
-  //           });
-  //         }
-  //       });
-  //   } else {
-  //     this.setState({
-  //       isLoading: false,
-  //     });
-  //   }
-  // }
+	  
 
   render() {
 
     //Checks if there is an active UserSession
-   /* fetch('/userSession/check', {
+    fetch('/userSession/check', {
 
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -170,7 +163,7 @@ class Profileedit extends Component {
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
         
       }
-    });*/
+    });
 
     return (
       <div>
@@ -192,6 +185,18 @@ class Profileedit extends Component {
           <ul className="nav navbar-nav navbar-right">
             <li><a href="#"><img id="chat" className="icon" src={Chat} alt="Chat"/></a></li>
             <li><a href="#"><img id="notifications" className="icon" src={Bell} alt="Bell"/></a></li>
+			<div class="btn-group">
+              <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="btnUsername">SKB User
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/profile">Mein Profil</a>
+                <a class="dropdown-item" href="/settings">Einstellungen</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
+              </div>
+            </div>
           </ul>
 
         </div>
@@ -227,7 +232,7 @@ class Profileedit extends Component {
           <div className="row">
             <div className="box col text-center">
 			<div className="profilepicleft fill" ><img src={Meow} alt="meow" ></img></div>
-				<p></p><p><strong id="YourName01"></strong></p>
+				<p></p><p><strong id="YourName01">SKB User</strong></p>
             </div>
           </div>
           <div className="row">
@@ -243,76 +248,74 @@ class Profileedit extends Component {
 
         <div className="col col-sm-6">
 				<div className="row box ">
-					<div className="col">
-						<div className="col">
-							<div className="row center-block ">
-								<div className="col white profilepicbig fill " >
-									<img src={Meow} alt="meow" ></img>	
-								</div>
-								<div className="col">
-									<div className="row">
-										<h4 className="title"><strong id="YourName02"></strong></h4>
-									</div>
-									<div className="row text-muted">
-										<p className="lineup" id="role"></p>
-									</div>
-									<div className="row">
-										<div className=" col-md-6 text-center">
-											<strong id ="countCourses2">2</strong><br /><small className="text-muted">Kurse</small>
-										</div>
-										<div className=" col-md-6 text-center">
-											<strong  id="countGroups2">5</strong><br /><small className="textstrong text-muted">Gruppen</small>
-										</div>
-									</div>
-								</div>
-							</div>		
-						</div>
-						<div className="row-12 text-muted">
-								<div className="col-12 description" id="description"></div>
-						</div>
-						<div className="row-12 text-muted text-right">
-							<div className="col-12">
-								<a href="/profileedit">Profil bearbeiten</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-				
-				<div className="row box newpart">
 					<div className="col-sm-12">
-						<div className="col">
-							<div className="row  text-muted">
-								<div className="col-4">ich kann:</div>
-								<div className="col-8" id="iCan"></div>
+							<div className="row center-block">
+									<h4 className="title"><strong>Profil bearbeiten</strong></h4>
+							</div>	
+							
+							<form>
+								<div className="row">
+									<div className="col">
+										<div></div>
+										<div class="form-group row newpart" >
+											<label for="description">Beschreibung</label>
+											<textarea class="form-control" id="description" rows="3" aria-describedby="Help1"></textarea>
+											<small  id="Help1" class="form-text text-muted">Erzähle etwas über dich. Suchst du nach einer Gruppe zum lernen? Was sind deine Hobbies? </small>
+										</div>
+										
+										<div class="form-group row newpart" id="can">
+											<label  for="exampleInputEmail1">ich kann:</label>
+											<input  type="text" class="form-control" id="iCan" aria-describedby="Help"></input>
+											<small  id="Help" class="form-text text-muted">Erzähle, welche Sprachen du schon alle beherrschst. zum Beispiel Englisch B2 , Deutsch(Muttersprache)</small>
+										</div>
+										
+										<div class="form-group row newpart" id="learn">
+											<label  for="iLearn">ich lerne:</label>
+											<input  type="text" class="form-control" id="iLearn" aria-describedby="Help3"></input>
+											<small  id="Help2" class="form-text text-muted">zum Beispiel Englisch B2, Deutsch , Arabisch</small>
+										</div>
+										
+										<div class="form-group row newpart" id="teach">
+											<label  for="iTeach">ich bringe bei:</label>
+											<input  type="text" class="form-control" id="iTeach" aria-describedby="Help2"></input>
+											<small  id="Help2" class="form-text text-muted">zum Beispiel Englisch, Spanisch A2, Arabisch A1</small>
+										</div>
+										
+										<div class="form-group row newpart" id="teach">
+											<label  for="iTeach">Website:</label>
+											<input  type="text" class="form-control" id="website"></input>
+										</div>
+										
+									</div>
+								</div>
+								<div className="row checkBoxes">
+									<div className="col">
+										<div class="form-group form-check row">
+											<input type="checkbox" class="form-check-input" id="Check1"></input>
+											<label class="form-check-label" for="exampleCheck1">Zeige deine Email-Adresse an</label>
+										</div>
+										<div class="form-group form-check row" id="countgroup">
+											<input type="checkbox" class="form-check-input" id="eCheck2"></input>
+											<label class="form-check-label" for="exampleCheck1">Zeige deine Gruppenanzahl an</label>
+										</div>
+										<div class="form-group form-check row" id="countKurs">
+											<input type="checkbox" class="form-check-input" id="Check3"></input>
+											<label class="form-check-label" for="exampleCheck1">Zeige deine Kursanzahl an</label>
+										</div>
+									</div>
+								</div>
+								<button type="button" class="btn btn-primary" onClick={this.onSave}>Speichern</button>
+							</form>
+							<div className="row-12 text-muted text-right">
+								<div className="col-12">
+									<a href="/profile">zurück</a>
+								</div>
 							</div>
-							<div className="row "><p></p></div>
-							<div className="row lineup"><p></p></div>
-							<div className="row text-muted ">
-								<div className="col-4">ich lerne:</div>
-								<div className="col-8" id="iLearn"></div>
-							</div>
-						</div>
+						
 					</div>
 				</div>
+			
 				
-				
-				<div className="row box newpart">
-					<div className=" col-sm-12">
-						<div className="col">
-								<div className="row  text-muted">
-								<div className="col-4">E-Mail:</div>
-								<a className="col-8" id="email"></a>
-							</div>
-							<div className="row "><p></p></div>
-							<div className="row lineup"><p></p></div>
-							<div className="row text-muted ">
-								<div className="col-4">Website:</div>
-								<a className="col-8" id="website"></a>
-							</div>
-						</div>
-					</div>
-				</div>
 		</div>
 				
 				

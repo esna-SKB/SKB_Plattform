@@ -5,6 +5,8 @@ import Bell from'../img/bell-icon.png';
 import Chat from'../img/chat-icon.png';
 import '../css/timeline.css';
 
+import Meow from'../img/meow.png';
+
 import cookie from 'react-cookies';
 import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper';
 
@@ -86,6 +88,18 @@ class Course extends Component {
           <ul className="nav navbar-nav navbar-right">
             <li><a href="#"><img id="chat" className="icon" src={Chat} alt="Chat"/></a></li>
             <li><a href="#"><img id="notifications" className="icon" src={Bell} alt="Bell"/></a></li>
+			<div className="btn-group">
+              <button type="button" className="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {(this.props.location.state==null) ? "You seem to be logout out this is a bug" : this.props.location.state.emailUser}
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/profile">Mein Profil</a>
+                <a class="dropdown-item" href="/settings">Einstellungen</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
+              </div>
+            </div>
           </ul>
 
         </div>
@@ -294,9 +308,10 @@ class Course extends Component {
 
           <div className="col col-sm-3">
             <div className="row">
-              <div className="box col-sm-12 text-center">
-              <strong>SKB User</strong>
-              </div>
+               <a className="box col-12 text-center" href="/profile">
+				<div className="profilepicleft fill" ><img src={Meow} alt="meow" ></img></div>
+				<p></p><p><strong id="YourName01">SKB User</strong></p>
+            </a>
             </div>
 
             <div className="row" style={{marginBottom:'10px'}}>

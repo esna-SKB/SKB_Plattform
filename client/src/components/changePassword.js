@@ -4,22 +4,100 @@ import Logo from'../img/esna.png';
 import Bell from'../img/bell-icon.png';
 import Chat from'../img/chat-icon.png';
 import '../css/timeline.css';
-import '../css/profile.css';
-/*add this css if you want the profile image on the left (circular)*/
-import '../css/profilepicture.css';
 import Meow from'../img/meow.png';
 
 import cookie from 'react-cookies';
 import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper'; 
 
 
-class Settings extends Component {
+class ChangePassword extends Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+		  status: 0,
+		  firstname: '',
+		  lastname: '',
+		  email: '',
+		  isTeacher: false,
+		  isAdmin: false,
+		  description: '',
+		  iCan: '',
+		  iLearn: '',
+		  iTeach: '',
+		  website: '',
+		  errorMessage: '',
+		  infoMessage: ''
+		}	
 	
 	}
 	
+	
+	componentDidMount(){
+	/*	//get email
+		var token = cookie.load('userID');
+		fetch('userSession/email/${token}', {
+		  method: 'GET',
+		  headers: {
+			'Content-Type': 'application/json',
+		  }
 
+		}).then(res => {
+			if(res == 'No User Session found)'){
+				console.log("no user in session found");
+			}else{
+				this.setState({
+					email: res	
+				});
+				console.log("your email is: " + this.email);
+			}
+			
+		})*/
+		
+
+		//test state
+		var	firstname ="Margetha";
+		var	lastname = "Hennes";
+		var	isTeacher= true;
+		var	isAdmin= false;
+		var	description = "This is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is meThis is me This is me This is me This is me";
+		var	iCan= "Französisch(B2),Deutsch";
+		var	iLearn="Spanisch";
+		var	iTeach="Leben kennen lernen und lieben";
+		var	website="http://esna.de";
+		var	email= "magii.el@hotmail.de";
+		var countCourses = 4;
+		var countGroups = 3;
+
+		
+		//get rest
+		 /*fetch("/user/magii.el@hotmail.de", {
+
+		  method: 'GET',
+		  headers: {
+			'Content-Type': 'application/json',
+			
+
+		  }}).then(res => res.json()).then(json => {
+					console.log('json', json);
+					this.setState({
+					  firstname: json.firstname,
+					  lastname: json.lastname,
+					  isTeacher: json.isTeacher,
+					  isAdmin: json.isAdmin,
+					  description: json.description,
+					  iCan: json.iCan,
+					  iLearn: json.iLearn,
+					  iTeach: json.iTeach,
+					  website: json.website,
+					  errorMessage: '',
+					  infoMessage: ''
+					});
+				});
+	*/
+
+	
+      }
 
 
   // logout() {
@@ -54,7 +132,7 @@ class Settings extends Component {
   render() {
 
     //Checks if there is an active UserSession
-   fetch('/userSession/check', {
+    fetch('/userSession/check', {
 
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -92,8 +170,7 @@ class Settings extends Component {
             <li><a href="#"><img id="chat" className="icon" src={Chat} alt="Chat"/></a></li>
             <li><a href="#"><img id="notifications" className="icon" src={Bell} alt="Bell"/></a></li>
 			<div class="btn-group">
-              <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="btnUsername">
-			  SKB User
+              <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="btnUsername">SKB User
               </button>
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="/profile">Mein Profil</a>
@@ -154,34 +231,51 @@ class Settings extends Component {
 
         <div className="col col-sm-6">
 				<div className="row box ">
-					<div className="col-12">
-						<div className="col-12">
-							<h4 className="row">Einstellungen</h4>
+					<div className="col-sm-12">
+							<div className="row center-block">
+									<h4 className="title"><strong>Passwort ändern</strong></h4>
+							</div>	
 							
-							<div className="row"><a href="/changepassword" className="text-muted">Passwort ändern</a></div>	
-							<div className="row"><a href="/profileedit" className="text-muted">Profil bearbeiten</a></div>	
-							<div className="row"><a href="/" className="text-muted">Kontaktdaten ändern</a></div>	
-							<div className="row"><a href="" className="text-muted">Mitteilungenkonfigurationen</a></div>	
-							<div className="row"><a href="" className="text-muted">Sicherheitsschlüssel</a></div>	
-							<div className="row"><a href="" className="text-muted">Feedback</a></div>	
-							<div className="row"><a href="" className="text-muted">Kalendereinstellungen</a></div>	
-							<div className="row"><a href="" className="text-muted">Kalendereinstellungen</a></div>	
-								
-						</div>
-
-						<div className="row-12 text-muted text-right">
-							<div className="col-12">
-								<a href="/profile">zurück</a>
+							<form>
+								<div className="row">
+									<div className="col">
+										<div class="form-group row newpart">
+											<label for="oldpwd">altes Passwort eingeben:</label>
+											<input type="password" class="form-control" id="oldpwd"></input>
+										</div>
+										
+										<div class="form-group row newpart">
+											<label for="newpwd">neues Passwort eingeben:</label>
+											<input type="password" class="form-control" id="newpwd" placeholder="mindestens 8 Zeichen"></input>
+										</div>
+										
+										<div class="form-group row newpart">
+											<label for="newpwd2">neues Passwort wiederholen:</label>
+											<input type="password" class="form-control" id="newpwd2" placeholder="mindestens 8 Zeichen"></input>
+										</div>
+										
+									</div>
+								</div>
+								<div className="row-12 text-muted text-left newpart">
+										<a href="/forgotPassword">Passwort vergessen?</a>
+								</div>
+								<button type="submit" class="btn btn-primary">Passwort ändern</button>
+							</form>
+							<div className="row-12 text-muted text-right">
+								<div className="col-12">
+									<a href="/profile">zurück</a>
+								</div>
 							</div>
-						</div>
+						
 					</div>
 				</div>
-				
+			
 				
 		</div>
 				
 				
-		
+			
+				  
 			
         <div className="col col-sm-3">
             <div className="row">
@@ -198,4 +292,4 @@ class Settings extends Component {
   }
 }
 
-export default Settings;
+export default ChangePassword;

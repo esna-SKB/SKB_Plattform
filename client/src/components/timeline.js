@@ -119,12 +119,12 @@ class Timeline extends Component {
               <button type="button" className="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {(this.props.location.state==null) ? "You seem to be logout out this is a bug" : this.props.location.state.emailUser}
               </button>
-              <div className="dropdown-menu">
-                <a className="dropdown-item" href="#">Mein Profil</a>
-                <a className="dropdown-item" href="/settings">Einstellungen</a>
-                <a className="dropdown-item" href="#">Something else here</a>
-                <div className="dropdown-divider"></div>
-                <a className="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/profile">Mein Profil</a>
+                <a class="dropdown-item" href="/settings">Einstellungen</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
               </div>
             </div>
           </ul>

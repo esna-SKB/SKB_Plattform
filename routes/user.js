@@ -41,9 +41,9 @@ router.route('/:email')
 		const { isTeacher } = body;
 		const { isAdmin } = body;
 		const { isValide } = body;
-		const { isCan } = body;
-		const { isLearn } = body;
-		const { isTeach } = body;
+		const { iCan } = body;
+		const { iLearn } = body;
+		const { iTeach } = body;
 		const { description } = body;
 		const { website } = body;
 
