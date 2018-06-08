@@ -15,14 +15,31 @@ class Timeline extends Component {
 
   constructor(props){
   super(props);
+
   this.state = {
-    emailUser: null
+    courses : {}
     };
+
   }
   componentDidMount() {
-
-    this.setState({
-      emailUser: (this.props.location.state==null) ? "" : this.props.location.state.emailUser
+    var allcourses;
+    fetch('/course/', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    }
+    ).then(res => res.json())
+    .then(json => {
+      allcourses = json
+      for (var key in allcourses) {
+          console.log(allcourses[key].name);
+          var target = document.getElementById('allcourses')
+          var node = document.createElement("p");                 // Create a <li> node
+          var textnode = document.createTextNode(allcourses[key].name);         // Create a text node
+          node.appendChild(textnode);
+          target.appendChild(node);
+      }
     });
   }
 
@@ -68,16 +85,14 @@ class Timeline extends Component {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify( { token: cookie.load('userID') } )
     }).then (res => {
-
       if(res.status == 500 || res.status == 202){
-
         this.props.history.push("/");
       }else{
-
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(600*20), path: '/'})
-
       }
     });
+
+
 
     return (
     <div style={{backgroundColor: '#f7f8fa'}}>
@@ -212,24 +227,10 @@ class Timeline extends Component {
 
               <div className="tab-pane fade" id="kurse" role="tabpanel" aria-labelledby="kurse-tab">
                   <div className="box">
+
                   <AllCourses myEmail={(this.props.location.state==null) ? "" : this.props.location.state.emailUser}/>
+                  </div>
 
-                  <h3> Kurse </h3>
-
-                  <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                  </p>
-                </div>
               </div>
 
 

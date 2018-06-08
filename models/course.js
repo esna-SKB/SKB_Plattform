@@ -15,6 +15,10 @@ var courseSchema = new Schema({
     description: {
     	type: String,
     	default: ''
+    },
+    isFree: {
+        type: Boolean,
+        default: true
     }
 });
 

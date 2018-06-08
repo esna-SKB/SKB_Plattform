@@ -151,7 +151,7 @@ class Course extends Component {
 <div className="container">
                 <div className="row" style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px'}}>
                     <div className="col-4" style={{textAlign: 'center', borderBottom: '1px solid rgb(0, 127, 178)', marginBottom: '-16px'}}>
-                    <span class="glyphicon glyphicon-pencil"></span>
+                    <span className="glyphicon glyphicon-pencil"></span>
                       Text teilen
                     </div>
 
@@ -363,7 +363,7 @@ class Course extends Component {
   <div className="container">
                   <div className="row" style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px'}}>
                       <div className="col-4" style={{textAlign: 'center', borderBottom: '1px solid rgb(0, 127, 178)', marginBottom: '-16px'}}>
-                      <span class="glyphicon glyphicon-pencil"></span>
+                      <span className="glyphicon glyphicon-pencil"></span>
                         Text teilen
                       </div>
 
