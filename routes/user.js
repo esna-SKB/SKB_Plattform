@@ -25,11 +25,12 @@ router.route('/:email')
 	// get one specific user by email
 	.get((req, res, next) => {
 		var email = req.params.email;
-		User.findOne({email: email},{_id:0, firstname:1, lastname:2, email:3, isTeacher:4, isAdmin:5, isValide:6, description:7, iCan:8, iLearn:9,iTeach:10,website:11}, function(err, user){
+		User.findOne({email: email},{}, function(err, user){
 			if (err){
 	           console.log('error occured in the database');
-	           return res.status(500).send('error occured in the database');
+	           return res.status(500).send({success:false, message:'error occured in the database'});
 			} else {
+				console.log(user)
 				return res.status(200).send(user);
 	       	}
 		})

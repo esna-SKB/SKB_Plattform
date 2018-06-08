@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-import '../main.css';
+import '../../main.css';
 
-import Logo from'../img/esna.png';
+import Logo from'../../img/esna.png';
 
-import Classimg from'../img/nathan-dumlao-572049-unsplash.jpg';
+import Classimg from'../../img/nathan-dumlao-572049-unsplash.jpg';
 
-const api = require('../api');
+const api = require('../../api');
 
 class ForgotPassword extends Component {
 

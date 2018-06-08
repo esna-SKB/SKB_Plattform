@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import '../main.css';
-import Logo from'../img/esna.png';
-import Classimg from'../img/karolina-szczur-504623-unsplash.jpg';
-import Account_Confirm_img from'../img/account_confirm.jpg';
+import '../../main.css';
+import Logo from'../../img/esna.png';
+import Classimg from'../../img/karolina-szczur-504623-unsplash.jpg';
+import Account_Confirm_img from'../../img/account_confirm.jpg';
 
-import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper';
+import { checkUserSession, updateTimeSec } from '../../utils/userSessionHelper';
 import cookie from 'react-cookies';
 
-const api = require('../api');
+const api = require('../../api');
 
 class Signup extends Component {
 

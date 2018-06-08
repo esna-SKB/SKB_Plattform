@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from'../img/esna.png';
-import Bell from'../img/bell-icon.png';
-import Chat from'../img/chat-icon.png';
-import '../css/timeline.css';
-import Meow from'../img/meow.png';
+import Logo from'../../img/esna.png';
+import Bell from'../../img/bell-icon.png';
+import Chat from'../../img/chat-icon.png';
+import '../../css/timeline.css';
+import Meow from'../../img/meow.png';
 
 import cookie from 'react-cookies';
 import { checkUserSession, updateTimeSec } from '../utils/userSessionHelper'; 

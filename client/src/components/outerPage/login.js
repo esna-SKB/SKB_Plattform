@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 
-import '../main.css';
+import '../../main.css';
 
-import Logo from'../img/esna.png';
-import Classimg from'../img/chinese2-min.png';
+import Logo from'../../img/esna.png';
+import Classimg from'../../img/chinese2-min.png';
 
-import { setInStorage, getFromStorage, } from '../utils/storage';
+import { setInStorage, getFromStorage, } from '../../utils/storage';
 
 import cookie from 'react-cookies'
-import { checkUserSession, updateUserSession, deleteUserSession, getToken, updateTimeSec } from '../utils/userSessionHelper'
+import { checkUserSession, updateUserSession, deleteUserSession, getToken, updateTimeSec } from '../../utils/userSessionHelper'
 
-const api = require('../api');
+const api = require('../../api');
 
 
 class Login extends Component {
@@ -195,8 +195,9 @@ class Login extends Component {
           });
           //warte kurz weil cookie nicht so schnell speichert?
           //sleep(2000);
+          //this.props.getEmail(signInEmail); 
           this.props.history.push({pathname:"/", state: {emailUser: signInEmail}});
-          document.location.reload();
+          //document.location.reload();
           //this.props.history.push("/timeline");
 
         } else {

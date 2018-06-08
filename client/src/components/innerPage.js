@@ -1,0 +1,25 @@
+import React from 'react';
+
+import Header from './innerPage/header';
+import Body from './innerPage/body';
+
+class InnerPage extends React.Component {
+	constructor(props){
+	super(props);
+	this.state = {
+		user: this.props.user
+		}; 
+	}
+
+	render(){
+		return(
+			<div style={{backgroundColor: '#f7f8fa'}}>
+				<Header user={this.props.user}/>
+				
+				<Body user={this.props.user}/>
+			</div>
+			);
+	}
+}
+
+export default InnerPage; 
