@@ -25,6 +25,7 @@ router.route('/')
 		const { description } = body;
 		const { isFree } = body; 
 
+
 		Course.find({name: name}).exec(function(err, otherCourse){
 			if (err){
 	           return res.status(500).send({
@@ -47,7 +48,7 @@ router.route('/')
 						newCourse.name = name;
 						newCourse.teacher = user._id;
 						newCourse.description = description;
-						newCourse.isFree = (isFree==null) ? true: isFree; 
+						newCourse.isFree = (isFree==null) ? true: isFree;
 						newCourse.save(function(err){
 							if(err) return res.status(500).send("could not save course");
 							else {
