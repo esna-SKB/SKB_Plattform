@@ -7,7 +7,6 @@ import Chat from'../../img/chat-icon.png';
 import '../../css/timeline.css';
 
 import cookie from 'react-cookies';
-import { deleteUserSession } from '../../utils/userSessionHelper';
 
 class Header extends React.Component {
 	constructor(props){
@@ -16,12 +15,9 @@ class Header extends React.Component {
 		user: this.props.user
 		}; 
 	}
-	logout(){
-		deleteUserSession(cookie.load('userID'));
-		this.props.history.push("/");
-	}
 
 	render(){
+		console.log(this.props)
 		return(
 			<nav className="navbar navbar-expand-sm" style={{backgroundColor: 'white'}}>
 		        <div className="container-fluid">
@@ -51,7 +47,7 @@ class Header extends React.Component {
 		                <Link className="dropdown-item" to={`/settings`}>Einstellungen</Link>
 		                <Link className="dropdown-item" to={`/#`}>Something else here</Link>
 		                <div className="dropdown-divider"></div>
-		                <Link className="dropdown-item text-danger" onClick={this.logout} to={`/`}>Log Out</Link>
+		                <Link className="dropdown-item text-danger" onClick={this.props.handleLogout} to={`/`}>Log Out</Link>
 		              </div>
 		            </div>
 		          </ul>

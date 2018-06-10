@@ -132,15 +132,15 @@ class Profile extends Component {
           <ul className="nav navbar-nav navbar-right">
             <li><a href="#"><img id="chat" className="icon" src={Chat} alt="Chat"/></a></li>
             <li><a href="#"><img id="notifications" className="icon" src={Bell} alt="Bell"/></a></li>
-			<div class="btn-group">
-              <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="btnUsername">
+			<div className="btn-group">
+              <button type="button" className="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="btnUsername">
               </button>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="/profile">Mein Profil</a>
-                <a class="dropdown-item" href="/settings">Einstellungen</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
+              <div className="dropdown-menu">
+                <a className="dropdown-item" href="/profile">Mein Profil</a>
+                <a className="dropdown-item" href="/settings">Einstellungen</a>
+                <a className="dropdown-item" href="#">Something else here</a>
+                <div className="dropdown-divider"></div>
+                <a className="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
               </div>
             </div>
           </ul>
@@ -149,23 +149,23 @@ class Profile extends Component {
       </nav>
 
       <div className="background-fluid">
-        <ul class="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
-            <li class = "nav-item">
-                <a class="nav-link "  href="/timeline" role="tab">Lehrer</a>
+        <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
+            <li className = "nav-item">
+                <a className="nav-link "  href="/timeline" role="tab">Lehrer</a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" id="kurse-tab" data-toggle="tab" href="#kurse" role="tab" aria-controls="kurse" aria-selected="false">Kurse</a>
-            </li>
-
-
-            <li class="nav-item">
-                <a class="nav-link" id="gruppen-tab" data-toggle="tab" href="#gruppen" role="tab" aria-controls="gruppen" aria-selected="false">Gruppen</a>
+            <li className="nav-item">
+                <a className="nav-link" id="kurse-tab" data-toggle="tab" href="#kurse" role="tab" aria-controls="kurse" aria-selected="false">Kurse</a>
             </li>
 
 
-            <li class="nav-item">
-                <a class="nav-link" id="kalendar-tab" data-toggle="tab" href="#kalendar" role="tab" aria-controls="kalendar" aria-selected="false">Kalendar</a>
+            <li className="nav-item">
+                <a className="nav-link" id="gruppen-tab" data-toggle="tab" href="#gruppen" role="tab" aria-controls="gruppen" aria-selected="false">Gruppen</a>
+            </li>
+
+
+            <li className="nav-item">
+                <a className="nav-link" id="kalendar-tab" data-toggle="tab" href="#kalendar" role="tab" aria-controls="kalendar" aria-selected="false">Kalendar</a>
             </li>
           </ul>
       </div>

@@ -24,7 +24,6 @@ export class Messages extends React.Component {
 	}
 
 
-
 	render(){
 		return(
 			<Threads/>

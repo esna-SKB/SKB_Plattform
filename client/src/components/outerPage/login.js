@@ -195,7 +195,7 @@ class Login extends Component {
           });
           //warte kurz weil cookie nicht so schnell speichert?
           //sleep(2000);
-          console.log("Email: " + signInEmail); 
+          //console.log("Email: " + signInEmail); 
            //this is a call to the parent App
           //this.props.history.push({pathname:"/"});
           //document.location.reload();

@@ -17,7 +17,7 @@ import CreateCourse from './components/createcourse';
 
 */
 import registerServiceWorker from './registerServiceWorker';
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 
 // ReactDOM.render(<App />, document.getElementById('root'));
 /* <Route path='/profile' component={Profile}/>

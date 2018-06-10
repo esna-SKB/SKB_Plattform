@@ -98,7 +98,7 @@ export function checkUserSession (cook) {
   }*/
 }
 
-export function updateTimeSec (sec) {
+export function updateTimeSec(sec) {
 	var d = new Date();
   d.setTime(d.getTime() + (sec*1000));
 

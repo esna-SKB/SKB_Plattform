@@ -5,11 +5,16 @@ import InnerPage from './innerPage';
 import OuterPage from './outerPage';
 
 import cookie from 'react-cookies';
+import { deleteUserSession } from '../utils/userSessionHelper';
+
 const api = require('../api');
 
 class App extends React.Component {
 	constructor(props){
 	super(props);
+	this.updateEmail = this.updateEmail.bind(this); 
+	this.handleLogout = this.handleLogout.bind(this); 
+	
 	this.state = {
 		user: {},
 		email:"",
@@ -17,7 +22,12 @@ class App extends React.Component {
 		}; 
 	}
 
-	updateEmail = (email) => {
+	handleLogout(){
+		deleteUserSession(cookie.load('userID'));
+		this.setState({valide:false});  //just to reload the root Component App
+	}
+
+	updateEmail(email) {
 		console.log("App: " + email)
 		this.setState({email: email}, 
 			() => console.log("Email this.state: "+ this.state.email)) 
@@ -61,7 +71,7 @@ class App extends React.Component {
 		console.log("bedingung: "+ typeof(this.state.user) +" "+this.state.user.email)
 		if(this.state.valide && typeof this.state.user != 'undefined' && this.state.user.email!=undefined){
 			return(
-				<InnerPage location={this.props.location} user={this.state.user}/>
+				<InnerPage  user={this.state.user} handleLogout={this.handleLogout}/>
 			);
 		} else {
 			return(
