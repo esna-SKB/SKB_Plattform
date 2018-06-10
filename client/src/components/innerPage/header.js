@@ -26,7 +26,7 @@ class Header extends React.Component {
 			<nav className="navbar navbar-expand-sm" style={{backgroundColor: 'white'}}>
 		        <div className="container-fluid">
 		          <div className="navbar-header">
-		            <a className="navbar-brand" href="/"><img id="logo" className="logo" src={Logo} alt="Logo"/></a>
+		            <Link className="navbar-brand" to={`/`}><img id="logo" className="logo" src={Logo} alt="Logo"/></Link>
 
 		          </div>
 
@@ -40,18 +40,18 @@ class Header extends React.Component {
 		          </form>
 
 		          <ul className="nav navbar-nav navbar-right">
-		            <li><a href="#"><img id="chat" className="icon" src={Chat} alt="Chat"/></a></li>
-		            <li><a href="#"><img id="notifications" className="icon" src={Bell} alt="Bell"/></a></li>
+		            <li><Link to={`/messages`}><img id="chat" className="icon" src={Chat} alt="Chat"/></Link></li>
+		            <li><Link to={`/dontknowtowhere`}><img id="notifications" className="icon" src={Bell} alt="Bell"/></Link></li>
 		            <div className="btn-group">
 		              <button type="button" className="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		                {this.props.user.firstname +" "+ this.props.user.lastname}
 		              </button>
 		              <div className="dropdown-menu">
-		                <a className="dropdown-item" href="/profile">Mein Profil</a>
-		                <a className="dropdown-item" href="/settings">Einstellungen</a>
-		                <a className="dropdown-item" href="#">Something else here</a>
+		                <Link className="dropdown-item" to={`/profile`}>Mein Profil</Link>
+		                <Link className="dropdown-item" to={`/settings`}>Einstellungen</Link>
+		                <Link className="dropdown-item" to={`/#`}>Something else here</Link>
 		                <div className="dropdown-divider"></div>
-		                <a className="dropdown-item text-danger" onClick={this.logout} href="/">Log Out</a>
+		                <Link className="dropdown-item text-danger" onClick={this.logout} to={`/`}>Log Out</Link>
 		              </div>
 		            </div>
 		          </ul>

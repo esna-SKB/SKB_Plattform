@@ -25,7 +25,7 @@ class Body extends React.Component {
 			<div className="background-fluid background">
 		        <ul className="nav justify-content-center col-12 centered">
 		            <li className= "nav-item">
-		            	<Link to={`/`}>Timeline</Link>
+		            	<Link to={`/`}>Newsfeed</Link>
 		            </li>
 
 		            <li className="nav-item">
@@ -35,7 +35,7 @@ class Body extends React.Component {
 
 		            <li className="nav-item">
 
-		                <Link to={`/groups`}>Groupes</Link>
+		                <Link to={`/groups`}>Gruppen</Link>
 		            </li>
 		          </ul>
 		    </div>
@@ -48,7 +48,7 @@ class Body extends React.Component {
 
 			        <SmallProfile user={this.props.user}/>
 
-			        <MyCourses/>
+			        <MyCourses myEmail={this.props.user.email} mini={true}/>
 
 		        </div>
 
@@ -73,7 +73,7 @@ class Body extends React.Component {
 						<Route exact path='/profile/' render={(props) => (
 						  <Profile user={this.props.user}/>
 						)}/>
-						<Route exact path='/messages/to/:user' render={(props) => (
+						<Route exact path='/messages/' render={(props) => (
 						  <Profile user={this.props.user}/>
 						)}/>
 					</Switch>

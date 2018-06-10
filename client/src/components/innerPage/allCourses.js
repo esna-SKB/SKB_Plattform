@@ -21,15 +21,50 @@ function getCourses(route, cb){
 		      console.error(error);
 	    });
       }
+function CreateCourseButton(props) {
+	const isTeacher = props.isTeacher; 
+	if(isTeacher){
+		return (
+			<div className="row">
+              <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
+                <div className='row'>
+                   <div className='col-6'>
+     				
+                    </div>
+                   <div className='col-6'>
+                   <Link to={`/createcourse/`} className='whitehover' style={{color: 'white !important'}}>
+                     <div className='registrieren_botton' style={{marginTop: '-6px',fontSize: '16px'}}>
+                      + Kurs anlegen
+                   	 </div>
+                   	 </Link>
+                   </div>
+                 </div>
+              </div>
+            </div>
+			);
+	}else{
+		return(null); 
+	}
+}
 
 function Element(props) {
-	const course = props.course;  
-	return (
+	const course = props.course; 
+	const mini = props.mini; 
+	if(mini){
+		return (
 		<div className="w-100 course-name">
 		<Link to={`/courses/${course.name}`}>{course.name}</Link>
-		<a className="float-right" href={"/user/"+course.teacher.email}>{course.teacher.lastname}</a>
 		</div>
 		); 
+	}else{
+		return (
+		<div className="w-100 course-name">
+		<Link to={`/courses/${course.name}`}>{course.name}</Link>
+		<Link className="float-right" to={`/user/${course.teacher.email}`}>{course.teacher.lastname}</Link>
+		</div>
+		); 
+	}
+	
 }
 
 export class MyCourses extends React.Component {
@@ -45,7 +80,7 @@ export class MyCourses extends React.Component {
 
 			getCourses('/user/'+this.props.myEmail+'/course'
 				, (courses) =>{
-					this.setState({list: courses.map((e)=>{return( <Element key={e._id} course={e}/>);})});
+					this.setState({list: courses.map((e)=>{return( <Element key={e._id} course={e} mini={this.props.mini}/>);})});
 				});
 		}
 	}
@@ -99,34 +134,18 @@ export class AllCourses extends React.Component {
 	constructor(props){
 	super(props);
 	this.state = {
-		myEmail: this.props.myEmail
+		user: this.props.user
 		}; 
 	}
 	render(){
 		return(
 			<div>
-			<div className="row">
-              <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
-                <div className='row'>
-                   <div className='col-6'>
-                      <h1 style={{fontSize: '30px'}}>Meine Kurse</h1>
-                    </div>
-                   <div className='col-6'>
-                     <a href="/createcourse" className='whitehover' style={{color: 'white !important'}}>
-                     <div className='registrieren_botton' style={{marginTop: '-6px',fontSize: '16px'}}>
-                      + Kurs anlegen
-                   	 </div>
-                   	 </a>
-                   </div>
-                 </div>
-              </div>
-            </div>
 
-			<div>
-				<MyCourses myEmail={this.props.user.email}/>
+			<CreateCourseButton isTeacher={this.props.user.isTeacher}/>
+
+			<MyCourses myEmail={this.props.user.email}/>
 				
-				<OtherCourses/>
-			</div>
+			<OtherCourses/>
 			</div>
 			);
 	}
