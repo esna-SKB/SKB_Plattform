@@ -20,7 +20,7 @@ class Profile extends Component {
 		super(props);
 
 		this.state = {
-		  user: ""
+		  user: this.props.user
 		}
 
 	}
@@ -32,6 +32,9 @@ class Profile extends Component {
 
 	componentDidMount(){
 		//get email
+
+		//das brauchen wir alles nicht 
+		//zugriff auf user unter this.props.user
 		var token = cookie.load('userID');
 		var email;
 		console.log("token tosend fetch: "+ token);
@@ -108,22 +111,6 @@ class Profile extends Component {
 
 
   render() {
-
-    //Checks if there is an active UserSession
-	fetch('/userSession/check', {
-
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify( { token: cookie.load('userID') } )
-    }).then (res => {
-
-      if(res.status === 500){
-        this.props.history.push("/");
-      }else{
-        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
-
-      }
-    });
 
     return (
       <div>

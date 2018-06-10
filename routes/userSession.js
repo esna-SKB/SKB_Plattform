@@ -167,13 +167,13 @@ router.route('/:token/email').get((req, res, next) =>{
 	UserSession.findOne({token: token}, function(err, usersession){
 		if(err){
 			console.log('error occured in database');
-			return res.send('error occured in database')
+			return res.status(500).send({success: false, message:'error occured in database'})
 		}		
 
 		console.log(usersession);
 		if(!usersession){
 			console.log("No User Session found");
-			return res.send('No User Session found')
+			return res.status(404).send({success: false, message:'No User Session found'})
 		} else {
 			
 			console.log('take your email:'+usersession.userId);
@@ -197,7 +197,7 @@ router.route('/deleteSession').post((req, res, next) =>{
 			});
 		}else if(!usersession){
 			console.log("No User Session found");
-			res.status(202).send({
+			res.status(404).send({
 				success: false,
 				message: 'No User Session found)'
 			});

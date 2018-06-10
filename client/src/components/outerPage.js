@@ -23,14 +23,14 @@ class OuterPage extends React.Component {
 		console.log(this.props.location); 
 		return(
 			<Switch>
-				<Route exact path='/' render={(props) => (
-					<Login location={this.props.location} history={this.props.history}/>
-				)}/>
 	    		<Route path='/signup' component={Signup}/>
 			    <Route path='/forgotPassword' component={ForgotPassword}/>
 			    <Route path='/resetPassword' component={ResetPassword}/>
 			    <Route path='/verify' component={VerifyRegistration}/>
 			    <Route path='/resend' component={SendRegistrationAgain}/>
+				<Route path='/' render={(props) => (
+					<Login updateEmail={this.props.updateEmail} location={this.props.location} history={this.props.history}/>
+				)}/>
 			</Switch>
 			);
 	}

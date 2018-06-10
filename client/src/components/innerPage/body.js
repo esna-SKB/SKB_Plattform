@@ -69,7 +69,7 @@ class Body extends React.Component {
 						<Route exact path='/groups/' render={(props) => (
 						  <Groups user={this.props.user}/>
 						)}/>
-						<Route exact path='/groups/' render={(props) => (
+						<Route exact path='/profile/' render={(props) => (
 						  <Profile user={this.props.user}/>
 						)}/>
 					</Switch>
