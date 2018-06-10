@@ -25,11 +25,6 @@ class Profile extends Component {
 
 	}
 
-	logout(){
-		deleteUserSession(cookie.load('userID'));
-		this.props.history.push("/");
-	}
-
 	componentDidMount(){
 		//get email
 
