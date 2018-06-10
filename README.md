@@ -1,3 +1,4 @@
+# ESNA 
 # SKB_Plattform
 Programmierpraktikum Soziale Netzwerke MERN Gruppe entwickelt eine Netzwerkplattform für die SKB
 
@@ -17,6 +18,31 @@ Im Laufe der Woche:
 
 # Test 
 -`npm test`
+
+# URL
+Die URL bedient folgende Seitenanfragen. 
+
+- `/` - Login/Startseite
+
+### InnerPage
+- `/courses`
+- `/createcourse/`
+- `/courses/:coursename`
+- `/groups`
+- `/profile`
+- `/profile/:email`
+- `/profileedit/`
+- `/messages`
+- `/messages/user/:email`
+- `/calendar`
+- `/settings`
+
+### OuterPage
+- `/forgotPassword`
+- `/resetPassword`
+- `/verify`
+- `/resend`
+
 
 # API
 

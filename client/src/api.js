@@ -3,7 +3,7 @@
 //use the function via api.functionname..
 //in almost all cases the function returns a json object
 const cookie = require('react-cookies');
-const updateTimeSec = require('./utils/userSessionHelper');
+const {updateTimeSec} = require('./utils/userSessionHelper');
 
 
 module.exports = {
@@ -16,6 +16,9 @@ userSessionCheck: function(){
     body: JSON.stringify( { token: cookie.load('userID') } )
     })
     .then (res => {
+      if(res.status === 200){
+        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})
+      }
       return res.status; 
     });
 },
