@@ -8,6 +8,7 @@ import Course from './course';
 import Groups from './groups';
 import Profile from './profile';
 import SmallProfile from './smallProfile';
+import { Messages } from './messages';
 
 
 class Body extends React.Component {
@@ -70,6 +71,9 @@ class Body extends React.Component {
 						  <Groups user={this.props.user}/>
 						)}/>
 						<Route exact path='/profile/' render={(props) => (
+						  <Profile user={this.props.user}/>
+						)}/>
+						<Route exact path='/messages/to/:user' render={(props) => (
 						  <Profile user={this.props.user}/>
 						)}/>
 					</Switch>
