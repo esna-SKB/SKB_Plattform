@@ -152,7 +152,6 @@ class Login extends Component {
         if (json.success === true) {
 
           setInStorage('login_token', { token: json.token });
-          console.log("Email: "+signInEmail);
           //user registered & verified and correct password -> login successful
 
 
@@ -184,7 +183,8 @@ class Login extends Component {
             //console.log(jsonnn.token);
             let str = json.token;
             cookie.save('userID', str, {expires: updateTimeSec(60*20), path: '/'});
-          });
+          })
+          .then(()=>this.props.updateEmail(signInEmail));
 
           this.setState({
 
@@ -195,8 +195,9 @@ class Login extends Component {
           });
           //warte kurz weil cookie nicht so schnell speichert?
           //sleep(2000);
-          //this.props.getEmail(signInEmail); 
-          this.props.history.push({pathname:"/", state: {emailUser: signInEmail}});
+          console.log("Email: " + signInEmail); 
+           //this is a call to the parent App
+          //this.props.history.push({pathname:"/"});
           //document.location.reload();
           //this.props.history.push("/timeline");
 
@@ -243,7 +244,7 @@ class Login extends Component {
     //Checks if there is an active UserSession
     //console.log('Returned Bool' + checkUserSession(cookie.load('userID')));
 
-    fetch('/userSession/check', {
+/*    fetch('/userSession/check', {
 
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -252,20 +253,10 @@ class Login extends Component {
 
       if(res.status === 200){
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})
-        //console.log(this.props.location.state.emailUser);
-        this.props.history.push({pathname:"/timeline", state: {emailUser: (this.props.location.state==null ? "" : this.props.location.state.emailUser)}});
+        this.props.history.push({pathname:"/"});
       }
     });
-
-    // if(checkUserSession(cookie.load('userID'))){
-    //   this.props.history.push("/timeline");
-    // }
-
-
-    // if(checkUserSession(cookie.load('userID'))){
-    //   this.props.history.push("/timeline");
-    // }
-
+*/
     return (
 
       <div className="row heigh100" style={{backgroundColor: '#f7f8f9', backgroundImage: 'url('+Classimg+')', backgroundSize: '100%'}}>

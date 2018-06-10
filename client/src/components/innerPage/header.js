@@ -6,6 +6,9 @@ import Bell from'../../img/bell-icon.png';
 import Chat from'../../img/chat-icon.png';
 import '../../css/timeline.css';
 
+import cookie from 'react-cookies';
+import { deleteUserSession } from '../../utils/userSessionHelper';
+
 class Header extends React.Component {
 	constructor(props){
 	super(props);
@@ -13,7 +16,10 @@ class Header extends React.Component {
 		user: this.props.user
 		}; 
 	}
-
+	logout(){
+		deleteUserSession(cookie.load('userID'));
+		this.props.history.push("/");
+	}
 
 	render(){
 		return(

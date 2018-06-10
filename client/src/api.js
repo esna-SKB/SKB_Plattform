@@ -2,8 +2,23 @@
 //include "const api = require('../api');" in your component &
 //use the function via api.functionname..
 //in almost all cases the function returns a json object
+const cookie = require('react-cookies');
+const updateTimeSec = require('./utils/userSessionHelper');
+
 
 module.exports = {
+//check if userSession ist still valid
+//return status code 
+userSessionCheck: function(){
+  return fetch('/userSession/check', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify( { token: cookie.load('userID') } )
+    })
+    .then (res => {
+      return res.status; 
+    });
+},
 
 getEmailFromUserSession: function(token){
   return fetch('/userSession/'+ token+ '/email', {
@@ -535,8 +550,6 @@ return fetch('/message', {
       }),
     })
   }
-
-
 
 
 }
