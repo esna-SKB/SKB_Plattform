@@ -7,7 +7,7 @@ class SmallProfile extends React.Component {
 	constructor(props){
 	super(props);
 	this.state = {
-		myEmail: ""
+		user: this.props.user
 		}; 
 	}
 
@@ -20,7 +20,7 @@ class SmallProfile extends React.Component {
 	            <div className="box col-12 text-center">
 	            <Link to={`/profile`}>
 					<div className="profilepicleft fill" ><img src={Meow} alt="meow" ></img></div>
-					<p></p><p><strong id="YourName01">SKB User</strong></p>
+					<p></p><p><strong id="YourName01">{this.props.user.firstname +" "+ this.props.user.lastname}</strong></p>
 	            </Link>
 	          	</div>
 	          </div>
