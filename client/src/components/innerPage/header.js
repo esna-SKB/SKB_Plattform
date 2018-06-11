@@ -23,7 +23,6 @@ class Header extends React.Component {
 		        <div className="container-fluid">
 		          <div className="navbar-header">
 		            <Link className="navbar-brand" to={`/`}><img id="logo" className="logo" src={Logo} alt="Logo"/></Link>
-
 		          </div>
 
 		          <form className="navbar-form navbar-center" action="/search">
