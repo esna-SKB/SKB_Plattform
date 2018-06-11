@@ -42,7 +42,7 @@ class Header extends React.Component {
 		              <button type="button" className="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		                {this.props.user.firstname +" "+ this.props.user.lastname}
 		              </button>
-		              <div className="dropdown-menu">
+		              <div className="dropdown-menu dropdown-menu-right">
 		                <Link className="dropdown-item" to={`/profile`}>Mein Profil</Link>
 		                <Link className="dropdown-item" to={`/settings`}>Einstellungen</Link>
 		                <Link className="dropdown-item" to={`/#`}>Something else here</Link>
