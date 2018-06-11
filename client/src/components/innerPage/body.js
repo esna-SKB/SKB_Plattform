@@ -23,27 +23,23 @@ class Body extends React.Component {
 
 		//kann man hier nach wunsch anspaaen wie der active Link aussehen soll
 		const activeObj = { 
-			    fontWeight: 'bold',
+			    //fontWeight: 'bold',
+			    color: "white",
 			    backgroundColor: '#C0D9D9'
 				}
 
 		return(
 			<div>
-		{/*Navigation*/}
-			<div className="background-fluid background">
-		        <ul className="nav justify-content-center col-12 centered">
-		            <li className= "nav-item">
-		            	<NavLink exact={true} activeClassName='active' activeStyle={activeObj} to='/'>Newsfeed</NavLink>
-		            </li>
+		{/*Navigation activeClassName='active'*/ }
+			<div className="background-fluid background row">
+		        <nav className="offset-md-3 col-md-6 nav nav-fill justify-content-center">
+		            
+	            	<NavLink className="nav-item nav-link" exact={true} activeStyle={activeObj} to='/'>Newsfeed</NavLink>		            
+	            	
+	            	<NavLink className="nav-item nav-link" activeStyle={activeObj} to='/courses'>Kurse</NavLink>
 
-		            <li className="nav-item">
-		               <NavLink activeClassName='active' activeStyle={activeObj} to='/courses'>Kurse</NavLink>
-		            </li>
-
-		            <li className="nav-item">
-		                <NavLink activeClassName='active' activeStyle={activeObj} to='/groups'>Gruppen</NavLink>
-		            </li>
-		          </ul>
+	                <NavLink className="nav-item nav-link" activeStyle={activeObj} to='/groups'>Gruppen</NavLink>
+		        </nav>
 		    </div>
 
 		
@@ -61,7 +57,7 @@ class Body extends React.Component {
 
 		   {/* Right Container*/}
 		        <div className="col-md-3 order-md-last">
-		        	<TeacherInfo/>      
+		        	<TeacherInfo user={this.props.user}/>      
 		        </div>
 
 		    {/* MainWindow */}

@@ -22,7 +22,6 @@ class Profile extends Component {
 		this.state = {
 		  user: this.props.user
 		}
-
 	}
 
 	componentDidMount(){
@@ -231,7 +230,7 @@ class Profile extends Component {
 							<div className="row  text-muted">
 								<div className="col-4" id="trueCan">ich kann:</div>
 								<div className="col-8" id="iCan"></div>
-								<div className="col-4" id="trueTeach">ich bringe bei:</div>
+								<div className="col-4" id="trueTeach">ich bringe bei:{this.props.user.iTeach}</div>
 								<div className="col-8" id="iTeach"></div>
 							</div>
 

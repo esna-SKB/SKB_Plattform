@@ -12,7 +12,6 @@ class SmallProfile extends React.Component {
 	}
 
 
-
 	render(){
 		return(
 			<div>
