@@ -31,8 +31,8 @@ class Body extends React.Component {
 		return(
 			<div>
 		{/*Navigation activeClassName='active'*/ }
-			<div className="background-fluid background">
-		        <nav className="nav justify-content-center">
+			<div className="background-fluid background row">
+		        <nav className="offset-md-3 col-md-6 nav nav-fill justify-content-center">
 		            
 	            	<NavLink className="nav-item nav-link" exact={true} activeStyle={activeObj} to='/'>Newsfeed</NavLink>		            
 	            	
