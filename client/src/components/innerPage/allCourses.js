@@ -52,15 +52,17 @@ function Element(props) {
 	const mini = props.mini; 
 	if(mini){
 		return (
-		<div className="w-100 course-name">
-		<Link to={`/courses/${course.name}`}>{course.name}</Link>
-		</div>
+			<div className="w-100 course-name">
+			<Link to={`/courses/${course.name}`}>{course.name}</Link>
+			</div>
 		); 
 	}else{
 		return (
-		<div className="w-100 course-name">
-		<Link to={`/courses/${course.name}`}>{course.name}</Link>
-		<Link className="float-right" to={`/user/${course.teacher.email}`}>{course.teacher.lastname}</Link>
+		<div className="box">
+			<div className="w-100 course-name">
+			<Link to={`/courses/${course.name}`}>{course.name}</Link>
+			<Link className="float-right" to={`/user/${course.teacher.email}`}>{course.teacher.lastname}</Link>
+			</div>
 		</div>
 		); 
 	}
