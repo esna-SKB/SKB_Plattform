@@ -334,3 +334,18 @@ a {
   color: black;
   border: 1px solid #007fb2;
 }
+
+button {
+  background-color: white;
+}
+
+.einschreiben{
+  position: 'absolute';
+  top: '50%';
+  transform: 'translateY(-50%)';
+  right: '8%';
+  border-radius: '20px';
+  padding: '10px 30px';
+  border: '1px solid #007fb2';
+  color: '#007fb2';
+}
