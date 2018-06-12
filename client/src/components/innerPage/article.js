@@ -1,12 +1,11 @@
 import React from 'react';
 
-
 class Article extends React.Component {
 	constructor(props){
 	super(props);
 	this.state = {
 		myEmail: ""
-		}; 
+		};
 	}
 
 
@@ -37,4 +36,4 @@ class Article extends React.Component {
 }
 
 
-export default Article; 
+export default Article;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import Plus_img from'../../img/668301-200.png';
 
 function status(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -22,14 +23,14 @@ function getCourses(route, cb){
 	    });
       }
 function CreateCourseButton(props) {
-	const isTeacher = props.isTeacher; 
+	const isTeacher = props.isTeacher;
 	if(isTeacher){
 		return (
 			<div className="row">
               <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
                 <div className='row'>
                    <div className='col-6'>
-     				
+
                     </div>
                    <div className='col-6'>
                    <Link to={`/createcourse/`} className='whitehover' style={{color: 'white !important'}}>
@@ -43,19 +44,20 @@ function CreateCourseButton(props) {
             </div>
 			);
 	}else{
-		return(null); 
+		return(null);
 	}
 }
 
 function Element(props) {
-	const course = props.course; 
-	const mini = props.mini; 
+	const course = props.course;
+	const mini = props.mini;
 	if(mini){
 		return (
 			<div className="w-100 course-name">
 			<Link to={`/courses/${course.name}`}>{course.name}</Link>
 			</div>
 		); 
+
 	}else{
 		return (
 		<div className="box">
@@ -64,9 +66,9 @@ function Element(props) {
 			<Link className="float-right" to={`/user/${course.teacher.email}`}>{course.teacher.lastname}</Link>
 			</div>
 		</div>
-		); 
+		);
 	}
-	
+
 }
 
 export class MyCourses extends React.Component {
@@ -74,10 +76,10 @@ export class MyCourses extends React.Component {
 	super(props);
 	this.state = {
 		list: []
-		}; 
+		};
 	}
 	componentDidMount(){
-		let i = 0; 
+		let i = 0;
 		if(this.props.myEmail!=null){
 
 			getCourses('/user/'+this.props.myEmail+'/course'
@@ -89,32 +91,32 @@ export class MyCourses extends React.Component {
 
 	render(){
 		return(
-			<div className="box course-box col-12">
+			<div className="box course-box col-12" style={{marginTop: '0'}}>
 	          <div className="box-title">
-	            Meine Kurse
+	            Meine Kurse <a href='/createcourse'><img src={Plus_img} style={{height: '20px', paddingLeft: '8px'}}/></a>
 	          </div>
 				<div className="courses">
 				{this.state.list}
 				</div>
 			</div>
-			); 
+			);
 	}
 }
 class OtherCourses extends React.Component {
 	constructor(props){
 	super(props);
 	this.state = {
-		list: [] 
-		}; 
+		list: []
+		};
 	}
 
 	componentDidMount(){
-		let i = 0; 
+		let i = 0;
 		getCourses('/course'
 			, (courses) =>{
 				this.setState({list: courses.map((e)=>{ return( <Element key={e._id} course={e}/>);})});
 			});
-		
+
 	}
 
 	render(){
@@ -137,7 +139,7 @@ export class AllCourses extends React.Component {
 	super(props);
 	this.state = {
 		user: this.props.user
-		}; 
+		};
 	}
 	render(){
 		return(
@@ -146,7 +148,7 @@ export class AllCourses extends React.Component {
 			<CreateCourseButton isTeacher={this.props.user.isTeacher}/>
 
 			<MyCourses myEmail={this.props.user.email}/>
-				
+
 			<OtherCourses/>
 			</div>
 			);
