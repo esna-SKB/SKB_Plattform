@@ -88,7 +88,7 @@ export class MyCourses extends React.Component {
 
 	render(){
 		return(
-			<div className="box course-box col-12">
+			<div className="box course-box col-12" style={{marginTop: '0'}}>
 	          <div className="box-title">
 	            Meine Kurse <a href='/createcourse'><img src={Plus_img} style={{height: '20px', paddingLeft: '8px'}}/></a>
 	          </div>

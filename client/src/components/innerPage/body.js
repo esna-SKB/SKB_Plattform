@@ -51,7 +51,7 @@ class Body extends React.Component {
 		        <div className="col-md-3">
 
 			        <SmallProfile user={this.props.user}/>
-
+							<div  style={{paddingTop: '20px'}}></div>
 			        <MyCourses myEmail={this.props.user.email} mini={true}/>
 
 		        </div>

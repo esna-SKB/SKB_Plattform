@@ -13,13 +13,13 @@ class Header extends React.Component {
 	super(props);
 	this.state = {
 		user: this.props.user
-		}; 
+		};
 	}
 
 	render(){
 		console.log(this.props)
 		return(
-			<nav className="navbar navbar-expand-sm" style={{backgroundColor: 'white'}}>
+			<nav className="navbar navbar-expand-sm" style={{backgroundColor: 'white', boxShadow: '0 0px 3px 0 rgba(0,0,0,.18), 0 2px 11px 0 rgba(0,0,0,0.05)'}}>
 		        <div className="container-fluid">
 		          <div className="navbar-header">
 		            <Link className="navbar-brand" to={`/`}><img id="logo" className="logo" src={Logo} alt="Logo"/></Link>
@@ -57,4 +57,4 @@ class Header extends React.Component {
 	}
 }
 
-export default Header; 
+export default Header;

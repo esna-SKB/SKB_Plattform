@@ -21,7 +21,8 @@ class Course extends Component {
       eingeschrieben: false,
       courseName: "",
       courseDescription: "",
-      isFree: false
+      isFree: false,
+      articles: []
       };
     }
   componentDidMount() {
@@ -61,13 +62,29 @@ class Course extends Component {
         var email = this.props.user.email
         if (this.state.eingeschrieben) {
             var leave = document.getElementById("leavecourse");
-            console.log('leave')
             leave.addEventListener("click", joincroup => {
               api.unenrollUser(email, this.state.courseName).then(res => {
                 window.location.reload(false);
               });
             })
-        } else {
+        //get all feed articles
+        api.getAllArticlesOfCourse(this.state.courseName).then(res => {
+          // this.setState({articles: res.map((e)=>{return( <Element key={e.author} course={e.text} mini={this.props.mini}/>);})});
+          console.log(res)
+        });
+
+        //post articles
+            var teilen = document.getElementById("teilen");
+            if (teilen) {
+              teilen.addEventListener("click", share => {
+                var text = document.getElementById("textteilen").value;
+                console.log(text)
+                api.createArticle(this.state.courseName, "", email, text, Date.now).then(res => {
+                  console.log(res)
+                  window.location.reload(false);
+                });
+              })
+            }
         }
 
       }
@@ -81,6 +98,18 @@ class Course extends Component {
         api.enrollUser(email, this.state.courseName).then(res => {
           window.location.reload(false);
         });
+      })
+    }
+
+    //post articles
+    var teilen = document.getElementById("teilen");
+    if (teilen) {
+      teilen.addEventListener("click", share => {
+        var text = document.getElementById("textteilen").value;
+        console.log(text)
+        // api.enrollUser(email, this.state.courseName).then(res => {
+        //   window.location.reload(false);
+        // });
       })
     }
 
@@ -106,126 +135,35 @@ class Course extends Component {
     if(!this.state.eingeschrieben){
     return (
       <div style={{backgroundColor: '#f7f8fa'}}>
-
-
-      <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '60px', paddingLeft: '30px'}}>
+    <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '60px', paddingLeft: '30px'}}>
         <div className="row">
-
-          <div className="col" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
-            <div className="row" style={{backgroundColor: 'white'}}>
-                  <div className="col" style={{backgroundColor: 'white', paddingRight: '0', paddingLeft: '20px'}}>
-                  <h1>{this.state.courseName}</h1>
-                  </div>
-                  <div className="col-4" style={{backgroundColor: 'white'}}>
-                  </div>
-                  <div className="col" style={{backgroundColor: 'white', paddingRight: '10px'}}>
-                    <button id='joincourse' style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2'}}>mich einschreiben</button>
-                  </div>
+            <div className="col" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
+                <div className="row">
+                    <div className="col" style={{paddingRight: '0', paddingLeft: '20px'}}>
+                        <h1>{this.state.courseName}</h1>
+                    </div>
+                    <div className="col-4">
+                    </div>
+                    <div className="col" style={{paddingRight: '10px'}}>
+                        <button id='joincourse' className='btn' style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2'}}>mich einschreiben</button>
+                    </div>
+                </div>
             </div>
-          </div>
-
         </div>
-      </div>
-
-      <div className="background container-fluid row">
-
+    </div>
+    <div className="background container-fluid row">
         <div className="col col-sm-12" style={{paddingRight: '0', paddingLeft: '15px'}}>
-
-          <div className="tab-content col-offset-6 centered" style={{marginBottom: '450px'}}>
-
-              <div style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
-                  <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Inhalt </h3>
-
-                  <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
-                  </p>
-              </div>
-
-              <div className="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
-
-              <div className="col-12" id="new_status" style={{marginBottom : '20px'}}>
-
-<div className="container">
-                <div className="row" style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px'}}>
-                    <div className="col-4" style={{textAlign: 'center', borderBottom: '1px solid rgb(0, 127, 178)', marginBottom: '-16px'}}>
-                    <span className="glyphicon glyphicon-pencil"></span>
-                      Text teilen
-                    </div>
-
-                    <div className="col-4" style={{textAlign: 'center'}}>
-                      Foto Hochladen
-                    </div>
-
-                    <div className="col-4" style={{textAlign: 'center'}}>
-                      Datei Hochladen
-                    </div>
-
+            <div className="tab-content col-offset-6 centered" style={{marginBottom: '450px'}}>
+                <div style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
+                    <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Inhalt </h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus, facere aliquam accusantium, explicabo natus harum incidunt omnis, nemo quidem blanditiis voluptatibus placeat! Iure nulla obcaecati necessitatibus neque recusandae excepturi aliquid.
+                    </p>
                 </div>
-</div>
-
-
-<div className="col-12" id="post_content">
-                <div className="textarea_wrap"><textarea className="col-xs-11" placeholder="write something..."></textarea></div>
-                </div>
-
-                <div className="col-xs-12" id="post_footer">
-                  <div className="row">
-                    <div className="col-12">
-                      <button className="btn btn-primary" style={{float: 'right', marginBottom:'10px'}}>Teilen</button>
-                    </div>
-                    </div>
-                </div>
-</div>
-
-              <div className='container' id="userposts">
-                <div className='row' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom:'20px'}}>
-                      <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
-                          <div className='row'>
-                            <div className='col-6'>
-                              Mariano Brey
-                            </div>
-                            <div className='col-6'>
-                              <p style={{float:'right'}}>10 min</p>
-                            </div>
-                          </div>
-                      </div>
-                      <div className='col-12'>
-                          <p style={{color: '#a9a8a8'}}>Lorem ipsum dolor sit amet, euismod facilisis vis cu. Pro eu eros incorrupte,
-                          mnesarchum argumentum his et. Ne alia solum similique sit, nec an soleat
-                          omnium, ad labore eruditi eum. Ius ei aliquid laoreet, ne duo accusamus
-                          splendide moderatius, eos ei movet semper elaboraret.</p>
-                      </div>
-                </div>
-
-                <div className='row' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px'}}>
-                      <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
-                          <div className='row'>
-                            <div className='col-6'>
-                              Anton Gulenko
-                            </div>
-                            <div className='col-6'>
-                              <p style={{float:'right'}}>35 min</p>
-                            </div>
-                          </div>
-                      </div>
-                      <div className='col-12'>
-                          <p style={{color: '#a9a8a8'}}>Lorem ipsum dolor sit amet, euismod facilisis vis cu. Pro eu eros incorrupte,
-                          mnesarchum argumentum his et. Ne alia solum similique sit, nec an soleat
-                          omnium, ad labore eruditi eum. Ius ei aliquid laoreet, ne duo accusamus
-                          splendide moderatius, eos ei movet semper elaboraret.</p>
-                      </div>
-                </div>
-              </div>
-
-              </div>
             </div>
         </div>
-
-      </div>
-
-      </div>
+    </div>
+</div>
     );}
 
 
@@ -235,35 +173,34 @@ class Course extends Component {
 
             <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '60px', paddingLeft: '30px'}}>
 
-            <div className="background-fluid" style={{backgroundColor: '#f7f8fa', borderBottom: '1px solid #e8e9eb'}}>
-      <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
-          <li className = "nav-item">
-              <a className="nav-link tab-title active" id="lehrer-tab" data-toggle="tab" href="#ubersicht" role="tab" aria-controls="ubersicht" aria-selected="true">Übersicht</a>
-          </li>
-
-          <li className="nav-item">
-              <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="false">Feed</a>
-          </li>
-
-        </ul>
-    </div>
-
-
-
                 <div className="row">
                     <div className="col" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
-                        <div className="row" style={{backgroundColor: 'white'}}>
-                            <div className="col" style={{backgroundColor: 'white', paddingRight: '0', paddingLeft: '20px'}}>
+                        <div className="row">
+                            <div className="col" style={{paddingRight: '0', paddingLeft: '20px'}}>
                                 <h1 style={{textTransform: 'capitalize'}}>{this.state.courseName}</h1>
                             </div>
-                            <div className="col-4" style={{backgroundColor: 'white'}}>
+                            <div className="col-4">
                             </div>
-                            <div className="col" style={{backgroundColor: 'white', paddingRight: '10px'}}>
-                                <button id='leavecourse' style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2'}}>Abmelden</button>
+                            <div className="col" style={{paddingRight: '10px'}}>
+                                <button id='leavecourse' className='btn' style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2'}}>Abmelden</button>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div className="background-fluid" style={{backgroundColor: '#f7f8fa', borderBottom: '1px solid #e8e9eb'}}>
+                  <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
+                      <li className = "nav-item">
+                          <a className="nav-link tab-title active" id="lehrer-tab" data-toggle="tab" href="#ubersicht" role="tab" aria-controls="ubersicht" aria-selected="true">Übersicht</a>
+                      </li>
+
+                      <li className="nav-item">
+                          <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="false">Feed</a>
+                      </li>
+
+                    </ul>
+                </div>
+                
             </div>
             <div className="background container-fluid row">
                 <div className="col col-sm-12" style={{paddingRight: '0', paddingLeft: '0'}}>
@@ -292,18 +229,20 @@ class Course extends Component {
                                 </div>
                                 <div className="col-12" id="post_content">
                                     <div className="textarea_wrap">
-                                        <textarea className="col-xs-11" placeholder="write something..."></textarea>
+                                        <textarea id='textteilen' className="col-xs-11" placeholder="write something..."></textarea>
                                     </div>
                                 </div>
                                 <div className="col-xs-12" id="post_footer">
                                     <div className="row">
                                         <div className="col-12">
-                                            <button className="btn btn-primary" style={{float: 'right', marginBottom: '10px'}}>Teilen</button>
+                                            <button id='teilen' className="btn btn-primary" style={{float: 'right', marginBottom: '10px'}}>Teilen</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className='container' id="userposts">
+
+
                                 <div className='row' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px'}}>
                                     <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
                                         <div className='row'>
