@@ -8,14 +8,14 @@ class SmallProfile extends React.Component {
 	super(props);
 	this.state = {
 		user: this.props.user
-		}; 
+		};
 	}
 
 
 	render(){
 		return(
 			<div>
-			  <div className="row">
+			  <div className="row" style={{border: '1px solid rgb(232, 233, 235)', borderBottom: 'transparent'}}>
 	            <div className="box col-12 text-center">
 	            <Link to={`/profile`}>
 					<div className="profilepicleft fill" ><img src={Meow} alt="meow" ></img></div>
@@ -24,7 +24,7 @@ class SmallProfile extends React.Component {
 	          	</div>
 	          </div>
 
-	          <div className="row">
+	          <div className="row" style={{border: '1px solid rgb(232, 233, 235)', borderTop: 'transparent'}}>
 	            <div className="box col-sm-6 text-center">
 	              <strong>2</strong><br /><small className="text-muted">Kurse</small>
 	            </div>
@@ -37,4 +37,4 @@ class SmallProfile extends React.Component {
 	}
 }
 
-export default SmallProfile; 
+export default SmallProfile;
