@@ -22,7 +22,8 @@ class Course extends Component {
       courseName: "",
       courseDescription: "",
       isFree: false,
-      articles: []
+      articles: [],
+      members: []
       };
     }
   componentDidMount() {
@@ -43,7 +44,6 @@ class Course extends Component {
   })
 
   //check if joined course or note
-
   fetch('/user/' + this.props.user.email + '/course', {
       method: 'GET',
       headers: {
@@ -51,9 +51,7 @@ class Course extends Component {
       }
     })
     .then(res => res.json()).then(res1 => {
-      console.log(res1.some(item => item.name === this.state.courseName));
       if (res1.some(item => item.name === this.state.courseName)) {
-        // this.state.eingeschrieben = true;
         this.setState({
           eingeschrieben: true
         })
@@ -69,18 +67,26 @@ class Course extends Component {
             })
         //get all feed articles
         api.getAllArticlesOfCourse(this.state.courseName).then(res => {
-          // this.setState({articles: res.map((e)=>{return( <Element key={e.author} course={e.text} mini={this.props.mini}/>);})});
-          console.log(res)
+          this.setState({articles : res.reverse()})
         });
+
+        //get all course members
+        fetch('/course/'+this.state.courseName+'/user', {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json'
+            }
+          })
+          .then(res => res.json()).then(res1 => {
+            this.setState({members : res1.reverse()})
+            })
 
         //post articles
             var teilen = document.getElementById("teilen");
             if (teilen) {
               teilen.addEventListener("click", share => {
                 var text = document.getElementById("textteilen").value;
-                console.log(text)
                 api.createArticle(this.state.courseName, "", email, text, Date.now).then(res => {
-                  console.log(res)
                   window.location.reload(false);
                 });
               })
@@ -106,7 +112,6 @@ class Course extends Component {
     if (teilen) {
       teilen.addEventListener("click", share => {
         var text = document.getElementById("textteilen").value;
-        console.log(text)
         // api.enrollUser(email, this.state.courseName).then(res => {
         //   window.location.reload(false);
         // });
@@ -117,24 +122,10 @@ class Course extends Component {
 
   render() {
 
-    //Checks if there is an active UserSession
-    fetch('/userSession/check', {
-
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify( { token: cookie.load('userID') } )
-    }).then (res => {
-      if(res.status == 500){
-        this.props.history.push("/");
-      }else{
-        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60000), path: '/'})
-      }
-    });
-
 
     if(!this.state.eingeschrieben){
     return (
-      <div style={{backgroundColor: '#f7f8fa'}}>
+      <div>
     <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '60px', paddingLeft: '30px'}}>
         <div className="row">
             <div className="col" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
@@ -169,9 +160,9 @@ class Course extends Component {
 
     else {
       return (
-        <div style={{backgroundColor: '#f7f8fa'}}>
+        <div>
 
-            <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '60px', paddingLeft: '30px'}}>
+            <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
 
                 <div className="row">
                     <div className="col" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
@@ -188,7 +179,7 @@ class Course extends Component {
                     </div>
                 </div>
 
-                <div className="background-fluid" style={{backgroundColor: '#f7f8fa', borderBottom: '1px solid #e8e9eb'}}>
+                <div className="background-fluid" style={{borderBottom: '1px solid #e8e9eb'}}>
                   <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
                       <li className = "nav-item">
                           <a className="nav-link tab-title active" id="lehrer-tab" data-toggle="tab" href="#ubersicht" role="tab" aria-controls="ubersicht" aria-selected="true">Übersicht</a>
@@ -198,13 +189,18 @@ class Course extends Component {
                           <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="false">Feed</a>
                       </li>
 
+                      <li className="nav-item">
+                          <a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmern</a>
+                      </li>
+
                     </ul>
                 </div>
-                
+
             </div>
             <div className="background container-fluid row">
-                <div className="col col-sm-12" style={{paddingRight: '0', paddingLeft: '0'}}>
+                <div className="col col-sm-12">
                     <div className="tab-content col-offset-6 centered" id="tab-content">
+
                         <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
                             <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Inhalt </h3>
                             <p>{this.state.description}</p>
@@ -212,6 +208,15 @@ class Course extends Component {
                             <p>Folie 01</p>
                             <p>Folie 02</p>
                         </div>
+
+                        <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
+                        <ul>
+                        {this.state.members.map(function(member, i) {
+                           return <li style={{textTransform: 'capitalize'}} key={i}>{member.firstname} {member.lastname}</li>
+                        })}
+                        </ul>
+                        </div>
+
                         <div className="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
                             <div className="col-12" id="new_status" style={{marginBottom : '20px'}}>
                                 <div className="container">
@@ -229,7 +234,7 @@ class Course extends Component {
                                 </div>
                                 <div className="col-12" id="post_content">
                                     <div className="textarea_wrap">
-                                        <textarea id='textteilen' className="col-xs-11" placeholder="write something..."></textarea>
+                                        <textarea id='textteilen' className="col-xs-11" style={{width: '100%'}} placeholder="write something..."></textarea>
                                     </div>
                                 </div>
                                 <div className="col-xs-12" id="post_footer">
@@ -240,39 +245,27 @@ class Course extends Component {
                                     </div>
                                 </div>
                             </div>
+
+
                             <div className='container' id="userposts">
 
-
-                                <div className='row' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px'}}>
-                                    <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
-                                        <div className='row'>
-                                            <div className='col-6'>
-                                                Mariano Brey
-                                            </div>
-                                            <div className='col-6'>
-                                                <p style={{float: 'right'}}>10 min</p>
-                                            </div>
+                            {this.state.articles.map(function(article, i) {
+                               return <div key={i} className='row' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px'}}>
+                                <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
+                                   <div className='row'>
+                                       <div className='col-6' style={{textTransform: 'capitalize'}}>
+                                       {article.author.firstname} {article.author.lastname}
+                                        </div>
+                                        <div className='col-6'>
+                                               <p style={{float: 'right'}}>10 min</p>
                                         </div>
                                     </div>
-                                    <div className='col-12'>
-                                        <p style={{color: '#a9a8a8'}}>Lorem ipsum dolor sit amet, euismod facilisis vis cu. Pro eu eros incorrupte, mnesarchum argumentum his et. Ne alia solum similique sit, nec an soleat omnium, ad labore eruditi eum. Ius ei aliquid laoreet, ne duo accusamus splendide moderatius, eos ei movet semper elaboraret.</p>
-                                    </div>
                                 </div>
-                                <div className='row' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px'}}>
-                                    <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
-                                        <div className='row'>
-                                            <div className='col-6'>
-                                                Anton Gulenko
-                                            </div>
-                                            <div className='col-6'>
-                                                <p style={{float: 'right'}}>35 min</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className='col-12'>
-                                        <p style={{color: '#a9a8a8'}}>Lorem ipsum dolor sit amet, euismod facilisis vis cu. Pro eu eros incorrupte, mnesarchum argumentum his et. Ne alia solum similique sit, nec an soleat omnium, ad labore eruditi eum. Ius ei aliquid laoreet, ne duo accusamus splendide moderatius, eos ei movet semper elaboraret.</p>
-                                    </div>
-                                </div>
+                                <div className='col-12'>
+                                       <p style={{color: '#a9a8a8'}}>{article.text}</p>
+                                   </div>
+                               </div>
+                            })}
                             </div>
                         </div>
                     </div>

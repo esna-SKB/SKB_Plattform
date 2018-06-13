@@ -102,11 +102,6 @@ class CreateCourse extends Component {
 
                     <div className='row' style={{paddingBottom:'20px'}}>
                     <div className='col-6'>
-                      <p> <br/>Privatsphere: <br/><br/>
-                      Öffentlich <input type="radio" name="privatsphere" value="offentlich" checked /><br/>
-                      Privat <input type="radio" name="privatsphere" value="privat"/></p>
-                    </div>
-                    <div className='col-6'>
                         <p> <br/>Kostenpflichtig: <br/><br/>
                         Nein <input type="radio" name="kostenpflichtig" value="no" checked /><br/>
                         Ja <input type="radio" name="kostenpflichtig" value="yes"/></p>

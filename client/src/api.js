@@ -8,7 +8,7 @@ const {updateTimeSec} = require('./utils/userSessionHelper');
 
 module.exports = {
 //check if userSession ist still valid
-//return status code 
+//return status code
 userSessionCheck: function(){
   return fetch('/userSession/check', {
     method: 'POST',
@@ -19,7 +19,7 @@ userSessionCheck: function(){
       if(res.status === 200){
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})
       }
-      return res.status; 
+      return res.status;
     });
 },
 

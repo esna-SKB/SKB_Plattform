@@ -45,10 +45,10 @@ class Body extends React.Component {
 
 
 			<div className="container-fluid">
-		      <div className="cols background row" style={{height:'100vh'}}>
+		      <div className="cols background row" style={{height:'100%'}}>
 
 		    {/* Left Container*/}
-		        <div className="col-md-3">
+		        <div className="col-md-3" style={{zIndex: '1'}}>
 
 			        <SmallProfile user={this.props.user}/>
 							<div  style={{paddingTop: '20px'}}></div>
