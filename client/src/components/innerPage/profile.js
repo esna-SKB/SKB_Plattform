@@ -105,7 +105,7 @@ class Profile extends Component {
 								</div>
 								<div className="row-12 text-muted text-right">
 									<div className="col-12 edit">
-										<a href="/profileedit" >Profil bearbeiten</a>
+										<Link to={`/profileedit`} >Profil bearbeiten</Link>
 									</div>
 								</div>
 							</div>

@@ -56,7 +56,7 @@ class CreateCourse extends Component {
       body: JSON.stringify( formObject )
       }).then (res => {
         console.log(res)
-        window.location.replace("/courses");
+        //window.location.replace("/courses");
       });
     }
 
@@ -67,23 +67,6 @@ class CreateCourse extends Component {
 
   render() {
 
-    //Checks if there is an active UserSession
-    fetch('/userSession/check', {
-
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify( { token: cookie.load('userID') } )
-    }).then (res => {
-
-      if(res.status == 500){
-
-
-        this.props.history.push("/");
-      }else{
-        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60000), path: '/'})
-
-      }
-    });
       return (
         <div style={{backgroundColor: '#f7f8fa'}}>
 

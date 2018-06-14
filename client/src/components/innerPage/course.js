@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Article from './article';
 import Logo from'../../img/esna.png';
 import Bell from'../../img/bell-icon.png';
 import Chat from'../../img/chat-icon.png';
@@ -246,23 +247,8 @@ class Course extends Component {
 
                             <div className='container' id="userposts">
 
-                            {this.state.articles.map(function(article, i) {
-                               return <div key={i} className='row' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px'}}>
-                                <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
-                                   <div className='row'>
-                                       <div className='col-6' style={{textTransform: 'capitalize'}}>
-                                       {article.author.firstname} {article.author.lastname}
-                                        </div>
-                                        <div className='col-6'>
-                                               <p style={{float: 'right'}}>10 min</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='col-12'>
-                                       <p style={{color: '#a9a8a8'}}>{article.text}</p>
-                                   </div>
-                               </div>
-                            })}
+                            {this.state.articles.map(function(article) { return( <Article key={article._id} article={article}/>);})}
+                               
                             </div>
                         </div>
                     </div>

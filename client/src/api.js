@@ -441,7 +441,7 @@ return fetch('/message', {
  * returns a list of all articles of a user (for the timeline)
 */
   getTimelineArticles: function(email){
-    return fetch('/user' + email + '/course/article', {
+    return fetch('timeline/user/' + email + '/course/article', {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
