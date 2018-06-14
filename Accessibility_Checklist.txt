@@ -1,0 +1,63 @@
+https://www.youtube.com/watch?v=H37zF98Er1M&t=3s&ab_channel=FullstackAcademy
+
+Accessibility:
+	Vision:	 no contrast between background and text that makes it hard to see, be able 		 to be read by screen readers -> image tag has to have alt tag
+		-  Epilepsy
+		- Color blindness
+		- blind
+		- Reading difficulty
+		
+	Audio:	transscripts, subtitles
+		- deaf
+		- 
+	
+	Motorskills:  website soley controlable by keyboard
+		- can't use mouse
+		- 
+	Cognititve:
+		- learning disablites
+
+4 big principles:
+	- information should be preceivable for everyone
+	-operable ( cant use mouse? no problem)
+	- understandable all the information should be understandable and predictable and 	   nothing should happen without a reason ( aka good design)
+	- robust
+
+12 genreal guidelines, 61 testable criteria, 3 level of conformance
+Make Code simple to read -> use style issue!! CSS ; not too much too much in tags
+provide alternatives
+separate html from your css and javascript
+
+
+
+CHECKLIST: Level A Beginner
+Please read this and keep it in mind while implementing. For more details to each point visit the site below
+https://www.wuhcag.com/wcag-checklist/
+
+1. Provide text alternatives for non-text content
+	- alt tag for <img>
+2. provide an alternative to video-only and audio-only content
+3.provide captions for videos with audios
+4.logical structure
+5. present content in a meaningful order
+6. use more than one sense for instructions
+7.don't use presentation that relies solely on color 
+	- color-blindness.com 
+ 
+8. Don't play audio automatcally
+9.Accessible by keyboard only
+10. Don't trap keyboard users
+11. Time limits have user controls
+12.Provide user controls for moving content
+13. No content flashes more than three times per second
+14. Provide a "Skip to Content"link
+15. use helpful and clear page titles
+16. logical order
+17. Every links purpose is clear from its context
+18.Page has a language assigned
+19. ELements do not change when they receive focus
+20. Elements do ot change when they receive input
+21. Clearly identify input errors
+22. label elements and give instructions
+23. no major code errors
+24. Build all elements for accessibitly

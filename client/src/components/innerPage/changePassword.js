@@ -15,15 +15,50 @@ class ChangePassword extends Component {
 		super(props);
 
 		this.state = {
-		  user: this.props.user
+		  user: this.props.user,
+		  oldpassword: "",
+		  newpassword: "",
+		  checkpassword: "",
+		  errorMessage: '',
+
 		}
 	}
 	
+	this.handleInputChange = this.handleInputChange.bind(this);
 	
-	componentDidMount(){
+	handleInputChange(event) {
+		const target = event.target;
+		const value =  target.value;
+		const name = target.name;
 
-      }
-
+		this.setState({
+		  [name]: value
+		});
+	}
+	
+	handleSubmit(event) {
+		// Grab state
+		const {
+			oldpassword,
+			newpassword,
+			checkpassword,
+		} = this.state;
+		
+		 //password validation
+		  if (newpassword.length < 8){
+			 this.setState({
+				  errorMessage : "Dein Passwort muss aus mind. acht Zeichen bestehen."
+			 });
+			   return false;
+		  }
+		
+		//check if old password is correct
+		
+		
+		//check new password
+		
+	}
+	  
 
  
   render() {
@@ -37,8 +72,6 @@ class ChangePassword extends Component {
     }).then (res => {
       
       if(res.status === 500){
-
-
         this.props.history.push("/");
       }else{
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
@@ -65,22 +98,22 @@ class ChangePassword extends Component {
 									<h4 className="title"><strong>Passwort ändern</strong></h4>
 							</div>	
 							
-							<form>
+							<form onSubmit={this.handleSubmit}>
 								<div className="row">
 									<div className="col">
 										<div class="form-group row newpart">
 											<label for="oldpwd">altes Passwort eingeben:</label>
-											<input type="password" class="form-control" id="oldpwd"></input>
+											<input type="password" class="form-control" name="oldpassword"></input>
 										</div>
 										
 										<div class="form-group row newpart">
 											<label for="newpwd">neues Passwort eingeben:</label>
-											<input type="password" class="form-control" id="newpwd" placeholder="mindestens 8 Zeichen"></input>
+											<input type="password" class="form-control" name="newpassword" placeholder="mindestens 8 Zeichen"></input>
 										</div>
 										
 										<div class="form-group row newpart">
 											<label for="newpwd2">neues Passwort wiederholen:</label>
-											<input type="password" class="form-control" id="newpwd2" placeholder="mindestens 8 Zeichen"></input>
+											<input type="password" class="form-control" name="checkpassword" placeholder="mindestens 8 Zeichen"></input>
 										</div>
 										
 									</div>
