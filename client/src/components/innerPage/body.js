@@ -8,6 +8,9 @@ import Course from './course';
 import CreateCourse from './createcourse';
 import Groups from './groups';
 import Profile from './profile';
+import Profileedit from './profileedit';
+import ChangePassword from './changePassword';
+import Settings from './settings';
 import SmallProfile from './smallProfile';
 import { Messages } from './messages';
 
@@ -82,6 +85,15 @@ class Body extends React.Component {
 						)}/>
 						<Route exact path='/profile' render={(props) => (
 						  <Profile user={this.props.user}/>
+						)}/>
+						<Route exact path='/profileedit' render={(props) => (
+						  <Profileedit user={this.props.user}/>
+						)}/>
+						<Route exact path='/settings' render={(props) => (
+						  <Settings user={this.props.user}/>
+						)}/>
+						<Route exact path='/changePassword' render={(props) => (
+						  <ChangePassword user={this.props.user}/>
 						)}/>
 						<Route exact path='/messages' render={(props) => (
 						  <Messages user={this.props.user}/>

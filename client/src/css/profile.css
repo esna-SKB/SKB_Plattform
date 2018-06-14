@@ -132,3 +132,7 @@ html, body{
 .colwhite{
 	background-color: white !important;	
 }
+
+.makespace{
+	margin-left: 30 px;	
+}
