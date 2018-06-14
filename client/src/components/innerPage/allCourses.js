@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import Plus_img from'../../img/668301-200.png';
 
 function status(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -9,7 +8,6 @@ function status(response) {
     return Promise.reject(new Error(response.statusText))
   }
 }
-
 
 function getCourses(route, cb){
 		return fetch(route)
@@ -22,6 +20,7 @@ function getCourses(route, cb){
 		      console.error(error);
 	    });
       }
+      
 function CreateCourseButton(props) {
 	const isTeacher = props.isTeacher;
 	if(isTeacher){
@@ -29,12 +28,9 @@ function CreateCourseButton(props) {
 			<div className="row">
               <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
                 <div className='row'>
-                   <div className='col-6'>
-
-                    </div>
-                   <div className='col-6'>
+                   <div className='col'>
                    <Link to={`/createcourse/`} className='whitehover' style={{color: 'white !important'}}>
-                     <div className='registrieren_botton' style={{marginTop: '-6px',fontSize: '16px'}}>
+                     <div className='registrieren_botton' style={{marginTop: '-6px',fontSize: '16px', float: 'none', margin: '0 auto', width: '160px'}}>
                       + Kurs anlegen
                    	 </div>
                    	 </Link>
@@ -56,7 +52,7 @@ function Element(props) {
 			<div className="w-100 course-name">
 			<Link to={`/courses/${course.name}`}>{course.name}</Link>
 			</div>
-		); 
+		);
 
 	}else{
 		return (
@@ -80,6 +76,7 @@ export class MyCourses extends React.Component {
 	}
 	componentDidMount(){
 		let i = 0;
+    console.log(this.props.myEmail)
 		if(this.props.myEmail!=null){
 
 			getCourses('/user/'+this.props.myEmail+'/course'
@@ -93,7 +90,7 @@ export class MyCourses extends React.Component {
 		return(
 			<div className="box course-box col-12" style={{marginTop: '0'}}>
 	          <div className="box-title">
-	            Meine Kurse <a href='/createcourse'><img src={Plus_img} style={{height: '20px', paddingLeft: '8px'}}/></a>
+	            Meine Kurse <a href='/createcourse'></a>
 	          </div>
 				<div className="courses">
 				{this.state.list}
