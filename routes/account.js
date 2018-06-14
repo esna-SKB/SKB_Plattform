@@ -307,5 +307,4 @@ router.route('/registration/verify')
 			})
 		}); //end of reset Password endpoint
 
-
 module.exports = router

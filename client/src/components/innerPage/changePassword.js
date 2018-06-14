@@ -9,6 +9,8 @@ import Meow from'../../img/meow.png';
 import cookie from 'react-cookies';
 import { checkUserSession, updateTimeSec } from '../../utils/userSessionHelper'; 
 
+const api = require('../../api');
+const qs = require('query-string');
 
 class ChangePassword extends Component {
 	constructor(props) {
@@ -22,9 +24,11 @@ class ChangePassword extends Component {
 		  errorMessage: '',
 
 		}
+		
+		this.handleInputChange = this.handleInputChange.bind(this);
 	}
 	
-	this.handleInputChange = this.handleInputChange.bind(this);
+	
 	
 	handleInputChange(event) {
 		const target = event.target;
@@ -36,7 +40,7 @@ class ChangePassword extends Component {
 		});
 	}
 	
-	handleSubmit(event) {
+	handleSubmit() {
 		// Grab state
 		const {
 			oldpassword,
@@ -51,11 +55,29 @@ class ChangePassword extends Component {
 			 });
 			   return false;
 		  }
-		
+		//check newpassword == checkpassword
+		if(!(newpassword === checkpassword)){
+			console.log("Neues Passwort stimmt nicht ueberein!");	
+			return false;
+		}
 		//check if old password is correct
 		
+		if(!this.props.user.validPassword(oldpassword)){
+			console.log("wrong passwort");
+			return false;
+		}
 		
-		//check new password
+		//update Password
+		let userId = qs.parse(this.props.location.search).id
+		 
+		api.resetPassword(userId, newpassword).then(json => {
+			if(json.success === true){
+				console.log("Successfully change password");
+			}else{
+				console.log("failes to change passoword")
+			}
+			
+		});
 		
 	}
 	  
@@ -98,7 +120,7 @@ class ChangePassword extends Component {
 									<h4 className="title"><strong>Passwort ändern</strong></h4>
 							</div>	
 							
-							<form onSubmit={this.handleSubmit}>
+							<form>
 								<div className="row">
 									<div className="col">
 										<div class="form-group row newpart">
@@ -121,7 +143,7 @@ class ChangePassword extends Component {
 								<div className="row-12 text-muted text-left newpart">
 										<a href="/forgotPassword">Passwort vergessen?</a>
 								</div>
-								<button type="submit" class="btn btn-primary">Passwort ändern</button>
+								<button class="btn btn-primary" onClick={this.handleSubmit }>Passwort ändern</button>
 							</form>
 							<div className="row-12 text-muted text-right">
 								<div className="col-12">
