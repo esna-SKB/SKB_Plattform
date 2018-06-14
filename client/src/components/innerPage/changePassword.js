@@ -25,20 +25,33 @@ class ChangePassword extends Component {
 
 		}
 		
-		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleOldPassword = this.handleOldPassword.bind(this);
+		this.handleNewPassword = this.handleNewPassword.bind(this);
+		this.handleCheckPassword = this.handleCheckPassword.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 	
 	
 	
-	handleInputChange(event) {
-		const target = event.target;
-		const value =  target.value;
-		const name = target.name;
-
+	handleOldPassword(event) {
 		this.setState({
-		  [name]: value
+		  oldpassword: event.target.value,
 		});
 	}
+	
+	
+	handleNewPassword(event) {
+		this.setState({
+		  newpassword: event.target.value,
+		});
+	}
+
+	handleCheckPassword(event) {
+		this.setState({
+		  checkpassword: event.target.value,
+		});
+	}
+
 	
 	handleSubmit() {
 		// Grab state
@@ -50,10 +63,8 @@ class ChangePassword extends Component {
 		
 		 //password validation
 		  if (newpassword.length < 8){
-			 this.setState({
-				  errorMessage : "Dein Passwort muss aus mind. acht Zeichen bestehen."
-			 });
-			   return false;
+				console.log("Dein Passwort muss aus mind. acht Zeichen bestehen.");
+				return false;
 		  }
 		//check newpassword == checkpassword
 		if(!(newpassword === checkpassword)){
@@ -61,23 +72,24 @@ class ChangePassword extends Component {
 			return false;
 		}
 		//check if old password is correct
-		
-		if(!this.props.user.validPassword(oldpassword)){
-			console.log("wrong passwort");
-			return false;
-		}
-		
-		//update Password
-		let userId = qs.parse(this.props.location.search).id
-		 
-		api.resetPassword(userId, newpassword).then(json => {
-			if(json.success === true){
-				console.log("Successfully change password");
+		api.checkPassword(this.props.user.email,oldpassword).then(json =>{
+			if(json.success === false){
+				console.log("wrong passwort");
+				return false;
 			}else{
-				console.log("failes to change passoword")
-			}
-			
+				let userId = qs.parse(this.props.location.search).id
+				api.resetPassword(userId, newpassword).then(json => {
+					if(json.success === true){
+						console.log("Successfully change password");
+					}else{
+						console.log("fails to change passoword")
+					}
+				});
+			}	
 		});
+		
+		
+		
 		
 	}
 	  
@@ -85,6 +97,12 @@ class ChangePassword extends Component {
  
   render() {
 
+	const {
+		oldpassword,
+		newpassword,
+		checkpassword,
+	} = this.state;
+  
     //Checks if there is an active UserSession
     fetch('/userSession/check', {
 
@@ -119,35 +137,34 @@ class ChangePassword extends Component {
 							<div className="row center-block">
 									<h4 className="title"><strong>Passwort ändern</strong></h4>
 							</div>	
-							
-							<form>
+	
 								<div className="row">
 									<div className="col">
-										<div class="form-group row newpart">
+										<div class="form-group row newpart" >
 											<label for="oldpwd">altes Passwort eingeben:</label>
-											<input type="password" class="form-control" name="oldpassword"></input>
+											<input type="password" class="form-control" name="oldpassword" value= {oldpassword} onChange={this.handleOldPassword}></input>
 										</div>
 										
-										<div class="form-group row newpart">
+										<div class="form-group row newpart" >
 											<label for="newpwd">neues Passwort eingeben:</label>
-											<input type="password" class="form-control" name="newpassword" placeholder="mindestens 8 Zeichen"></input>
+											<input type="password" class="form-control" name="newpassword" placeholder="mindestens 8 Zeichen" value= {newpassword} onChange={this.handleNewPassword}></input>
 										</div>
 										
 										<div class="form-group row newpart">
 											<label for="newpwd2">neues Passwort wiederholen:</label>
-											<input type="password" class="form-control" name="checkpassword" placeholder="mindestens 8 Zeichen"></input>
+											<input type="password" class="form-control" name="checkpassword" placeholder="mindestens 8 Zeichen" value= {checkpassword} onChange={this.handleCheckPassword}></input>
 										</div>
 										
 									</div>
 								</div>
 								<div className="row-12 text-muted text-left newpart">
-										<a href="/forgotPassword">Passwort vergessen?</a>
+										<Link to={`/forgotPassword`} >Passwort vergessen?</Link>
 								</div>
 								<button class="btn btn-primary" onClick={this.handleSubmit }>Passwort ändern</button>
-							</form>
+							
 							<div className="row-12 text-muted text-right">
 								<div className="col-12">
-									<a href="/profile">zurück</a>
+									<Link to={`/settings`} >zurück</Link>
 								</div>
 							</div>
 						

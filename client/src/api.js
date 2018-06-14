@@ -487,6 +487,23 @@ return fetch('/message', {
     }).then(res => res.json())
   },
 
+   /*
+   * POST /account/checkPassword
+   * check if the correct password was submitted
+  */
+  checkPassword: function(email, password){
+    return fetch('/account/checkPassword', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        "email": email,
+        "password": password,
+      }),
+    }).then(res => res.json())
+  },
 /*
  * POST /account/resetPassword
  * resets the password of an Account

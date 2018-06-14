@@ -306,5 +306,41 @@ router.route('/registration/verify')
 	      }
 			})
 		}); //end of reset Password endpoint
+		
+		
+		
+	/*
+	 *check Password
+	 */
+	 router.route('/checkPassword')
+		.post((req, res, next) => {
+	    const { body } = req;
+	    const { password } = body;
+	    let { email } = body;
 
+	    console.log(password)
+	    console.log(email)
+
+			User.findOne({email: email},{_id:0, email:1, password:2, isVerified:3},function(err,user){
+				if (err)
+				   console.log('error occured in the database');
+
+				//const user = users[0];
+				console.log(user);
+				if (!user.validPassword(password)){
+					console.log("wrong password!");
+					res.status(401).send({
+						success: false,
+						message: 'No account or wrong Password'
+					});
+				}else{
+					console.log("correct password!");
+					res.status(200).send({
+						success: true,
+						message: 'correct Password'
+					});	
+				}
+			});
+		});
+		
 module.exports = router

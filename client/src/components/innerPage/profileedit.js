@@ -181,7 +181,7 @@ class Profileedit extends Component {
 							</form>
 							<div className="row-12 text-muted text-right">
 								<div className="col-12">
-									<a href="/profile">zurück</a>
+									<Link  to={`/profile`}>zurück</Link>
 								</div>
 							</div>
 						

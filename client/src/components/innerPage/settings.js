@@ -57,20 +57,20 @@ class Settings extends Component {
 						<div className="col-12">
 							<h4 className="row">Einstellungen</h4>
 							
-							<div className="row"><a href="/changepassword" className="text-muted">Passwort ändern</a></div>	
-							<div className="row"><a href="/profileedit" className="text-muted">Profil bearbeiten</a></div>	
-							<div className="row"><a href="/" className="text-muted">Kontaktdaten ändern</a></div>	
-							<div className="row"><a href="" className="text-muted">Mitteilungenkonfigurationen</a></div>	
-							<div className="row"><a href="" className="text-muted">Sicherheitsschlüssel</a></div>	
-							<div className="row"><a href="" className="text-muted">Feedback</a></div>	
-							<div className="row"><a href="" className="text-muted">Kalendereinstellungen</a></div>	
-							<div className="row"><a href="" className="text-muted">Kalendereinstellungen</a></div>	
+							<div className="row"><Link to={`/changepassword`} className="text-muted">Passwort ändern</Link></div>	
+							<div className="row"><Link  to={`/profileedit`} className="text-muted">Profil bearbeiten</Link></div>	
+							<div className="row"><Link  to={``} className="text-muted">Kontaktdaten ändern</Link></div>	
+							<div className="row"><Link  to={``} className="text-muted">Mitteilungenkonfigurationen</Link></div>	
+							<div className="row"><Link  to={``} className="text-muted">Sicherheitsschlüssel</Link></div>	
+							<div className="row"><Link  to={``} className="text-muted">Feedback</Link></div>	
+							<div className="row"><Link  to={``} className="text-muted">Kalendereinstellungen</Link></div>	
+							<div className="row"><Link  to={``} className="text-muted">Kalendereinstellungen</Link></div>	
 								
 						</div>
 
 						<div className="row-12 text-muted text-right">
 							<div className="col-12">
-								<a href="/profile">zurück</a>
+								<Link  to={`/profile`}>zurück</Link>
 							</div>
 						</div>
 					</div>
