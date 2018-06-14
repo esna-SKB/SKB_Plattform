@@ -20,7 +20,7 @@ function getCourses(route, cb){
 		      console.error(error);
 	    });
       }
-      
+
 function CreateCourseButton(props) {
 	const isTeacher = props.isTeacher;
 	if(isTeacher){
@@ -90,7 +90,7 @@ export class MyCourses extends React.Component {
 		return(
 			<div className="box course-box col-12" style={{marginTop: '0'}}>
 	          <div className="box-title">
-	            Meine Kurse <a href='/createcourse'></a>
+	            Meine Kurse <Link to={`/createcourse/`}>{/*<img src={Plus_img} style={{height: '20px', paddingLeft: '8px'}}/>*/}</Link>
 	          </div>
 				<div className="courses">
 				{this.state.list}

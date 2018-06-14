@@ -16,15 +16,18 @@ router.route('/user/:email/course/article')
 				else {
 					var array = enroll.map(c => c.course._id); 
 					console.log(array); 
-					Article.find({course: {$in: array}},{},{$sort: {created_at: -1}}
-						, function(err, articles){
-						if (err){
-							console.log('error occured in the database');
-				        	return res.status(500).send('error occured in the database');
-				       	}else {
-							return res.status(200).send(articles); 
-				       	}
-					})
+					Article.find({course: {$in: array}})
+							.populate('author')
+							.populate('course')
+							.sort({created_at: -1})
+							.exec(function(err, articles){
+								if (err){
+									console.log('error occured in the database');
+						        	return res.status(500).send('error occured in the database');
+						       	}else {
+									return res.status(200).send(articles); 
+						       	}
+							});
 				}
 			})
 		})
