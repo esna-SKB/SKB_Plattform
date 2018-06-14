@@ -44,17 +44,14 @@ class Course extends Component {
   })
 
   //check if joined course or note
-  fetch('/user/' + this.props.user.email + '/course', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      }
-    })
-    .then(res => res.json()).then(res1 => {
-      if (res1.some(item => item.name === this.state.courseName)) {
+  api.getAllCoursesOfUser(this.props.user.email).then(res1 => {
+      console.log(res1)
+      if (res1.some(item => item != null && item.name === this.state.courseName)) {
+
         this.setState({
           eingeschrieben: true
         })
+
 
         //Leave course
         var email = this.props.user.email
