@@ -77,7 +77,7 @@ class ChangePassword extends Component {
 				console.log("wrong passwort");
 				return false;
 			}else{
-				let userId = qs.parse(this.props.location.search).id
+				let userId = this.props.user._id; 
 				api.resetPassword(userId, newpassword).then(json => {
 					if(json.success === true){
 						console.log("Successfully change password");
@@ -140,19 +140,19 @@ class ChangePassword extends Component {
 	
 								<div className="row">
 									<div className="col">
-										<div class="form-group row newpart" >
-											<label for="oldpwd">altes Passwort eingeben:</label>
-											<input type="password" class="form-control" name="oldpassword" value= {oldpassword} onChange={this.handleOldPassword}></input>
+										<div className="form-group row newpart" >
+											<label htmlFor="oldpwd">altes Passwort eingeben:</label>
+											<input type="password" className="form-control" name="oldpassword" value= {oldpassword} onChange={this.handleOldPassword}></input>
 										</div>
 										
-										<div class="form-group row newpart" >
-											<label for="newpwd">neues Passwort eingeben:</label>
-											<input type="password" class="form-control" name="newpassword" placeholder="mindestens 8 Zeichen" value= {newpassword} onChange={this.handleNewPassword}></input>
+										<div className="form-group row newpart" >
+											<label htmlFor="newpwd">neues Passwort eingeben:</label>
+											<input type="password" className="form-control" name="newpassword" placeholder="mindestens 8 Zeichen" value= {newpassword} onChange={this.handleNewPassword}></input>
 										</div>
 										
-										<div class="form-group row newpart">
-											<label for="newpwd2">neues Passwort wiederholen:</label>
-											<input type="password" class="form-control" name="checkpassword" placeholder="mindestens 8 Zeichen" value= {checkpassword} onChange={this.handleCheckPassword}></input>
+										<div className="form-group row newpart">
+											<label htmlFor="newpwd2">neues Passwort wiederholen:</label>
+											<input type="password" className="form-control" name="checkpassword" placeholder="mindestens 8 Zeichen" value= {checkpassword} onChange={this.handleCheckPassword}></input>
 										</div>
 										
 									</div>
@@ -160,7 +160,7 @@ class ChangePassword extends Component {
 								<div className="row-12 text-muted text-left newpart">
 										<Link to={`/forgotPassword`} >Passwort vergessen?</Link>
 								</div>
-								<button class="btn btn-primary" onClick={this.handleSubmit }>Passwort ändern</button>
+								<button className="btn btn-primary" onClick={this.handleSubmit }>Passwort ändern</button>
 							
 							<div className="row-12 text-muted text-right">
 								<div className="col-12">

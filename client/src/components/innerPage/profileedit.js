@@ -148,54 +148,54 @@ class Profileedit extends Component {
 								<div className="row">
 									<div className="col">
 										<div></div>
-										<div class="form-group row newpart" >
-											<label for="description">Beschreibung</label>
-											<textarea class="form-control" name="description" rows="3" aria-describedby="Help1" value={description} onChange={this.onChange}></textarea>
-											<small  id="Help1" class="form-text text-muted">Erzähle etwas über dich. Suchst du nach einer Gruppe zum lernen? Was sind deine Hobbies? </small>
+										<div className="form-group row newpart" >
+											<label htmlFor="description">Beschreibung</label>
+											<textarea className="form-control" name="description" rows="3" aria-describedby="Help1" value={description} onChange={this.onChange}></textarea>
+											<small  id="Help1" className="form-text text-muted">Erzähle etwas über dich. Suchst du nach einer Gruppe zum lernen? Was sind deine Hobbies? </small>
 										</div>
 										
-										<div class="form-group row newpart" id="can">
-											<label  for="exampleInputEmail1">ich kann:</label>
-											<input  type="text" class="form-control" name="iCan" aria-describedby="Help" value={iCan} onChange={this.onChange}></input>
-											<small  id="Help" class="form-text text-muted">Erzähle, welche Sprachen du schon alle beherrschst. zum Beispiel Englisch B2 , Deutsch(Muttersprache)</small>
+										<div className="form-group row newpart" id="can">
+											<label  htmlFor="exampleInputEmail1">ich kann:</label>
+											<input  type="text" className="form-control" name="iCan" aria-describedby="Help" value={iCan} onChange={this.onChange}></input>
+											<small  id="Help" className="form-text text-muted">Erzähle, welche Sprachen du schon alle beherrschst. zum Beispiel Englisch B2 , Deutsch(Muttersprache)</small>
 										</div>
 										
-										<div class="form-group row newpart" id="learn">
-											<label  for="iLearn">ich lerne:</label>
-											<input  type="text" class="form-control" name="iLearn" aria-describedby="Help3" value={iLearn} onChange={this.onChange}></input>
-											<small  id="Help2" class="form-text text-muted">zum Beispiel Englisch B2, Deutsch , Arabisch</small>
+										<div className="form-group row newpart" id="learn">
+											<label  htmlFor="iLearn">ich lerne:</label>
+											<input  type="text" className="form-control" name="iLearn" aria-describedby="Help3" value={iLearn} onChange={this.onChange}></input>
+											<small  id="Help2" className="form-text text-muted">zum Beispiel Englisch B2, Deutsch , Arabisch</small>
 										</div>
 										
-										<div class="form-group row newpart" id="teach">
-											<label  for="iTeach">ich bringe bei:</label>
-											<input  type="text" class="form-control" name="iTeach" aria-describedby="Help2" value={iTeach} onChange={this.onChange}></input>
-											<small  id="Help2" class="form-text text-muted">zum Beispiel Englisch, Spanisch A2, Arabisch A1</small>
+										<div className="form-group row newpart" id="teach">
+											<label  htmlFor="iTeach">ich bringe bei:</label>
+											<input  type="text" className="form-control" name="iTeach" aria-describedby="Help2" value={iTeach} onChange={this.onChange}></input>
+											<small  id="Help2" className="form-text text-muted">zum Beispiel Englisch, Spanisch A2, Arabisch A1</small>
 										</div>
 										
-										<div class="form-group row newpart" id="teach">
-											<label  for="website">Website:</label>
-											<input  type="text" class="form-control" name="website" value={website} onChange={this.onChange}></input>
+										<div className="form-group row newpart" id="teach">
+											<label  htmlFor="website">Website:</label>
+											<input  type="text" className="form-control" name="website" value={website} onChange={this.onChange}></input>
 										</div>
 										
 									</div>
 								</div>
 								<div className="row checkBoxes">
 									<div className="col">
-										<div class="form-group form-check row">
-											<input type="checkbox" class="form-check-input" id="Check1"></input>
-											<label class="form-check-label" for="exampleCheck1">Zeige deine Email-Adresse an</label>
+										<div className="form-group form-check row">
+											<input type="checkbox" className="form-check-input" id="Check1"></input>
+											<label className="form-check-label" htmlFor="exampleCheck1">Zeige deine Email-Adresse an</label>
 										</div>
-										<div class="form-group form-check row" id="countgroup">
-											<input type="checkbox" class="form-check-input" id="eCheck2"></input>
-											<label class="form-check-label" for="exampleCheck1">Zeige deine Gruppenanzahl an</label>
+										<div className="form-group form-check row" id="countgroup">
+											<input type="checkbox" className="form-check-input" id="eCheck2"></input>
+											<label className="form-check-label" htmlFor="exampleCheck1">Zeige deine Gruppenanzahl an</label>
 										</div>
-										<div class="form-group form-check row" id="countKurs">
-											<input type="checkbox" class="form-check-input" id="Check3"></input>
-											<label class="form-check-label" for="exampleCheck1">Zeige deine Kursanzahl an</label>
+										<div className="form-group form-check row" id="countKurs">
+											<input type="checkbox" className="form-check-input" id="Check3"></input>
+											<label className="form-check-label" htmlFor="exampleCheck1">Zeige deine Kursanzahl an</label>
 										</div>
 									</div>
 								</div>
-								<button type="button" class="btn btn-primary" onClick={this.onSave}>Speichern</button>
+								<button type="button" className="btn btn-primary" onClick={this.onSave}>Speichern</button>
 							</form>
 							<div className="row-12 text-muted text-right">
 								<div className="col-12">
