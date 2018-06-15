@@ -17,24 +17,25 @@ class Profileedit extends Component {
 		super(props);
 
 		this.state = {
-		  user: this.props.user
+		  user: this.props.user,
+		  description: this.props.user.description,
+		  iCan: this.props.user.iCan,
+		  iLearn: this.props.user.iLearn,
+		  iTeach: this.props.user.iTeach,
+		  website: this.props.user.website,
 		}
 		//look at https://reactjs.org/docs/forms.html
-		//this.handleChange = this.handleChange.bind(this);
-		//this.handleSubmit = this.handleSubmit.bind(this);
+		this.onChange = this.onChange.bind(this);
+		this.onSave = this.onSave.bind(this);
 	}
 	
-	/*handleChange(event) {
-		this.setState({value: event.target.value});
+	onChange(e) {
+		this.setState({[e.target.name]: e.target.value});
 	}
 
-	handleSubmit(event) {
-		alert('A name was submitted: ' + this.state.value);
-		event.preventDefault();
-	}*/
 	
 	onSave(){
-		var des, can, learn, teach, web;
+		/*var des, can, learn, teach, web;
 		
 		//check if anything is left empty
 		if(document.getElementById("description").value.length == 0){
@@ -65,9 +66,18 @@ class Profileedit extends Component {
 			web = ""	
 		}else{
 			web = document.getElementById("website").value;
-		}
+		}*/
 		
-		api.updateUser(this.props.user.email, this.props.user.firstname, this.props.user.lastname, this.props.user.email, this.props.user.isTeacher, this.props.user.isAdmin, this.props.user.isValide, des, can, learn, teach,web );
+		
+		//Grab state
+		const {
+			description,
+			iCan,
+			iLearn,
+			iTeach,
+			website,
+		} = this.state;
+		api.updateUser(this.props.user.email, this.props.user.firstname, this.props.user.lastname, this.props.user.email, this.props.user.isTeacher, this.props.user.isAdmin, this.props.user.isValide, description, iCan, iLearn, iTeach,website );
 
 	}
 	
@@ -91,6 +101,14 @@ class Profileedit extends Component {
 	  
 
   render() {
+	  //grab state
+	  const {
+			description,
+			iCan,
+			iLearn,
+			iTeach,
+			website,
+		} = this.state;
 
     //Checks if there is an active UserSession
     fetch('/userSession/check', {
@@ -132,31 +150,31 @@ class Profileedit extends Component {
 										<div></div>
 										<div class="form-group row newpart" >
 											<label for="description">Beschreibung</label>
-											<textarea class="form-control" id="description" rows="3" aria-describedby="Help1" value={this.props.user.description}></textarea>
+											<textarea class="form-control" name="description" rows="3" aria-describedby="Help1" value={description} onChange={this.onChange}></textarea>
 											<small  id="Help1" class="form-text text-muted">Erzähle etwas über dich. Suchst du nach einer Gruppe zum lernen? Was sind deine Hobbies? </small>
 										</div>
 										
 										<div class="form-group row newpart" id="can">
 											<label  for="exampleInputEmail1">ich kann:</label>
-											<input  type="text" class="form-control" id="iCan" aria-describedby="Help" value={this.props.user.iCan}></input>
+											<input  type="text" class="form-control" name="iCan" aria-describedby="Help" value={iCan} onChange={this.onChange}></input>
 											<small  id="Help" class="form-text text-muted">Erzähle, welche Sprachen du schon alle beherrschst. zum Beispiel Englisch B2 , Deutsch(Muttersprache)</small>
 										</div>
 										
 										<div class="form-group row newpart" id="learn">
 											<label  for="iLearn">ich lerne:</label>
-											<input  type="text" class="form-control" id="iLearn" aria-describedby="Help3" value={this.props.user.iLearn}></input>
+											<input  type="text" class="form-control" name="iLearn" aria-describedby="Help3" value={iLearn} onChange={this.onChange}></input>
 											<small  id="Help2" class="form-text text-muted">zum Beispiel Englisch B2, Deutsch , Arabisch</small>
 										</div>
 										
 										<div class="form-group row newpart" id="teach">
 											<label  for="iTeach">ich bringe bei:</label>
-											<input  type="text" class="form-control" id="iTeach" aria-describedby="Help2" innerHTML={this.props.user.iTeach}></input>
+											<input  type="text" class="form-control" name="iTeach" aria-describedby="Help2" value={iTeach} onChange={this.onChange}></input>
 											<small  id="Help2" class="form-text text-muted">zum Beispiel Englisch, Spanisch A2, Arabisch A1</small>
 										</div>
 										
 										<div class="form-group row newpart" id="teach">
 											<label  for="website">Website:</label>
-											<input  type="text" class="form-control" id="website" innerHTML={this.props.user.website}></input>
+											<input  type="text" class="form-control" name="website" value={website} onChange={this.onChange}></input>
 										</div>
 										
 									</div>
@@ -181,7 +199,7 @@ class Profileedit extends Component {
 							</form>
 							<div className="row-12 text-muted text-right">
 								<div className="col-12">
-									<a href="/profile">zurück</a>
+									<Link  to={`/profile`}>zurück</Link>
 								</div>
 							</div>
 						
