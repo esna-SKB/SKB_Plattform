@@ -46,12 +46,12 @@ class App extends React.Component {
 			this.setState({
 			user: user,
 			valide:true
-			}, ()=>console.log(this.state.user))
+			}, ()=> console.log(this.state.user))
 		});
 	}
 
 	componentWillMount(){
-		console.log(this.state.user, typeof this.state.user); 
+		//console.log(this.state.user, typeof this.state.user); 
 		if (this.state.valide===false) {
 			console.log("WillUpdating")
 			api.userSessionCheck()
@@ -66,9 +66,9 @@ class App extends React.Component {
 
 	render(){
 
-		console.log(this.state.user)
+		//console.log(this.state.user)
 		//api.userSessionCheck().then(val=>{val==200})
-		console.log("bedingung: "+ typeof(this.state.user) +" "+this.state.user.email)
+		//console.log("bedingung: "+ typeof(this.state.user) +" "+this.state.user.email)
 		if(this.state.valide && typeof this.state.user != 'undefined' && this.state.user.email!=undefined){
 			return(
 				<InnerPage  user={this.state.user} handleLogout={this.handleLogout}/>

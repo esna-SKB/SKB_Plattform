@@ -29,7 +29,7 @@ function CreateCourseButton(props) {
               <div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
                 <div className='row'>
                    <div className='col'>
-                   <Link to={`/createcourse/`} className='whitehover' style={{color: 'white !important'}}>
+                   <Link to={`/createcourse`} className='whitehover' style={{color: 'white !important'}}>
                      <div className='registrieren_botton' style={{marginTop: '-6px',fontSize: '16px', float: 'none', margin: '0 auto', width: '160px'}}>
                       + Kurs anlegen
                    	 </div>
