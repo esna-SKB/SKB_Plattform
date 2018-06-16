@@ -569,7 +569,24 @@ return fetch('/message', {
         token: token
       }),
     })
-  }
+  },
 
+  /*
+   * POST /invitation
+   * teacher invites student to a course
+  */
+  invite: function(email, courseName){
+    return fetch('/invitation/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        "email": email,
+        "courseName": courseName
+      }),
+    }).then(res => res.json())
+  }
 
 }

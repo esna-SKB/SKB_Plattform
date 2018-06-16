@@ -1,4 +1,4 @@
-# ESNA 
+# ESNA
 # SKB_Plattform
 Programmierpraktikum Soziale Netzwerke MERN Gruppe entwickelt eine Netzwerkplattform für die SKB
 
@@ -16,11 +16,11 @@ Im Laufe der Woche:
 - `client$ npm install` (eventuelle!!, should accually be done from the script)
 - `npm run dev`
 
-# Test 
+# Test
 -`npm test`
 
 # URL
-Die URL bedient folgende Seitenanfragen. 
+Die URL bedient folgende Seitenanfragen.
 
 - `/` - Login/Startseite
 
@@ -55,7 +55,7 @@ The API consists of the following endpoints:
 
 ## Timeline
 
-- GET `timeline/user/:email/course/article` 
+- GET `timeline/user/:email/course/article`
 Returns all Articles for the timeline, newes posts form the useres courses
 
 ## User
@@ -163,10 +163,15 @@ Deletes a specific article of a course by aID
 ## Enrollment
 
 - POST `enrollment/user/:email/course/:name`
-When a user signs in to a course 
+When a user signs in to a course
 
 - DELETE `enrollment/user/:email/course/:name`
-When a user signs out of a course 
+When a user signs out of a course
+
+## Invitation
+
+- POST `invitation`
+When a teacher invites a student to a course
 
 ## Group
 
@@ -190,7 +195,7 @@ Updates a specific group from a specific course by id
 
 Deletes a specific group from a specific course by id
 
-#DataObjects: 
+#DataObjects:
 - all data Objects carry a *_id*
 
 ## Enrollment
@@ -207,7 +212,7 @@ Signeds a user out of a course
 A user is a JSON Object like this:
 
 ```json
-{	
+{
 	"_id": "mongooseID",
 	"firstname": "firstname",
 	"lastname": "name",
@@ -242,7 +247,7 @@ A course is a JSON Object like this:
 	"name": "coursename",
 	"teacher": "{teacher-obj}(for post user the teachers email)",  
 	"description": "",
-	"isFree": true 
+	"isFree": true
 }
 ```
 ## Article
@@ -264,7 +269,7 @@ A article is a JSON Object like this:
 
 ### Response
 
-Response Object of our _API_ 
+Response Object of our _API_
 Response is a JSON Object like this:
 
 ```json

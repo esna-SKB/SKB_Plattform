@@ -248,7 +248,7 @@ class Course extends Component {
                             <div className='container' id="userposts">
 
                             {this.state.articles.map(function(article) { return( <Article key={article._id} article={article}/>);})}
-                               
+
                             </div>
                         </div>
                     </div>
