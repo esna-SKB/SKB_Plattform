@@ -38,4 +38,28 @@ html, body{
     font-size: 14px;
 }
 
+.contentTeacherinfo {
+  display: flex;
+}
 
+.contentTeacherinfo img {
+  margin-right: 10px;
+  display: block;
+  width:5em;
+  height:5em;
+  border-radius: 20vw;
+  margin-bottom: 2em;
+}
+
+.contentTeacherinfo div{
+  margin-top: 1.5em;
+  margin-left: 1em;
+}
+
+#inviteButton{
+  display: inline-block;
+  border-radius: 20px;
+  border: 1px solid #007fb2;
+  color: #007fb2;
+  margin-top: 1em;
+}

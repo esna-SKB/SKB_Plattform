@@ -12,7 +12,9 @@ import Profileedit from './profileedit';
 import ChangePassword from './changePassword';
 import Settings from './settings';
 import SmallProfile from './smallProfile';
+import InviteToCourse from './inviteToCourse';
 import { Messages } from './messages';
+import '../../css/course.css';
 
 
 class Body extends React.Component {
@@ -61,7 +63,10 @@ class Body extends React.Component {
 		   {/* Right Container*/}
 			 <div className="col-md-3 order-md-last">
 							 <Route path='/courses/:name' render={(props) => (
+								 <div>
 									<TeacherInfo user={this.props.user}/>
+									<InviteToCourse user={this.props.user}/>
+								</div>
 								)}/>
 			 </div>
 

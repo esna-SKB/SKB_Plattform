@@ -10,11 +10,11 @@ class Article extends React.Component {
 		};
 	}
 
-	
+
 	render(){
 		const article = this.props.article;
-		const d = article.created_at.toString(); 
-		var date = new Date(d); 
+		const d = article.created_at.toString();
+		var date = new Date(d);
 
 		return(
 			<div>
@@ -34,7 +34,7 @@ class Article extends React.Component {
 						<h6>{article.headline}</h6>
 						<p style={{color: '#a9a8a8'}}>{article.text}</p>
 					</div>
-				</div>		
+				</div>
 			</div>
 	 	);
 	}

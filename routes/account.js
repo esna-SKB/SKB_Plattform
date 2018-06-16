@@ -306,9 +306,9 @@ router.route('/registration/verify')
 	      }
 			})
 		}); //end of reset Password endpoint
-		
-		
-		
+
+
+
 	/*
 	 *check Password
 	 */
@@ -338,9 +338,9 @@ router.route('/registration/verify')
 					res.status(200).send({
 						success: true,
 						message: 'correct Password'
-					});	
+					});
 				}
 			});
 		});
-		
+
 module.exports = router

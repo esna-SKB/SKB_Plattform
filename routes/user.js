@@ -101,7 +101,7 @@ router.route('/:email/course')
 	       			if(err) return res.status(500).send('error occured in the database');
 	       			else{
 	       				return res.status(200).send(enroll.map(c => c.course));
-	       			} 
+	       			}
 	       		})
 	       	}
 		})
