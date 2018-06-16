@@ -137,3 +137,21 @@ html, body{
     margin-left: -15px;
     margin-right: -15px;
 }
+
+.contentTeacherinfo {
+  display: flex;
+}
+
+.contentTeacherinfo img {
+  margin-right: 10px;
+  display: block;
+  width:5em;
+  height:5em;
+  border-radius: 20vw;
+  margin-bottom: 2em;
+}
+
+.contentTeacherinfo div{
+  margin-top: 1.5em;
+  margin-left: 1em;
+}
