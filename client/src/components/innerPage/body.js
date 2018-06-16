@@ -22,7 +22,6 @@ class Body extends React.Component {
 		user: this.props.user
 		};
 	}
-
 	render(){
 
 		//kann man hier nach wunsch anspaaen wie der active Link aussehen soll
@@ -60,15 +59,17 @@ class Body extends React.Component {
 		        </div>
 
 		   {/* Right Container*/}
-		        <div className="col-md-3 order-md-last">
-		        	<TeacherInfo user={this.props.user}/>
-		        </div>
+			 <div className="col-md-3 order-md-last">
+							 <Route path='/courses/:name' render={(props) => (
+									<TeacherInfo user={this.props.user}/>
+								)}/>
+			 </div>
 
 		    {/* MainWindow */}
 		        <div className="col-md-6" style={{paddingRight : '0', paddingLeft: '0'}}>
 
-                	<Switch>
-                		<Route exact path='/' render={(props) => (
+            <Switch>
+              <Route exact path='/' render={(props) => (
 						  <Newsfeed user={this.props.user}/>
 						)}/>
   						<Route path='/courses/:name' render={(props) => (
