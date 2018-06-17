@@ -76,7 +76,6 @@ export class MyCourses extends React.Component {
 	}
 	componentDidMount(){
 		let i = 0;
-    console.log(this.props.myEmail)
 		if(this.props.myEmail!=null){
 
 			getCourses('/user/'+this.props.myEmail+'/course'
@@ -109,11 +108,21 @@ class OtherCourses extends React.Component {
 
 	componentDidMount(){
 		let i = 0;
-		getCourses('/course'
-			, (courses) =>{
-				this.setState({list: courses.map((e)=>{ return( <Element key={e._id} course={e}/>);})});
-			});
-
+    //teacher can see all courses in "Alle Kurse"
+    if(this.props.user.isTeacher == true){
+  		getCourses('/course'
+  			, (courses) =>{
+  				this.setState({list: courses.map((e)=>{ return( <Element key={e._id} course={e}/>);})});
+  			});
+    }
+    //student should only see free courses in "Alle Kurse"
+    else{
+      getCourses('/course'
+  			, (courses) =>{
+          var coursesForFree = courses.filter((c) => c.isFree == true);
+  				this.setState({list: coursesForFree.map((e)=>{ return( <Element key={e._id} course={e}/>);})});
+  			});
+    }
 	}
 
 	render(){
@@ -121,7 +130,7 @@ class OtherCourses extends React.Component {
 		return(
 			<div className="box course-box col-12">
 	          <div className="box-title">
-	            All Kurse
+	            Alle Kurse
 	          </div>
 				<div className="courses">
 				{this.state.list}
@@ -146,7 +155,7 @@ export class AllCourses extends React.Component {
 
 			<MyCourses myEmail={this.props.user.email}/>
 
-			<OtherCourses/>
+			<OtherCourses user={this.props.user}/>
 			</div>
 			);
 	}
