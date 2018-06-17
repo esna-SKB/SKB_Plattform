@@ -56,6 +56,7 @@ class TeacherInfo extends React.Component {
             })
           )
   }
+
 	render(){
    if(this.state.user.email != this.state.teacher.email){
 		return(
@@ -64,8 +65,8 @@ class TeacherInfo extends React.Component {
 	              <div className="box-title">
 	                Kursleiter kontaktieren
 	              </div>
-								<MyTeachers myEmail={this.state.user.email} teacher={this.state.teacher}/>
-							</div>
+					<MyTeachers myEmail={this.state.user.email} teacher={this.state.teacher}/>
+				</div>
 	          </div>
 			);
     }

@@ -48,7 +48,7 @@ router.route('/course/:name')
 				newArticle.headline = headline;
 				newArticle.author = userE._id;
 				newArticle.text = text;
-				newArticle.created_at = created_at;
+				newArticle.created_at = new Date();
 				
 				newArticle.save(function(err){
 					if(err) return res.status(500).send('error occured in the database'); 
