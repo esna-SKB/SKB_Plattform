@@ -3,7 +3,6 @@ import { Switch, Route, Link, NavLink} from 'react-router-dom'
 
 import {AllCourses, MyCourses} from './allCourses';
 import Newsfeed from './newsfeed';
-import TeacherInfo from './teacherInfo';
 import Course from './course';
 import CreateCourse from './createcourse';
 import Groups from './groups';
@@ -14,6 +13,7 @@ import Settings from './settings';
 import SmallProfile from './smallProfile';
 import InviteToCourse from './inviteToCourse';
 import { Messages } from './messages';
+import TeacherInfo from './teacherInfo';
 import '../../css/course.css';
 
 
@@ -77,7 +77,7 @@ class Body extends React.Component {
               <Route exact path='/' render={(props) => (
 						  <Newsfeed user={this.props.user}/>
 						)}/>
-  						<Route path='/courses/:name' render={(props) => (
+  						<Route exact path ='/courses/:name' render={(props) => (
 						  <Course user={this.props.user}/>
 						)}/>
   						<Route exact path='/courses' render={(props) => (

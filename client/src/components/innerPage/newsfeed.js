@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Article from './article';
+
 import api from '../../api';
 
 class Newsfeed extends React.Component {
@@ -23,12 +24,14 @@ class Newsfeed extends React.Component {
 
 	render(){
 		return(
-			<div className='container' id="userposts">
-			{this.state.articles}
-			</div>
+
+				<div className='container' id="userposts">
+				{this.state.articles}
+				</div>
 			);
+		}
 	}
-}
+
 
 
 export default Newsfeed;

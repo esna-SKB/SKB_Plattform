@@ -15,7 +15,7 @@ var articleSchema = new Schema({
         ref: "User"
     },
     text: String, 
-    created_at: {type: Date, default: new Date()}
+    created_at: {type: Date, default: '1994-12-12'}
 });
 
 module.exports = mongoose.model('Article', articleSchema);
