@@ -23,7 +23,7 @@ router.route('/')
 		const { name } = body;
 		const { teacher } = body;
 		const { description } = body;
-		const { isFree } = body; 
+		const { isFree } = body;
 
 
 		Course.find({name: name}).exec(function(err, otherCourse){
@@ -73,7 +73,7 @@ router.route('/:name/user')
 			if (err){
 	        	return res.status(500).send('error occured in the database');
 	       	} else if(course == null){
-	       		return res.status(404).send('course not fount');
+	       		return res.status(404).send('course not found');
 	       	} else {
 	       		Enrollment.find({course:course._id}).populate('user').exec(function(err, enrolls){
 	       			if(err) return res.status(500).send('error occured in the database');
