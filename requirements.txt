@@ -4,18 +4,18 @@
 
 3. Die Lehrer wünschen sich auch interne Kommunikationsmöglichkeiten, wo Sie miteinander diverse Sachen teilen können, wie zum Beispiel Dokumente, generelle Ankündigungen, Beiträge, usw. 
 
-4. System von außen zugreifbar durch eine API
+4. System von außen zugreifbar durch eine API ✅
 
 5. Kursteilnehmende dürfen keinen Zugriff auf interne Sachen haben 
 
-6. Die Lehrer können Kurse aufmachen, die frei für alle oder zahlungspflichtig sind
+6. Die Lehrer können Kurse aufmachen, die frei für alle oder zahlungspflichtig sind ✅
 
-7. Zahlungspflichtige Kurse können nur per Einladung gefunden werden 
+7. Zahlungspflichtige Kurse können nur per Einladung gefunden werden ✅
 
-8. Einladungen und neue Beiträge sollen zusätzlich per Email versendet werden
+8. Einladungen und neue Beiträge sollen zusätzlich per Email versendet werden 
 
-9. Kursübersicht für Lehrer und Kursteilnehmende
+9. Kursübersicht für Lehrer und Kursteilnehmende 
 
 10. Kalender mit allen Kursen und Terminen, nur für Lehrer sichtbar
 
-Zusätzliches Feature: ???
+Zusätzliches Feature: Tinder
