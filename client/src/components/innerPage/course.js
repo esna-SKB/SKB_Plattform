@@ -69,15 +69,20 @@ class FeedTab extends Component{
 
 class MemberTab extends Component{
     render(){
-      return(
-        <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
-        <ul>
-        {this.props.members.map(function(member, i) {
-           return <li style={{textTransform: 'capitalize'}} key={i}>{member.firstname} {member.lastname}</li>
-        })}
-        </ul>
-        </div>
-      )
+      if(this.props.members){
+        return(
+          <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
+          <ul>
+          {this.props.members.map(function(member, i) {
+             return <li style={{textTransform: 'capitalize'}} key={i}>{member.firstname} {member.lastname}</li>
+          })}
+          </ul>
+          </div>
+        )
+      }
+      else{
+        return null;
+      }
     }
 }
 
@@ -148,12 +153,12 @@ class Course extends Component {
     .then(()=>{
         //get all feed articles
           api.getAllArticlesOfCourse(course_name).then(res => {
-            console.log("Articles")
-            console.log(res)
             this.setState({articles : res.reverse()})
           });
           api.getAllUsersOfCourse(course_name).then(res=>{
-            this.setState({members: res.reverse()})
+            if(res){
+              this.setState({members: res.reverse()})
+            }
           })
     })
   }

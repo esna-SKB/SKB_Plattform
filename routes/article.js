@@ -8,7 +8,6 @@ router.route('/course/:name')
 	// get all articles of a course, sorted by most resently post
 	.get((req, res, next) => {
 		var cname = req.params.name;
-		console.log(cname)
 
 		Course.findOne({name: cname}).exec(function(err, course){
 			if (err) return res.status(500).send('error occured in the database');
