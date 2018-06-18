@@ -8,10 +8,11 @@ router.route('/course/:name')
 	// get all articles of a course, sorted by most resently post
 	.get((req, res, next) => {
 		var cname = req.params.name;
-		console.log(cname) 
+		console.log(cname)
 
 		Course.findOne({name: cname}).exec(function(err, course){
 			if (err) return res.status(500).send('error occured in the database');
+
 			else if(course == null) return res.status(404).send('error occured in the database');
 			else {
 				Article.find({course: course}).populate('author').exec(function(err, articles){
@@ -19,7 +20,7 @@ router.route('/course/:name')
 						console.log('error occured in the database');
 			        	return res.status(500).send('error occured in the database');
 			       	}else {
-						return res.status(200).send(articles); 
+						return res.status(200).send(articles);
 			       	}
 				})
 			}
@@ -33,14 +34,16 @@ router.route('/course/:name')
 		const { author } = body;
 		const { text } = body;
 		const { created_at } = body; //könnte auch automatisch gespeichert werden
-		console.log(course, author); 
+		console.log(course, author);
 
 		Course.findOne({name: course}).exec(function(err, courseE){
-			if(err) return res.status(500).send('error occured in the database'); 
-			else if(courseE == null ) return res.status(404).send('course could not be found'); 
-
+			if(err) return res.status(500).send('error occured in the database');
+			else if(courseE == null ) {
+				console.log(courseE)
+				return res.status(404).send('course could not be found');
+			}
 			User.findOne({email:author}).exec(function(err, userE){
-				if(err) return res.status(500).send('error occured in the database'); 
+				if(err) return res.status(500).send('error occured in the database');
 				else if(userE == null ) return res.status(404).send('author could not be found');
 				// Save the new Article
 				const newArticle = new Article();
@@ -49,9 +52,9 @@ router.route('/course/:name')
 				newArticle.author = userE._id;
 				newArticle.text = text;
 				newArticle.created_at = new Date();
-				
+
 				newArticle.save(function(err){
-					if(err) return res.status(500).send('error occured in the database'); 
+					if(err) return res.status(500).send('error occured in the database');
 					else {
 					return res.status(200).send({
 						success: true,
@@ -63,8 +66,8 @@ router.route('/course/:name')
 			})
 		})
 	})
-	
-	
+
+
 	router.route('/:id')
 
 		.get((req, res, next) => {
@@ -73,7 +76,7 @@ router.route('/course/:name')
 				if (err){
 		        	return res.status(500).send('error occured in the database');
 		       	}else {
-					return res.status(200).send(article); 
+					return res.status(200).send(article);
 		       	}
 			})
 		})
@@ -86,7 +89,7 @@ router.route('/course/:name')
 					console.log('error occured in the database');
 		        	return res.status(500).send('error occured in the database');
 		       	} else {
-					return res.status(200).send({success : true, article : "Article is deleted"}); 
+					return res.status(200).send({success : true, article : "Article is deleted"});
 		       	}
 			})
 		})
