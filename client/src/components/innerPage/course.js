@@ -156,9 +156,7 @@ class Course extends Component {
             this.setState({articles : res.reverse()})
           });
           api.getAllUsersOfCourse(course_name).then(res=>{
-            if(res){
               this.setState({members: res.reverse()})
-            }
           })
     })
   }
