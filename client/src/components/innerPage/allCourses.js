@@ -67,6 +67,45 @@ function Element(props) {
 
 }
 
+export class MyTeacherCourses extends React.Component {
+	constructor(props){
+	super(props);
+	this.state = {
+		list: []
+		};
+	}
+
+	componentDidMount(){
+		let i = 0;
+    //get all courses that user is teaching
+    if(this.props.user.isTeacher == true){
+      getCourses('/course'
+  			, (courses) =>{
+          var coursesForFree = courses.filter((c) => c.teacher.email === this.props.user.email);
+  				this.setState({list: coursesForFree.map((e)=>{ return( <Element key={e._id} course={e} mini={this.props.mini}/>);})});
+  			});
+    }
+	}
+
+	render(){
+    if (this.props.user.isTeacher){
+  		return(
+  			<div className="box course-box col-12">
+  	          <div className="box-title">
+  	            Kurse, die ich unterrichte
+  	          </div>
+  				<div className="courses">
+  				{this.state.list}
+  				</div>
+  			</div>
+  			);
+	   }
+     else{
+       return null;
+     }
+   }
+}
+
 export class MyCourses extends React.Component {
 	constructor(props){
 	super(props);
@@ -152,7 +191,7 @@ export class AllCourses extends React.Component {
 			<div>
 
 			<CreateCourseButton isTeacher={this.props.user.isTeacher}/>
-
+      <MyTeacherCourses user={this.props.user}/>
 			<MyCourses myEmail={this.props.user.email}/>
 
 			<OtherCourses user={this.props.user}/>

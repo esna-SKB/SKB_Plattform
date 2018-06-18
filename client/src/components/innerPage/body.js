@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Link, NavLink} from 'react-router-dom'
 
-import {AllCourses, MyCourses} from './allCourses';
+import {AllCourses, MyCourses, MyTeacherCourses} from './allCourses';
 import Newsfeed from './newsfeed';
 import Course from './course';
 import CreateCourse from './createcourse';
@@ -56,8 +56,8 @@ class Body extends React.Component {
 
 			        <SmallProfile user={this.props.user}/>
 							<div  style={{paddingTop: '20px'}}></div>
+							<MyTeacherCourses user={this.props.user} mini={true}/>
 			        <MyCourses myEmail={this.props.user.email} mini={true}/>
-
 		        </div>
 
 		   {/* Right Container*/}
