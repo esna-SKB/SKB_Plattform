@@ -12,14 +12,14 @@ const api = require('../api');
 class App extends React.Component {
 	constructor(props){
 	super(props);
-	this.updateEmail = this.updateEmail.bind(this); 
-	this.handleLogout = this.handleLogout.bind(this); 
-	
+	this.updateEmail = this.updateEmail.bind(this);
+	this.handleLogout = this.handleLogout.bind(this);
+
 	this.state = {
 		user: {},
 		email:"",
 		valide: false
-		}; 
+		};
 	}
 
 	handleLogout(){
@@ -29,9 +29,9 @@ class App extends React.Component {
 
 	updateEmail(email) {
 		console.log("App: " + email)
-		this.setState({email: email}, 
-			() => console.log("Email this.state: "+ this.state.email)) 
-		this.updateUser(); 
+		this.setState({email: email},
+			() => console.log("Email this.state: "+ this.state.email))
+		this.updateUser();
 	}
 
 	updateUser() {
@@ -51,13 +51,13 @@ class App extends React.Component {
 	}
 
 	componentWillMount(){
-		//console.log(this.state.user, typeof this.state.user); 
+		//console.log(this.state.user, typeof this.state.user);
 		if (this.state.valide===false) {
 			console.log("WillUpdating")
 			api.userSessionCheck()
 			.then(val=> {
-				if(val==200){
-					this.updateUser(); 
+				if(val===200){
+					this.updateUser();
 				}
 			})
 		}
@@ -69,7 +69,7 @@ class App extends React.Component {
 		//console.log(this.state.user)
 		//api.userSessionCheck().then(val=>{val==200})
 		//console.log("bedingung: "+ typeof(this.state.user) +" "+this.state.user.email)
-		if(this.state.valide && typeof this.state.user != 'undefined' && this.state.user.email!=undefined){
+		if(this.state.valide && typeof this.state.user !== 'undefined' && this.state.user.email !== undefined){
 			return(
 				<InnerPage  user={this.state.user} handleLogout={this.handleLogout}/>
 			);
@@ -77,10 +77,10 @@ class App extends React.Component {
 			return(
 				<OuterPage updateEmail={this.updateEmail} location={this.props.location} history={this.props.history}/>
 			);
-			
+
 		}
-		
+
 	}
 }
 
-export default App; 
+export default App;

@@ -78,7 +78,7 @@ export class MyTeacherCourses extends React.Component {
 	componentDidMount(){
 		let i = 0;
     //get all courses that user is teaching
-    if(this.props.user.isTeacher == true){
+    if(this.props.user.isTeacher === true){
       getCourses('/course'
   			, (courses) =>{
           var coursesForFree = courses.filter((c) => c.teacher.email === this.props.user.email);
@@ -148,7 +148,7 @@ class OtherCourses extends React.Component {
 	componentDidMount(){
 		let i = 0;
     //teacher can see all courses in "Alle Kurse"
-    if(this.props.user.isTeacher == true){
+    if(this.props.user.isTeacher === true){
   		getCourses('/course'
   			, (courses) =>{
   				this.setState({list: courses.map((e)=>{ return( <Element key={e._id} course={e}/>);})});
@@ -158,7 +158,7 @@ class OtherCourses extends React.Component {
     else{
       getCourses('/course'
   			, (courses) =>{
-          var coursesForFree = courses.filter((c) => c.isFree == true);
+          var coursesForFree = courses.filter((c) => c.isFree === true);
   				this.setState({list: coursesForFree.map((e)=>{ return( <Element key={e._id} course={e}/>);})});
   			});
     }

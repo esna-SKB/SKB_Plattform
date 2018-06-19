@@ -5,10 +5,10 @@ import '../../main.css';
 import Logo from'../../img/esna.png';
 import Classimg from'../../img/chinese2-min.png';
 
-import { setInStorage, getFromStorage, } from '../../utils/storage';
+import { setInStorage } from '../../utils/storage';
 
 import cookie from 'react-cookies'
-import { checkUserSession, updateUserSession, deleteUserSession, getToken, updateTimeSec } from '../../utils/userSessionHelper'
+import { updateTimeSec } from '../../utils/userSessionHelper'
 
 const api = require('../../api');
 
@@ -195,7 +195,7 @@ class Login extends Component {
           });
           //warte kurz weil cookie nicht so schnell speichert?
           //sleep(2000);
-          //console.log("Email: " + signInEmail); 
+          //console.log("Email: " + signInEmail);
            //this is a call to the parent App
           //this.props.history.push({pathname:"/"});
           //document.location.reload();

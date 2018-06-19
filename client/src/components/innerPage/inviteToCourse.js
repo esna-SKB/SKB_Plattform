@@ -93,7 +93,7 @@ class InviteToCourse extends Component {
 
   render(){
     //check if user is responsible teacher for course and if course is not for free
-    if(this.state.isFree == false && (this.state.user.email === this.state.courseTeacher.email)){
+    if(this.state.isFree === false && (this.state.user.email === this.state.courseTeacher.email)){
     return(
       <div className="row">
               <div className="box col-12">

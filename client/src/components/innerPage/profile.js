@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from'../../img/esna.png';
-import Bell from'../../img/bell-icon.png';
-import Chat from'../../img/chat-icon.png';
 //import '../css/timeline.css';
 import '../../css/profile.css';
 /*add this css if you want the profile image on the left (circular)*/
 import '../../css/profilepicture.css';
 import Meow from'../../img/meow.png';
 
-import cookie from 'react-cookies';
-import { checkUserSession, updateTimeSec, deleteUserSession} from '../../utils/userSessionHelper';
-
-const api = require('../../api');
+// const api = require('../../api');
 
 
 class Profile extends Component {
@@ -74,16 +68,16 @@ class Profile extends Component {
 							<div className="col">
 								<div className="col">
 									<div className="row center-block ">
-										
+
 										<div className="col  profilepicbig fill col-md-12" >
 											<img src={Meow} alt="meow" ></img>
 										</div>
-										
+
 										<div className="makespace col">
 											<div className=" row">
 												<h4 className="title"><strong id="YourName02">{this.props.user.firstname + " " + this.props.user.lastname}</strong></h4>
 											</div>
-										
+
 											<div className="row  text-muted">
 												<p className="lineup" id="role"></p>
 											</div>
@@ -96,9 +90,9 @@ class Profile extends Component {
 												</div>
 											</div>
 										</div>
-										
+
 									</div>
-									
+
 								</div>
 								<div className="row-12 text-muted">
 										<div className="col-12 description" id="description">{this.props.user.description}</div>

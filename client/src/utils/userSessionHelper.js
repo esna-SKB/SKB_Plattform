@@ -28,14 +28,14 @@ export function deleteUserSession (token) {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify( { token: token } )
   }).then (res => {
-    
-    if(res.status == 200){
+
+    if(res.status === 200){
 
       console.log("Erfolgreich ausgeloggt")
       //this.props.history.push("/");
     }else{
       console.log("Problem beim Ausloggen")
-      
+
     }
   });
 }
@@ -71,17 +71,17 @@ export function checkUserSession (cook) {
   })
   .then(res => {
     console.log(res);
-    if(res.status == 500){
+    if(res.status === 500){
       return false;
-      
+
     } else {res.json()}
   })
   .then(json => {
 
-    if (typeof(json) == 'undefined'){
+    if (typeof(json) === 'undefined'){
       return false;
-    } else if (json.success == true) {
-      return true;      
+    } else if (json.success === true) {
+      return true;
     }
     console.log('json', json);
 

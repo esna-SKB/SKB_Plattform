@@ -6,8 +6,6 @@ import Bell from'../../img/bell-icon.png';
 import Chat from'../../img/chat-icon.png';
 import '../../css/timeline.css';
 
-import cookie from 'react-cookies';
-
 class Header extends React.Component {
 	constructor(props){
 	super(props);

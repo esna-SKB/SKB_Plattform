@@ -4,10 +4,10 @@ import '../../css/timeline.css';
 import '../../css/profile.css';
 /*add this css if you want the profile image on the left (circular)*/
 import '../../css/profilepicture.css';
-import Meow from'../../img/meow.png';
+// import Meow from'../../img/meow.png';
 
 import cookie from 'react-cookies';
-import { checkUserSession, updateTimeSec } from '../../utils/userSessionHelper';
+import { updateTimeSec } from '../../utils/userSessionHelper';
 
 
 class Settings extends Component {

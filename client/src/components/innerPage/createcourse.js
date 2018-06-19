@@ -24,7 +24,7 @@ class CreateCourse extends Component {
       var c_name = document.getElementById('course_name').value
       var c_description = document.getElementById('course_description').value
 
-      if(c_name == '' || c_description == '')
+      if(c_name === '' || c_description === '')
         return;
 
       var formObject =  { "name":         c_name,
@@ -70,7 +70,7 @@ class CreateCourse extends Component {
                         Ja <input type="radio" name="kostenpflichtig" value="yes" onChange={ this.checkboxHandler }/></p>
                       </div>
                     </div>
-                      <a href="#" className='whitehover' style={{color: 'white !important'}}><button id="anlegen"  className='registrieren_botton' onClick={this.anlegen} style={{float: 'none',fontSize: '16px', display: 'block', margin: '0 auto'}}>anlegen</button></a>
+                      <a className='whitehover' style={{color: 'white !important'}}><button id="anlegen"  className='registrieren_botton' onClick={this.anlegen} style={{float: 'none',fontSize: '16px', display: 'block', margin: '0 auto'}}>anlegen</button></a>
 
                 </div>
               </div>
