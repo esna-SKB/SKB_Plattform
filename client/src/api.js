@@ -151,7 +151,7 @@ deleteUser: function(email){
         'Accept': 'application/json'
       }})
       .then(res => {
-        if (res.status == 200){
+        if (res.status === 200){
           return res.json()}
         else{
           return []
