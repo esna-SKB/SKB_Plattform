@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Link, NavLink} from 'react-router-dom'
+import { Switch, Route, NavLink} from 'react-router-dom'
 
 import {AllCourses, MyCourses, MyTeacherCourses} from './allCourses';
 import Newsfeed from './newsfeed';

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import '../../main.css';
 import Logo from'../../img/esna.png';
 import Classimg from'../../img/karolina-szczur-504623-unsplash.jpg';
-import Account_Confirm_img from'../../img/account_confirm.jpg';
+// import Account_Confirm_img from'../../img/account_confirm.jpg';
 
-import { checkUserSession, updateTimeSec } from '../../utils/userSessionHelper';
+import { updateTimeSec } from '../../utils/userSessionHelper';
 import cookie from 'react-cookies';
 
 const api = require('../../api');
@@ -232,7 +232,7 @@ class Signup extends Component {
     body: JSON.stringify( { token: cookie.load('userID') } )
     }).then (res => {
 
-      if(res.status == 200){
+      if(res.status === 200){
 
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})
 

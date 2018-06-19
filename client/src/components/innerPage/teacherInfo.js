@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import Meow from'../../img/lehrer.jpg';
-import {withRouter} from 'react-router'
+// import {withRouter} from 'react-router'
 
 const api = require('../../api');
 
@@ -58,7 +58,7 @@ class TeacherInfo extends React.Component {
   }
 
 	render(){
-   if(this.state.user.email != this.state.teacher.email){
+   if(this.state.user.email !== this.state.teacher.email){
 		return(
 			<div className="row">
 	            <div className="box col-12">

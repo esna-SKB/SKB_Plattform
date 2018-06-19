@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from'../../img/esna.png';
-import Bell from'../../img/bell-icon.png';
-import Chat from'../../img/chat-icon.png';
 import '../../css/timeline.css';
-import Meow from'../../img/meow.png';
+// import Meow from'../../img/meow.png';
 
 import cookie from 'react-cookies';
-import { checkUserSession, updateTimeSec } from '../../utils/userSessionHelper'; 
+import { updateTimeSec } from '../../utils/userSessionHelper';
 
 const api = require('../../api');
 
@@ -28,47 +25,47 @@ class Profileedit extends Component {
 		this.onChange = this.onChange.bind(this);
 		this.onSave = this.onSave.bind(this);
 	}
-	
+
 	onChange(e) {
 		this.setState({[e.target.name]: e.target.value});
 	}
 
-	
+
 	onSave(){
 		/*var des, can, learn, teach, web;
-		
+
 		//check if anything is left empty
 		if(document.getElementById("description").value.length == 0){
-			des = "";	
+			des = "";
 		}else{
 			des = document.getElementById("description").value;
 		}
-		
+
 		if(document.getElementById("iCan").value.length == 0){
 			can = "";
 		}else{
 			can = document.getElementById("iCan").value;
 		}
-		
+
 		if(document.getElementById("iLearn").value.length == 0){
 			learn = "";
 		}else{
 			learn = document.getElementById("iLearn").value;
 		}
-		
+
 		if(document.getElementById("iTeach").value.length == 0){
-			teach = "";	
+			teach = "";
 		}else{
 			teach = document.getElementById("iTeach").value;
 		}
-	
+
 		if(document.getElementById("website").value.length == 0){
-			web = ""	
+			web = ""
 		}else{
 			web = document.getElementById("website").value;
 		}*/
-		
-		
+
+
 		//Grab state
 		const {
 			description,
@@ -80,7 +77,7 @@ class Profileedit extends Component {
 		api.updateUser(this.props.user.email, this.props.user.firstname, this.props.user.lastname, this.props.user.email, this.props.user.isTeacher, this.props.user.isAdmin, this.props.user.isValide, description, iCan, iLearn, iTeach,website );
 
 	}
-	
+
 	componentDidMount(){
 
 		//isadmin abfangen?
@@ -95,10 +92,10 @@ class Profileedit extends Component {
 			document.getElementById("can").style.display = 'block';
 			document.getElementById("teach").style.display = 'none';
 		}
-	
+
     }
 
-	  
+
 
   render() {
 	  //grab state
@@ -117,14 +114,14 @@ class Profileedit extends Component {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify( { token: cookie.load('userID') } )
     }).then (res => {
-      
+
       if(res.status === 500){
 
 
         this.props.history.push("/");
       }else{
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
-        
+
       }
     });
 
@@ -142,8 +139,8 @@ class Profileedit extends Component {
 					<div className="col-sm-12">
 							<div className="row center-block">
 									<h4 className="title"><strong>Profil bearbeiten</strong></h4>
-							</div>	
-							
+							</div>
+
 							<form>
 								<div className="row">
 									<div className="col">
@@ -153,30 +150,30 @@ class Profileedit extends Component {
 											<textarea className="form-control" name="description" rows="3" aria-describedby="Help1" value={description} onChange={this.onChange}></textarea>
 											<small  id="Help1" className="form-text text-muted">Erzähle etwas über dich. Suchst du nach einer Gruppe zum lernen? Was sind deine Hobbies? </small>
 										</div>
-										
+
 										<div className="form-group row newpart" id="can">
 											<label  htmlFor="exampleInputEmail1">ich kann:</label>
 											<input  type="text" className="form-control" name="iCan" aria-describedby="Help" value={iCan} onChange={this.onChange}></input>
 											<small  id="Help" className="form-text text-muted">Erzähle, welche Sprachen du schon alle beherrschst. zum Beispiel Englisch B2 , Deutsch(Muttersprache)</small>
 										</div>
-										
+
 										<div className="form-group row newpart" id="learn">
 											<label  htmlFor="iLearn">ich lerne:</label>
 											<input  type="text" className="form-control" name="iLearn" aria-describedby="Help3" value={iLearn} onChange={this.onChange}></input>
 											<small  id="Help2" className="form-text text-muted">zum Beispiel Englisch B2, Deutsch , Arabisch</small>
 										</div>
-										
+
 										<div className="form-group row newpart" id="teach">
 											<label  htmlFor="iTeach">ich bringe bei:</label>
 											<input  type="text" className="form-control" name="iTeach" aria-describedby="Help2" value={iTeach} onChange={this.onChange}></input>
 											<small  id="Help2" className="form-text text-muted">zum Beispiel Englisch, Spanisch A2, Arabisch A1</small>
 										</div>
-										
+
 										<div className="form-group row newpart" id="teach">
 											<label  htmlFor="website">Website:</label>
 											<input  type="text" className="form-control" name="website" value={website} onChange={this.onChange}></input>
 										</div>
-										
+
 									</div>
 								</div>
 								<div className="row checkBoxes">
@@ -202,11 +199,11 @@ class Profileedit extends Component {
 									<Link  to={`/profile`}>zurück</Link>
 								</div>
 							</div>
-						
+
 					</div>
 				</div>
-			
-				
+
+
 		</div>
 
     </div>

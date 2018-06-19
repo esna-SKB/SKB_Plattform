@@ -94,7 +94,7 @@ class LeaveButton extends Component{
         });
     }
     render(){
-      if (this.props.enrolled === true  && this.props.user.email != this.props.course.teacher.email){
+      if (this.props.enrolled === true  && this.props.user.email !== this.props.course.teacher.email){
         return(
           <button id='leavecourse' className='btn' onClick = {this.leaveCourse} style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2'}}>Abmelden</button>
         )
@@ -111,7 +111,7 @@ class JoinButton extends Component{
         });
     }
     render(){
-      if (this.props.enrolled == false && this.props.user.email != this.props.course.teacher.email){
+      if (this.props.enrolled === false && this.props.user.email !== this.props.course.teacher.email){
         return(
           <button id='joincourse' className='btn' onClick = {this.joinCourse} style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2'}}>mich einschreiben</button>
         )
@@ -169,7 +169,7 @@ class Course extends Component {
       return false;
     }
     //user is not an enrolled student neither is user the responsible teacher
-    else if(this.state.enrolled === false && this.state.course.teacher.email != this.props.user.email){
+    else if(this.state.enrolled === false && this.state.course.teacher.email !== this.props.user.email){
     return (
     <div>
       <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '60px', paddingLeft: '30px'}}>
@@ -203,7 +203,7 @@ class Course extends Component {
       </div>
       );
   }
-  else if(this.state.enrolled == true || this.props.user.email === this.state.course.teacher.email){
+  else if(this.state.enrolled === true || this.props.user.email === this.state.course.teacher.email){
       return (
         <div>
 
