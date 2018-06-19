@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from'../../img/esna.png';
-import Bell from'../../img/bell-icon.png';
-import Chat from'../../img/chat-icon.png';
 import '../../css/timeline.css';
 import '../../css/profile.css';
 /*add this css if you want the profile image on the left (circular)*/
@@ -10,7 +7,7 @@ import '../../css/profilepicture.css';
 import Meow from'../../img/meow.png';
 
 import cookie from 'react-cookies';
-import { checkUserSession, updateTimeSec } from '../../utils/userSessionHelper'; 
+import { checkUserSession, updateTimeSec } from '../../utils/userSessionHelper';
 
 
 class Settings extends Component {
@@ -21,7 +18,7 @@ class Settings extends Component {
 		  user: this.props.user
 		}
 	}
-	
+
 
 
   render() {
@@ -33,14 +30,14 @@ class Settings extends Component {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify( { token: cookie.load('userID') } )
     }).then (res => {
-      
+
       if(res.status === 500){
 
 
         this.props.history.push("/");
       }else{
         cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
-        
+
       }
     });
 
@@ -56,16 +53,16 @@ class Settings extends Component {
 					<div className="col-12">
 						<div className="col-12">
 							<h4 className="row">Einstellungen</h4>
-							
-							<div className="row"><Link to={`/changepassword`} className="text-muted">Passwort ändern</Link></div>	
-							<div className="row"><Link  to={`/profileedit`} className="text-muted">Profil bearbeiten</Link></div>	
-							<div className="row"><Link  to={``} className="text-muted">Kontaktdaten ändern</Link></div>	
-							<div className="row"><Link  to={``} className="text-muted">Mitteilungenkonfigurationen</Link></div>	
-							<div className="row"><Link  to={``} className="text-muted">Sicherheitsschlüssel</Link></div>	
-							<div className="row"><Link  to={``} className="text-muted">Feedback</Link></div>	
-							<div className="row"><Link  to={``} className="text-muted">Kalendereinstellungen</Link></div>	
-							<div className="row"><Link  to={``} className="text-muted">Kalendereinstellungen</Link></div>	
-								
+
+							<div className="row"><Link to={`/changepassword`} className="text-muted">Passwort ändern</Link></div>
+							<div className="row"><Link  to={`/profileedit`} className="text-muted">Profil bearbeiten</Link></div>
+							<div className="row"><Link  to={``} className="text-muted">Kontaktdaten ändern</Link></div>
+							<div className="row"><Link  to={``} className="text-muted">Mitteilungenkonfigurationen</Link></div>
+							<div className="row"><Link  to={``} className="text-muted">Sicherheitsschlüssel</Link></div>
+							<div className="row"><Link  to={``} className="text-muted">Feedback</Link></div>
+							<div className="row"><Link  to={``} className="text-muted">Kalendereinstellungen</Link></div>
+							<div className="row"><Link  to={``} className="text-muted">Kalendereinstellungen</Link></div>
+
 						</div>
 
 						<div className="row-12 text-muted text-right">
@@ -75,13 +72,13 @@ class Settings extends Component {
 						</div>
 					</div>
 				</div>
-				
-				
+
+
 		</div>
-				
-				
-		
-	
+
+
+
+
     </div>
 	</div>
 	</div>

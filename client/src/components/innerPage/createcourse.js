@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import Logo from'../../img/esna.png';
-import Bell from'../../img/bell-icon.png';
-import Chat from'../../img/chat-icon.png';
 import '../../css/timeline.css';
-
-import cookie from 'react-cookies';
-import { checkUserSession, updateTimeSec } from '../../utils/userSessionHelper';
-
 
 class CreateCourse extends Component {
 
@@ -15,7 +7,7 @@ class CreateCourse extends Component {
   super(props);
   this.state = {
     isFree: true
-    }; 
+    };
     this.checkboxHandler = this.checkboxHandler.bind(this);
   }
 
@@ -26,12 +18,12 @@ class CreateCourse extends Component {
   }
 
   anlegen = () => {
-       
+
       const { isFree } = this.state;
-      const {email} = this.props.user; 
+      const {email} = this.props.user;
       var c_name = document.getElementById('course_name').value
       var c_description = document.getElementById('course_description').value
-      
+
       if(c_name == '' || c_description == '')
         return;
 
@@ -53,7 +45,7 @@ class CreateCourse extends Component {
 
 
   render() {
-    const { isFree } = this.state; 
+    const { isFree } = this.state;
 
       return (
         <div style={{backgroundColor: '#f7f8fa'}}>

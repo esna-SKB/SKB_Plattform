@@ -50,7 +50,8 @@ class FeedTab extends Component{
               </div>
             </div>
             <div className='container' id="userposts">
-              {this.props.articles.map(function(article) { return( <Article key={article._id} article={article}/>);})}
+            {this.props.articles.map(function(article) { return( <Article key={article._id} user={this.props.user.email} article={article} />);}, this)}
+
             </div>
           </div>
         )
@@ -59,7 +60,7 @@ class FeedTab extends Component{
       return(
         <div className="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
             <div className='container' id="userposts">
-            {this.props.articles.map(function(article) { return( <Article key={article._id} article={article}/>);})}
+            {this.props.articles.map(function(article) { return( <Article key={article._id} user={this.props.user.email} article={article} />);}, this)}
             </div>
         </div>
       )

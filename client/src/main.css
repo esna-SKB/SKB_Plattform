@@ -359,3 +359,16 @@ button {
   border: '1px solid #007fb2';
   color: '#007fb2';
 }
+
+.remove_article {
+  font-size: 20px;
+  margin-top: -20px;
+  /* margin-left: 10px !important; */
+  color:black;
+}
+.remove_button_arrow{
+  background-color: transparent;
+  border: none;
+  color:white;
+}
+.remove_button_arrow:focus {outline:0;}
