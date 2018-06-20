@@ -18,6 +18,14 @@ class FeedTab extends Component{
         });
         console.log(this.props.articles)
     }
+
+    fileUploader = (event) => {
+      this.setState({
+        file: event.target.files[0]
+      });
+      console.log(event.target.files[0])
+    }
+
     render(){
       if(this.props.user.email === this.props.course.teacher.email){
         return(
@@ -28,17 +36,12 @@ class FeedTab extends Component{
                   <div className="col-4" style={{textAlign: 'center', borderBottom: '1px solid rgb(0, 127, 178)', marginBottom: '-16px'}}>
                     <span className="glyphicon glyphicon-pencil"></span> Text teilen
                   </div>
-                  <div className="col-4" style={{textAlign: 'center'}}>
-                    Foto Hochladen
-                  </div>
-                  <div className="col-4" style={{textAlign: 'center'}}>
-                    Datei Hochladen
-                  </div>
                 </div>
               </div>
               <div className="col-12" id="post_content">
                 <div className="textarea_wrap">
                   <textarea id='textteilen' className="col-xs-11" style={{width: '100%'}} placeholder="write something..."></textarea>
+                  <input type="file" className ="file" onChange={this.fileUploader}/>
                 </div>
               </div>
               <div className="col-xs-12" id="post_footer">
@@ -129,7 +132,8 @@ class Course extends Component {
       enrolled: false,
       course: undefined,
       articles: undefined,
-      members: []
+      members: [],
+      file: null
       };
     }
   componentWillMount(){
