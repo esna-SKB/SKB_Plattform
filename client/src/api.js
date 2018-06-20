@@ -244,7 +244,7 @@ deleteUser: function(email){
    * POST /article/course/:courseName
    * creates a new article
   */
-    createArticle: function(courseName, headline, author, text, created_at){
+    createArticle: function(courseName, headline, author, text, data, type, created_at){
       return fetch('/article/course/'+courseName, {
         method: 'POST',
         headers: {
@@ -256,6 +256,8 @@ deleteUser: function(email){
           headline: headline,
           author: author,
           text: text,
+          data: data,
+          type: type,
           created_at: created_at,
         }),
       })

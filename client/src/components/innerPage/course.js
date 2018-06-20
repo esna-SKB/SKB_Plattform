@@ -13,8 +13,9 @@ class FeedTab extends Component{
 
     postArticle = () =>{
         var text = document.getElementById("textteilen").value;
-        api.createArticle(this.props.course.name, "", this.props.user.email, text, Date.now).then(res => {
-          window.location.reload(false);
+        console.log(this.state.file)
+        api.createArticle(this.props.course.name, "", this.props.user.email, text, this.state.file, this.state.file.type, Date.now).then(res => {
+          //window.location.reload(false);
         });
         console.log(this.props.articles)
     }

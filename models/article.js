@@ -10,11 +10,16 @@ var articleSchema = new Schema({
         ref: "Course"
     },
     headline: String,
+    file: {
+        data: Buffer,
+        type: String
+    },
     author: {
         type: Schema.Types.ObjectId,
         ref: "User"
     },
     text: String, 
+    dunn: 'AHHHHHHH!!!!'
     created_at: {type: Date, default: '1994-12-12'}
 });
 

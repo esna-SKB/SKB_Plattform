@@ -27,12 +27,16 @@ router.route('/course/:name')
 	})
 	//post new Article
 	.post((req, res, next) => {
+
 		const { body } = req;
 		const { course } = body;
 		const { headline } = body;
 		const { author } = body;
 		const { text } = body;
+		const { data } = body;
+		const { type } = type;
 		const { created_at } = body; //könnte auch automatisch gespeichert werden
+		
 		console.log(course, author);
 
 		Course.findOne({name: course}).exec(function(err, courseE){
@@ -50,8 +54,9 @@ router.route('/course/:name')
 				newArticle.headline = headline;
 				newArticle.author = userE._id;
 				newArticle.text = text;
+				newArticle.file.data = fs.data;
+				newArticle.file.type = type;
 				newArticle.created_at = new Date();
-
 				newArticle.save(function(err){
 					if(err) return res.status(500).send('error occured in the database');
 					else {
