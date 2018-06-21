@@ -10,17 +10,28 @@ var articleSchema = new Schema({
         ref: "Course"
     },
     headline: String,
-    file: {
-        data: Buffer,
-        type: String
-    },
+    data: String,
+    type: String,
     author: {
         type: Schema.Types.ObjectId,
         ref: "User"
     },
     text: String, 
-    dunn: 'AHHHHHHH!!!!'
     created_at: {type: Date, default: '1994-12-12'}
 });
 
 module.exports = mongoose.model('Article', articleSchema);
+
+/*module.exports = function (req, res) {
+  var data = '';
+
+  req.on('data', function (chunk) {
+    data += chunk;
+  });
+
+  req.on('end', function () {
+    console.log('File uploaded');
+    res.writeHead(200);
+    res.end();
+  });
+};*/

@@ -63,6 +63,7 @@ class Article extends React.Component {
 						<div className='col-12'>
 							<h6>{article.headline}</h6>
 							<p style={{color: '#a9a8a8'}}>{article.text}</p>
+							<img src={article.data} class="img-rounded" alt="Data"/>
 						</div>
 					</div>
 				</div>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Article from './article';
 
+//import axios from 'axios';
+
 import api from '../../api';
 
 
@@ -13,9 +15,15 @@ class FeedTab extends Component{
 
     postArticle = () =>{
         var text = document.getElementById("textteilen").value;
+        var formData = new FormData();
+        formData.append("file", this.state.file);
+
+        
+
         console.log(this.state.file)
-        api.createArticle(this.props.course.name, "", this.props.user.email, text, this.state.file, this.state.file.type, Date.now).then(res => {
-          //window.location.reload(false);
+        api.createArticle(this.props.course.name, "", this.props.user.email, text, this.state.file.type, Date.now, formData).then(res => {
+
+        //window.location.reload(false);
         });
         console.log(this.props.articles)
     }

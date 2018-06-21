@@ -33,8 +33,8 @@ router.route('/course/:name')
 		const { headline } = body;
 		const { author } = body;
 		const { text } = body;
-		const { data } = body;
-		const { type } = type;
+		//const { data } = body;
+		const { type } = body;
 		const { created_at } = body; //könnte auch automatisch gespeichert werden
 		
 		console.log(course, author);
@@ -54,20 +54,115 @@ router.route('/course/:name')
 				newArticle.headline = headline;
 				newArticle.author = userE._id;
 				newArticle.text = text;
-				newArticle.file.data = fs.data;
-				newArticle.file.type = type;
+				//console.log(data);
+				//newArticle.file = data;
+				newArticle.type = type;
 				newArticle.created_at = new Date();
 				newArticle.save(function(err){
 					if(err) return res.status(500).send('error occured in the database');
 					else {
 					return res.status(200).send({
 						success: true,
-						article: "new Article is saved"
+						article: "new Article is saved",
 						});
 					}
 				});
 
 			})
+		})
+	})
+
+	router.route('/:coursename/:author/:text').put((req, res, next) => {
+
+		var kurs = req.params.coursename;
+		var autor = req.params.author;
+		var inhalt = req.params.text;
+		var kursid = "";
+		ObjectId = require('mongodb').ObjectId;
+
+		Course.findOne({name: kurs}, function(err, foundCourse){
+			if (err){
+				console.log(err.message);
+				res.status(500).send({
+					success: false,
+				})
+			} else if(!foundCourse){
+				console.log("Course not found (404)");
+				res.status(404).send({
+					success:false,
+				});
+			} else {
+				kursid = ObjectId(foundCourse._id);
+			}
+		})
+
+		console.log(kurs+"---"+autor+"---"+inhalt);
+
+		User.findOne({email: autor}, function(err, foundUser){
+			if(err){
+				console.log('error occured in the database');
+				res.status(500).send({
+					success: false,
+					message: 'Server Error'
+				});
+			} else if(!foundUser){
+				console.log("no User found (404)");
+				res.status(404).send({
+					success: false,
+					message: 'No User found (404)'
+				});
+
+			} else {
+				userid =  ObjectId(foundUser._id);
+				Article.findOne({course: kursid, author: userid, text: inhalt}, function(errr, foundArticle){
+					if(errr){
+						console.log(errr.message);
+						res.status(500).send({
+							success: false,
+							message: 'Server Error'
+						});
+					} else if(!foundArticle){
+						console.log('No matching Article found (404)');
+						res.status(404).send({
+							success: false,
+							message: 'No matching Article found (404)'
+						});
+					} else {
+
+						req.on('data', function (chunk) {
+							console.log("Are you inside?");
+							foundArticle.data += chunk;
+						});
+
+					  	req.on('end', function () {
+					  		console.log("The end.")
+					  		foundArticle.save((error, doc) => {
+						        if (error) {
+						          	console.log(err.message);
+					            	res.status(500).send({
+					            		success: false,
+					            		message: 'Error: server error'
+						          	});
+						        }
+						        else{
+									
+					    			console.log('File uploaded');
+
+					    			res.writeHead(200);
+					    			res.end();
+									/*res.status(200).send({
+
+										success: true,
+										message: 'checked and updated User Session'
+									});*/
+								}
+							});
+					  	});
+
+
+					}
+				})
+			}
 		})
 	})
 
