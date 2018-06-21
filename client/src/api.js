@@ -2,8 +2,10 @@
 //include "const api = require('../api');" in your component &
 //use the function via api.functionname..
 //in almost all cases the function returns a json object
+
 const cookie = require('react-cookies');
 const {updateTimeSec} = require('./utils/userSessionHelper');
+
 
 
 module.exports = {
@@ -244,7 +246,8 @@ deleteUser: function(email){
    * POST /article/course/:courseName
    * creates a new article
   */
-    createArticle: function(courseName, headline, author, text, created_at){
+    createArticle: function(courseName, headline, author, text, type, created_at, formData){
+      
       return fetch('/article/course/'+courseName, {
         method: 'POST',
         headers: {
@@ -256,10 +259,37 @@ deleteUser: function(email){
           headline: headline,
           author: author,
           text: text,
+          //data: data,
+          type: type,
           created_at: created_at,
         }),
       })
-      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+        res.json();
+        
+        var config = {
+          onUploadProgress: function(progressEvent) {
+            var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+          }
+        };
+        
+        var axios = require('axios');
+        console.log("vorher: "+courseName+", "+author+", "+text)
+        axios.put('/article/'+courseName+'/'+author+'/'+text, formData, config)
+            .then(function (res) {
+              //output.className = 'container';
+              //output.innerHTML = res.data;
+              console.log(res.data);
+            })
+            .catch(function (err) {
+              //output.className = 'container text-danger';
+              //output.innerHTML = err.message;
+              console.log(err.message);
+            });
+
+
+      });
     },
 
   /*
