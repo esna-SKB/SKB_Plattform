@@ -12,6 +12,7 @@ import { updateTimeSec } from '../../utils/userSessionHelper'
 
 const api = require('../../api');
 
+var BckgrdUrl;
 
 class Login extends Component {
 
@@ -44,6 +45,11 @@ class Login extends Component {
     this.onTextboxChangeSignInPassword = this.onTextboxChangeSignInPassword.bind(this);
 
     this.onSignIn = this.onSignIn.bind(this);
+	
+	/*for changing brackground*/
+	const totalImages = 9;
+	var chosenOne = Math.ceil(Math.random()* totalImages);
+	BckgrdUrl = '../../../backgrounds/' + chosenOne + '.jpg';
 
   }
 
@@ -259,7 +265,7 @@ class Login extends Component {
 */
     return (
 
-      <div className="row heigh100" style={{backgroundColor: '#f7f8f9', backgroundImage: 'url('+Classimg+')', backgroundSize: '100%'}}>
+      <div className="row heigh100" style={{backgroundColor: '#f7f8f9', backgroundImage: 'url('+BckgrdUrl+')', backgroundSize: '100%'}}>
 
 
 
