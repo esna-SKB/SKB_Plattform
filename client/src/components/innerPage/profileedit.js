@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import '../../css/timeline.css';
 // import Meow from'../../img/meow.png';
+import '../../css/uploadfile.css'
 
+import Upload from'../../img/upload.png';
 import cookie from 'react-cookies';
 import { updateTimeSec } from '../../utils/userSessionHelper';
 
@@ -24,13 +26,18 @@ class Profileedit extends Component {
 		//look at https://reactjs.org/docs/forms.html
 		this.onChange = this.onChange.bind(this);
 		this.onSave = this.onSave.bind(this);
+		this.handlePic = this.handlePic.bind(this);
+		
 	}
 
 	onChange(e) {
 		this.setState({[e.target.name]: e.target.value});
 	}
 
-
+	handlePic(files){
+		
+	}
+	
 	onSave(){
 		/*var des, can, learn, teach, web;
 
@@ -145,6 +152,15 @@ class Profileedit extends Component {
 								<div className="row">
 									<div className="col">
 										<div></div>
+										<div className="current_picture newpart"></div>
+										<div className="form-group row newpart">
+											<input className="HideTheUglyInput"type="file" name="profilepic" id="profilepic" onChange={this.handlePic(this.files)}></input>
+											<label className="TheBeautifulInput" for="profilepic">
+												<img id="upload_icon" className="upload_icon" src={Upload} alt="Upload Icon"/>
+												Bild ändern
+											</label>
+										</div>
+									
 										<div className="form-group row newpart" >
 											<label htmlFor="description">Beschreibung</label>
 											<textarea className="form-control" name="description" rows="3" aria-describedby="Help1" value={description} onChange={this.onChange}></textarea>
@@ -192,7 +208,7 @@ class Profileedit extends Component {
 										</div>
 									</div>
 								</div>
-								<button type="button" className="btn btn-primary" onClick={this.onSave}>Speichern</button>
+								<a type="button" href="/profile" className="btn btn-primary" onClick={this.onSave}>Speichern</a>
 							</form>
 							<div className="row-12 text-muted text-right">
 								<div className="col-12">

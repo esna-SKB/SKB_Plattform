@@ -47,7 +47,7 @@ class Login extends Component {
     this.onSignIn = this.onSignIn.bind(this);
 	
 	/*for changing brackground*/
-	const totalImages = 9;
+	const totalImages = 97;
 	var chosenOne = Math.ceil(Math.random()* totalImages);
 	BckgrdUrl = '../../../backgrounds/' + chosenOne + '.jpg';
 
@@ -265,8 +265,7 @@ class Login extends Component {
 */
     return (
 
-      <div className="row heigh100" style={{backgroundColor: '#f7f8f9', backgroundImage: 'url('+BckgrdUrl+')', backgroundSize: '100%'}}>
-
+      <div className="row heigh100 backgrd" style={{backgroundImage: 'url('+BckgrdUrl+')'}}>
 
 
       <div className="col-12" style={{padding: '10px 10px 10px 25px'}}>
@@ -274,7 +273,7 @@ class Login extends Component {
 
         <a href="/signup" className='whitehover' style={{color: 'white !important'}}><div className='registrieren_botton'>Registrieren
         </div></a>
-        <div><p style={{float: 'right',paddingTop: '23px', fontSize: '16px'}}>noch kein Mitglied?</p></div>
+        <div><p className="keinMitglied" style={{float: 'right',paddingTop: '23px', fontSize: '16px'}}>noch kein Mitglied?</p></div>
 
         <div className='center_loginform'>
               <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
