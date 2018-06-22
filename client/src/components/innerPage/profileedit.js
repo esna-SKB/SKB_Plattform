@@ -155,7 +155,7 @@ class Profileedit extends Component {
 										<div className="current_picture newpart"></div>
 										<div className="form-group row newpart">
 											<input className="HideTheUglyInput"type="file" name="profilepic" id="profilepic" onChange={this.handlePic(this.files)}></input>
-											<label className="TheBeautifulInput" for="profilepic">
+											<label className="TheBeautifulInput" htmlFor="profilepic">
 												<img id="upload_icon" className="upload_icon" src={Upload} alt="Upload Icon"/>
 												Bild ändern
 											</label>
