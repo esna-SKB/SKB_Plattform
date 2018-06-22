@@ -1,5 +1,6 @@
 import React from 'react';
 // import api from '../../api';
+import axios from'axios';
 
 
 class Article extends React.Component {
@@ -8,6 +9,34 @@ class Article extends React.Component {
 	this.state = {
 		article: this.props.article
 		};
+	}
+
+
+	encoder = () => {
+
+
+
+		var arrayBuffer = Buffer.from(this.state.article.data, 'binary').toString('base64');
+
+		let u8 = new Uint8Array(arrayBuffer)
+	    let b64encoded = btoa([].reduce.call(new Uint8Array(arrayBuffer),function(p,c){return p+String.fromCharCode(c)},''))
+	    let mimetype= this.state.article.type;
+	    //console.log(arrayBuffer)
+	    //document.getElementById("myimage") = b64encoded;
+	    return "data:"+mimetype+";base64"+arrayBuffer
+	}
+
+	img(){
+		var arrayBuffer = Buffer.from(this.state.article.data, 'binary').toString('base64');
+	    let mimetype= this.state.article.type;
+		//arrayBuffer = "data:"+mimetype+";base64"+arrayBuffer;
+		var image = document.createElement('img');
+		image.src = "data:"+mimetype+";base64,"+btoa(arrayBuffer);
+	    //console.log(arrayBuffer)
+	    //console.log(arrayBuffer);
+		return(
+			<img ng-src={image.src} className="img-rounded img-fluid" alt="Image template"/>
+		)
 	}
 
 
@@ -63,8 +92,12 @@ class Article extends React.Component {
 						<div className='col-12'>
 							<h6>{article.headline}</h6>
 							<p style={{color: '#a9a8a8'}}>{article.text}</p>
-							<img src={article.data} class="img-rounded" alt="Data"/>
-						</div>
+							<div className="embed-responsive embed-responsive-16by9">
+							 	<iframe className="embed-responsive-item" src={require('../../img/meow.png')} allowFullScreen></iframe>
+							</div>
+							{this.img()}
+							
+							</div>
 					</div>
 				</div>
 		 	);

@@ -16,7 +16,7 @@ class FeedTab extends Component{
     postArticle = () =>{
         var text = document.getElementById("textteilen").value;
         var formData = new FormData();
-        formData.append("file", this.state.file);
+        formData.append("file", this.state.file, this.state.file.name);
 
         
 

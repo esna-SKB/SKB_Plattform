@@ -128,14 +128,14 @@ router.route('/course/:name')
 							message: 'No matching Article found (404)'
 						});
 					} else {
-
+						
 						req.on('data', function (chunk) {
 							console.log("Are you inside?");
 							foundArticle.data += chunk;
 						});
 
 					  	req.on('end', function () {
-					  		console.log("The end.")
+					  		console.log("The end.");
 					  		foundArticle.save((error, doc) => {
 						        if (error) {
 						          	console.log(err.message);
@@ -166,6 +166,16 @@ router.route('/course/:name')
 		})
 	})
 
+	router.route('/file/:articleid').get((req, res, next) => {
+		var id = req.params.articleid
+		Article.findOne({_id: id}, function(err, foundArticle) {
+			if(err) {
+				return status(500).send('error occured in database')
+			} else {
+				return res.status(200).send(foundArticle.data);
+			}
+		})
+	})
 
 	router.route('/:id')
 

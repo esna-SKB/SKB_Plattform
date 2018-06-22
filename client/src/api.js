@@ -268,15 +268,10 @@ deleteUser: function(email){
         console.log(res);
         res.json();
         
-        var config = {
-          onUploadProgress: function(progressEvent) {
-            var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
-          }
-        };
         
         var axios = require('axios');
         console.log("vorher: "+courseName+", "+author+", "+text)
-        axios.put('/article/'+courseName+'/'+author+'/'+text, formData, config)
+        axios.put('/article/'+courseName+'/'+author+'/'+text, formData)
             .then(function (res) {
               //output.className = 'container';
               //output.innerHTML = res.data;
