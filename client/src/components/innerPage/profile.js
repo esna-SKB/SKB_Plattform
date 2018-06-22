@@ -16,11 +16,11 @@ class Profile extends Component {
 
 		this.state = {
 		  user:this.props.user,
+		  shownprofile: {},
 		}
 		
 	}
 
-	
 	componentDidMount(){
 		
 		//check if it is /profile
@@ -30,63 +30,67 @@ class Profile extends Component {
 				
 			api.getUser(email).then(res => {
 				this.setState({
-					user : res,
-					isTeacher: res.isTeacher
-				})
-				console.log("user:"+ this.user);
-				console.log("res:"+ res);
+					shownprofile : res,
+				});
+				console.log("user:"+JSON.stringify(this.state.user));
+				console.log("res:"+ JSON.stringify(res));
+				console.log("shown:"+ JSON.stringify(this.state.shownprofile));
+	
+				
+				//isadmin abfangen?
+				if(this.state.shownprofile.isTeacher){
+					document.getElementById("role").innerHTML = "Lehrer_in";
+
+					//ican/ilearn mit iteach und freie Kurse austauschen
+					document.getElementById("trueLearn").style.display = 'none';
+					document.getElementById("iLearn").style.display = 'none';
+					document.getElementById("trueCan").style.display = 'none';
+					document.getElementById("iCan").style.display = 'none';
+					document.getElementById("trueTeach").style.display = 'block';
+					document.getElementById("iTeach").style.display = 'block';
+					document.getElementById("trueOffer").style.display = 'block';
+
+
+				}else{
+					document.getElementById("role").innerHTML = "Student_in";
+
+					// iteach/freie Kurse mit ican und ilearn austauschen
+					document.getElementById("trueLearn").style.display = 'block';
+					document.getElementById("iLearn").style.display = 'block';
+					document.getElementById("trueCan").style.display = 'block';
+					document.getElementById("iCan").style.display = 'block';
+					document.getElementById("trueTeach").style.display = 'none';
+					document.getElementById("iTeach").style.display = 'none';
+					document.getElementById("trueOffer").style.display = 'none';
+				}
+				
+			});
+			
+		}else{
+			this.setState({
+				shownprofile : this.state.user,
 			});
 			
 		}
-		
-		
-		
-		const {
-				user,
-		} = this.state;
-		
+	
 		//dummy values
 		var countCourses = 4;
 		var countGroups = 3;
 		document.getElementById("countCourses2").innerHTML = countCourses;
 		document.getElementById("countGroups2").innerHTML = countGroups;
 
-		//isadmin abfangen?
-		if(user.isTeacher){
-			document.getElementById("role").innerHTML = "Lehrer_in";
 
-			//ican/ilearn mit iteach und freie Kurse austauschen
-			document.getElementById("trueLearn").style.display = 'none';
-			document.getElementById("iLearn").style.display = 'none';
-			document.getElementById("trueCan").style.display = 'none';
-			document.getElementById("iCan").style.display = 'none';
-			document.getElementById("trueTeach").style.display = 'block';
-			document.getElementById("iTeach").style.display = 'block';
-			document.getElementById("trueOffer").style.display = 'block';
-
-
-		}else{
-			console.log("is teacher?:"+ user.isTeacher);
-			document.getElementById("role").innerHTML = "Student_in";
-
-			// iteach/freie Kurse mit ican und ilearn austauschen
-			document.getElementById("trueLearn").style.display = 'block';
-			document.getElementById("iLearn").style.display = 'block';
-			document.getElementById("trueCan").style.display = 'block';
-			document.getElementById("iCan").style.display = 'block';
-			document.getElementById("trueTeach").style.display = 'none';
-			document.getElementById("iTeach").style.display = 'none';
-			document.getElementById("trueOffer").style.display = 'none';
-		}
-  }
-
+		
+	}
+  
 
 
   render() {
 	//grab state		
-		const {
-			user,
-		} = this.state;
+	const {
+		user,
+		shownprofile,
+	} = this.state;
 	
     return (
       <div>
@@ -104,7 +108,7 @@ class Profile extends Component {
 
 										<div className="makespace col">
 											<div className=" row">
-												<h4 className="title"><strong id="YourName02">{user.firstname + " " + user.lastname}</strong></h4>
+												<h4 className="title"><strong id="YourName02">{shownprofile.firstname + " " + shownprofile.lastname}</strong></h4>
 											</div>
 
 											<div className="row  text-muted">
@@ -124,7 +128,7 @@ class Profile extends Component {
 
 								</div>
 								<div className="row-12 text-muted">
-										<div className="col-12 description" id="description">{user.description}</div>
+										<div className="col-12 description" id="description">{shownprofile.description}</div>
 								</div>
 								<div className="row-12 text-muted text-right">
 									<div className="col-12 edit">
@@ -140,14 +144,14 @@ class Profile extends Component {
 								<div className="col">
 									<div className="row  text-muted">
 										<div className="col-4" id="trueCan">ich kann:</div>
-										<div className="col-8" id="iCan">{user.iCan}</div>
+										<div className="col-8" id="iCan">{shownprofile.iCan}</div>
 										<div className="col-4" id="trueTeach">ich bringe bei:</div>
-										<div className="col-8" id="iTeach">{user.iTeach}</div>
+										<div className="col-8" id="iTeach">{shownprofile.iTeach}</div>
 									</div>
 
 									<div className="row  lineup ">
 										<div className="col-4 text-muted " id="trueLearn">ich lerne:</div>
-										<div className="col-8 text-muted" id="iLearn">{user.iLearn}</div>
+										<div className="col-8 text-muted" id="iLearn">{shownprofile.iLearn}</div>
 										<div className="col-12" id="trueOffer"><strong>mein kostenloses Angebot:</strong></div>
 									</div>
 								</div>
@@ -160,11 +164,11 @@ class Profile extends Component {
 								<div className="col">
 										<div className="row  text-muted">
 										<div className="col-4">E-Mail:</div>
-										<a className="col-8" id="email" href={"mailto:" + user.email}>{user.email}</a>
+										<a className="col-8" id="email" href={"mailto:" + shownprofile.email}>{shownprofile.email}</a>
 									</div>
 									<div className="row text-muted lineup ">
 										<div className="col-4 ">Website:</div>
-										<a className="col-8" id="website" href={"http://" + user.website}>{user.website}</a>
+										<a className="col-8" id="website" href={"http://" + shownprofile.website}>{shownprofile.website}</a>
 									</div>
 								</div>
 							</div>
