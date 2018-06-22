@@ -71,6 +71,33 @@ class Profile extends Component {
 				shownprofile : this.state.user,
 			});
 			
+			//isadmin abfangen?
+				if(this.state.user.isTeacher){
+					document.getElementById("role").innerHTML = "Lehrer_in";
+
+					//ican/ilearn mit iteach und freie Kurse austauschen
+					document.getElementById("trueLearn").style.display = 'none';
+					document.getElementById("iLearn").style.display = 'none';
+					document.getElementById("trueCan").style.display = 'none';
+					document.getElementById("iCan").style.display = 'none';
+					document.getElementById("trueTeach").style.display = 'block';
+					document.getElementById("iTeach").style.display = 'block';
+					document.getElementById("trueOffer").style.display = 'block';
+
+
+				}else{
+					document.getElementById("role").innerHTML = "Student_in";
+
+					// iteach/freie Kurse mit ican und ilearn austauschen
+					document.getElementById("trueLearn").style.display = 'block';
+					document.getElementById("iLearn").style.display = 'block';
+					document.getElementById("trueCan").style.display = 'block';
+					document.getElementById("iCan").style.display = 'block';
+					document.getElementById("trueTeach").style.display = 'none';
+					document.getElementById("iTeach").style.display = 'none';
+					document.getElementById("trueOffer").style.display = 'none';
+				}
+			
 		}
 	
 		//dummy values
