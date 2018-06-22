@@ -223,77 +223,77 @@ class Course extends Component {
   else if(this.state.enrolled === true || this.props.user.email === this.state.course.teacher.email){
 
 
-$( document ).ready(function() {
-    const db = localStorage;
-    const _ = (el) => {
-    	return document.querySelector(el);
-    };
-    const getTpl = (element) => {
-    	return tpl[element];
-    };
+      $( document ).ready(function() {
+          const db = localStorage;
+          const _ = (el) => {
+          	return document.querySelector(el);
+          };
+          const getTpl = (element) => {
+          	return tpl[element];
+          };
 
-    const makeEditable = () => {
-    	let elements = document.querySelectorAll('.drop-element');
-    	let toArr = Array.prototype.slice.call(elements);
-    	Array.prototype.forEach.call(toArr, (obj, index) => {
-    		if (obj.querySelector('img')) {
-    			return false;
-    		} else {
-    			obj.addEventListener('click', (e) => {
-    				e.preventDefault();
-    				obj.children[0].setAttribute('contenteditable', '');
-    				obj.focus();
-    			});
-    			obj.children[0].addEventListener('blur', (e) => {
-    				e.preventDefault();
-    				obj.children[0].removeAttribute('contenteditable');
-    			});
-    		}
-    	});
-    };
-    const removeDivsToSave = () => {
-    	let elements = document.querySelectorAll('.drop-element');
-    	let toArr = Array.prototype.slice.call(elements);
-    	let html = '';
-    	Array.prototype.forEach.call(toArr, (obj, index) => {
-        obj.children[0].removeAttribute('contenteditable');
-    		html += obj.innerHTML;
-    	});
-    	return html;
-    };
+          const makeEditable = () => {
+          	let elements = document.querySelectorAll('.drop-element');
+          	let toArr = Array.prototype.slice.call(elements);
+          	Array.prototype.forEach.call(toArr, (obj, index) => {
+          		if (obj.querySelector('img')) {
+          			return false;
+          		} else {
+          			obj.addEventListener('click', (e) => {
+          				e.preventDefault();
+          				obj.children[0].setAttribute('contenteditable', '');
+          				obj.focus();
+          			});
+          			obj.children[0].addEventListener('blur', (e) => {
+          				e.preventDefault();
+          				obj.children[0].removeAttribute('contenteditable');
+          			});
+          		}
+          	});
+          };
+          const removeDivsToSave = () => {
+          	let elements = document.querySelectorAll('.drop-element');
+          	let toArr = Array.prototype.slice.call(elements);
+          	let html = '';
+          	Array.prototype.forEach.call(toArr, (obj, index) => {
+              obj.children[0].removeAttribute('contenteditable');
+          		html += obj.innerHTML;
+          	});
+          	return html;
+          };
 
-    const tpl = {
-    	'header1': '<h1>I am header 1</h1>',
-    	'header2': '<h2>I am header 2</h2>',
-    	'header3': '<h3>I am header 3</h3>',
-    	'shortparagraph': '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et</p>',
-    	'ullist': '<ul><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ul>',
-    	'ollist': '<ol><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ol>',
-    	'image': '<img src="">'
-    };
+          const tpl = {
+          	'header1': '<h1>I am header 1</h1>',
+          	'header2': '<h2>I am header 2</h2>',
+          	'header3': '<h3>I am header 3</h3>',
+          	'shortparagraph': '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et</p>',
+          	'ullist': '<ul><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ul>',
+          	'ollist': '<ol><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ol>',
+          	'image': '<img src="">'
+          };
 
-    const containers = [_('.box-left'), _('.box-right')];
-    const drake = dragula(containers, {
-    	copy(el, source) {
-    		return source === _('.box-left');
-    	},
-    	accepts(el, target) {
-    		return target !== _('.box-left');
-    	}
-    });
+          const containers = [_('.box-left'), _('.box-right')];
+          const drake = dragula(containers, {
+          	copy(el, source) {
+          		return source === _('.box-left');
+          	},
+          	accepts(el, target) {
+          		return target !== _('.box-left');
+          	}
+          });
 
-    drake.on('out', (el, container) => {
-    	if (container == _('.box-right')) {
-    		el.innerHTML = getTpl(el.getAttribute('data-tpl'));
-    		el.className = 'drop-element';
-    		makeEditable();
-    		db.setItem('savedData', _('.box-right').innerHTML);
-    	}
-    	if (container == _('.box-left')) {
-    		el.innerHTML = el.getAttribute('data-title');
-    	}
-    });
-});
+          drake.on('out', (el, container) => {
+          	if (container == _('.box-right')) {
+          		el.innerHTML = getTpl(el.getAttribute('data-tpl'));
+          		el.className = 'drop-element';
+          		makeEditable();
+          		db.setItem('savedData', _('.box-right').innerHTML);
+          	}
+          	if (container == _('.box-left')) {
+          		el.innerHTML = el.getAttribute('data-title');
+          	}
+          });
+      });
 
       return (
         <div>
