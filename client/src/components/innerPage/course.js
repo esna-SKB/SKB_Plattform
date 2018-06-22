@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Article from './article';
+import $ from 'jquery';
 
 import api from '../../api';
 // import builder from '../../utils/builder';
@@ -132,6 +133,7 @@ class Course extends Component {
       articles: undefined,
       members: []
       };
+      this.bearbeiten = this.bearbeiten.bind(this);
     }
   componentWillMount(){
   //get course
@@ -162,6 +164,20 @@ class Course extends Component {
           })
     })
   }
+
+  bearbeiten = () => {
+    let wrapper = this.refs.wrapper
+
+    if(wrapper.style["display"] === 'none') {
+      wrapper.style["display"] = 'block'
+      this.refs.bearbeiten.innerHTML ='save'
+      return;
+    } else {
+      wrapper.style["display"] = 'none'
+      this.refs.bearbeiten.innerHTML ='bearbeiten'
+    }
+  }
+
 
   render() {
 
@@ -205,6 +221,9 @@ class Course extends Component {
       );
   }
   else if(this.state.enrolled === true || this.props.user.email === this.state.course.teacher.email){
+
+
+$( document ).ready(function() {
     const db = localStorage;
     const _ = (el) => {
     	return document.querySelector(el);
@@ -248,12 +267,9 @@ class Course extends Component {
     	'header2': '<h2>I am header 2</h2>',
     	'header3': '<h3>I am header 3</h3>',
     	'shortparagraph': '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et</p>',
-    	'mediumparagraph': '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate</p>',
-    	'largeparagraph': '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a,</p>',
     	'ullist': '<ul><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ul>',
     	'ollist': '<ol><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ol>',
-    	'image': '<img src="http://lorempixel.com/400/200/">',
-      'code': '<pre>function say(name){\n return name;\n}</pre>'
+    	'image': '<img src="">'
     };
 
     const containers = [_('.box-left'), _('.box-right')];
@@ -277,7 +293,7 @@ class Course extends Component {
     		el.innerHTML = el.getAttribute('data-title');
     	}
     });
-
+});
 
       return (
         <div>
@@ -326,52 +342,50 @@ class Course extends Component {
                             <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Inhalt </h3>
                             </div>
                             <div className="col-4">
-                            <div className='registrieren_botton' style={{color:'rgb(24, 86, 169)', marginTop: '-67px !important', fontSize: '13px', width: '104px', float: 'right', margin: '-12px 0'}}>
+                            <button ref="bearbeiten" className='registrieren_botton' id="edit" style={{color:'rgb(24, 86, 169)', marginTop: '-67px !important', fontSize: '13px', width: '104px', float: 'right', margin: '-12px 0'}} onClick={this.bearbeiten}>
                              bearbeiten
-                          	 </div>
+                          	 </button>
                              </div>
                         </div>
+
+                        <div style={{display : 'none'}} id="wrapper" ref="wrapper">
+                        <div className="wrapper">
+                        	<div className="box-left">
+                          <div data-tpl="header1" data-title="Header 1">
+                            Header 1
+                          </div>
+                        		<div data-tpl="header2" data-title="Header 2">
+                        			Header 2
+                        		</div>
+                        		<div data-tpl="header3" data-title="Header 3">
+                        			Header 3
+                        		</div>
+                        		<div data-tpl="shortparagraph" data-title="Short paragraph">
+                        			paragraph
+                        		</div>
+                        		<div data-tpl="ullist" data-title="Ordened list">
+                        			Ordened list
+                        		</div>
+                        		<div data-tpl="ollist" data-title="Unordened list">
+                        			Unordened list
+                        		</div>
+                            <div data-tpl="heade12" data-title="Unordened list">
+                              Datei
+                            </div>
+                            <div data-tpl="header12" data-title="Unordened list">
+                              Picture
+                            </div>
+                        	</div>
+                        	<div className="box-right"></div>
+                        </div>
+                        </div>
+
                             <p>{this.state.course.description}</p>
                             <div id="kursmaterial">
                             <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Kursmaterial </h3>
                             <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> 16. April - 22. April </h3>
                             <p>Folie 01</p>
                             <p>Folie 02</p>
-<div className="wrapper">
-	<div className="box-left">
-		<div data-tpl="header1" data-title="Header 1">
-			Header 1
-		</div>
-		<div data-tpl="header2" data-title="Header 2">
-			Header 2
-		</div>
-		<div data-tpl="header3" data-title="Header 3">
-			Header 3
-		</div>
-		<div data-tpl="shortparagraph" data-title="Short paragraph">
-			Short paragraph
-		</div>
-		<div data-tpl="mediumparagraph" data-title="Medium paragraph">
-			Medium paragraph
-		</div>
-		<div data-tpl="largeparagraph" data-title="Large paragraph">
-			Large paragraph
-		</div>
-		<div data-tpl="ullist" data-title="Ordened list">
-			Ordened list
-		</div>
-		<div data-tpl="ollist" data-title="Unordened list">
-			Unordened list
-		</div>
-    <div data-tpl="heade12" data-title="Unordened list">
-      Datei
-    </div>
-    <div data-tpl="header12" data-title="Unordened list">
-      Picture
-    </div>
-	</div>
-	<div className="box-right"></div>
-</div>
                         </div>
                         </div>
                         <MemberTab course={this.state.course} members= {this.state.members}/>

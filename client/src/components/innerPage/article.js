@@ -66,32 +66,20 @@ class Article extends React.Component {
 						</div>
     </div>
 
-		<div className="container comtained border full_width">
-<div className="col-sm-12">
-<div className="panel panel-white post">
-		<div className="post-comments">
-				<div className="input-group">
-						<input className="form-control comment-input" placeholder="Add a comment..." type="text"/>
-						<span className="input-group-addon">
-								<a href="#"><i className="fa fa-check"></i></a>
-						</span>
-				</div>
+		<div className="comtained border row">
+			<div className="col-sm-12">
+			<div className="panel panel-white post">
+					<div className="post-comments">
+							<div className="input-group">
+									<input className="form-control comment-input" placeholder="Add a comment..." type="text"/>
+									<span className="input-group-addon">
+											<a href="#"><i className="fa fa-check"></i></a>
+									</span>
+							</div>
 
-			<ul className="comments-list">
-						<li className="comment">
-								<div className="comment-body">
-										<div className="comment-heading">
-												<h4 className="user"> ⇉ Gavino Free</h4>
-										</div>
-										<p>Sure, oooooooooooooooohhhhhhhhhhhhhhhh</p>
-								</div>
-
-						</li>
-				</ul>
-
-		</div>
-</div>
-</div>
+							</div>
+					</div>
+			</div>
 
 
 					</div>
@@ -124,6 +112,22 @@ class Article extends React.Component {
 							<p style={{color: '#a9a8a8'}}>{article.text}</p>
 						</div>
 					</div>
+
+					<div className="comtained border row">
+							<div className="col-sm-12">
+							<div className="panel panel-white post">
+								<div className="post-comments">
+										<div className="input-group">
+												<input className="form-control comment-input" placeholder="Add a comment..." type="text"/>
+												<span className="input-group-addon">
+														<a href="#"><i className="fa fa-check"></i></a>
+												</span>
+										</div>
+								</div>
+							</div>
+					</div>
+					</div>
+
 				</div>
 				);
 		}

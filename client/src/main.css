@@ -373,12 +373,6 @@ button {
 }
 .remove_button_arrow:focus {outline:0;}
 
-.full_width {
-  position: relative;
-  width: 106%;
-  left: -3%;
-}
-
 .comtained{
   opacity: 0.6;
   margin-top: -20px;
@@ -386,16 +380,8 @@ button {
   background-color: #f9f9f9;
   padding-top: 15px;
   border-top: transparent !important;
+  padding-bottom: 10px;
 }
-
-@media Screen and (max-width: 870px){
-  .full_width {
-    position: relative;
-    width: 106%;
-    left: -3%;
-  }
-}
-
 
 
 .comtained:hover{opacity: 1;}
