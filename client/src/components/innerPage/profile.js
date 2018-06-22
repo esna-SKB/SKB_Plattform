@@ -5,7 +5,6 @@ import '../../css/profile.css';
 /*add this css if you want the profile image on the left (circular)*/
 import '../../css/profilepicture.css';
 import Meow from'../../img/meow.png';
-const api = require('../../api');
 
 // const api = require('../../api');
 
@@ -15,36 +14,12 @@ class Profile extends Component {
 		super(props);
 
 		this.state = {
-		  user:this.props.user,
+		  user: this.props.user
 		}
-		
 	}
 
-	
 	componentDidMount(){
-		
-		//check if it is /profile
-		if(!window.location.pathname.endsWith("/profile")){
-			//does not end with /profile so it is /user/:email
-			var email = window.location.pathname.split("/")[2];
-				
-			api.getUser(email).then(res => {
-				this.setState({
-					user : res,
-					isTeacher: res.isTeacher
-				})
-				console.log("user:"+ this.user);
-				console.log("res:"+ res);
-			});
-			
-		}
-		
-		
-		
-		const {
-				user,
-		} = this.state;
-		
+
 		//dummy values
 		var countCourses = 4;
 		var countGroups = 3;
@@ -52,7 +27,7 @@ class Profile extends Component {
 		document.getElementById("countGroups2").innerHTML = countGroups;
 
 		//isadmin abfangen?
-		if(user.isTeacher){
+		if(this.props.user.isTeacher){
 			document.getElementById("role").innerHTML = "Lehrer_in";
 
 			//ican/ilearn mit iteach und freie Kurse austauschen
@@ -66,7 +41,6 @@ class Profile extends Component {
 
 
 		}else{
-			console.log("is teacher?:"+ user.isTeacher);
 			document.getElementById("role").innerHTML = "Student_in";
 
 			// iteach/freie Kurse mit ican und ilearn austauschen
@@ -83,11 +57,7 @@ class Profile extends Component {
 
 
   render() {
-	//grab state		
-		const {
-			user,
-		} = this.state;
-	
+
     return (
       <div>
 		<div className="container-fluid">
@@ -104,7 +74,7 @@ class Profile extends Component {
 
 										<div className="makespace col">
 											<div className=" row">
-												<h4 className="title"><strong id="YourName02">{user.firstname + " " + user.lastname}</strong></h4>
+												<h4 className="title"><strong id="YourName02">{this.props.user.firstname + " " + this.props.user.lastname}</strong></h4>
 											</div>
 
 											<div className="row  text-muted">
@@ -124,7 +94,7 @@ class Profile extends Component {
 
 								</div>
 								<div className="row-12 text-muted">
-										<div className="col-12 description" id="description">{user.description}</div>
+										<div className="col-12 description" id="description">{this.props.user.description}</div>
 								</div>
 								<div className="row-12 text-muted text-right">
 									<div className="col-12 edit">
@@ -140,14 +110,14 @@ class Profile extends Component {
 								<div className="col">
 									<div className="row  text-muted">
 										<div className="col-4" id="trueCan">ich kann:</div>
-										<div className="col-8" id="iCan">{user.iCan}</div>
+										<div className="col-8" id="iCan">{this.props.user.iCan}</div>
 										<div className="col-4" id="trueTeach">ich bringe bei:</div>
-										<div className="col-8" id="iTeach">{user.iTeach}</div>
+										<div className="col-8" id="iTeach">{this.props.user.iTeach}</div>
 									</div>
 
 									<div className="row  lineup ">
 										<div className="col-4 text-muted " id="trueLearn">ich lerne:</div>
-										<div className="col-8 text-muted" id="iLearn">{user.iLearn}</div>
+										<div className="col-8 text-muted" id="iLearn">{this.props.user.iLearn}</div>
 										<div className="col-12" id="trueOffer"><strong>mein kostenloses Angebot:</strong></div>
 									</div>
 								</div>
@@ -160,11 +130,11 @@ class Profile extends Component {
 								<div className="col">
 										<div className="row  text-muted">
 										<div className="col-4">E-Mail:</div>
-										<a className="col-8" id="email" href={"mailto:" + user.email}>{user.email}</a>
+										<a className="col-8" id="email" href={"mailto:" + this.props.user.email}>{this.props.user.email}</a>
 									</div>
 									<div className="row text-muted lineup ">
 										<div className="col-4 ">Website:</div>
-										<a className="col-8" id="website" href={"http://" + user.website}>{user.website}</a>
+										<a className="col-8" id="website" href={"http://" + this.props.user.website}>{this.props.user.website}</a>
 									</div>
 								</div>
 							</div>

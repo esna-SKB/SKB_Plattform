@@ -34,7 +34,6 @@ also very good example for thinking of accessibitly
     background-color: #DF0101;
     display: inline-block;
 	border-radius:5px;
-	margin-left: 15px;
 }
 
 .upload_icon{
@@ -50,4 +49,5 @@ also very good example for thinking of accessibitly
 	width: 150px;
 	height: 150px;
 	background-color: black;
+	padding-left:0px;
 }

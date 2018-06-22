@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import cookie from 'react-cookies';
-import { updateTimeSec } from '../../utils/userSessionHelper';
-
 import '../../css/timeline.css';
+// import Meow from'../../img/meow.png';
 import '../../css/uploadfile.css'
 
-// import Meow from'../../img/meow.png';
 import Upload from'../../img/upload.png';
-
+import cookie from 'react-cookies';
+import { updateTimeSec } from '../../utils/userSessionHelper';
 
 const api = require('../../api');
 
@@ -37,7 +35,7 @@ class Profileedit extends Component {
 	}
 
 	handlePic(files){
-		//change curret pic with uploaded pic
+		
 	}
 	
 	onSave(){
@@ -88,9 +86,7 @@ class Profileedit extends Component {
 	}
 
 	componentDidMount(){
-		//load current profilepicture
-	
-	
+
 		//isadmin abfangen?
 		if(this.props.user.isTeacher){
 			document.getElementById("learn").style.display = 'none';
