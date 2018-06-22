@@ -29,13 +29,13 @@ class Article extends React.Component {
 	img(){
 		var arrayBuffer = Buffer.from(this.state.article.data, 'binary').toString('base64');
 	    let mimetype= this.state.article.type;
-		//arrayBuffer = "data:"+mimetype+";base64"+arrayBuffer;
+		arrayBuffer = "data:"+mimetype+";base64,"+arrayBuffer;
 		var image = document.createElement('img');
-		image.src = "data:"+mimetype+";base64,"+btoa(arrayBuffer);
+		image.src = arrayBuffer//"data:"+mimetype+";base64,"+(arrayBuffer);
 	    //console.log(arrayBuffer)
 	    //console.log(arrayBuffer);
 		return(
-			<img ng-src={image.src} className="img-rounded img-fluid" alt="Image template"/>
+			<img src={image.src} className="img-rounded img-fluid" alt="Image template"/>
 		)
 	}
 
