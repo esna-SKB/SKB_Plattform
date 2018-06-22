@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Article from './article';
 
 import api from '../../api';
-
+// import builder from '../../utils/builder';
+import dragula from 'dragula';
 
 class FeedTab extends Component{
     ComponentDidMount(){
@@ -204,6 +205,80 @@ class Course extends Component {
       );
   }
   else if(this.state.enrolled === true || this.props.user.email === this.state.course.teacher.email){
+    const db = localStorage;
+    const _ = (el) => {
+    	return document.querySelector(el);
+    };
+    const getTpl = (element) => {
+    	return tpl[element];
+    };
+
+    const makeEditable = () => {
+    	let elements = document.querySelectorAll('.drop-element');
+    	let toArr = Array.prototype.slice.call(elements);
+    	Array.prototype.forEach.call(toArr, (obj, index) => {
+    		if (obj.querySelector('img')) {
+    			return false;
+    		} else {
+    			obj.addEventListener('click', (e) => {
+    				e.preventDefault();
+    				obj.children[0].setAttribute('contenteditable', '');
+    				obj.focus();
+    			});
+    			obj.children[0].addEventListener('blur', (e) => {
+    				e.preventDefault();
+    				obj.children[0].removeAttribute('contenteditable');
+    			});
+    		}
+    	});
+    };
+    const removeDivsToSave = () => {
+    	let elements = document.querySelectorAll('.drop-element');
+    	let toArr = Array.prototype.slice.call(elements);
+    	let html = '';
+    	Array.prototype.forEach.call(toArr, (obj, index) => {
+        obj.children[0].removeAttribute('contenteditable');
+    		html += obj.innerHTML;
+    	});
+    	return html;
+    };
+
+    const tpl = {
+    	'header1': '<h1>I am header 1</h1>',
+    	'header2': '<h2>I am header 2</h2>',
+    	'header3': '<h3>I am header 3</h3>',
+    	'shortparagraph': '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et</p>',
+    	'mediumparagraph': '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate</p>',
+    	'largeparagraph': '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a,</p>',
+    	'ullist': '<ul><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ul>',
+    	'ollist': '<ol><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ol>',
+    	'image': '<img src="http://lorempixel.com/400/200/">',
+      'code': '<pre>function say(name){\n return name;\n}</pre>'
+    };
+
+    const containers = [_('.box-left'), _('.box-right')];
+    const drake = dragula(containers, {
+    	copy(el, source) {
+    		return source === _('.box-left');
+    	},
+    	accepts(el, target) {
+    		return target !== _('.box-left');
+    	}
+    });
+
+    drake.on('out', (el, container) => {
+    	if (container == _('.box-right')) {
+    		el.innerHTML = getTpl(el.getAttribute('data-tpl'));
+    		el.className = 'drop-element';
+    		makeEditable();
+    		db.setItem('savedData', _('.box-right').innerHTML);
+    	}
+    	if (container == _('.box-left')) {
+    		el.innerHTML = el.getAttribute('data-title');
+    	}
+    });
+
+
       return (
         <div>
 
@@ -237,7 +312,6 @@ class Course extends Component {
                       <li className="nav-item">
                           <a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
                       </li>
-
                     </ul>
                 </div>
 
@@ -247,12 +321,58 @@ class Course extends Component {
                     <div className="tab-content col-offset-6 centered" id="tab-content">
 
                         <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
+                        <div className="row">
+                          <div className="col-8">
                             <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Inhalt </h3>
+                            </div>
+                            <div className="col-4">
+                            <div className='registrieren_botton' style={{color:'rgb(24, 86, 169)', marginTop: '-67px !important', fontSize: '13px', width: '104px', float: 'right', margin: '-12px 0'}}>
+                             bearbeiten
+                          	 </div>
+                             </div>
+                        </div>
                             <p>{this.state.course.description}</p>
+                            <div id="kursmaterial">
                             <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Kursmaterial </h3>
                             <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> 16. April - 22. April </h3>
                             <p>Folie 01</p>
                             <p>Folie 02</p>
+<div className="wrapper">
+	<div className="box-left">
+		<div data-tpl="header1" data-title="Header 1">
+			Header 1
+		</div>
+		<div data-tpl="header2" data-title="Header 2">
+			Header 2
+		</div>
+		<div data-tpl="header3" data-title="Header 3">
+			Header 3
+		</div>
+		<div data-tpl="shortparagraph" data-title="Short paragraph">
+			Short paragraph
+		</div>
+		<div data-tpl="mediumparagraph" data-title="Medium paragraph">
+			Medium paragraph
+		</div>
+		<div data-tpl="largeparagraph" data-title="Large paragraph">
+			Large paragraph
+		</div>
+		<div data-tpl="ullist" data-title="Ordened list">
+			Ordened list
+		</div>
+		<div data-tpl="ollist" data-title="Unordened list">
+			Unordened list
+		</div>
+    <div data-tpl="heade12" data-title="Unordened list">
+      Datei
+    </div>
+    <div data-tpl="header12" data-title="Unordened list">
+      Picture
+    </div>
+	</div>
+	<div className="box-right"></div>
+</div>
+                        </div>
                         </div>
                         <MemberTab course={this.state.course} members= {this.state.members}/>
                         <FeedTab  user={this.props.user} course={this.state.course} articles={this.state.articles}/>
