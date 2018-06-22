@@ -92,6 +92,9 @@ class Body extends React.Component {
 						<Route exact path='/profile' render={(props) => (
 						  <Profile user={this.props.user}/>
 						)}/>
+						<Route exact path ='/user/:email' render={(props) => (
+						  <Profile user={this.props.user}/>
+						)}/>
 						<Route exact path='/profileedit' render={(props) => (
 						  <Profileedit user={this.props.user}/>
 						)}/>
