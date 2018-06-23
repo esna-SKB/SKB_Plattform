@@ -128,14 +128,16 @@ router.route('/course/:name')
 							message: 'No matching Article found (404)'
 						});
 					} else {
-						
+						var data = new Buffer('');
 						req.on('data', function (chunk) {
 							console.log("Are you inside?");
-							foundArticle.data += chunk;
+							data = Buffer.concat([data, chunk]);
 						});
 
 					  	req.on('end', function () {
 					  		console.log("The end.");
+					  		req.rawBody = data;
+					  		foundArticle.data = req.rawBody;
 					  		foundArticle.save((error, doc) => {
 						        if (error) {
 						          	console.log(err.message);
