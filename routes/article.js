@@ -82,7 +82,7 @@ router.route('/course/:name')
 
 		Course.findOne({name: kurs}, function(err, foundCourse){
 			if (err){
-				console.log(err.message);
+				console.log("Error: "+err.message);
 				res.status(500).send({
 					success: false,
 				})
@@ -128,16 +128,16 @@ router.route('/course/:name')
 							message: 'No matching Article found (404)'
 						});
 					} else {
-						var data = new Buffer('');
+						var data = "";
 						req.on('data', function (chunk) {
 							console.log("Are you inside?");
-							data = Buffer.concat([data, chunk]);
+							data += chunk;
 						});
 
 					  	req.on('end', function () {
 					  		console.log("The end.");
-					  		req.rawBody = data;
-					  		foundArticle.data = req.rawBody;
+					  		
+					  		foundArticle.data = data;
 					  		foundArticle.save((error, doc) => {
 						        if (error) {
 						          	console.log(err.message);

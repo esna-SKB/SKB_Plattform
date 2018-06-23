@@ -10,7 +10,7 @@ var articleSchema = new Schema({
         ref: "Course"
     },
     headline: String,
-    data: Buffer,
+    data: String,
     type: String,
     author: {
         type: Schema.Types.ObjectId,

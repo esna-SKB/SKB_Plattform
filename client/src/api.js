@@ -246,7 +246,7 @@ deleteUser: function(email){
    * POST /article/course/:courseName
    * creates a new article
   */
-    createArticle: function(courseName, headline, author, text, type, created_at, formData){
+    createArticle: function(courseName, headline, author, text, type, created_at, base64file){
       
       return fetch('/article/course/'+courseName, {
         method: 'POST',
@@ -268,10 +268,10 @@ deleteUser: function(email){
         console.log(res);
         res.json();
         
-        
+        console.log(base64file);
         var axios = require('axios');
         console.log("vorher: "+courseName+", "+author+", "+text)
-        axios.put('/article/'+courseName+'/'+author+'/'+text, formData)
+        axios.put('/article/'+courseName+'/'+author+'/'+text, base64file)
             .then(function (res) {
               //output.className = 'container';
               //output.innerHTML = res.data;

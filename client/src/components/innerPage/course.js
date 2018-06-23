@@ -15,24 +15,43 @@ class FeedTab extends Component{
 
     postArticle = () =>{
         var text = document.getElementById("textteilen").value;
-        var formData = new FormData();
-        formData.append("file", this.state.file, this.state.file.name);
+        //var formData = new FormData();
+        //formData.append("file", this.state.file, this.state.file.name);
 
         
 
-        console.log(this.state.file)
-        api.createArticle(this.props.course.name, "", this.props.user.email, text, this.state.file.type, Date.now, formData).then(res => {
+        var reader = new FileReader();
+        var str = "";
+        reader.readAsDataURL(this.state.files[0]);
+        reader.onload = function () {
+          //console.log(reader.result);
+          str = reader.result;
+          api.createArticle(this.props.course.name, "", this.props.user.email, text, this.state.file.type, Date.now, reader.result).then(res => {
 
-        //window.location.reload(false);
-        });
+          //window.location.reload(false);
+          });
+        };
+        reader.onerror = function (error) {
+          console.log('Error: ', error);
+        };
+
+        console.log(this.state.file)
         console.log(this.props.articles)
     }
+
+    
 
     fileUploader = (event) => {
       this.setState({
         file: event.target.files[0]
       });
-      console.log(event.target.files[0])
+
+
+       
+
+
+
+      //console.log(event.target.files[0])
     }
 
     render(){
@@ -142,7 +161,8 @@ class Course extends Component {
       course: undefined,
       articles: undefined,
       members: [],
-      file: null
+      file: null,
+      base64file: ""
       };
     }
   componentWillMount(){
