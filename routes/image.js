@@ -1,142 +1,75 @@
+/*
+Some informations to understand the multer:
+multer is a middleere that helps you handle uploads
+storage gives us more control than simple 'dest'
+dest: a folder where the files will be saved, the folder must be created beforehand!
+.single('name') : accept a single file with the name 'name'. the single file will be stored in req.file
+multer awaits a formData
+
+WARNING: Make sure that you always handle the files that a user uploads. Never add multer as a global middleware since a malicious user could upload files to a route that you didn't anticipate. Only use this function on routes where you are handling the uploaded files.
+
+*/
+
+
 var express = require('express');
 var router = express.Router();
-var multer  = require('multer')
-var upload = multer({ dest: 'uploads/' })
+var multer  = require('multer');
 const Image = require('../models/image');
+var fs = require('fs');
+
+var imageID ='';
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/')
   },
   filename: function (req, file, cb) {
-    cb(null, `${new Date()}-${file.originalname}`)
+     cb(null, file.fieldname + '-' + imageID +'.'+
+
+	 file.originalname.split(/[. ]+/).pop())      
   }
 });
 
-var upload = multer({ storage: storage }).single('profileImage');
+
+//file must exist in a formData with key: profilepic basically formData.append("profilepic", file) when sending to router
+var upload = multer({ storage: storage }).single('profilepic');
 
 router.route('/:email')
 
-	.post('/', function (req, res) {
-	  upload(req, res, function (err) {
+	.post((req, res, next)  => {
+		//other idea , save type in formdata which is contained in body
+		imageID = req.params.email;
+		console.log("imageID:"+ imageID);
+		
+		upload(req, res, function (err) {
 		if (err) {
-			res.json({
-				success: false,
-				message: 'An error occured when uploading'	
-			});
+		  // An error occurred when uploading
+		  
 		  return
 		}
 		// Everything went fine
-		//upload was sucessful now save to mongoDB
-	  })
-	})
+		/*url = file.fieldname + '-' + imageID;
+		var imageData = fs.readFileSync(__dirname + url);
 
-
-
-//TODO: modify 
-
-	/*creates a new profile picture of one email*/
-	.post((req, res, next) => {
-		const { body } = req;
-		const { type } = body;
-		const { data } = body;
-			
-		var email = req.params.email;
-		
-		Image.find({email: email},{}, function(err, otherImage){
-			if(err){
-				console.log('error occured in the database');
-				return res.status(500).send({
-			    success: false,
-			    message: 'Error: Server error'
-				});
-			}else if(otherImage.length > 0){
-				return res.status(404).send({
-					success: false,
-					message: "An Image for that email exists already"
-				}); 
-			} else {
-				//save new image
-				const newImage = new Image();
-				newImage.email = email;
-				newImage.data = data;
-				newImage.type = type;
-				newImage.save(function(err){
-					if(err){
-						return res.status(500).send({
-							success: false,
-							message: 'Error: save error'
-						});
-					}else {
+		//save to mongodb
+		img = new Image();
+		img.email = req.params.email;
+		img. data = req.body.file;
+		img.type = req.file.type;
+		img.save(function(err){
+					if(err) return res.status(500).send('error occured in the database');
+					else {
 					return res.status(200).send({
-							success: true,
-							message: "new Image is saved"
+						success: true,
+						message: "new file is saved",
 						});
 					}
-				});
-			}
+				});*/
 		})
 	})
 	
-	
-	/*updates the profile picture of one email*/
-	.put((req, res, next) => {
-		const { body } = req;
-		const { data } = body; 
-		const { type } = body; 
-		
-		var email = req.params.email;
 
-		
-		Image.find({email : email},{}, function(err, imagesfound){
-			if(err){
-					return res.send({success : false, message : "error accured in database"})
-				}else if(imagesfound.length == 0 ){
-					return res.send({success : false, message : "no image found to update"})
-				} else {
-					//valide update
-					Image.update(
-						{ email: email }, { email : email, data : data, type: type }
-						, function(err, affected){
-						if (err) {
-							return res.status(500).send({success : false, message : "image could no be updaten, error accured while update"});
-						} else if(affected.n == 0){
-							return res.status(404).send({success : false, message : "image to update counld not be found"});
-						} else {
-							return res.status(200).send({success : true, message : "image is updated"})
-						}
-					});
-				}
-			})
-	})
-	
-	
-	/*send the profilepictue of one profile*/
-	.get((req, res, next) => {
-		var email = req.params.email; 
-		Image.findOne({email: email},{},function(err, imagefound){
-			if (err)return res.status(500).send('error occured in the database');
-	       	else if(group == null) res.status(404).send('image could not be found');
-	       	else {
-				return res.status(200).send(imagefound); 
-	       	}
-		})
-	})
-	
-	
-	/*deletes the profile picture of one email*/
-	.delete((req,res,next) => {
-		var email = req.params.email; 
-		
-		Image.deleteOne({email: email}, function(err,affected){
-			if (err)
-	           return res.status(500).send({success : false, message : "error accured in database"});
-	       	else if(affected.n == 0){
-	       		return res.status(401).send({success : true, message : "image is was not in database"});
-	       	} else{
-				return res.status(200).send({success : true, message : "Image is deleted"}); 
-	       	}
-		})
-	})
 
+
+module.exports = router
 	

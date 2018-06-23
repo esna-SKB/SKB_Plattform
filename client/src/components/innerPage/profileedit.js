@@ -24,6 +24,8 @@ class Profileedit extends Component {
 		  iLearn: this.props.user.iLearn,
 		  iTeach: this.props.user.iTeach,
 		  website: this.props.user.website,
+		  currentpic: null,
+		  file: null,
 		}
 		//look at https://reactjs.org/docs/forms.html
 		this.onChange = this.onChange.bind(this);
@@ -36,45 +38,30 @@ class Profileedit extends Component {
 		this.setState({[e.target.name]: e.target.value});
 	}
 
+	fileUploader = (event) => {
+      this.setState({
+        file: event.target.files[0]
+      });
+	  
+	  
+      console.log(event.target.files[0])
+	  
+    }
+	
 	handlePic(files){
-		//change curret pic with uploaded pic
+		//change current pic with uploaded pic
+		/*console.log("were here");
+		console.log(files);
+		document.getElementById("uploadInput").files
+		if(files != null){
+			this.setState({currentpic: files[0]});
+			console.log("current" + files[0]);
+		}*/
 	}
 	
+	
+	
 	onSave(){
-		/*var des, can, learn, teach, web;
-
-		//check if anything is left empty
-		if(document.getElementById("description").value.length == 0){
-			des = "";
-		}else{
-			des = document.getElementById("description").value;
-		}
-
-		if(document.getElementById("iCan").value.length == 0){
-			can = "";
-		}else{
-			can = document.getElementById("iCan").value;
-		}
-
-		if(document.getElementById("iLearn").value.length == 0){
-			learn = "";
-		}else{
-			learn = document.getElementById("iLearn").value;
-		}
-
-		if(document.getElementById("iTeach").value.length == 0){
-			teach = "";
-		}else{
-			teach = document.getElementById("iTeach").value;
-		}
-
-		if(document.getElementById("website").value.length == 0){
-			web = ""
-		}else{
-			web = document.getElementById("website").value;
-		}*/
-
-
 		//Grab state
 		const {
 			description,
@@ -84,6 +71,18 @@ class Profileedit extends Component {
 			website,
 		} = this.state;
 		api.updateUser(this.props.user.email, this.props.user.firstname, this.props.user.lastname, this.props.user.email, this.props.user.isTeacher, this.props.user.isAdmin, this.props.user.isValide, description, iCan, iLearn, iTeach,website );
+		
+		//uploadImage
+		var formData = new FormData();
+        formData.append("profilepic", this.state.file);
+		
+		fetch('/image/itme', {
+			method: 'POST',
+			//headers: {'Content-Type': 'multipart/form-data; boundary=---------------------------974767299852498929531610575'},
+			body: formData,
+		});
+		
+		console.log("have send");
 
 	}
 
@@ -116,6 +115,7 @@ class Profileedit extends Component {
 			iLearn,
 			iTeach,
 			website,
+			currentpic,
 		} = this.state;
 
     //Checks if there is an active UserSession
@@ -156,10 +156,11 @@ class Profileedit extends Component {
 								<div className="row">
 									<div className="col">
 										<div></div>
-										<div className="current_picture newpart"></div>
+										<div className="current_picture newpart"> <img name="currentpic" id="currentpic" src={currentpic}></img></div>
 										<div className="form-group row newpart">
-											<input className="HideTheUglyInput"type="file" name="profilepic" id="profilepic" onChange={this.handlePic(this.files)}></input>
-											<label className="TheBeautifulInput" htmlFor="profilepic">
+											<input type="file" className ="file HideTheUglyInput" name="profilepic" id="profilepic" onChange={this.fileUploader}/>
+							
+											<label className="TheBeautifulInput" htmlFor="profilepic" onChange={this.handlePic(this.files)}>
 												<img id="upload_icon" className="upload_icon" src={Upload} alt="Upload Icon"/>
 												Bild ändern
 											</label>
@@ -212,7 +213,7 @@ class Profileedit extends Component {
 										</div>
 									</div>
 								</div>
-								<a type="button" href="/profile" className="btn btn-primary" onClick={this.onSave}>Speichern</a>
+								<button type="button" href="/profile" className="btn btn-primary" onClick={this.onSave}>Speichern</button>
 							</form>
 							<div className="row-12 text-muted text-right">
 								<div className="col-12">
