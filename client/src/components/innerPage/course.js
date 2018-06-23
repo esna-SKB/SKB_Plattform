@@ -166,16 +166,141 @@ class Course extends Component {
   }
 
   bearbeiten = () => {
+
+    const db = localStorage;
+    const _ = (el) => {
+      return document.querySelector(el);
+    };
+    const getTpl = (element) => {
+      return tpl[element];
+    };
+
+    const makeEditable = () => {
+      let elements = document.querySelectorAll('.drop-element');
+      let toArr = Array.prototype.slice.call(elements);
+      Array.prototype.forEach.call(toArr, (obj, index) => {
+        if (obj.querySelector('img')) {
+          return false;
+        } else {
+          obj.addEventListener('click', (e) => {
+            e.preventDefault();
+            obj.children[0].setAttribute('contenteditable', '');
+            obj.focus();
+          });
+          obj.children[0].addEventListener('blur', (e) => {
+            e.preventDefault();
+            obj.children[0].removeAttribute('contenteditable');
+          });
+        }
+      });
+    };
+    const removeDivsToSave = () => {
+      let elements = document.querySelectorAll('.drop-element');
+      let toArr = Array.prototype.slice.call(elements);
+      let html = '';
+      Array.prototype.forEach.call(toArr, (obj, index) => {
+        obj.children[0].removeAttribute('contenteditable');
+        html += obj.innerHTML;
+      });
+      return html;
+    };
+
+    const tpl = {
+      'header1': '<h1>I am header 1</h1>',
+      'header2': '<h2>I am header 2</h2>',
+      'header3': '<h3>I am header 3</h3>',
+      'shortparagraph': '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et</p>',
+      'ullist': '<ul><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ul>',
+      'ollist': '<ol><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ol>',
+      'image': '<img src="">'
+    };
+
+    const containers = [_('.box-left'), _('.box-right')];
+    const drake = dragula(containers, {
+      copy(el, source) {
+        return source === _('.box-left');
+      },
+      accepts(el, target) {
+        return target !== _('.box-left');
+      }
+    });
+
+    drake.on('out', (el, container) => {
+      if (container == _('.box-right')) {
+        if (el.innerHTML[0] != '<')
+          el.innerHTML = getTpl(el.getAttribute('data-tpl'));
+        el.className = 'drop-element';
+        makeEditable();
+        db.setItem('savedData', _('.box-right').innerHTML);
+      }
+      if (container == _('.box-left')) {
+        el.innerHTML = el.getAttribute('data-title');
+      }
+    });
+
+
     let wrapper = this.refs.wrapper
 
     if(wrapper.style["display"] === 'none') {
       wrapper.style["display"] = 'block'
       this.refs.bearbeiten.innerHTML ='save'
+
+      let description = this.refs.description
+      let description_div = document.createElement("div");
+      description_div.setAttribute('data-tpl', 'shortparagraph')
+      description_div.setAttribute('data-title', 'Short paragraph')
+      description_div.setAttribute('class', 'drop-element')
+      description_div.appendChild(description)
+      let boxright = this.refs.boxright
+      boxright.appendChild(description_div)
+
+      function elementChildren (element) {
+        var childNodes = element.childNodes,
+            children = [],
+            i = childNodes.length;
+
+        while (i--) {
+            if (childNodes[i].nodeType == 1) {
+                children.unshift(childNodes[i]);
+            }
+        }
+
+        return children;
+    }
+
+
+
+      var children = this.refs.kursmaterial;
+      children = elementChildren(children)
+      for (var i = 0; i < children.length; i++) {
+        var child = children[i];
+        if(child.nodeName == 'H3') {
+          let child_div = document.createElement("div");
+          child_div.setAttribute('data-tpl', 'header3')
+          child_div.setAttribute('data-title', 'Header 3')
+          child_div.setAttribute('class', 'drop-element')
+          child_div.appendChild(child)
+          boxright.appendChild(child_div)
+        }
+        if(child.nodeName == 'P') {
+          let child_div = document.createElement("div");
+          child_div.setAttribute('data-tpl', 'shortparagraph')
+          child_div.setAttribute('data-title', 'Short paragraph')
+          child_div.setAttribute('class', 'drop-element')
+          child_div.appendChild(child)
+          boxright.appendChild(child_div)
+        }
+        console.log(child)
+        console.log(child.nodeName)
+      }
+
       return;
     } else {
       wrapper.style["display"] = 'none'
       this.refs.bearbeiten.innerHTML ='bearbeiten'
     }
+
+
   }
 
 
@@ -221,80 +346,6 @@ class Course extends Component {
       );
   }
   else if(this.state.enrolled === true || this.props.user.email === this.state.course.teacher.email){
-
-
-      $( document ).ready(function() {
-          const db = localStorage;
-          const _ = (el) => {
-          	return document.querySelector(el);
-          };
-          const getTpl = (element) => {
-          	return tpl[element];
-          };
-
-          const makeEditable = () => {
-          	let elements = document.querySelectorAll('.drop-element');
-          	let toArr = Array.prototype.slice.call(elements);
-          	Array.prototype.forEach.call(toArr, (obj, index) => {
-          		if (obj.querySelector('img')) {
-          			return false;
-          		} else {
-          			obj.addEventListener('click', (e) => {
-          				e.preventDefault();
-          				obj.children[0].setAttribute('contenteditable', '');
-          				obj.focus();
-          			});
-          			obj.children[0].addEventListener('blur', (e) => {
-          				e.preventDefault();
-          				obj.children[0].removeAttribute('contenteditable');
-          			});
-          		}
-          	});
-          };
-          const removeDivsToSave = () => {
-          	let elements = document.querySelectorAll('.drop-element');
-          	let toArr = Array.prototype.slice.call(elements);
-          	let html = '';
-          	Array.prototype.forEach.call(toArr, (obj, index) => {
-              obj.children[0].removeAttribute('contenteditable');
-          		html += obj.innerHTML;
-          	});
-          	return html;
-          };
-
-          const tpl = {
-          	'header1': '<h1>I am header 1</h1>',
-          	'header2': '<h2>I am header 2</h2>',
-          	'header3': '<h3>I am header 3</h3>',
-          	'shortparagraph': '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et</p>',
-          	'ullist': '<ul><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ul>',
-          	'ollist': '<ol><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ol>',
-          	'image': '<img src="">'
-          };
-
-          const containers = [_('.box-left'), _('.box-right')];
-          const drake = dragula(containers, {
-          	copy(el, source) {
-          		return source === _('.box-left');
-          	},
-          	accepts(el, target) {
-          		return target !== _('.box-left');
-          	}
-          });
-
-          drake.on('out', (el, container) => {
-          	if (container == _('.box-right')) {
-          		el.innerHTML = getTpl(el.getAttribute('data-tpl'));
-          		el.className = 'drop-element';
-          		makeEditable();
-          		db.setItem('savedData', _('.box-right').innerHTML);
-          	}
-          	if (container == _('.box-left')) {
-          		el.innerHTML = el.getAttribute('data-title');
-          	}
-          });
-      });
-
       return (
         <div>
 
@@ -348,42 +399,42 @@ class Course extends Component {
                              </div>
                         </div>
 
-                        <div style={{display : 'none'}} id="wrapper" ref="wrapper">
-                        <div className="wrapper">
-                        	<div className="box-left">
-                          <div data-tpl="header1" data-title="Header 1">
-                            Header 1
+                          <div style={{display : 'none'}} id="wrapper" ref="wrapper">
+                          <div className="wrapper">
+                          	<div className="box-left">
+                            <div data-tpl="header1" data-title="Header 1">
+                              Header 1
+                            </div>
+                          		<div data-tpl="header2" data-title="Header 2">
+                          			Header 2
+                          		</div>
+                          		<div data-tpl="header3" data-title="Header 3">
+                          			Header 3
+                          		</div>
+                          		<div data-tpl="shortparagraph" data-title="Short paragraph">
+                          			paragraph
+                          		</div>
+                          		<div data-tpl="ullist" data-title="Ordened list">
+                          			Ordened list
+                          		</div>
+                          		<div data-tpl="ollist" data-title="Unordened list">
+                          			Unordened list
+                          		</div>
+                              <div data-tpl="heade12" data-title="Unordened list">
+                                Datei
+                              </div>
+                              <div data-tpl="header12" data-title="Unordened list">
+                                Picture
+                              </div>
+                          	</div>
+                          	<div id="boxright" ref="boxright" className="box-right"></div>
                           </div>
-                        		<div data-tpl="header2" data-title="Header 2">
-                        			Header 2
-                        		</div>
-                        		<div data-tpl="header3" data-title="Header 3">
-                        			Header 3
-                        		</div>
-                        		<div data-tpl="shortparagraph" data-title="Short paragraph">
-                        			paragraph
-                        		</div>
-                        		<div data-tpl="ullist" data-title="Ordened list">
-                        			Ordened list
-                        		</div>
-                        		<div data-tpl="ollist" data-title="Unordened list">
-                        			Unordened list
-                        		</div>
-                            <div data-tpl="heade12" data-title="Unordened list">
-                              Datei
-                            </div>
-                            <div data-tpl="header12" data-title="Unordened list">
-                              Picture
-                            </div>
-                        	</div>
-                        	<div className="box-right"></div>
-                        </div>
-                        </div>
+                          </div>
 
-                            <p>{this.state.course.description}</p>
-                            <div id="kursmaterial">
-                            <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Kursmaterial </h3>
-                            <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> 16. April - 22. April </h3>
+                            <p id="description" ref="description">{this.state.course.description}</p>
+                            <div id="kursmaterial" ref="kursmaterial">
+                            <h3> Kursmaterial </h3>
+                            <h3> 16. April - 22. April </h3>
                             <p>Folie 01</p>
                             <p>Folie 02</p>
                         </div>
