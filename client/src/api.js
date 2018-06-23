@@ -282,7 +282,9 @@ deleteUser: function(email){
   deleteArticle: function(articleId){
     return fetch('/article' + articleId, {
       method: 'DELETE',
-      })
+      headers: {
+        'Accept': 'application/json'
+      }})
     .then(res => res.json())
   },
 

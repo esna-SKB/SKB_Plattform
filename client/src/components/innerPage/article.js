@@ -1,5 +1,5 @@
 import React from 'react';
-// import api from '../../api';
+import api from '../../api';
 
 
 class Article extends React.Component {
@@ -8,8 +8,17 @@ class Article extends React.Component {
 	this.state = {
 		article: this.props.article
 		};
+		this.remove = this.remove.bind(this);
 	}
 
+	remove = (event) => {
+		console.log(this.props.article._id)
+		api.deleteArticle(this.props.article._id).then(response => {
+			if(response.headers(["status"]) == 200) {
+				document.getElementById(this.props.article._id).outerHTML = "";
+			}
+		})
+	}
 
 	render(){
 
@@ -47,7 +56,7 @@ class Article extends React.Component {
 
 		if(this.state.article.author.email !== this.props.user) {
 			return(
-				<div>
+				<div id={this.state.article._id}>
 					<div className='row border' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px'}}>
 					 	<div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
 							<div className='row'>
@@ -88,7 +97,7 @@ class Article extends React.Component {
 		}
 		else {
 			return(
-				<div>
+				<div id={this.state.article._id}>
 					<div className='row border' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px'}}>
 					 	<div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
 							<div className='row'>
@@ -102,7 +111,7 @@ class Article extends React.Component {
 								<div className='col-1'>
 									<button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown"><h1 className="remove_article">...</h1></button>
 									<ul className="dropdown-menu" style={{ marginTop: '-35px'}}>
-							      <li className="remove"><a>löschen</a></li>
+							      <li className="remove" onClick={this.remove.bind(this)}><a>löschen</a></li>
 							    </ul>
 								</div>
 							</div>
