@@ -19,6 +19,10 @@ var courseSchema = new Schema({
     isFree: {
         type: Boolean,
         default: true
+    },
+    inhalt : {
+      type: [],
+      default: true
     }
 });
 
