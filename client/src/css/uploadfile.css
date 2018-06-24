@@ -10,7 +10,7 @@ also very good example for thinking of accessibitly
 	opacity: 0;
 	overflow: hidden;
 	position: absolute;
-	z-index: -1
+	z-index: -1;
 }
 
 .HideTheUglyInput:focus + .TheBeautifulInput,
