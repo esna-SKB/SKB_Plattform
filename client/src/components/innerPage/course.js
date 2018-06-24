@@ -258,14 +258,14 @@ class Course extends Component {
       wrapper.style["display"] = 'block'
       this.refs.bearbeiten.innerHTML ='save'
 
-      let description = this.refs.description
-      let description_div = document.createElement("div");
-      description_div.setAttribute('data-tpl', 'shortparagraph')
-      description_div.setAttribute('data-title', 'Short paragraph')
-      description_div.setAttribute('class', 'drop-element')
-      description_div.appendChild(description)
+      // let description = this.refs.description
+      // let description_div = document.createElement("div");
+      // description_div.setAttribute('data-tpl', 'shortparagraph')
+      // description_div.setAttribute('data-title', 'Short paragraph')
+      // description_div.setAttribute('class', 'drop-element')
+      // description_div.appendChild(description)
       let boxright = this.refs.boxright
-      boxright.appendChild(description_div)
+      // boxright.appendChild(description_div)
 
 
       var children = this.refs.kursmaterial;
@@ -299,11 +299,14 @@ class Course extends Component {
 
       var children = this.refs.boxright;
       children = elementChildren(children)
-      for (var i = 0; i < children.length; i++) {
-        console.log(children[i].childNodes[0])
-        this.refs.kursmaterial.appendChild(children[i].childNodes[0])
 
+      var array = []
+      for (var i = 0; i < children.length; i++) {
+        array.push(children[i].childNodes[0].outerHTML)
+        this.refs.kursmaterial.appendChild(children[i].childNodes[0])
       }
+      console.log(array)
+
     }
 
 
