@@ -267,7 +267,7 @@ deleteUser: function(email){
    * returns an article object
   */
   getArticle: function(articleId){
-    return fetch('/article' + articleId, {
+    return fetch('/article/' + articleId, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -280,7 +280,7 @@ deleteUser: function(email){
    * deletes an article object
   */
   deleteArticle: function(articleId){
-    return fetch('/article' + articleId, {
+    return fetch('/article/' + articleId, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json'

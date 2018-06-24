@@ -14,7 +14,7 @@ class Article extends React.Component {
 
 	remove = (event) => {
 		api.deleteArticle(this.props.article._id).then(response => {
-			if(response.headers(["status"]) == 200) {
+			if(response.success === true) {
 				document.getElementById(this.props.article._id).outerHTML = "";
 			}
 		})
