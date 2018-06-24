@@ -166,7 +166,6 @@ class Course extends Component {
   }
 
   bearbeiten = () => {
-
     const db = localStorage;
     const _ = (el) => {
       return document.querySelector(el);
@@ -315,7 +314,6 @@ class Course extends Component {
 
 
   render() {
-
     //make sure API calls are finished when rendering (better solution????)
     if(!this.state.course || !this.state.articles){
       return false;
