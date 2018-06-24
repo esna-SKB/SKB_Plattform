@@ -33,7 +33,7 @@ export class Messages extends React.Component {
                             <div className="messages nav nav-tabs" >
 								<ul className="nav nav-tabs" style={{listStyleType: 'none'}}>
                                     <li role="message" className="active" style={{'borderBottom': '1px solid #dee2e6'}}>
-										<a href="#tab_default_1" data-toggle="tab" aria-controls="tab_default_1" role="tab">
+										<a href="#tab_default_1" data-toggle="tab">
                                             <div className="avatar">
                                                 <div className="avatar-image">
                                                     <div className="status online"></div>
@@ -44,7 +44,7 @@ export class Messages extends React.Component {
 										</a>
                                     </li>
                                     <li role="message" style={{'borderBottom': '1px solid #dee2e6'}}>
-										<a href="#tab_default_2" data-toggle="tab" aria-controls="tab_default_2" role="tab">
+										<a href="#tab_default_2" data-toggle="tab">
                                             <div className="avatar">
                                                 <div className="avatar-image">
                                                     <div className="status offline"></div>
@@ -55,7 +55,7 @@ export class Messages extends React.Component {
 										</a>
                                     </li>
                                     <li role="message" style={{'borderBottom': '1px solid #dee2e6'}}>
-										<a href="#tab_default_3" data-toggle="tab" aria-controls="tab_default_3" role="tab">
+										<a href="#tab_default_3" data-toggle="tab">
                                             <div className="avatar">
                                                 <div className="avatar-image">
                                                     <div className="status online"></div>
@@ -66,7 +66,7 @@ export class Messages extends React.Component {
 										</a>
                                     </li>
                                     <li role="message">
-                						<a href="#tab_default_2" data-toggle="tab" aria-controls="tab_default_2" role="tab">
+                						<a href="#tab_default_2" data-toggle="tab">
                                             <div className="avatar">
                                                 <div className="avatar-image">
                                                     <div className="status online"></div>
@@ -82,7 +82,7 @@ export class Messages extends React.Component {
                     </div>
                     <div className="col-6">
                         <div className="col-content tab-content">
-                            <div role="tabpanel" className="tab-pane active" id="tab_default_1" style={{height:'550px'}}>
+                            <div className="tab-pane active" id="tab_default_1" style={{height:'550px'}}>
                                 <div className="grid-message">
                                     <div className="col-message-sent">
                                         <div className="message-sent">
@@ -102,7 +102,7 @@ export class Messages extends React.Component {
                                 </div>
                             </div>
 
-            				<div role="tabpanel" className="tab-pane" id="tab_default_2" style={{height:'550px'}}>
+            				<div className="tab-pane" id="tab_default_2" style={{height:'550px'}}>
                                 <div className="grid-message">
                                     <div className="col-message-sent">
                                         <div className="message-sent">
@@ -132,7 +132,7 @@ export class Messages extends React.Component {
                                 </div>
                             </div>
 
-							<div role="tabpanel" className="tab-pane" id="tab_default_3" style={{height:'550px'}}>
+							<div className="tab-pane" id="tab_default_3" style={{height:'550px'}}>
 								<div className="grid-message">
 									<div className="col-message-sent">
 										<div className="message-sent">
