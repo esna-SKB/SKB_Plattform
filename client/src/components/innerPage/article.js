@@ -21,7 +21,7 @@ class Article extends React.Component {
 	}
 
 	comment = (event) => {
-
+console.log(this.state)
 		var div = document.getElementById(this.props.article._id)
 		div.firstChild.nextSibling.style["display"] = 'block'
 
@@ -48,7 +48,6 @@ class Article extends React.Component {
 
 					input.parentElement.parentElement.prepend(comment_div)
 					input.value= ''
-					console.log(this.props)
 	      return;
 	    }
 	  }

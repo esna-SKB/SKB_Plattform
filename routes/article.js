@@ -93,4 +93,17 @@ router.route('/course/:name')
 			})
 		})
 
+		router.route('/:id/comments')
+
+			.get((req, res, next) => {
+				var id = req.params.id;
+				Article.findById(id).populate('teacher').populate('course').exec(function(err, article){
+					if (err){
+			        	return res.status(500).send('error occured in the database');
+			       	}else {
+						return res.status(200).send(article.comments);
+			     }
+				})
+			})
+
 	module.exports = router

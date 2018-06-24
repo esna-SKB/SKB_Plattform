@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Article from './article';
-import $ from 'jquery';
+// import $ from 'jquery';
 
 import api from '../../api';
 // import builder from '../../utils/builder';

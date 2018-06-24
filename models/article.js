@@ -14,7 +14,7 @@ var articleSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     },
-    comments: String, 
+    comments: {}, 
     text: String,
     created_at: {type: Date, default: '1994-12-12'}
 });

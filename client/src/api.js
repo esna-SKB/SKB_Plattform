@@ -276,6 +276,19 @@ deleteUser: function(email){
   },
 
   /*
+   * GET /article/id
+   * returns an article object
+  */
+  getAllArticleComments: function(articleId){
+    return fetch('/article/comments/' + articleId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+
+  /*
    * DELETE /article/id
    * deletes an article object
   */
