@@ -9,15 +9,21 @@ class Article extends React.Component {
 		article: this.props.article
 		};
 		this.remove = this.remove.bind(this);
+		this.comment = this.comment.bind(this);
 	}
 
 	remove = (event) => {
-		console.log(this.props.article._id)
 		api.deleteArticle(this.props.article._id).then(response => {
 			if(response.headers(["status"]) == 200) {
 				document.getElementById(this.props.article._id).outerHTML = "";
 			}
 		})
+	}
+
+	comment = (event) => {
+		console.log(this.props.article._id)
+		var div = document.getElementById(this.props.article._id)
+		div.firstChild.nextSibling.style["display"] = 'block'
 	}
 
 	render(){
@@ -60,12 +66,18 @@ class Article extends React.Component {
 					<div className='row border' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px'}}>
 					 	<div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
 							<div className='row'>
-								<div className='col-6' style={{textTransform: 'capitalize'}}>
+								<div className='col-5' style={{textTransform: 'capitalize'}}>
 								<p>{article.author.firstname} {article.author.lastname}</p>
 								<p>{ article.course.name}</p>
 								</div>
 								<div className='col-6'>
 									<time style={{float: 'right'}}>{timeSince(date)}</time>
+								</div>
+								<div className='col-1'>
+									<button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown"><h1 className="remove_article">...</h1></button>
+									<ul className="dropdown-menu" style={{ marginTop: '-35px'}}>
+							      <li className="remove" onClick={this.comment.bind(this)}><a>Kommentieren</a></li>
+							    </ul>
 								</div>
 							</div>
 						</div>
@@ -75,7 +87,7 @@ class Article extends React.Component {
 						</div>
     </div>
 
-		<div className="comtained border row">
+		<div className="comtained border row" style={{display: 'none'}}>
 			<div className="col-sm-12">
 			<div className="panel panel-white post">
 					<div className="post-comments">
@@ -112,6 +124,7 @@ class Article extends React.Component {
 									<button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown"><h1 className="remove_article">...</h1></button>
 									<ul className="dropdown-menu" style={{ marginTop: '-35px'}}>
 							      <li className="remove" onClick={this.remove.bind(this)}><a>löschen</a></li>
+										<li className="remove" onClick={this.comment.bind(this)}><a>Kommentieren</a></li>
 							    </ul>
 								</div>
 							</div>
@@ -122,7 +135,7 @@ class Article extends React.Component {
 						</div>
 					</div>
 
-					<div className="comtained border row">
+					<div className="comtained border row" style={{display: 'none'}}>
 							<div className="col-sm-12">
 							<div className="panel panel-white post">
 								<div className="post-comments">

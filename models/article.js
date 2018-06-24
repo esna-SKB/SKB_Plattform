@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-const Course = require('./course'); 
+const Course = require('./course');
 const User = require('./user');
 
 var Schema = mongoose.Schema;
@@ -14,7 +14,8 @@ var articleSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     },
-    text: String, 
+    comments: String, 
+    text: String,
     created_at: {type: Date, default: '1994-12-12'}
 });
 

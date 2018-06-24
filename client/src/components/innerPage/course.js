@@ -355,9 +355,7 @@ class Course extends Component {
   else if(this.state.enrolled === true || this.props.user.email === this.state.course.teacher.email){
       return (
         <div>
-
             <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
-
                 <div className="row">
                     <div className="col" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
                         <div className="row">
