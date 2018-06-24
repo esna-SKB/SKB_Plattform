@@ -36,6 +36,9 @@ class Profile extends Component {
 				console.log("res:"+ JSON.stringify(res));
 				console.log("shown:"+ JSON.stringify(this.state.shownprofile));
 	
+				//load current profilepicture
+				document.getElementById("YourPicture").src = this.state.shownprofile.picturedata;
+				console.log(this.state.shownprofile.picturedata);
 				
 				//isadmin abfangen?
 				if(this.state.shownprofile.isTeacher){
@@ -70,6 +73,10 @@ class Profile extends Component {
 			this.setState({
 				shownprofile : this.state.user,
 			});
+			//load current profilepicture
+			document.getElementById("YourPicture").src = this.state.user.picturedata;
+			console.log(this.state.user.picturedata);
+			
 			
 			//isadmin abfangen?
 				if(this.state.user.isTeacher){

@@ -24,6 +24,8 @@ class Profileedit extends Component {
 		  iLearn: this.props.user.iLearn,
 		  iTeach: this.props.user.iTeach,
 		  website: this.props.user.website,
+		  picturedata: this.props.user.picturedata,
+		  type: this.props.user.type,
 		  currentpic: null,
 		  file: null,
 		}
@@ -53,7 +55,19 @@ class Profileedit extends Component {
 	  
     }
 	
-
+	getBase64(file, cb) {
+      if(!file) return cb("");
+       var reader = new FileReader();
+       reader.readAsDataURL(file);
+       reader.onload = function () {
+         //console.log(reader.result);
+         cb(reader.result)
+       };
+       reader.onerror = function (error) {
+         console.log('Error: ', error);
+       };
+    }
+	
 	
 	onSave(){
 		//Grab state
@@ -64,9 +78,27 @@ class Profileedit extends Component {
 			iTeach,
 			website,
 		} = this.state;
-		api.updateUser(this.props.user.email, this.props.user.firstname, this.props.user.lastname, this.props.user.email, this.props.user.isTeacher, this.props.user.isAdmin, this.props.user.isValide, description, iCan, iLearn, iTeach,website );
 		
-		//uploadImage
+		
+		
+		var self = this;
+        if(!this.state){
+			//if(delete pofile image){
+				api.updateUser(self.props.user.email, self.props.user.firstname, self.props.user.lastname, self.props.user.email, self.props.user.isTeacher, self.props.user.isAdmin, self.props.user.isValide, description, iCan, iLearn, iTeach,website, '','' ).then(res => {
+					window.location.reload(false);
+				});
+				
+		}else{
+			self.getBase64(self.state.file, function(base64file){
+				api.updateUser(self.props.user.email, self.props.user.firstname, self.props.user.lastname, self.props.user.email, self.props.user.isTeacher, self.props.user.isAdmin, self.props.user.isValide, description, iCan, iLearn, iTeach,website,base64file,self.state.file.type ).then(res => {
+					window.location.reload(false);
+				});
+		
+			});
+		}
+		
+		//uploadImage, multer
+		/*
 		var formData = new FormData();
         formData.append("profilepic", this.state.file);
 		
@@ -74,7 +106,7 @@ class Profileedit extends Component {
 			method: 'POST',
 			//headers: {'Content-Type': 'multipart/form-data; boundary=---------------------------974767299852498929531610575'},
 			body: formData,
-		});
+		});*/
 		
 		console.log("have send");
 
@@ -82,7 +114,8 @@ class Profileedit extends Component {
 
 	componentDidMount(){
 		//load current profilepicture
-	
+		document.getElementById("currentpic").src = this.state.picturedata;
+		console.log(this.state.picturedata);
 	
 		//isadmin abfangen?
 		if(this.props.user.isTeacher){
