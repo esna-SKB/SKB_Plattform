@@ -246,7 +246,7 @@ deleteUser: function(email){
    * POST /article/course/:courseName
    * creates a new article
   */
-    createArticle: function(courseName, headline, author, text, type, created_at, formData){
+    createArticle: function(courseName, headline, author, text, type, created_at, base64file){
       
       return fetch('/article/course/'+courseName, {
         method: 'POST',
@@ -259,7 +259,7 @@ deleteUser: function(email){
           headline: headline,
           author: author,
           text: text,
-          //data: data,
+          data: base64file,
           type: type,
           created_at: created_at,
         }),
@@ -268,26 +268,6 @@ deleteUser: function(email){
         console.log(res);
         res.json();
         
-        var config = {
-          onUploadProgress: function(progressEvent) {
-            var percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
-          }
-        };
-        
-        var axios = require('axios');
-        console.log("vorher: "+courseName+", "+author+", "+text)
-        axios.put('/article/'+courseName+'/'+author+'/'+text, formData, config)
-            .then(function (res) {
-              //output.className = 'container';
-              //output.innerHTML = res.data;
-              console.log(res.data);
-            })
-            .catch(function (err) {
-              //output.className = 'container text-danger';
-              //output.innerHTML = err.message;
-              console.log(err.message);
-            });
-
 
       });
     },

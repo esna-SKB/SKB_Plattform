@@ -15,24 +15,48 @@ class FeedTab extends Component{
 
     postArticle = () =>{
         var text = document.getElementById("textteilen").value;
-        var formData = new FormData();
-        formData.append("file", this.state.file);
+        //var formData = new FormData();
+        //formData.append("file", this.state.file, this.state.file.name);
+        var self = this;
+        if(!this.state){
+          api.createArticle(self.props.course.name, "", self.props.user.email, text, "", Date.now, "").then(res => {
 
-        
+          window.location.reload(false);
+          });
+        }else {
+          self.getBase64(self.state.file, function(base64file){
 
-        console.log(this.state.file)
-        api.createArticle(this.props.course.name, "", this.props.user.email, text, this.state.file.type, Date.now, formData).then(res => {
+            //console.log(this.state.file)
+            //console.log(base64file)
+            api.createArticle(self.props.course.name, "", self.props.user.email, text, self.state.file.type, Date.now, base64file).then(res => {
 
-        //window.location.reload(false);
-        });
+            window.location.reload(false);
+            });
+          });
+        }
+
         console.log(this.props.articles)
+    }
+
+    getBase64(file, cb) {
+      if(!file) return cb("");
+       var reader = new FileReader();
+       reader.readAsDataURL(file);
+       reader.onload = function () {
+         //console.log(reader.result);
+         cb(reader.result)
+       };
+       reader.onerror = function (error) {
+         console.log('Error: ', error);
+       };
     }
 
     fileUploader = (event) => {
       this.setState({
         file: event.target.files[0]
       });
-      console.log(event.target.files[0])
+      
+      //console.log(event.target.files[0])
     }
 
     render(){
@@ -142,7 +166,7 @@ class Course extends Component {
       course: undefined,
       articles: undefined,
       members: [],
-      file: null
+      file: null,
       };
     }
   componentWillMount(){
