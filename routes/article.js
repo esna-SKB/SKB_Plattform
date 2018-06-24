@@ -33,7 +33,7 @@ router.route('/course/:name')
 		const { headline } = body;
 		const { author } = body;
 		const { text } = body;
-		//const { data } = body;
+		const { data } = body;
 		const { type } = body;
 		const { created_at } = body; //könnte auch automatisch gespeichert werden
 		
@@ -55,7 +55,7 @@ router.route('/course/:name')
 				newArticle.author = userE._id;
 				newArticle.text = text;
 				//console.log(data);
-				//newArticle.file = data;
+				newArticle.data = data;
 				newArticle.type = type;
 				newArticle.created_at = new Date();
 				newArticle.save(function(err){
@@ -73,6 +73,9 @@ router.route('/course/:name')
 	})
 
 	router.route('/:coursename/:author/:text').put((req, res, next) => {
+
+		const {body} = req;
+		const {data} = body
 
 		var kurs = req.params.coursename;
 		var autor = req.params.author;
@@ -128,7 +131,8 @@ router.route('/course/:name')
 							message: 'No matching Article found (404)'
 						});
 					} else {
-						var data = "";
+
+						/*var data = "";
 						req.on('data', function (chunk) {
 							console.log("Are you inside?");
 							data += chunk;
@@ -156,10 +160,10 @@ router.route('/course/:name')
 
 										success: true,
 										message: 'checked and updated User Session'
-									});*/
+									});
 								}
 							});
-					  	});
+					  	});*/
 
 
 					}

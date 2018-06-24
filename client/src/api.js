@@ -259,7 +259,7 @@ deleteUser: function(email){
           headline: headline,
           author: author,
           text: text,
-          //data: data,
+          data: base64file,
           type: type,
           created_at: created_at,
         }),
@@ -267,8 +267,8 @@ deleteUser: function(email){
       .then(res => {
         console.log(res);
         res.json();
-        
-        console.log(base64file);
+        /*
+        //console.log(base64file);
         var axios = require('axios');
         console.log("vorher: "+courseName+", "+author+", "+text)
         axios.put('/article/'+courseName+'/'+author+'/'+text, base64file)
@@ -282,7 +282,7 @@ deleteUser: function(email){
               //output.innerHTML = err.message;
               console.log(err.message);
             });
-
+        */
 
       });
     },

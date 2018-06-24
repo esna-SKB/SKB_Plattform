@@ -31,9 +31,31 @@ class Article extends React.Component {
 		//document.body.appendChild(image);
 	    //console.log(arrayBuffer)
 	    //console.log(arrayBuffer);
-		return(
-			<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>
-		)
+	    if(this.state.article.type === ""){
+
+	    } else
+	    if(this.state.article.type.includes("image")){
+	    	return(<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>)
+	    }
+	    else {
+			return(
+
+				//<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>
+				//<div className="embed-responsive embed-responsive-16by9">
+				// 	<iframe className="embed-responsive-item" src={base64file} allowFullScreen></iframe>
+				//</div>
+
+
+				<div class="embed-responsive embed-responsive-16by9">
+				    <object class="embed-responsive-item" data={base64file} type="application/pdf" internalinstanceid="9" title="">
+				        <p>Your browser isnt supporting embedded pdf files. You can download the file
+				            <a href="/media/post/bootstrap-responsive-embed-aspect-ratio/example.pdf">here</a>.</p>
+				    </object>
+				</div>
+
+
+			)
+		}
 	}
 
 
@@ -89,9 +111,7 @@ class Article extends React.Component {
 						<div className='col-12'>
 							<h6>{article.headline}</h6>
 							<p style={{color: '#a9a8a8'}}>{article.text}</p>
-							<div className="embed-responsive embed-responsive-16by9">
-							 	<iframe className="embed-responsive-item" src={require('../../img/meow.png')} allowFullScreen></iframe>
-							</div>
+							
 							{this.img()}
 							
 							</div>
