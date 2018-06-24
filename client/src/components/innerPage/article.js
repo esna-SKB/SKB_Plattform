@@ -46,7 +46,7 @@ class Article extends React.Component {
 				//</div>
 
 
-				<div class="embed-responsive embed-responsive-16by9">
+				<div className="embed-responsive embed-responsive-16by9">
 				    <object className="embed-responsive-item" data={base64file} type="application/pdf" internalinstanceid="9" title="">
 				        <p>Your browser isnt supporting embedded pdf files. You can download the file
 				            <a href="/media/post/bootstrap-responsive-embed-aspect-ratio/example.pdf">here</a>.</p>
@@ -143,6 +143,7 @@ class Article extends React.Component {
 						<div className='col-12'>
 							<h6>{article.headline}</h6>
 							<p style={{color: '#a9a8a8'}}>{article.text}</p>
+							{this.img()}
 						</div>
 					</div>
 				</div>

@@ -267,22 +267,7 @@ deleteUser: function(email){
       .then(res => {
         console.log(res);
         res.json();
-        /*
-        //console.log(base64file);
-        var axios = require('axios');
-        console.log("vorher: "+courseName+", "+author+", "+text)
-        axios.put('/article/'+courseName+'/'+author+'/'+text, base64file)
-            .then(function (res) {
-              //output.className = 'container';
-              //output.innerHTML = res.data;
-              console.log(res.data);
-            })
-            .catch(function (err) {
-              //output.className = 'container text-danger';
-              //output.innerHTML = err.message;
-              console.log(err.message);
-            });
-        */
+        
 
       });
     },
