@@ -114,7 +114,8 @@ class Article extends React.Component {
 							
 							{this.img()}
 							
-							</div>
+						</div>
+
 					</div>
 				</div>
 		 	);

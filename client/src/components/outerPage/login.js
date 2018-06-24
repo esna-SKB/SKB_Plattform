@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import '../../main.css';
 
 import Logo from'../../img/esna.png';
-import Classimg from'../../img/chinese2-min.png';
+//import Classimg from'../../img/chinese2-min.png';
 
 import { setInStorage } from '../../utils/storage';
 
@@ -13,6 +13,7 @@ import { updateTimeSec } from '../../utils/userSessionHelper'
 const api = require('../../api');
 
 
+
 class Login extends Component {
 
 
@@ -20,23 +21,13 @@ class Login extends Component {
   constructor(props) {
 
     super(props);
-
-
-
     this.state = {
-
       token: '',
-
       signInError: '',
-
       signInEmail: '',
-
       signInPassword: '',
-
       errorMessage: '',
-
       infoMessage: ''
-
     };
 
     this.onTextboxChangeSignInEmail = this.onTextboxChangeSignInEmail.bind(this);
@@ -44,7 +35,7 @@ class Login extends Component {
     this.onTextboxChangeSignInPassword = this.onTextboxChangeSignInPassword.bind(this);
 
     this.onSignIn = this.onSignIn.bind(this);
-
+	
   }
 
 
@@ -153,25 +144,6 @@ class Login extends Component {
 
           setInStorage('login_token', { token: json.token });
           //user registered & verified and correct password -> login successful
-
-
-          //Cookie mit email und expire in Sekunden -> später ändern
-          /*fetch('/user/'+signInEmail, {
-                      method: 'GET',
-                      headers: {
-                        'Content-Type': 'application/json'
-                      },
-                    }
-          ).then(ress => ress.json())
-          .then(jsonn => {cookie.save('userID',jsonn.email, { expires: updateTimeSec(40), path: '/'})});
-          */
-
-          //cookie.save('userId', getToken(signInEmail), { expires: updateTimeSec(40), path: '/'});
-          //onsole.log(getToken(signInEmail));
-
-
-          //komischer Weise hat 'str' als return Wert aus 'UserSessionHelper' nur ein 'undefined geliefert'
-
           fetch('/userSession/'+signInEmail, {
             method: 'GET',
             headers: {
@@ -193,13 +165,6 @@ class Login extends Component {
             token: json.token,
 
           });
-          //warte kurz weil cookie nicht so schnell speichert?
-          //sleep(2000);
-          //console.log("Email: " + signInEmail);
-           //this is a call to the parent App
-          //this.props.history.push({pathname:"/"});
-          //document.location.reload();
-          //this.props.history.push("/timeline");
 
         } else {
           //user not registered
@@ -217,14 +182,9 @@ class Login extends Component {
               infoMessage: "",
               errorMessage: "Du hast Dein Konto noch nicht bestätigt. Solltest du keinen Link erhalten haben, kannst Du ihn <a href='/resend' >hier</a> noch einmal anfordern."
             });
-
           }
-
-
         }
-
       });
-
   }
 
   render() {
@@ -240,35 +200,7 @@ class Login extends Component {
       signInPassword,
 
     } = this.state;
-
-    //Checks if there is an active UserSession
-    //console.log('Returned Bool' + checkUserSession(cookie.load('userID')));
-
-/*    fetch('/userSession/check', {
-
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify( { token: cookie.load('userID') } )
-    }).then (res => {
-
-      if(res.status === 200){
-        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60*20), path: '/'})
-        this.props.history.push({pathname:"/"});
-      }
-    });
-*/
     return (
-
-      <div className="row heigh100" style={{backgroundColor: '#f7f8f9', backgroundImage: 'url('+Classimg+')', backgroundSize: '100%'}}>
-
-
-
-      <div className="col-12" style={{padding: '10px 10px 10px 25px'}}>
-
-
-        <a href="/signup" className='whitehover' style={{color: 'white !important'}}><div className='registrieren_botton'>Registrieren
-        </div></a>
-        <div><p style={{float: 'right',paddingTop: '23px', fontSize: '16px'}}>noch kein Mitglied?</p></div>
 
         <div className='center_loginform'>
               <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
@@ -287,23 +219,11 @@ class Login extends Component {
 
               <p style={{color:'#a9a8a8',textAlign: 'center'}}><a href="/forgotPassword">Passwort vergessen?</a></p>
         </div>
-
-        <div className="center loginfooter_parent">
-            <p className="loginfooter">Impressum</p> <p>Datenschutz</p>
-        </div>
-
-      </div>
-
-
-
-      </div>
-
     );
 
   }
 
 }
-
 
 
 export default Login;

@@ -76,7 +76,6 @@ export class MyTeacherCourses extends React.Component {
 	}
 
 	componentDidMount(){
-		let i = 0;
     //get all courses that user is teaching
     if(this.props.user.isTeacher === true){
       getCourses('/course'
@@ -114,7 +113,6 @@ export class MyCourses extends React.Component {
 		};
 	}
 	componentDidMount(){
-		let i = 0;
 		if(this.props.myEmail!=null){
 
 			getCourses('/user/'+this.props.myEmail+'/course'
@@ -146,7 +144,6 @@ class OtherCourses extends React.Component {
 	}
 
 	componentDidMount(){
-		let i = 0;
     //teacher can see all courses in "Alle Kurse"
     if(this.props.user.isTeacher === true){
   		getCourses('/course'

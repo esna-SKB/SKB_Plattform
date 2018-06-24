@@ -15,7 +15,8 @@ router.route('/')
 			let { email } = body;
 			//we should probably think about an alternative solution here.
 			//sending this link is not really safe
-			var link = "http://localhost:3000/courses/" + courseName.replace(" ", "%20");
+			//var link = "http://localhost:3000/courses/" + courseName.replace(" ", "%20");
+			var link = "https://9af1dd61.ngrok.io/courses/" + courseName.replace(" ", "%20");
 			Email_invite.sendInviteMail(email, link, courseName);
 			res.status(200).send({
 					success: true,

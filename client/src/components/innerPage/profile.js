@@ -69,8 +69,7 @@ class Profile extends Component {
 								<div className="col">
 									<div className="row center-block ">
 
-										<div className="col  profilepicbig fill col-md-12" >
-											<img src={Meow} alt="meow" ></img>
+										<div className="col  profilepicbig fill col-md-12" style={{backgroundImage: 'url('+Meow+')'}}>
 										</div>
 
 										<div className="makespace col">

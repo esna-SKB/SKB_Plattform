@@ -5,7 +5,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"name": "lala", "teacher":
 curl -X "DELETE" http://localhost/course/drei
 
 
-curl -X PUT -H "Content-Type: application/json" -d '{"firstname":"l", "lastname": "luka", "email": "luka@gmail.com", "isTeacher":"true", "isAdmin": "false", "isValide" : "true"}' http://localhost:5000/user/lulu
+curl -X PUT -H "Content-Type: application/json" -d '{"firstname":"Luka", "lastname": "Staerk", "email": "staerk12@gmail.com", "isTeacher":"true", "isAdmin": "true", "isValide" : "true"}' http://localhost:5000/user/staerk12@gmail.com
 
 
 curl -X POST -H "Content-Type: application/json" -d '{"formUser": "lala", "toUser":"luka", "text": "lalalalal"}' http://localhost:5000/message

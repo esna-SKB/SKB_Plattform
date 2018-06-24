@@ -18,7 +18,6 @@ class CreateCourse extends Component {
   }
 
   anlegen = () => {
-
       const { isFree } = this.state;
       const {email} = this.props.user;
       var c_name = document.getElementById('course_name').value

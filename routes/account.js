@@ -153,7 +153,8 @@ router.route('/signup')
             		if (err) { return res.status(500).send({ message: err.message }); }
 				});
 				//actually send email
-				var link = "http://localhost:3000/verify?token=" + token.token;
+				//var link = "http://localhost:3000/verify?token=" + token.token;
+				var link = "https://9af1dd61.ngrok.io/verify?token=" + token.token;
 				Email_register.sendSignUpMail(newUser, link);
 
 
@@ -229,7 +230,9 @@ router.route('/registration/verify')
 		        		token.save(function (err) {
 		            		if (err) { return res.status(500).send({ message: err.message }); }
 						});
-						var link = "http://localhost:3000/verify?token=" + token.token;
+						// var link = "http://localhost:3000/verify?token=" + token.token;
+						var link = "https://9af1dd61.ngrok.io/verify?token=" + token.token;
+
 						Email_register.sendSignUpMail(user, link);
 					}
 					res.status(200).send({
@@ -262,7 +265,8 @@ router.route('/registration/verify')
 			else{
 				if(user && user.isVerified){
 				//actually send email
-				var link = "http://localhost:3000/resetPassword/?id=" + user._id;
+				//var link = "http://localhost:3000/resetPassword/?id=" + user._id;
+				var link = "https://9af1dd61.ngrok.io/resetPassword/?id=" + user._id;
 				Email_reset.sendResetMail(user, link);
 				}
 				return res.status(200).send({

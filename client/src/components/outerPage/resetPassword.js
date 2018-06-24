@@ -4,7 +4,7 @@ import '../../main.css';
 
 import Logo from'../../img/esna.png';
 
-import Classimg from'../../img/nathan-dumlao-572049-unsplash.jpg';
+//import Classimg from'../../img/nathan-dumlao-572049-unsplash.jpg';
 
 const api = require('../../api');
 
@@ -78,7 +78,6 @@ class ResetPassword extends Component {
 
       } = this.state;
 
-
       this.setState({
 
         isLoading: true,
@@ -102,14 +101,6 @@ class ResetPassword extends Component {
 
     return (
 
-      <div className="row">
-
-      <div className="col-6">
-
-        <img src={Classimg} style={{width: '100%', height: '100%'}} alt="classroom"/>
-
-      </div>
-
       <div className="col-6">
 
         <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
@@ -122,16 +113,6 @@ class ResetPassword extends Component {
         <input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={signInPassword} onChange={this.onTextboxChangeSignInPassword}/><br />
 
 				<button className="center login_button" style={{marginTop:'20px'}} onClick={this.onSubmit}>Bestätgigen</button>
-
-        <div className="center loginfooter_parent">
-
-        <p className="loginfooter">Impressum</p> <p>Datenschutz</p>
-
-        </div>
-
-      </div>
-
-
 
       </div>
 

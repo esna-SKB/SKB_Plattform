@@ -5,6 +5,22 @@ html, body{
   box-sizing: border-box;
 }
 
+.backgrd{
+	background-color: #f7f8f9;
+	/*background-image: url("../../../backgrounds/80.jpg")s;*/
+	
+	/* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+	
+	
+}
+
+
 a {
     color: rgb(24, 86, 169);
 }
@@ -87,16 +103,17 @@ a {
 .loginfooter_parent {
   bottom: 0;
   position: absolute;
-  left: 50%;
-  right: 51%;
+  left: 30%;
+  right: 30%;
 }
 
 
 .loginheadline {
-  color: #a9a8a8;
+  color: black;
   text-align: center;
   font-size : 20px;
   padding-bottom: 50px;
+  text-shadow: 0px 0px 3px white;
 }
 
 .errorMessage{
@@ -114,7 +131,7 @@ a {
 .heigh100 {height:100% !important;}
 
 .center_loginform{
-    background-color: white;
+    background-color: rgba(255,255,255, 0.6);
     border: 1px solid #efefef;
     width: 500px;
     height: 520px;
@@ -126,7 +143,7 @@ a {
     margin: auto;
     max-width: 100%;
     max-height: 100%;
-    overflow-y: hidden;
+    overflow-y: hidden;	
 }
 
 .center_signupform{
@@ -171,16 +188,27 @@ a {
   }
 }
 
+.keinMitglied{
+	color: white;
+	float: right;
+	padding-top: 23px; 
+	font-size: 16px;
+	/*text-shadow: 1px 0px 1px white;*/
+}
+
 .registrieren_botton{
     border: 2px solid rgb(24, 86, 169);
     margin: 10px 22px;
     padding: 10px 22px;
     float: right;
+	background-color: rgba(255,255,255, 0.6);
 }
 
 .whitehover:hover{
   color:white;
 }
+
+
 
 .registrieren_botton:hover{
     background-color: rgb(24, 86, 169);
