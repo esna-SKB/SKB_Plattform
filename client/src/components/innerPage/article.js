@@ -21,9 +21,36 @@ class Article extends React.Component {
 	}
 
 	comment = (event) => {
-		console.log(this.props.article._id)
+
 		var div = document.getElementById(this.props.article._id)
 		div.firstChild.nextSibling.style["display"] = 'block'
+
+		var input = document.getElementById(this.props.article._id).firstChild.nextSibling.firstChild.firstChild
+		input = input.firstChild.firstChild.firstChild
+		console.log(input)
+		input.onkeypress = function(e){
+	    if (!e) e = window.event;
+	    var keyCode = e.keyCode || e.which;
+	    if (keyCode == '13'){
+					console.log(input.value)
+
+					let comment_div = document.createElement('DIV')
+					let p = document.createElement('p')
+					p.innerHTML = input.value
+					let author = document.createElement('p')
+					author.style["font-weight"] = 'bold'
+					author.innerHTML = 'me'
+
+					comment_div.appendChild(author)
+					comment_div.appendChild(p)
+
+					input.parentElement.parentElement.prepend(comment_div)
+					input.value= ''
+					console.log(this.props)
+	      return;
+	    }
+	  }
+
 	}
 
 	render(){
