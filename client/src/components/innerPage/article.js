@@ -39,6 +39,8 @@ class Article extends React.Component {
 					p.innerHTML = input.value
 					let author = document.createElement('p')
 					author.style["font-weight"] = 'bold'
+					author.style["float"] = 'left'
+					author.style["padding-right"] = '20px'
 					author.innerHTML = 'me'
 
 					comment_div.appendChild(author)
