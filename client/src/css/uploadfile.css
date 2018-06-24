@@ -50,4 +50,19 @@ also very good example for thinking of accessibitly
 	width: 150px;
 	height: 150px;
 	background-color: black;
+	overflow: hidden;
+	box-shadow: 2px 2px #E0E0E0;
+}
+
+.current_picture > img{
+	min-height:150px;
+	min-width:150px;
+
+    display: block;
+    margin: auto;
+
+    height: auto;
+
+    width: auto;
+	
 }

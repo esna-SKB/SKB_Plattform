@@ -527,7 +527,7 @@ return fetch('/message', {
   resetPassword: function(userId, signInPassword){
     return fetch('/account/resetPassword', {
 
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },

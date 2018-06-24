@@ -4,9 +4,9 @@ import cookie from 'react-cookies';
 import { updateTimeSec } from '../../utils/userSessionHelper';
 
 import '../../css/timeline.css';
+import '../../css/profilepicture.css';
 import '../../css/uploadfile.css'
 
-// import Meow from'../../img/meow.png';
 import Upload from'../../img/upload.png';
 
 
@@ -29,9 +29,7 @@ class Profileedit extends Component {
 		}
 		//look at https://reactjs.org/docs/forms.html
 		this.onChange = this.onChange.bind(this);
-		this.onSave = this.onSave.bind(this);
-		this.handlePic = this.handlePic.bind(this);
-		
+		this.onSave = this.onSave.bind(this);	
 	}
 
 	onChange(e) {
@@ -43,26 +41,19 @@ class Profileedit extends Component {
         file: event.target.files[0]
       });
 	  
-	  if(event.target.files[0] != null){
-			this.setState({currentpic: event.target.files[0].webkitRelativePath + event.target.files[0].name});
-			console.log("current" + event.target.files[0].webkitRelativePath + event.target.files[0].name);
+	  
+		if (event.target.files && event.target.files[0]) {
+			var reader = new FileReader();
+			reader.readAsDataURL(event.target.files[0]);
+				
+			reader.onload = function(e) {
+			  document.getElementById("currentpic").src= e.target.result;
+			}
 		}
-      console.log(event.target.files[0])
 	  
     }
 	
-	handlePic(files){
-		//change current pic with uploaded pic
-		/*console.log("were here");
-		console.log(files);
-		document.getElementById("uploadInput").files
-		if(files != null){
-			this.setState({currentpic: files[0]});
-			console.log("current" + files[0]);
-		}*/
-	}
-	
-	
+
 	
 	onSave(){
 		//Grab state
@@ -104,7 +95,6 @@ class Profileedit extends Component {
 			document.getElementById("teach").style.display = 'none';
 		}
     }
-
 
 
   render() {
@@ -157,11 +147,10 @@ class Profileedit extends Component {
 								<div className="row">
 									<div className="col">
 										<div></div>
-										<div className="current_picture newpart"> <img name="currentpic" id="currentpic" src={currentpic}></img></div>
+										<div className="current_picture newpart"> <img className="fill" name="currentpic" id="currentpic" src="#" alt="your chosen profile image"></img></div>
 										<div className="form-group row newpart">
 											<input type="file" className ="file HideTheUglyInput" name="profilepic" id="profilepic" onChange={this.fileUploader}/>
-							
-											<label className="TheBeautifulInput" htmlFor="profilepic" onChange={this.handlePic(this.files)}>
+											<label className="TheBeautifulInput" htmlFor="profilepic">
 												<img id="upload_icon" className="upload_icon" src={Upload} alt="Upload Icon"/>
 												Bild ändern
 											</label>

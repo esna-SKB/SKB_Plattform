@@ -282,7 +282,7 @@ router.route('/registration/verify')
 	 */
 	router.route('/resetPassword')
 		//change the password of a user
-		.post((req, res, next) => {
+		.put((req, res, next) => {
 			const { body } = req;
 			const { id } = body;
 			const { password } = body;
