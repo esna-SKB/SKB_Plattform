@@ -35,7 +35,7 @@ class Article extends React.Component {
 
 	    } else
 	    if(this.state.article.type.includes("image")){
-	    	return(<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>)
+	    	return(<img src={base64file} className="img-rounded img-fluid" alt="Image"/>)
 	    }
 	    else {
 			return(
@@ -47,7 +47,7 @@ class Article extends React.Component {
 
 
 				<div className="embed-responsive embed-responsive-16by9">
-				    <object className="embed-responsive-item" data={base64file} type="application/pdf" internalinstanceid="9" title="">
+				    <object className="embed-responsive-item" data={base64file} type="application/pdf" internalinstanceid="9" title="pdf">
 				        <p>Your browser isnt supporting embedded pdf files. You can download the file
 				            <a href="/media/post/bootstrap-responsive-embed-aspect-ratio/example.pdf">here</a>.</p>
 				    </object>
