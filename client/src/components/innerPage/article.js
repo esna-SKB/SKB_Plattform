@@ -47,7 +47,7 @@ class Article extends React.Component {
 
 
 				<div class="embed-responsive embed-responsive-16by9">
-				    <object class="embed-responsive-item" data={base64file} type="application/pdf" internalinstanceid="9" title="">
+				    <object className="embed-responsive-item" data={base64file} type="application/pdf" internalinstanceid="9" title="">
 				        <p>Your browser isnt supporting embedded pdf files. You can download the file
 				            <a href="/media/post/bootstrap-responsive-embed-aspect-ratio/example.pdf">here</a>.</p>
 				    </object>
