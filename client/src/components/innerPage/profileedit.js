@@ -43,7 +43,10 @@ class Profileedit extends Component {
         file: event.target.files[0]
       });
 	  
-	  
+	  if(event.target.files[0] != null){
+			this.setState({currentpic: event.target.files[0].webkitRelativePath + event.target.files[0].name});
+			console.log("current" + event.target.files[0].webkitRelativePath + event.target.files[0].name);
+		}
       console.log(event.target.files[0])
 	  
     }
@@ -95,14 +98,11 @@ class Profileedit extends Component {
 			document.getElementById("learn").style.display = 'none';
 			document.getElementById("can").style.display = 'none';
 			document.getElementById("teach").style.display = 'block';
-
-
 		}else{
 			document.getElementById("learn").style.display = 'block';
 			document.getElementById("can").style.display = 'block';
 			document.getElementById("teach").style.display = 'none';
 		}
-
     }
 
 
@@ -116,6 +116,7 @@ class Profileedit extends Component {
 			iTeach,
 			website,
 			currentpic,
+			file,
 		} = this.state;
 
     //Checks if there is an active UserSession
