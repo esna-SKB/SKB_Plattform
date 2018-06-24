@@ -201,11 +201,11 @@ class Login extends Component {
 
     } = this.state;
     return (
-
+		
         <div className='center_loginform'>
               <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
 
-              <p className="loginheadline">Die Lernplattform für Lehrer und Studenten</p>
+              <p className="loginheadline">Die Lern- und Kommunikationsplattform der SKB </p>
 
               <p className = "errorMessage" id="errorMessage" dangerouslySetInnerHTML={{ __html: this.state.errorMessage }}></p>
               <p className = "infoMessage">{this.state.infoMessage}</p>

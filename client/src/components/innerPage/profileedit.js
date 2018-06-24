@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import cookie from 'react-cookies';
+import { updateTimeSec } from '../../utils/userSessionHelper';
+
 import '../../css/timeline.css';
-// import Meow from'../../img/meow.png';
+import '../../css/profilepicture.css';
 import '../../css/uploadfile.css'
 
 import Upload from'../../img/upload.png';
-import cookie from 'react-cookies';
-import { updateTimeSec } from '../../utils/userSessionHelper';
+
 
 const api = require('../../api');
 
@@ -22,57 +24,52 @@ class Profileedit extends Component {
 		  iLearn: this.props.user.iLearn,
 		  iTeach: this.props.user.iTeach,
 		  website: this.props.user.website,
+		  picturedata: this.props.user.picturedata,
+		  type: this.props.user.type,
+		  currentpic: null,
+		  file: null,
 		}
 		//look at https://reactjs.org/docs/forms.html
 		this.onChange = this.onChange.bind(this);
-		this.onSave = this.onSave.bind(this);
-		this.handlePic = this.handlePic.bind(this);
-		
+		this.onSave = this.onSave.bind(this);	
 	}
 
 	onChange(e) {
 		this.setState({[e.target.name]: e.target.value});
 	}
 
-	handlePic(files){
-		
-	}
+	fileUploader = (event) => {
+      this.setState({
+        file: event.target.files[0]
+      });
+	  
+	  
+		if (event.target.files && event.target.files[0]) {
+			var reader = new FileReader();
+			reader.readAsDataURL(event.target.files[0]);
+				
+			reader.onload = function(e) {
+			  document.getElementById("currentpic").src= e.target.result;
+			}
+		}
+	  
+    }
+	
+	getBase64(file, cb) {
+      if(!file) return cb("");
+       var reader = new FileReader();
+       reader.readAsDataURL(file);
+       reader.onload = function () {
+         //console.log(reader.result);
+         cb(reader.result)
+       };
+       reader.onerror = function (error) {
+         console.log('Error: ', error);
+       };
+    }
+	
 	
 	onSave(){
-		/*var des, can, learn, teach, web;
-
-		//check if anything is left empty
-		if(document.getElementById("description").value.length == 0){
-			des = "";
-		}else{
-			des = document.getElementById("description").value;
-		}
-
-		if(document.getElementById("iCan").value.length == 0){
-			can = "";
-		}else{
-			can = document.getElementById("iCan").value;
-		}
-
-		if(document.getElementById("iLearn").value.length == 0){
-			learn = "";
-		}else{
-			learn = document.getElementById("iLearn").value;
-		}
-
-		if(document.getElementById("iTeach").value.length == 0){
-			teach = "";
-		}else{
-			teach = document.getElementById("iTeach").value;
-		}
-
-		if(document.getElementById("website").value.length == 0){
-			web = ""
-		}else{
-			web = document.getElementById("website").value;
-		}*/
-
-
 		//Grab state
 		const {
 			description,
@@ -81,27 +78,56 @@ class Profileedit extends Component {
 			iTeach,
 			website,
 		} = this.state;
-		api.updateUser(this.props.user.email, this.props.user.firstname, this.props.user.lastname, this.props.user.email, this.props.user.isTeacher, this.props.user.isAdmin, this.props.user.isValide, description, iCan, iLearn, iTeach,website );
+		
+		
+		
+		var self = this;
+        if(!this.state){
+			//if(delete pofile image){
+				api.updateUser(self.props.user.email, self.props.user.firstname, self.props.user.lastname, self.props.user.email, self.props.user.isTeacher, self.props.user.isAdmin, self.props.user.isValide, description, iCan, iLearn, iTeach,website, '','' ).then(res => {
+					window.location.reload(false);
+				});
+				
+		}else{
+			self.getBase64(self.state.file, function(base64file){
+				api.updateUser(self.props.user.email, self.props.user.firstname, self.props.user.lastname, self.props.user.email, self.props.user.isTeacher, self.props.user.isAdmin, self.props.user.isValide, description, iCan, iLearn, iTeach,website,base64file,self.state.file.type ).then(res => {
+					window.location.reload(false);
+				});
+		
+			});
+		}
+		
+		//uploadImage, multer
+		/*
+		var formData = new FormData();
+        formData.append("profilepic", this.state.file);
+		
+		fetch('/image/itme', {
+			method: 'POST',
+			//headers: {'Content-Type': 'multipart/form-data; boundary=---------------------------974767299852498929531610575'},
+			body: formData,
+		});*/
+		
+		console.log("have send");
 
 	}
 
 	componentDidMount(){
-
+		//load current profilepicture
+		document.getElementById("currentpic").src = this.state.picturedata;
+		console.log(this.state.picturedata);
+	
 		//isadmin abfangen?
 		if(this.props.user.isTeacher){
 			document.getElementById("learn").style.display = 'none';
 			document.getElementById("can").style.display = 'none';
 			document.getElementById("teach").style.display = 'block';
-
-
 		}else{
 			document.getElementById("learn").style.display = 'block';
 			document.getElementById("can").style.display = 'block';
 			document.getElementById("teach").style.display = 'none';
 		}
-
     }
-
 
 
   render() {
@@ -112,6 +138,8 @@ class Profileedit extends Component {
 			iLearn,
 			iTeach,
 			website,
+			currentpic,
+			file,
 		} = this.state;
 
     //Checks if there is an active UserSession
@@ -152,9 +180,9 @@ class Profileedit extends Component {
 								<div className="row">
 									<div className="col">
 										<div></div>
-										<div className="current_picture newpart"></div>
+										<div className="current_picture newpart"> <img className="fill" name="currentpic" id="currentpic" src="#" alt="your chosen profile image"></img></div>
 										<div className="form-group row newpart">
-											<input className="HideTheUglyInput"type="file" name="profilepic" id="profilepic" onChange={this.handlePic(this.files)}></input>
+											<input type="file" className ="file HideTheUglyInput" name="profilepic" id="profilepic" onChange={this.fileUploader}/>
 											<label className="TheBeautifulInput" htmlFor="profilepic">
 												<img id="upload_icon" className="upload_icon" src={Upload} alt="Upload Icon"/>
 												Bild ändern
@@ -208,7 +236,7 @@ class Profileedit extends Component {
 										</div>
 									</div>
 								</div>
-								<a type="button" href="/profile" className="btn btn-primary" onClick={this.onSave}>Speichern</a>
+								<button type="button" href="/profile" className="btn btn-primary" onClick={this.onSave}>Speichern</button>
 							</form>
 							<div className="row-12 text-muted text-right">
 								<div className="col-12">

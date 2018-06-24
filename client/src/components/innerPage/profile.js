@@ -5,6 +5,7 @@ import '../../css/profile.css';
 /*add this css if you want the profile image on the left (circular)*/
 import '../../css/profilepicture.css';
 import Meow from'../../img/meow.png';
+const api = require('../../api');
 
 // const api = require('../../api');
 
@@ -14,50 +15,117 @@ class Profile extends Component {
 		super(props);
 
 		this.state = {
-		  user: this.props.user
+		  user:this.props.user,
+		  shownprofile: {},
 		}
+		
 	}
 
 	componentDidMount(){
+		
+		//check if it is /profile
+		if(!window.location.pathname.endsWith("/profile")){
+			//does not end with /profile so it is /user/:email
+			var email = window.location.pathname.split("/")[2];
+				
+			api.getUser(email).then(res => {
+				this.setState({
+					shownprofile : res,
+				});
+				console.log("user:"+JSON.stringify(this.state.user));
+				console.log("res:"+ JSON.stringify(res));
+				console.log("shown:"+ JSON.stringify(this.state.shownprofile));
+	
+				//load current profilepicture
+				document.getElementById("YourPicture").src = this.state.shownprofile.picturedata;
+				console.log(this.state.shownprofile.picturedata);
+				
+				//isadmin abfangen?
+				if(this.state.shownprofile.isTeacher){
+					document.getElementById("role").innerHTML = "Lehrer_in";
 
+					//ican/ilearn mit iteach und freie Kurse austauschen
+					document.getElementById("trueLearn").style.display = 'none';
+					document.getElementById("iLearn").style.display = 'none';
+					document.getElementById("trueCan").style.display = 'none';
+					document.getElementById("iCan").style.display = 'none';
+					document.getElementById("trueTeach").style.display = 'block';
+					document.getElementById("iTeach").style.display = 'block';
+					document.getElementById("trueOffer").style.display = 'block';
+
+
+				}else{
+					document.getElementById("role").innerHTML = "Student_in";
+
+					// iteach/freie Kurse mit ican und ilearn austauschen
+					document.getElementById("trueLearn").style.display = 'block';
+					document.getElementById("iLearn").style.display = 'block';
+					document.getElementById("trueCan").style.display = 'block';
+					document.getElementById("iCan").style.display = 'block';
+					document.getElementById("trueTeach").style.display = 'none';
+					document.getElementById("iTeach").style.display = 'none';
+					document.getElementById("trueOffer").style.display = 'none';
+				}
+				
+			});
+			
+		}else{
+			this.setState({
+				shownprofile : this.state.user,
+			});
+			//load current profilepicture
+			document.getElementById("YourPicture").src = this.state.user.picturedata;
+			console.log(this.state.user.picturedata);
+			
+			
+			//isadmin abfangen?
+				if(this.state.user.isTeacher){
+					document.getElementById("role").innerHTML = "Lehrer_in";
+
+					//ican/ilearn mit iteach und freie Kurse austauschen
+					document.getElementById("trueLearn").style.display = 'none';
+					document.getElementById("iLearn").style.display = 'none';
+					document.getElementById("trueCan").style.display = 'none';
+					document.getElementById("iCan").style.display = 'none';
+					document.getElementById("trueTeach").style.display = 'block';
+					document.getElementById("iTeach").style.display = 'block';
+					document.getElementById("trueOffer").style.display = 'block';
+
+
+				}else{
+					document.getElementById("role").innerHTML = "Student_in";
+
+					// iteach/freie Kurse mit ican und ilearn austauschen
+					document.getElementById("trueLearn").style.display = 'block';
+					document.getElementById("iLearn").style.display = 'block';
+					document.getElementById("trueCan").style.display = 'block';
+					document.getElementById("iCan").style.display = 'block';
+					document.getElementById("trueTeach").style.display = 'none';
+					document.getElementById("iTeach").style.display = 'none';
+					document.getElementById("trueOffer").style.display = 'none';
+				}
+			
+		}
+	
 		//dummy values
 		var countCourses = 4;
 		var countGroups = 3;
 		document.getElementById("countCourses2").innerHTML = countCourses;
 		document.getElementById("countGroups2").innerHTML = countGroups;
 
-		//isadmin abfangen?
-		if(this.props.user.isTeacher){
-			document.getElementById("role").innerHTML = "Lehrer_in";
 
-			//ican/ilearn mit iteach und freie Kurse austauschen
-			document.getElementById("trueLearn").style.display = 'none';
-			document.getElementById("iLearn").style.display = 'none';
-			document.getElementById("trueCan").style.display = 'none';
-			document.getElementById("iCan").style.display = 'none';
-			document.getElementById("trueTeach").style.display = 'block';
-			document.getElementById("iTeach").style.display = 'block';
-			document.getElementById("trueOffer").style.display = 'block';
-
-
-		}else{
-			document.getElementById("role").innerHTML = "Student_in";
-
-			// iteach/freie Kurse mit ican und ilearn austauschen
-			document.getElementById("trueLearn").style.display = 'block';
-			document.getElementById("iLearn").style.display = 'block';
-			document.getElementById("trueCan").style.display = 'block';
-			document.getElementById("iCan").style.display = 'block';
-			document.getElementById("trueTeach").style.display = 'none';
-			document.getElementById("iTeach").style.display = 'none';
-			document.getElementById("trueOffer").style.display = 'none';
-		}
-  }
-
+		
+	}
+  
 
 
   render() {
-
+	//grab state		
+	const {
+		user,
+		shownprofile,
+	} = this.state;
+	
     return (
       <div>
 		<div className="container-fluid">
@@ -69,12 +137,12 @@ class Profile extends Component {
 								<div className="col">
 									<div className="row center-block ">
 
-										<div className="col  profilepicbig fill col-md-12" style={{backgroundImage: 'url('+Meow+')'}}>
+										<div className="col profilepicbig fill col-md-12"><img id="YourPicture" src= {Meow}></img>
 										</div>
 
 										<div className="makespace col">
 											<div className=" row">
-												<h4 className="title"><strong id="YourName02">{this.props.user.firstname + " " + this.props.user.lastname}</strong></h4>
+												<h4 className="title"><strong id="YourName02">{shownprofile.firstname + " " + shownprofile.lastname}</strong></h4>
 											</div>
 
 											<div className="row  text-muted">
@@ -94,7 +162,7 @@ class Profile extends Component {
 
 								</div>
 								<div className="row-12 text-muted">
-										<div className="col-12 description" id="description">{this.props.user.description}</div>
+										<div className="col-12 description" id="description">{shownprofile.description}</div>
 								</div>
 								<div className="row-12 text-muted text-right">
 									<div className="col-12 edit">
@@ -110,14 +178,14 @@ class Profile extends Component {
 								<div className="col">
 									<div className="row  text-muted">
 										<div className="col-4" id="trueCan">ich kann:</div>
-										<div className="col-8" id="iCan">{this.props.user.iCan}</div>
+										<div className="col-8" id="iCan">{shownprofile.iCan}</div>
 										<div className="col-4" id="trueTeach">ich bringe bei:</div>
-										<div className="col-8" id="iTeach">{this.props.user.iTeach}</div>
+										<div className="col-8" id="iTeach">{shownprofile.iTeach}</div>
 									</div>
 
 									<div className="row  lineup ">
 										<div className="col-4 text-muted " id="trueLearn">ich lerne:</div>
-										<div className="col-8 text-muted" id="iLearn">{this.props.user.iLearn}</div>
+										<div className="col-8 text-muted" id="iLearn">{shownprofile.iLearn}</div>
 										<div className="col-12" id="trueOffer"><strong>mein kostenloses Angebot:</strong></div>
 									</div>
 								</div>
@@ -130,11 +198,11 @@ class Profile extends Component {
 								<div className="col">
 										<div className="row  text-muted">
 										<div className="col-4">E-Mail:</div>
-										<a className="col-8" id="email" href={"mailto:" + this.props.user.email}>{this.props.user.email}</a>
+										<a className="col-8" id="email" href={"mailto:" + shownprofile.email}>{shownprofile.email}</a>
 									</div>
 									<div className="row text-muted lineup ">
 										<div className="col-4 ">Website:</div>
-										<a className="col-8" id="website" href={"http://" + this.props.user.website}>{this.props.user.website}</a>
+										<a className="col-8" id="website" href={"http://" + shownprofile.website}>{shownprofile.website}</a>
 									</div>
 								</div>
 							</div>

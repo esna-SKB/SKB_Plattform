@@ -62,7 +62,7 @@ getUser: function(email){
  * PUT /user/:email
  * updates an user object
 */
-updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, isValide, description, iCan, iLearn, iTeach, website){
+updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, isValide, description, iCan, iLearn, iTeach, website,picturedata, type){
   return fetch('/user/' + email, {
     method: 'PUT',
     headers: {
@@ -80,7 +80,9 @@ updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, i
 	  iCan: iCan,
 	  iLearn: iLearn,
 	  iTeach: iTeach,
-	  website: website
+	  website: website,
+	  picturedata: picturedata,
+	  type: type,
     }),
   })
   .then(res => res.json())
@@ -527,7 +529,7 @@ return fetch('/message', {
   resetPassword: function(userId, signInPassword){
     return fetch('/account/resetPassword', {
 
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
