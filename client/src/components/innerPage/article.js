@@ -23,7 +23,6 @@ class Article extends React.Component {
 	}
 
 	comment = (event) => {
-console.log(this.state)
 		var div = document.getElementById(this.props.article._id)
 		div.firstChild.nextSibling.style["display"] = 'block'
 
@@ -53,8 +52,6 @@ console.log(this.state)
 	      return;
 	    }
 	  }
-
-	}
 	}
 
 
@@ -84,26 +81,25 @@ console.log(this.state)
 	    	return(<img src={base64file} className="img-rounded img-fluid" alt="Image"/>)
 	    }
 	    else {
-			return(
+				return(
 
-				//<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>
-				//<div className="embed-responsive embed-responsive-16by9">
-				// 	<iframe className="embed-responsive-item" src={base64file} allowFullScreen></iframe>
-				//</div>
-
-
-				<div className="embed-responsive embed-responsive-16by9">
-				    <object className="embed-responsive-item" data={base64file} type="application/pdf" internalinstanceid="9" title="pdf">
-				        <p>Your browser isnt supporting embedded pdf files. You can download the file
-				            <a href="/media/post/bootstrap-responsive-embed-aspect-ratio/example.pdf">here</a>.</p>
-				    </object>
-				</div>
+					//<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>
+					//<div className="embed-responsive embed-responsive-16by9">
+					// 	<iframe className="embed-responsive-item" src={base64file} allowFullScreen></iframe>
+					//</div>
 
 
-			)
+					<div className="embed-responsive embed-responsive-16by9">
+					    <object className="embed-responsive-item" data={base64file} type="application/pdf" internalinstanceid="9" title="pdf">
+					        <p>Your browser isnt supporting embedded pdf files. You can download the file
+					            <a href="/media/post/bootstrap-responsive-embed-aspect-ratio/example.pdf">here</a>.</p>
+					    </object>
+					</div>
+
+
+				)
+			}
 		}
-	}
-
 
 	render(){
 
