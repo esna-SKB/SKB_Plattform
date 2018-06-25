@@ -178,7 +178,7 @@ deleteUser: function(email){
    * PUT /course/:courseName
    * updates a course object
   */
-  updateCourse: function(courseName, newCourseName, teacherEmail, description){
+  updateCourse: function(courseName, newCourseName, teacherEmail, description, content){
     return fetch('/course/'+courseName, {
       method: 'PUT',
       headers: {
@@ -189,6 +189,7 @@ deleteUser: function(email){
         name: newCourseName,
         teacher: teacherEmail,
         description: description,
+        content: content
       }),
     })
     .then(res => res.json())
@@ -279,7 +280,20 @@ deleteUser: function(email){
    * returns an article object
   */
   getArticle: function(articleId){
-    return fetch('/article' + articleId, {
+    return fetch('/article/' + articleId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+
+  /*
+   * GET /article/id
+   * returns an article object
+  */
+  getAllArticleComments: function(articleId){
+    return fetch('/article/comments/' + articleId, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -292,9 +306,11 @@ deleteUser: function(email){
    * deletes an article object
   */
   deleteArticle: function(articleId){
-    return fetch('/article' + articleId, {
+    return fetch('/article/' + articleId, {
       method: 'DELETE',
-      })
+      headers: {
+        'Accept': 'application/json'
+      }})
     .then(res => res.json())
   },
 

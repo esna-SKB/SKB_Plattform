@@ -25,6 +25,7 @@
     "body-parser": "^1.18.3",
     "concurrently": "^3.5.1",
     "cors": "^2.8.4",
+    "dragula": "^3.7.2",
     "express": "^4.16.2",
     "express-jwt": "^5.3.1",
     "formidable": "^1.2.1",

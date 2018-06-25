@@ -106,6 +106,7 @@ router.route('/:name')
 		const { name } = body;
 		const { teacher } = body;
 		const { description } = body;
+		const { content } = body;
 
 		var oldName = req.params.name;
 
@@ -122,7 +123,7 @@ router.route('/:name')
 					else if(user == null) res.status(404).send({success : false, message : "teacher not found"})
 					else {
 						Course.update(
-							{ name: oldName }, { name : name, teacher : user._id, description: description }
+							{ name: oldName }, { name : name, teacher : user._id, description: description, content : content }
 							, function(err, affected){
 							if (err) {
 								return res.status(500).send({success : false, message : "course could no be updaten, error accured while update"});
