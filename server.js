@@ -30,8 +30,6 @@ app.use(require('./routes'));
 app.use(methodOverride());
 
 
-app.use('/static', express.static(path.join(__dirname,'public')));
-
 var server = app.listen(port, () => `Server running on port ${port}`);
 
 module.exports.server = server; 

@@ -73,7 +73,7 @@ class ForgotPassword extends Component {
     if (requestSent){
       return (
        
-            <div className='center_email_confirm' style={{height: '600px', padding: '10px'}}>
+            <div className='center_email_confirm thebox' style={{height: '600px', padding: '10px'}}>
               <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
               <p className="loginheadline">Passwort vergessen?</p>
               <p className = "infoMessage">{this.state.infoMessage}</p>
@@ -84,7 +84,7 @@ class ForgotPassword extends Component {
     }
     else{
       return (
-            <div className='center_email_confirm' style={{height: '600px', padding: '10px'}}>
+            <div className='center_email_confirm thebox' style={{height: '600px', padding: '10px'}}>
                 <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
                 <p className="loginheadline">Passwort vergessen?</p>
                 <p className = "infoMessage">{this.state.infoMessage}</p>

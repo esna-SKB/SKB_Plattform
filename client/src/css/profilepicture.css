@@ -1,26 +1,24 @@
 
 .profilepicleft > img {
-	width: 150px;
-
+	min-height:150px;
+	min-width:150px;
+	height: 150px;
+	width:150px;
+	object-fit:cover;
+    display: block;
+    margin: auto;
 	border-radius: 150px;
-	/*box-shadow: 2px 2px #E0E0E0;*/
 }
 
 .profilepicleft{
 	width: 150px;
 	height: 150px;
 
-	max-width:150px;
-	max-height:150px;
-
+	/*be center*/
 	margin-right: auto;
 	margin-left: auto;
 	display: block;
-
 	
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
 	border-radius: 150px;
 	box-shadow: 2px 2px #E0E0E0;
 }
@@ -41,7 +39,16 @@
 	max-height:150px;
 
 	box-shadow: 2px 2px #E0E0E0;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
+
+}
+
+
+.profilepicbig > img{
+	min-height:150px;
+	min-width:150px;
+	height: 150px;
+	width:150px;
+	object-fit:cover;
+    display: block;
+    margin: auto;
 }

@@ -55,7 +55,15 @@ const UserSchema = new mongoose.Schema({
   website: {
     type: String,
     default: ''
-  }
+  },
+  picturedata:{
+    type: String,
+    default: ''
+  },
+  type: {
+    type: String,
+    default: ''
+  },
 });
 UserSchema.methods.generateHash = function(password) {
    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
