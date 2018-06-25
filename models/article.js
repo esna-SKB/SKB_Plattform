@@ -10,6 +10,8 @@ var articleSchema = new Schema({
         ref: "Course"
     },
     headline: String,
+    data: String,
+    type: String,
     author: {
         type: Schema.Types.ObjectId,
         ref: "User"
@@ -20,3 +22,4 @@ var articleSchema = new Schema({
 });
 
 module.exports = mongoose.model('Article', articleSchema);
+

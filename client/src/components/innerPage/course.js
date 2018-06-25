@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Article from './article';
 // import $ from 'jquery';
 
+//import axios from 'axios';
+
 import api from '../../api';
 // import builder from '../../utils/builder';
 import dragula from 'dragula';
@@ -15,11 +17,50 @@ class FeedTab extends Component{
 
     postArticle = () =>{
         var text = document.getElementById("textteilen").value;
-        api.createArticle(this.props.course.name, "", this.props.user.email, text, Date.now).then(res => {
+        //var formData = new FormData();
+        //formData.append("file", this.state.file, this.state.file.name);
+        var self = this;
+        if(!this.state){
+          api.createArticle(self.props.course.name, "", self.props.user.email, text, "", Date.now, "").then(res => {
+
           window.location.reload(false);
-        });
+          });
+        }else {
+          self.getBase64(self.state.file, function(base64file){
+
+            //console.log(this.state.file)
+            //console.log(base64file)
+            api.createArticle(self.props.course.name, "", self.props.user.email, text, self.state.file.type, Date.now, base64file).then(res => {
+
+            window.location.reload(false);
+            });
+          });
+        }
+
         console.log(this.props.articles)
     }
+
+    getBase64(file, cb) {
+      if(!file) return cb("");
+       var reader = new FileReader();
+       reader.readAsDataURL(file);
+       reader.onload = function () {
+         //console.log(reader.result);
+         cb(reader.result)
+       };
+       reader.onerror = function (error) {
+         console.log('Error: ', error);
+       };
+    }
+
+    fileUploader = (event) => {
+      this.setState({
+        file: event.target.files[0]
+      });
+      
+      //console.log(event.target.files[0])
+    }
+
     render(){
       if(this.props.user.email === this.props.course.teacher.email){
         return(
@@ -30,17 +71,12 @@ class FeedTab extends Component{
                   <div className="col-4" style={{textAlign: 'center', borderBottom: '1px solid rgb(0, 127, 178)', marginBottom: '-16px'}}>
                     <span className="glyphicon glyphicon-pencil"></span> Text teilen
                   </div>
-                  <div className="col-4" style={{textAlign: 'center'}}>
-                    Foto Hochladen
-                  </div>
-                  <div className="col-4" style={{textAlign: 'center'}}>
-                    Datei Hochladen
-                  </div>
                 </div>
               </div>
               <div className="col-12" id="post_content">
                 <div className="textarea_wrap">
                   <textarea id='textteilen' className="col-xs-11" style={{width: '100%'}} placeholder="write something..."></textarea>
+                  <input type="file" className ="file" onChange={this.fileUploader}/>
                 </div>
               </div>
               <div className="col-xs-12" id="post_footer">
@@ -131,7 +167,8 @@ class Course extends Component {
       enrolled: false,
       course: undefined,
       articles: undefined,
-      members: []
+      members: [],
+      file: null,
       };
       this.bearbeiten = this.bearbeiten.bind(this);
     }

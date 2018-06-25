@@ -1,5 +1,7 @@
 import React from 'react';
 import api from '../../api';
+// import api from '../../api';
+import axios from'axios';
 
 
 class Article extends React.Component {
@@ -53,6 +55,55 @@ console.log(this.state)
 	  }
 
 	}
+	}
+
+
+	/*encoder = () => {
+
+
+
+		var arrayBuffer = Buffer.from(this.state.article.data, 'binary').toString('base64');
+
+		let u8 = new Uint8Array(arrayBuffer)
+	    let b64encoded = btoa([].reduce.call(new Uint8Array(arrayBuffer),function(p,c){return p+String.fromCharCode(c)},''))
+	    let mimetype= this.state.article.type;
+	    //console.log(arrayBuffer)
+	    //document.getElementById("myimage") = b64encoded;
+	    return "data:"+mimetype+";base64"+arrayBuffer
+	}*/
+
+	img(){
+		var base64file = this.state.article.data
+		//document.body.appendChild(image);
+	    //console.log(arrayBuffer)
+	    //console.log(arrayBuffer);
+	    if(this.state.article.type === ""){
+
+	    } else
+	    if(this.state.article.type.includes("image")){
+	    	return(<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>)
+	    }
+	    else {
+			return(
+
+				//<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>
+				//<div className="embed-responsive embed-responsive-16by9">
+				// 	<iframe className="embed-responsive-item" src={base64file} allowFullScreen></iframe>
+				//</div>
+
+
+				<div className="embed-responsive embed-responsive-16by9">
+				    <object className="embed-responsive-item" data={base64file} type="application/pdf" internalinstanceid="9" title="">
+				        <p>Your browser isnt supporting embedded pdf files. You can download the file
+				            <a href="/media/post/bootstrap-responsive-embed-aspect-ratio/example.pdf">here</a>.</p>
+				    </object>
+				</div>
+
+
+			)
+		}
+	}
+
 
 	render(){
 
@@ -112,24 +163,10 @@ console.log(this.state)
 						<div className='col-12'>
 							<h6>{article.headline}</h6>
 							<p style={{color: '#a9a8a8'}}>{article.text}</p>
+							
+							{this.img()}
+							
 						</div>
-    </div>
-
-		<div className="comtained border row" style={{display: 'none'}}>
-			<div className="col-sm-12">
-			<div className="panel panel-white post">
-					<div className="post-comments">
-							<div className="input-group">
-									<input className="form-control comment-input" placeholder="Add a comment..." type="text"/>
-									<span className="input-group-addon">
-											<a href="#"><i className="fa fa-check"></i></a>
-									</span>
-							</div>
-
-							</div>
-					</div>
-			</div>
-
 
 					</div>
 				</div>
@@ -160,6 +197,7 @@ console.log(this.state)
 						<div className='col-12'>
 							<h6>{article.headline}</h6>
 							<p style={{color: '#a9a8a8'}}>{article.text}</p>
+							{this.img()}
 						</div>
 					</div>
 
