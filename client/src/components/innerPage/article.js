@@ -1,4 +1,5 @@
 import React from 'react';
+import api from '../../api';
 // import api from '../../api';
 import axios from'axios';
 
@@ -9,6 +10,48 @@ class Article extends React.Component {
 	this.state = {
 		article: this.props.article
 		};
+		this.remove = this.remove.bind(this);
+		this.comment = this.comment.bind(this);
+	}
+
+	remove = (event) => {
+		api.deleteArticle(this.props.article._id).then(response => {
+			if(response.success === true) {
+				document.getElementById(this.props.article._id).outerHTML = "";
+			}
+		})
+	}
+
+	comment = (event) => {
+		var div = document.getElementById(this.props.article._id)
+		div.firstChild.nextSibling.style["display"] = 'block'
+
+		var input = document.getElementById(this.props.article._id).firstChild.nextSibling.firstChild.firstChild
+		input = input.firstChild.firstChild.firstChild
+		console.log(input)
+		input.onkeypress = function(e){
+	    if (!e) e = window.event;
+	    var keyCode = e.keyCode || e.which;
+	    if (keyCode == '13'){
+					console.log(input.value)
+
+					let comment_div = document.createElement('DIV')
+					let p = document.createElement('p')
+					p.innerHTML = input.value
+					let author = document.createElement('p')
+					author.style["font-weight"] = 'bold'
+					author.style["float"] = 'left'
+					author.style["padding-right"] = '20px'
+					author.innerHTML = 'me'
+
+					comment_div.appendChild(author)
+					comment_div.appendChild(p)
+
+					input.parentElement.parentElement.prepend(comment_div)
+					input.value= ''
+	      return;
+	    }
+	  }
 	}
 
 
@@ -35,29 +78,28 @@ class Article extends React.Component {
 
 	    } else
 	    if(this.state.article.type.includes("image")){
-	    	return(<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>)
+	    	return(<img src={base64file} className="img-rounded img-fluid" alt="Image"/>)
 	    }
 	    else {
-			return(
+				return(
 
-				//<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>
-				//<div className="embed-responsive embed-responsive-16by9">
-				// 	<iframe className="embed-responsive-item" src={base64file} allowFullScreen></iframe>
-				//</div>
-
-
-				<div className="embed-responsive embed-responsive-16by9">
-				    <object className="embed-responsive-item" data={base64file} type="application/pdf" internalinstanceid="9" title="">
-				        <p>Your browser isnt supporting embedded pdf files. You can download the file
-				            <a href="/media/post/bootstrap-responsive-embed-aspect-ratio/example.pdf">here</a>.</p>
-				    </object>
-				</div>
+					//<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>
+					//<div className="embed-responsive embed-responsive-16by9">
+					// 	<iframe className="embed-responsive-item" src={base64file} allowFullScreen></iframe>
+					//</div>
 
 
-			)
+					<div className="embed-responsive embed-responsive-16by9">
+					    <object className="embed-responsive-item" data={base64file} type="application/pdf" internalinstanceid="9" title="pdf">
+					        <p>Your browser isnt supporting embedded pdf files. You can download the file
+					            <a href="/media/post/bootstrap-responsive-embed-aspect-ratio/example.pdf">here</a>.</p>
+					    </object>
+					</div>
+
+
+				)
+			}
 		}
-	}
-
 
 	render(){
 
@@ -95,34 +137,7 @@ class Article extends React.Component {
 
 		if(this.state.article.author.email !== this.props.user) {
 			return(
-				<div>
-					<div className='row border' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px'}}>
-					 	<div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
-							<div className='row'>
-								<div className='col-6' style={{textTransform: 'capitalize'}}>
-								<p>{article.author.firstname} {article.author.lastname}</p>
-								<p>{ article.course.name}</p>
-								</div>
-								<div className='col-6'>
-									<time style={{float: 'right'}}>{timeSince(date)}</time>
-								</div>
-							</div>
-						</div>
-						<div className='col-12'>
-							<h6>{article.headline}</h6>
-							<p style={{color: '#a9a8a8'}}>{article.text}</p>
-							
-							{this.img()}
-							
-						</div>
-
-					</div>
-				</div>
-		 	);
-		}
-		else {
-			return(
-				<div>
+				<div id={this.state.article._id}>
 					<div className='row border' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px'}}>
 					 	<div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
 							<div className='row'>
@@ -136,7 +151,41 @@ class Article extends React.Component {
 								<div className='col-1'>
 									<button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown"><h1 className="remove_article">...</h1></button>
 									<ul className="dropdown-menu" style={{ marginTop: '-35px'}}>
-							      <li className="remove"><a>löschen</a></li>
+							      <li className="remove" onClick={this.comment.bind(this)}><a>Kommentieren</a></li>
+							    </ul>
+								</div>
+							</div>
+						</div>
+						<div className='col-12'>
+							<h6>{article.headline}</h6>
+							<p style={{color: '#a9a8a8'}}>{article.text}</p>
+
+							{this.img()}
+
+						</div>
+
+					</div>
+				</div>
+		 	);
+		}
+		else {
+			return(
+				<div id={this.state.article._id}>
+					<div className='row border' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px'}}>
+					 	<div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
+							<div className='row'>
+								<div className='col-5' style={{textTransform: 'capitalize'}}>
+								<p>{article.author.firstname} {article.author.lastname}</p>
+								<p>{ article.course.name}</p>
+								</div>
+								<div className='col-6'>
+									<time style={{float: 'right'}}>{timeSince(date)}</time>
+								</div>
+								<div className='col-1'>
+									<button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown"><h1 className="remove_article">...</h1></button>
+									<ul className="dropdown-menu" style={{ marginTop: '-35px'}}>
+							      <li className="remove" onClick={this.remove.bind(this)}><a>löschen</a></li>
+										<li className="remove" onClick={this.comment.bind(this)}><a>Kommentieren</a></li>
 							    </ul>
 								</div>
 							</div>
@@ -147,6 +196,22 @@ class Article extends React.Component {
 							{this.img()}
 						</div>
 					</div>
+
+					<div className="comtained border row" style={{display: 'none'}}>
+							<div className="col-sm-12">
+							<div className="panel panel-white post">
+								<div className="post-comments">
+										<div className="input-group">
+												<input className="form-control comment-input" placeholder="Add a comment..." type="text"/>
+												<span className="input-group-addon">
+														<a href="#"><i className="fa fa-check"></i></a>
+												</span>
+										</div>
+								</div>
+							</div>
+					</div>
+					</div>
+
 				</div>
 				);
 		}

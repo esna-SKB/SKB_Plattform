@@ -1,5 +1,6 @@
 import React from 'react';
 
+import '../main.css';
 import Login from './outerPage/login';
 import Signup from './outerPage/signup';
 import ForgotPassword from './outerPage/forgotPassword';
@@ -30,8 +31,9 @@ class OuterPage extends React.Component {
 	render(){
 		console.log(this.props.location); 
 		return(
-			 <div className="row heigh100 backgrd" style={{backgroundImage: 'url('+BckgrdUrl+')'}}>
-
+			
+			 <div className=" heigh100 backgrd" style={{backgroundImage: 'url('+BckgrdUrl+')'}}>
+			<div className="row makeBackgroundlight">
      		 <div className="col-12" style={{padding: '10px 10px 10px 25px'}}>
 
 		        <a href="/signup" className='whitehover' style={{color: 'white !important'}}><div className='registrieren_botton'>Registrieren
@@ -56,6 +58,7 @@ class OuterPage extends React.Component {
 	      </div>
 
       </div>
+	  </div>
 			);
 	}
 }

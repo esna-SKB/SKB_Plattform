@@ -101,7 +101,7 @@ class ResetPassword extends Component {
 
     return (
 
-      <div className="col-6">
+      <div className="col-6 thebox "  style={{paddingBottom:'20px'}}>
 
         <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
 

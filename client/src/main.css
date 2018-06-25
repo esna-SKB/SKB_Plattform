@@ -42,10 +42,10 @@ a {
 
 .esna_logo{
   padding-top: 40px;
-  padding-bottom: 50px;
+  padding-bottom: 20px;
   display: block;
   margin: 0 auto;
-  width: 200px;
+  width: 150px;
   height: auto;
 }
 
@@ -112,7 +112,7 @@ a {
   color: black;
   text-align: center;
   font-size : 20px;
-  padding-bottom: 50px;
+  padding-bottom: 35px;
   text-shadow: 0px 0px 3px white;
 }
 
@@ -120,12 +120,15 @@ a {
   color: red;
   text-align: center;
   font-size : 18px;
+  padding-top: 10px;
+  margin-bottom:0;
 }
 
 
 .infoMessage{
   text-align: center;
   font-size : 18px;
+  margin:0;
 }
 
 .heigh100 {height:100% !important;}
@@ -182,9 +185,24 @@ a {
 
 }
 
+.resend_reg_center{
+	max-height:550px;
+    overflow: auto;
+    text-align: center;
+	
+}
+
+
+@media Screen and (max-height: 560px){
+  .resend_reg_center{
+    height: 380px;
+  }
+}
+
 @media Screen and (max-width: 870px){
   .center_loginform{
     width: 450px;
+	length:auto;
   }
 }
 
@@ -391,7 +409,6 @@ button {
 .remove_article {
   font-size: 20px;
   margin-top: -20px;
-  /* margin-left: 10px !important; */
   color:black;
 }
 .remove_button_arrow{
@@ -400,6 +417,7 @@ button {
   color:white;
 }
 .remove_button_arrow:focus {outline:0;}
+
 
 
 
@@ -870,4 +888,158 @@ main {
     .wrapper-mobile {
         display: block
     }
+=======
+.comtained{
+  opacity: 0.6;
+  margin-top: -20px;
+  margin-bottom: 40px;
+  background-color: #f9f9f9;
+  padding-top: 15px;
+  border-top: transparent !important;
+  padding-bottom: 10px;
+}
+
+
+.comtained:hover{opacity: 1;}
+.user {
+  font-size: 14px;
+  font-weight: bold;
+  display: inline;
+  margin-top: 0;
+  margin-right: 10px;
+  list-style-type: none;
+}
+
+.post .post-comments .comments-list {
+  padding: 0;
+  margin-top: 20px;
+  list-style-type: none;
+}
+
+
+/* HTML BUILDER */
+
+.wrapper {
+  position: relative;
+  height: 100%;
+}
+
+pre {
+  max-width: 30em;
+  display: block;
+  background: #000;
+  color: white;
+  padding: 0.5em;
+  border: 1px solid black;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+
+/* box */
+
+.box-left {
+  height: 100%;
+  margin: 9;
+  padding: 0.5rem;
+  background: #fff;
+}
+
+.box-right {
+  position: relative;
+  width: 100%;
+  height: calc(100% + 5em);
+  margin: 0;
+  margin-bottom: 1em;
+  padding: 0.5rem;
+  background: #f5f6f9;
+  overflow-y: auto;
+}
+
+
+/* left boxes */
+
+.box-left div {
+  display: inline-block;
+  padding: 0.5rem;
+  margin: 0;
+  margin-bottom: 0.2em;
+  text-align: center;
+  line-height: 2rem;
+  background: #2C3E50;
+  color: white;
+  cursor: all-scroll;
+  margin-right: 10px;
+}
+
+.box-left div:hover. .box-left div:focus {
+  background: #ecf0f1;
+}
+
+.reset,
+.save {
+  text-align: right;
+  padding: 0.5em 1em;
+  background: #2C3E50;
+  color: white;
+  margin: 0.8em 0.2em;
+  cursor: pointer;
+}
+
+.reset:hover,
+.save:hover,
+.reset:focus,
+.save:focus {
+  background: #95a5a6;
+}
+
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 1111 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+  background: grey !important;
+  display: block !important;
+  padding: 0.5rem !important;
+  text-align: center !important;
+  line-height: 2rem !important;
+  color: white !important;
+  overflow:hidden;
+}
+
+.gu-hide {
+  display: none !important;
+}
+
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+  background: grey !important;
+  line-height:1.2em;
+  min-height:5em;
+}
+
+.thebox{
+	background-color: rgba(255,255,255, 0.6);
+	border: 1px solid #efefef;
+		
+}
+
+.makeBackgroundlight{ 
+	padding:0;
+	margin:0;
+	width:100% !important;
+	height:100%;
+	overflow: hidden;
+	background-color: rgba(255,255,255, 0.3);
 }

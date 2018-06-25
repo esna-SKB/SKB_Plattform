@@ -62,7 +62,7 @@ getUser: function(email){
  * PUT /user/:email
  * updates an user object
 */
-updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, isValide, description, iCan, iLearn, iTeach, website){
+updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, isValide, description, iCan, iLearn, iTeach, website,picturedata, type){
   return fetch('/user/' + email, {
     method: 'PUT',
     headers: {
@@ -80,7 +80,9 @@ updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, i
 	  iCan: iCan,
 	  iLearn: iLearn,
 	  iTeach: iTeach,
-	  website: website
+	  website: website,
+	  picturedata: picturedata,
+	  type: type,
     }),
   })
   .then(res => res.json())
@@ -176,7 +178,7 @@ deleteUser: function(email){
    * PUT /course/:courseName
    * updates a course object
   */
-  updateCourse: function(courseName, newCourseName, teacherEmail, description){
+  updateCourse: function(courseName, newCourseName, teacherEmail, description, content){
     return fetch('/course/'+courseName, {
       method: 'PUT',
       headers: {
@@ -187,6 +189,7 @@ deleteUser: function(email){
         name: newCourseName,
         teacher: teacherEmail,
         description: description,
+        content: content
       }),
     })
     .then(res => res.json())
@@ -277,7 +280,20 @@ deleteUser: function(email){
    * returns an article object
   */
   getArticle: function(articleId){
-    return fetch('/article' + articleId, {
+    return fetch('/article/' + articleId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+
+  /*
+   * GET /article/id
+   * returns an article object
+  */
+  getAllArticleComments: function(articleId){
+    return fetch('/article/comments/' + articleId, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -290,9 +306,11 @@ deleteUser: function(email){
    * deletes an article object
   */
   deleteArticle: function(articleId){
-    return fetch('/article' + articleId, {
+    return fetch('/article/' + articleId, {
       method: 'DELETE',
-      })
+      headers: {
+        'Accept': 'application/json'
+      }})
     .then(res => res.json())
   },
 
@@ -527,7 +545,7 @@ return fetch('/message', {
   resetPassword: function(userId, signInPassword){
     return fetch('/account/resetPassword', {
 
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },

@@ -71,7 +71,8 @@ class SendRegistrationAgain extends Component {
 
     if (requestSent){
       return (
-          <div className="col-6">
+
+          <div className="col-md-6 col-sm-8 thebox resend_reg_center">
             <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
             <p className="loginheadline">Registrierungslink noch einmal anfordern?</p>
             <p className = "infoMessage">{this.state.infoMessage}</p>
@@ -83,14 +84,14 @@ class SendRegistrationAgain extends Component {
     else{
       return (
           
-          <div className="col-6">
+          <div className="col-md-6 thebox resend_reg_center">
             <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
             <p className="loginheadline">Registrierungslink noch einmal anfordern?</p>
             <p className = "infoMessage">{this.state.infoMessage}</p>
             <p className = "errorMessage">{this.state.errorMessage}</p>
             <input id="email" className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={requestEmail} onChange={this.onTextboxChangeEmail}/><br />
-    				<button className="center login_button" style={{marginTop:'20px'}} onClick={this.onSubmit}>Absenden</button>
-            <p style={{color:'#a9a8a8',textAlign: 'center', paddingTop: '10px'}}><a href="/">Zurück zum Login</a></p>
+    				<button className="center login_button" style={{marginTop:'20px', marginBottom:'10px'}} onClick={this.onSubmit}>Absenden</button>
+					
           </div>
         );
     }

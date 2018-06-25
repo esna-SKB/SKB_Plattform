@@ -16,7 +16,7 @@ import CreateCourse from './components/createcourse';
 // import Nav from './components/Nav';
 
 */
-import registerServiceWorker from './registerServiceWorker';
+import { unregister as unregisterServiceWorker } from './registerServiceWorker'
 import { BrowserRouter, Route } from "react-router-dom";
 
 // ReactDOM.render(<App />, document.getElementById('root'));
@@ -26,7 +26,7 @@ import { BrowserRouter, Route } from "react-router-dom";
       <Route path='/settings' component={Settings}/>
       <Route path='/createcourse' component={CreateCourse}/>
       */
-     
+
 
 ReactDOM.render(
   <BrowserRouter>
@@ -35,4 +35,4 @@ ReactDOM.render(
   , document.getElementById('root'));
 
 
-registerServiceWorker();
+unregisterServiceWorker();
