@@ -189,7 +189,7 @@ a {
 	max-height:550px;
     overflow: auto;
     text-align: center;
-	
+
 }
 
 
@@ -888,6 +888,7 @@ main {
     .wrapper-mobile {
         display: block
     }
+}
 =======
 .comtained{
   opacity: 0.6;
@@ -1032,10 +1033,10 @@ pre {
 .thebox{
 	background-color: rgba(255,255,255, 0.6);
 	border: 1px solid #efefef;
-		
+
 }
 
-.makeBackgroundlight{ 
+.makeBackgroundlight{
 	padding:0;
 	margin:0;
 	width:100% !important;
