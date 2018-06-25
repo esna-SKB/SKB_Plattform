@@ -247,7 +247,7 @@ deleteUser: function(email){
    * creates a new article
   */
     createArticle: function(courseName, headline, author, text, type, created_at, base64file){
-      
+
       return fetch('/article/course/'+courseName, {
         method: 'POST',
         headers: {
@@ -267,7 +267,7 @@ deleteUser: function(email){
       .then(res => {
         console.log(res);
         res.json();
-        
+
 
       });
     },
@@ -391,7 +391,7 @@ deleteUser: function(email){
 * POST /message
 * creates a new message object
 */
-createMessage: function(fromUser, toUser, text){
+sendMessage: function(fromUser, toUser, text){
 return fetch('/message', {
   method: 'POST',
   headers: {
@@ -450,6 +450,18 @@ return fetch('/message', {
     })
     .then(res => res.json())
   },
+  /*
+   * GET /message/allPartners/:userEmail'
+   * returns a message object
+  */
+    getConversationPartners: function(userEmail){
+      return fetch('/message/allPartners/'+ userEmail, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json'
+        }})
+      .then(res => res.json())
+    },
 
 //TIMELINE
 /*
