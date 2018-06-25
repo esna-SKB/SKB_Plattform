@@ -20,9 +20,9 @@ var courseSchema = new Schema({
         type: Boolean,
         default: true
     },
-    inhalt : {
-      type: [],
-      default: true
+    content:{
+        type: [String],
+        default: []
     }
 });
 

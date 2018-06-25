@@ -174,7 +174,7 @@ deleteUser: function(email){
    * PUT /course/:courseName
    * updates a course object
   */
-  updateCourse: function(courseName, newCourseName, teacherEmail, description){
+  updateCourse: function(courseName, newCourseName, teacherEmail, description, content){
     return fetch('/course/'+courseName, {
       method: 'PUT',
       headers: {
@@ -185,6 +185,7 @@ deleteUser: function(email){
         name: newCourseName,
         teacher: teacherEmail,
         description: description,
+        content: content
       }),
     })
     .then(res => res.json())
