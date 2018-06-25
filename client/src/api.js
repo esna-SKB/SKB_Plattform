@@ -62,7 +62,7 @@ getUser: function(email){
  * PUT /user/:email
  * updates an user object
 */
-updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, isValide, description, iCan, iLearn, iTeach, website,picturedata, type){
+updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, isValide, description, iCan, iLearn, iTeach, website){
   return fetch('/user/' + email, {
     method: 'PUT',
     headers: {
@@ -80,9 +80,7 @@ updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, i
 	  iCan: iCan,
 	  iLearn: iLearn,
 	  iTeach: iTeach,
-	  website: website,
-	  picturedata: picturedata,
-	  type: type,
+	  website: website
     }),
   })
   .then(res => res.json())
@@ -249,7 +247,7 @@ deleteUser: function(email){
    * creates a new article
   */
     createArticle: function(courseName, headline, author, text, type, created_at, base64file){
-      
+
       return fetch('/article/course/'+courseName, {
         method: 'POST',
         headers: {
@@ -269,7 +267,7 @@ deleteUser: function(email){
       .then(res => {
         console.log(res);
         res.json();
-        
+
 
       });
     },
@@ -393,7 +391,7 @@ deleteUser: function(email){
 * POST /message
 * creates a new message object
 */
-createMessage: function(fromUser, toUser, text){
+sendMessage: function(fromUser, toUser, text){
 return fetch('/message', {
   method: 'POST',
   headers: {
@@ -452,6 +450,18 @@ return fetch('/message', {
     })
     .then(res => res.json())
   },
+  /*
+   * GET /message/allPartners/:userEmail'
+   * returns a message object
+  */
+    getConversationPartners: function(userEmail){
+      return fetch('/message/allPartners/'+ userEmail, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json'
+        }})
+      .then(res => res.json())
+    },
 
 //TIMELINE
 /*
@@ -529,7 +539,7 @@ return fetch('/message', {
   resetPassword: function(userId, signInPassword){
     return fetch('/account/resetPassword', {
 
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
