@@ -889,6 +889,11 @@ main {
         display: block
     }
 }
+@media only screen and (max-width: 570px) {
+  .navbar-nav {
+    flex-direction: inherit;
+  }
+}
 =======
 .comtained{
   opacity: 0.6;
