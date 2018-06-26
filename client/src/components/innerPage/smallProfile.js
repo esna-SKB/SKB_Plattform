@@ -29,14 +29,14 @@ class SmallProfile extends React.Component {
 	          	</div>
 	          </div>
 
-	          <div className="row" style={{border: '1px solid rgb(232, 233, 235)', borderTop: 'transparent'}}>
+	          {/*<div className="row" style={{border: '1px solid rgb(232, 233, 235)', borderTop: 'transparent'}}>
 	            <div className="box col-sm-6 text-center">
 	              <strong>2</strong><br /><small className="text-muted">Kurse</small>
 	            </div>
 	            <div className="box col-sm-6 text-center">
 	              <strong>5</strong><br /><small className="text-muted">Gruppen</small>
 	            </div>
-	          </div>
+	          </div>*/}
 	        </div>
 			);
 	}

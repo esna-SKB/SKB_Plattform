@@ -25,6 +25,7 @@ class ChangePassword extends Component {
 		this.handleNewPassword = this.handleNewPassword.bind(this);
 		this.handleCheckPassword = this.handleCheckPassword.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleErrorMessage = this.handleErrorMessage.bind(this); 
 	}
 
 
@@ -47,7 +48,11 @@ class ChangePassword extends Component {
 		  checkpassword: event.target.value,
 		});
 	}
-
+	handleErrorMessage(str){
+		this.setState({
+			errorMessage: str
+		})
+	}
 
 	handleSubmit() {
 		// Grab state
@@ -59,25 +64,32 @@ class ChangePassword extends Component {
 
 		 //password validation
 		  if (newpassword.length < 8){
-				console.log("Dein Passwort muss aus mind. acht Zeichen bestehen.");
+		  		this.handleErrorMessage("Dein Passwort muss aus mind. acht Zeichen bestehen."); 
+				console.log("Dein Passwort muss aus mindesten acht Zeichen bestehen.");
 				return false;
 		  }
 		//check newpassword == checkpassword
 		if(!(newpassword === checkpassword)){
-			console.log("Neues Passwort stimmt nicht ueberein!");
+			this.handleErrorMessage("Neues Passwort stimmt nicht ueberein!"); 
+			console.log("Neues Passwort stimmt nicht überein!");
 			return false;
 		}
 		//check if old password is correct
-		api.checkPassword(this.props.user.email,oldpassword).then(json =>{
+		api.checkPassword(this.props.user.email,oldpassword)
+		.then(json =>{
 			if(json.success === false){
+				this.handleErrorMessage("Falsches Passwort")
 				console.log("wrong passwort");
 				return false;
 			}else{
 				let userId = this.props.user._id;
 				api.resetPassword(userId, newpassword).then(json => {
 					if(json.success === true){
+						this.handleErrorMessage("Du hast dein Passwort erfolgreich geändert")
 						console.log("Successfully change password");
+
 					}else{
+						this.handleErrorMessage("Dein Passwort konnte nicht geändert werden")
 						console.log("fails to change passoword")
 					}
 				});
@@ -97,6 +109,7 @@ class ChangePassword extends Component {
 		oldpassword,
 		newpassword,
 		checkpassword,
+		errorMessage
 	} = this.state;
 
     //Checks if there is an active UserSession
@@ -118,14 +131,9 @@ class ChangePassword extends Component {
     return (
       <div>
 
-
-
-
       <div className="container-fluid">
 
       <div className="background row">
-
-
 
         <div className="col col-sm-12">
 				<div className="row box ">
@@ -133,7 +141,9 @@ class ChangePassword extends Component {
 							<div className="row center-block">
 									<h4 className="title"><strong>Passwort ändern</strong></h4>
 							</div>
-
+							<div class="text-danger">
+								{errorMessage}
+							</div>
 								<div className="row">
 									<div className="col">
 										<div className="form-group row newpart" >

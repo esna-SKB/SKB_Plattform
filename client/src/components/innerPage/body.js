@@ -98,7 +98,7 @@ class Body extends React.Component {
 						<Route exact path='/settings' render={(props) => (
 						  <Settings user={this.props.user}/>
 						)}/>
-						<Route exact path='/changePassword' render={(props) => (
+						<Route exact path='/user/:email/changePassword' render={(props) => (
 						  <ChangePassword user={this.props.user}/>
 						)}/>
 						<Route exact path='/messages' render={(props) => (
