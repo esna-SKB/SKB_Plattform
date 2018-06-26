@@ -54,8 +54,8 @@ class Settings extends Component {
 						<div className="col-12">
 							<h4 className="row">Einstellungen</h4>
 
-							<div className="row"><Link to={`/changepassword`} className="text-muted">Passwort ändern</Link></div>
-							<div className="row"><Link  to={`/profileedit`} className="text-muted">Profil bearbeiten</Link></div>
+							<div className="row"><Link to={`/user/${this.props.user.email}/changepassword`} className="text-muted">Passwort ändern</Link></div>
+							<div className="row"><Link  to={`/user/${this.props.user.email}/edit`} className="text-muted">Profil bearbeiten</Link></div>
 							<div className="row"><Link  to={``} className="text-muted">Kontaktdaten ändern</Link></div>
 							<div className="row"><Link  to={``} className="text-muted">Mitteilungenkonfigurationen</Link></div>
 							<div className="row"><Link  to={``} className="text-muted">Sicherheitsschlüssel</Link></div>
