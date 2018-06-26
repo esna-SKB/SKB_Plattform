@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 function status(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -50,7 +50,7 @@ function Element(props) {
 	if(mini){
 		return (
 			<div className="w-100 course-name">
-			<Link to={`/courses/${course.name}`}>{course.name}</Link>
+			<NavLink to={'/courses/'+course.name}>{course.name}</NavLink>
 			</div>
 		);
 
@@ -186,12 +186,10 @@ export class AllCourses extends React.Component {
 	render(){
 		return(
 			<div>
-
-			<CreateCourseButton isTeacher={this.props.user.isTeacher}/>
-      <MyTeacherCourses user={this.props.user}/>
-			<MyCourses myEmail={this.props.user.email}/>
-
-			<OtherCourses user={this.props.user}/>
+				<CreateCourseButton isTeacher={this.props.user.isTeacher}/>
+	      		<MyTeacherCourses user={this.props.user}/>
+				<MyCourses myEmail={this.props.user.email}/>
+				<OtherCourses user={this.props.user}/>
 			</div>
 			);
 	}

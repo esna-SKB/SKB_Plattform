@@ -74,7 +74,7 @@ class Article extends React.Component {
 		//document.body.appendChild(image);
 	    //console.log(arrayBuffer)
 	    //console.log(arrayBuffer);
-	    if(this.state.article.type === ""){
+	    if(this.state.article.type==undefined || this.state.article.type === ""){
 
 	    } else
 	    if(this.state.article.type.includes("image")){

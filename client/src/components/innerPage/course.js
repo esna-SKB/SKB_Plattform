@@ -172,11 +172,25 @@ class Course extends Component {
       };
       this.bearbeiten = this.bearbeiten.bind(this);
     }
-  componentWillMount(){
-  //get course
-    var course_name = window.location.pathname.split("/")[2];
-    course_name = course_name.replace("%20", " ");
 
+  componentDidMount(){
+    var course_name = this.props.location.pathname.split("/")[2];
+    course_name = course_name.replace("%20", " ");
+    this.handleUpdate(course_name); 
+  }
+  componentWillReceiveProps(nextProps){
+    if(this.props.location.pathname!==nextProps.location.pathname){
+      var course_name = nextProps.location.pathname.split("/")[2];
+      course_name = course_name.replace("%20", " ");
+      this.handleUpdate(course_name); 
+    }
+  }
+
+  handleUpdate(course_name) {
+  //get course
+    
+    console.log("update", course_name); 
+    
     api.getCourse(course_name)
     .then(course => {
       this.setState({
@@ -351,6 +365,7 @@ class Course extends Component {
 
 
   render() {
+    console.log(this.props.location); 
     //make sure API calls are finished when rendering (better solution????)
     if(!this.state.course || !this.state.articles){
       return false;

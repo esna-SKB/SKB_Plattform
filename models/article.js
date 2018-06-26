@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 const Course = require('./course');
 const User = require('./user');
+const Group = require('./group');
+
 
 var Schema = mongoose.Schema;
 
@@ -9,6 +11,10 @@ var articleSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Course"
     },
+    group: {
+        type: Schema.Types.ObjectId,
+        ref: "Group"
+    },
     headline: String,
     data: String,
     type: String,
@@ -16,7 +22,10 @@ var articleSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     },
-    comments: {}, 
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: "Article"
+    }], 
     text: String,
     created_at: {type: Date, default: '1994-12-12'}
 });
