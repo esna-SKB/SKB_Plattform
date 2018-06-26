@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import Meow from'../../img/lehrer.jpg';
 // import {withRouter} from 'react-router'
 
 const api = require('../../api');
@@ -30,7 +29,7 @@ class MyTeachers extends React.Component{
    return (
        <div style={{marginTop : "2em"}}>
 						 <div style={{clear: "both"}} className="contentTeacherinfo" key={this.props.teacher.email}>
-						 <img  src={Meow} alt="meow" ></img>
+						 <img  src={this.props.teacher.picturedata} alt="profilepic" ></img>
 						 <div> <strong><Link to={`/user/${this.props.teacher.email}`}>{this.props.teacher.firstname} {this.props.teacher.lastname}</Link></strong></div>
 						 </div>
 			</div>
