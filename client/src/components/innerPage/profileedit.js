@@ -32,6 +32,7 @@ class Profileedit extends Component {
 		//look at https://reactjs.org/docs/forms.html
 		this.onChange = this.onChange.bind(this);
 		this.onSave = this.onSave.bind(this);	
+		this.getBase64 = this.getBase64.bind(this); 
 	}
 
 	onChange(e) {
@@ -71,29 +72,40 @@ class Profileedit extends Component {
 	
 	onSave(){
 		//Grab state
+		var updateUser = {}; 
+		const email = this.state.user.email
 		const {
 			description,
 			iCan,
 			iLearn,
 			iTeach,
 			website,
+			file
 		} = this.state;
-		
-		
-		
-		var self = this;
-        if(!this.state){
+		updateUser.description = description; 
+		updateUser.iCan = iCan; 
+		updateUser.iLearn = iLearn; 
+		updateUser.iTeach = iTeach; 
+		updateUser.website = website; 
+
+		var that = this;
+        if(!file){
 			//if(delete pofile image){
-				api.updateUser(self.props.user.email, self.props.user.firstname, self.props.user.lastname, self.props.user.email, self.props.user.isTeacher, self.props.user.isAdmin, self.props.user.isValide, description, iCan, iLearn, iTeach,website, '','' ).then(res => {
-					window.location.reload(false);
+				api.updateUser(email, updateUser)
+				.then(res => {
+					that.props.updateUser();
+					that.props.history.push(`/user/${email}`);
 				});
-				
 		}else{
-			self.getBase64(self.state.file, function(base64file){
-				api.updateUser(self.props.user.email, self.props.user.firstname, self.props.user.lastname, self.props.user.email, self.props.user.isTeacher, self.props.user.isAdmin, self.props.user.isValide, description, iCan, iLearn, iTeach,website,base64file,self.state.file.type ).then(res => {
-					window.location.reload(false);
-				});
-		
+			that.getBase64(file, function(base64file){
+				updateUser.picturedata = base64file;
+				updateUser.type = file.type;
+				api.updateUser(email, updateUser)
+				.then(res => {
+					console.log(res)
+					that.props.updateUser();
+					that.props.history.push(`/user/${email}`);
+				}); 
 			});
 		}
 		
@@ -114,51 +126,53 @@ class Profileedit extends Component {
 
 	componentDidMount(){
 		//load current profilepicture
-		document.getElementById("currentpic").src = this.state.picturedata;
-		console.log(this.state.picturedata);
-	
-		//isadmin abfangen?
-		if(this.props.user.isTeacher){
-			document.getElementById("learn").style.display = 'none';
-			document.getElementById("can").style.display = 'none';
-			document.getElementById("teach").style.display = 'block';
+		const email = this.props.location.pathname.split("/")[2];;
+		if(email!==this.props.user.email) {
+			return (null); 
 		}else{
-			document.getElementById("learn").style.display = 'block';
-			document.getElementById("can").style.display = 'block';
-			document.getElementById("teach").style.display = 'none';
+			document.getElementById("currentpic").src = this.state.picturedata;
+
+			//isadmin abfangen?
+			if(this.props.user.isTeacher){
+				document.getElementById("learn").style.display = 'none';
+				document.getElementById("can").style.display = 'none';
+				document.getElementById("teach").style.display = 'block';
+			}else{
+				document.getElementById("learn").style.display = 'block';
+				document.getElementById("can").style.display = 'block';
+				document.getElementById("teach").style.display = 'none';
+			}
 		}
+		
     }
 
 
   render() {
 	  //grab state
-	  const {
-			description,
-			iCan,
-			iLearn,
-			iTeach,
-			website,
-			currentpic,
-			file,
+	const {
+  		user,
+		description,
+		iCan,
+		iLearn,
+		iTeach,
+		website,
+		currentpic,
+		file,
 		} = this.state;
 
+	const email = this.props.location.pathname.split("/")[2];;
+
+	if(email!==user.email) {
+		return (null); 
+	}
+
     //Checks if there is an active UserSession
-    fetch('/userSession/check', {
-
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify( { token: cookie.load('userID') } )
-    }).then (res => {
-
-      if(res.status === 500){
-
-
-        this.props.history.push("/");
-      }else{
-        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
-
-      }
-    });
+    api.userSessionCheck()
+    .then((status)=>{
+    	if(status !== 200){
+    		this.props.history.push("/");
+    	}
+    })
 
     return (
       <div>
@@ -240,7 +254,7 @@ class Profileedit extends Component {
 							</form>
 							<div className="row-12 text-muted text-right">
 								<div className="col-12">
-									<Link  to={`/profile`}>zurück</Link>
+									<Link  to={`/user/${user.email}`}>zurück</Link>
 								</div>
 							</div>
 

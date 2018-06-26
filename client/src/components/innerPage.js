@@ -16,7 +16,7 @@ class InnerPage extends React.Component {
 			<div style={{backgroundColor: '#f7f8fa'}}>
 				<Header user={this.props.user} handleLogout={this.props.handleLogout}/>
 				
-				<Body user={this.props.user}/>
+				<Body updateUser={this.props.updateUser} user={this.props.user}/>
 			</div>
 			);
 	}

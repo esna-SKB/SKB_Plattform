@@ -62,28 +62,14 @@ getUser: function(email){
  * PUT /user/:email
  * updates an user object
 */
-updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, isValide, description, iCan, iLearn, iTeach, website,picturedata, type){
+updateUser: function(email, updateUser){
   return fetch('/user/' + email, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
-    body: JSON.stringify({
-      firstname: firstname,
-      lastname: lastname,
-      email: email,
-      isTeacher: isTeacher,
-      isAdmin: isAdmin,
-      isValide: isValide,
-	  description: description,
-	  iCan: iCan,
-	  iLearn: iLearn,
-	  iTeach: iTeach,
-	  website: website,
-	  picturedata: picturedata,
-	  type: type,
-    }),
+    body: JSON.stringify(updateUser)
   })
   .then(res => res.json())
 },

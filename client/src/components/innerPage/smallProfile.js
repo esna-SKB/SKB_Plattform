@@ -10,7 +10,10 @@ class SmallProfile extends React.Component {
 		user: this.props.user
 		};
 	}
-
+	componentWillReceiveProps(nextProps){
+		console.log("SimpleProfile, we need to take carre her, dont update to much")
+		this.setState({user: nextProps.user});
+	}
 
 	render(){
 		return(
@@ -18,7 +21,9 @@ class SmallProfile extends React.Component {
 			  <div className="row" style={{border: '1px solid rgb(232, 233, 235)', borderBottom: 'transparent'}}>
 	            <div className="box col-12 text-center">
 	            <Link to={`/user/${this.props.user.email}`}>
-	<div className="profilepicleft fill"><img id="cirleProfile" src ={this.state.user.picturedata}></img></div>
+				<div className="profilepicleft fill">
+					<img id="cirleProfile" src ={this.state.user.picturedata}></img>
+				</div>
 					<p></p><p><strong id="YourName01">{this.props.user.firstname +" "+ this.props.user.lastname}</strong></p>
 	            </Link>
 	          	</div>
