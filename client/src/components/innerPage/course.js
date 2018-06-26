@@ -190,7 +190,6 @@ class Course extends Component {
   handleUpdate(course_name) {
   //get course
     
-    console.log("update", course_name); 
     
     api.getCourse(course_name)
     .then(course => {
@@ -366,7 +365,7 @@ class Course extends Component {
 
 
   render() {
-    console.log(this.props.location); 
+    
     //make sure API calls are finished when rendering (better solution????)
     if(!this.state.course || !this.state.articles){
       return false;
