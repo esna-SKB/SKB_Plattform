@@ -1,0 +1,22 @@
+.contentTeacherinfo {
+  display: flex;
+}
+
+.contentTeacherinfo img {
+  margin-right: 10px;
+  display: block;
+  width:3em;
+  height:3em;
+  border-radius: 20vw;
+  margin-bottom: 2em;
+}
+
+.contentTeacherinfo h4{
+  margin-top: 1em;
+  margin-left: 1em;
+}
+
+.contentTeacherinfo div{
+  margin-top: 2em;
+  margin-left: 1em;
+}
