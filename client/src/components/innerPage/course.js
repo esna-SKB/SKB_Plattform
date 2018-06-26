@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Article from './article';
+import { Link } from 'react-router-dom'
 // import $ from 'jquery';
 
 //import axios from 'axios';
@@ -113,7 +114,7 @@ class MemberTab extends Component{
           <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
           <ul>
           {this.props.members.map(function(member, i) {
-             return <li style={{textTransform: 'capitalize'}} key={i}>{member.firstname} {member.lastname}</li>
+             return <li style={{textTransform: 'capitalize'}} key={i}><Link to={`/user/${member.email}`}>{member.firstname} {member.lastname}</Link></li>
           })}
           </ul>
           </div>
@@ -189,7 +190,6 @@ class Course extends Component {
   handleUpdate(course_name) {
   //get course
     
-    console.log("update", course_name); 
     
     api.getCourse(course_name)
     .then(course => {
@@ -365,7 +365,7 @@ class Course extends Component {
 
 
   render() {
-    console.log(this.props.location); 
+    
     //make sure API calls are finished when rendering (better solution????)
     if(!this.state.course || !this.state.articles){
       return false;
