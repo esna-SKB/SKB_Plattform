@@ -36,20 +36,16 @@ router.route('/:email')
 	})
 	//update one User
 	.put((req, res, next) => {
+
 		const { body } = req;
-		const { firstname } = body;
-		const { lastname } = body;
+		var updateUser = body;
 		const { email } = body; //email maybe can not be updated
-		const { isTeacher } = body;
-		const { isAdmin } = body;
-		const { isValide } = body;
-		const { iCan } = body;
-		const { iLearn } = body;
-		const { iTeach } = body;
-		const { description } = body;
-		const { website } = body;
-		const { picturedata } = body;
-		const { type } = body;
+		/*
+		{firstname : firstname, lastname : lastname, email : email
+		, isTeacher : isTeacher, isAdmin : isAdmin, isValide : isValide
+		, description : description, iCan : iCan, iLearn : iLearn, iTeach : iTeach
+		, website : website, picturedata: picturedata, type: type}
+		*/
 
 		var oldEmail = req.params.email;
 
@@ -61,9 +57,8 @@ router.route('/:email')
 				return res.send({success : false, message : "user with the new email already exists"});
 			}else {
 				User.findOneAndUpdate({email: oldEmail}
-					,{firstname : firstname, lastname : lastname, email : email
-						, isTeacher : isTeacher, isAdmin : isAdmin, isValide : isValide, description : description, iCan : iCan, iLearn : iLearn, iTeach : iTeach, website : website, picturedata: picturedata, type: type}
-						, {new: true}, function(err, updatedUser){
+					, updateUser
+					, {new: true}, function(err, updatedUser){
 					if (err){
 						console.log('error occured in the database while updating user');
 						return res.status(500).send({success : false, message : "user is not updated"});

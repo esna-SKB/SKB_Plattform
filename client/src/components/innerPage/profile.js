@@ -10,11 +10,12 @@ const api = require('../../api');
 // const api = require('../../api');
 function Bearbeiten(props) {
 	const isMyProfile = props.isMyProfile; 
+	const email = props.email; 
 	if(isMyProfile){
 		return(
 			<div className="row-12 text-muted text-right">
 				<div className="col-12 edit">
-					<Link to={`/profileedit`} >Profil bearbeiten</Link>
+					<Link to={`/user/${email}/edit`} >Profil bearbeiten</Link>
 				</div>
 			</div>
 		);
@@ -38,7 +39,6 @@ class Profile extends Component {
 	componentWillReceiveProps(nextProps){
     if(this.props.location.pathname!==nextProps.location.pathname){
       var email = nextProps.location.pathname.split("/")[2];
-      console.log("RevProps")
       this.handleUpdate(email, nextProps.user); 
     	}
   	}
@@ -49,21 +49,13 @@ class Profile extends Component {
 
 	handleUpdate(email, user) { 
 		
-		console.log(email); 
-		//check if it is /profile
-		if(user.email!==email){
+		//check if user is different from shownuser
 			//does not end with /profile so it is /user/:email
-			console.log("unequal"); 
-			api.getUser(email)
-			.then(res => {
-				this.setState({shownprofile : res})
-				this.handleIsTeacher(res.isTeacher)			
-			})
-		}else{
-			console.log("equal own profile"); 
-			this.setState({shownprofile : user}) 
-			this.handleIsTeacher(user.isTeacher); 		
-		}
+		api.getUser(email)
+		.then(res => {
+			this.setState({shownprofile : res})
+			this.handleIsTeacher(res.isTeacher)			
+		})
 	}
   	handleIsTeacher(isTeacher) {
 		if(isTeacher){
@@ -144,7 +136,7 @@ class Profile extends Component {
 								<div className="row-12 text-muted">
 										<div className="col-12 description" id="description">{shownprofile.description}</div>
 								</div>
-								<Bearbeiten isMyProfile={user.email===shownprofile.email}/>
+								<Bearbeiten email={user.email} isMyProfile={user.email===shownprofile.email}/>
 							</div>
 						</div>
 

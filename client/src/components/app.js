@@ -14,6 +14,7 @@ class App extends React.Component {
 	super(props);
 	this.updateEmail = this.updateEmail.bind(this);
 	this.handleLogout = this.handleLogout.bind(this);
+	this.updateUser = this.updateUser.bind(this); 
 
 	this.state = {
 		user: {},
@@ -71,7 +72,7 @@ class App extends React.Component {
 		//console.log("bedingung: "+ typeof(this.state.user) +" "+this.state.user.email)
 		if(this.state.valide && typeof this.state.user !== 'undefined' && this.state.user.email !== undefined){
 			return(
-				<InnerPage  user={this.state.user} handleLogout={this.handleLogout}/>
+				<InnerPage user={this.state.user} updateUser={this.updateUser} handleLogout={this.handleLogout}/>
 			);
 		} else {
 			return(
