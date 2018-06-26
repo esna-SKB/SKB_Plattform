@@ -67,7 +67,7 @@ class Settings extends Component {
 
 						<div className="row-12 text-muted text-right">
 							<div className="col-12">
-								<Link  to={`/profile`}>zurück</Link>
+								<Link  to={`/`}>home</Link>
 							</div>
 						</div>
 					</div>
