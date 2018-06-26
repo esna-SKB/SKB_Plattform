@@ -40,7 +40,7 @@ class Header extends React.Component {
 		                {this.props.user.firstname +" "+ this.props.user.lastname}
 		              </button>
 		              <div className="dropdown-menu dropdown-menu-right">
-		                <Link className="dropdown-item" to={`/profile`}>Mein Profil</Link>
+		                <Link className="dropdown-item" to={`/user/${this.props.user.email}`}>Mein Profil</Link>
 		                <Link className="dropdown-item" to={`/settings`}>Einstellungen</Link>
 		                <Link className="dropdown-item" to={`/#`}>Something else here</Link>
 		                <div className="dropdown-divider"></div>
