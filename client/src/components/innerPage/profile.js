@@ -8,115 +8,95 @@ import Meow from'../../img/meow.png';
 const api = require('../../api');
 
 // const api = require('../../api');
-
+function Bearbeiten(props) {
+	const isMyProfile = props.isMyProfile; 
+	if(isMyProfile){
+		return(
+			<div className="row-12 text-muted text-right">
+				<div className="col-12 edit">
+					<Link to={`/profileedit`} >Profil bearbeiten</Link>
+				</div>
+			</div>
+		);
+	}else{
+		return null; 
+	}
+}
 
 class Profile extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-		  user:this.props.user,
-		  shownprofile: {},
+		  user : this.props.user,
+		  shownprofile : {}
 		}
-		
+		this.handleUpdate = this.handleUpdate.bind(this);
+		this.handleIsTeacher = this.handleIsTeacher.bind(this); 
+	}
+	
+	componentWillReceiveProps(nextProps){
+    if(this.props.location.pathname!==nextProps.location.pathname){
+      var email = nextProps.location.pathname.split("/")[2];
+      console.log("RevProps")
+      this.handleUpdate(email, nextProps.user); 
+    	}
+  	}
+  	componentDidMount(){
+  		var email = this.props.location.pathname.split("/")[2];
+		this.handleUpdate(email, this.props.user)
 	}
 
-	componentDidMount(){
+	handleUpdate(email, user) { 
 		
+		console.log(email); 
 		//check if it is /profile
-		if(!window.location.pathname.endsWith("/profile")){
+		if(user.email!==email){
 			//does not end with /profile so it is /user/:email
-			var email = window.location.pathname.split("/")[2];
-				
-			api.getUser(email).then(res => {
-				this.setState({
-					shownprofile : res,
-				});
-				console.log("user:"+JSON.stringify(this.state.user));
-				console.log("res:"+ JSON.stringify(res));
-				console.log("shown:"+ JSON.stringify(this.state.shownprofile));
-	
-				//load current profilepicture
-				document.getElementById("YourPicture").src = this.state.shownprofile.picturedata;
-				console.log(this.state.shownprofile.picturedata);
-				
-				//isadmin abfangen?
-				if(this.state.shownprofile.isTeacher){
-					document.getElementById("role").innerHTML = "Lehrer_in";
-
-					//ican/ilearn mit iteach und freie Kurse austauschen
-					document.getElementById("trueLearn").style.display = 'none';
-					document.getElementById("iLearn").style.display = 'none';
-					document.getElementById("trueCan").style.display = 'none';
-					document.getElementById("iCan").style.display = 'none';
-					document.getElementById("trueTeach").style.display = 'block';
-					document.getElementById("iTeach").style.display = 'block';
-					document.getElementById("trueOffer").style.display = 'block';
-
-
-				}else{
-					document.getElementById("role").innerHTML = "Student_in";
-
-					// iteach/freie Kurse mit ican und ilearn austauschen
-					document.getElementById("trueLearn").style.display = 'block';
-					document.getElementById("iLearn").style.display = 'block';
-					document.getElementById("trueCan").style.display = 'block';
-					document.getElementById("iCan").style.display = 'block';
-					document.getElementById("trueTeach").style.display = 'none';
-					document.getElementById("iTeach").style.display = 'none';
-					document.getElementById("trueOffer").style.display = 'none';
-				}
-				
-			});
-			
+			console.log("unequal"); 
+			api.getUser(email)
+			.then(res => {
+				this.setState({shownprofile : res})
+				this.handleIsTeacher(res.isTeacher)			
+			})
 		}else{
-			this.setState({
-				shownprofile : this.state.user,
-			});
-			//load current profilepicture
-			document.getElementById("YourPicture").src = this.state.user.picturedata;
-			console.log(this.state.user.picturedata);
-			
-			
-			//isadmin abfangen?
-				if(this.state.user.isTeacher){
-					document.getElementById("role").innerHTML = "Lehrer_in";
-
-					//ican/ilearn mit iteach und freie Kurse austauschen
-					document.getElementById("trueLearn").style.display = 'none';
-					document.getElementById("iLearn").style.display = 'none';
-					document.getElementById("trueCan").style.display = 'none';
-					document.getElementById("iCan").style.display = 'none';
-					document.getElementById("trueTeach").style.display = 'block';
-					document.getElementById("iTeach").style.display = 'block';
-					document.getElementById("trueOffer").style.display = 'block';
-
-
-				}else{
-					document.getElementById("role").innerHTML = "Student_in";
-
-					// iteach/freie Kurse mit ican und ilearn austauschen
-					document.getElementById("trueLearn").style.display = 'block';
-					document.getElementById("iLearn").style.display = 'block';
-					document.getElementById("trueCan").style.display = 'block';
-					document.getElementById("iCan").style.display = 'block';
-					document.getElementById("trueTeach").style.display = 'none';
-					document.getElementById("iTeach").style.display = 'none';
-					document.getElementById("trueOffer").style.display = 'none';
-				}
-			
+			console.log("equal own profile"); 
+			this.setState({shownprofile : user}) 
+			this.handleIsTeacher(user.isTeacher); 		
 		}
-	
+	}
+  	handleIsTeacher(isTeacher) {
+		if(isTeacher){
+			document.getElementById("role").innerHTML = "Lehrer_in";
+
+			//ican/ilearn mit iteach und freie Kurse austauschen
+			document.getElementById("trueLearn").style.display = 'none';
+			document.getElementById("iLearn").style.display = 'none';
+			document.getElementById("trueCan").style.display = 'none';
+			document.getElementById("iCan").style.display = 'none';
+			document.getElementById("trueTeach").style.display = 'block';
+			document.getElementById("iTeach").style.display = 'block';
+			document.getElementById("trueOffer").style.display = 'block';
+
+
+		}else{
+			document.getElementById("role").innerHTML = "Student_in";
+
+			// iteach/freie Kurse mit ican und ilearn austauschen
+			document.getElementById("trueLearn").style.display = 'block';
+			document.getElementById("iLearn").style.display = 'block';
+			document.getElementById("trueCan").style.display = 'block';
+			document.getElementById("iCan").style.display = 'block';
+			document.getElementById("trueTeach").style.display = 'none';
+			document.getElementById("iTeach").style.display = 'none';
+			document.getElementById("trueOffer").style.display = 'none';
+		}
 		//dummy values
 		var countCourses = 4;
 		var countGroups = 3;
 		document.getElementById("countCourses2").innerHTML = countCourses;
 		document.getElementById("countGroups2").innerHTML = countGroups;
-
-
-		
-	}
-  
+  	}
 
 
   render() {
@@ -137,7 +117,7 @@ class Profile extends Component {
 								<div className="col">
 									<div className="row center-block ">
 
-										<div className="col profilepicbig fill col-md-12"><img id="YourPicture" src= {Meow}></img>
+										<div className="col profilepicbig fill col-md-12"><img id="YourPicture" src= {shownprofile.picturedata}></img>
 										</div>
 
 										<div className="makespace col">
@@ -164,11 +144,7 @@ class Profile extends Component {
 								<div className="row-12 text-muted">
 										<div className="col-12 description" id="description">{shownprofile.description}</div>
 								</div>
-								<div className="row-12 text-muted text-right">
-									<div className="col-12 edit">
-										<Link to={`/profileedit`} >Profil bearbeiten</Link>
-									</div>
-								</div>
+								<Bearbeiten isMyProfile={user.email===shownprofile.email}/>
 							</div>
 						</div>
 

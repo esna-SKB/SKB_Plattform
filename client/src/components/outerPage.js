@@ -29,7 +29,6 @@ class OuterPage extends React.Component {
 
 
 	render(){
-		console.log(this.props.location); 
 		return(
 			
 			 <div className=" heigh100 backgrd" style={{backgroundImage: 'url('+BckgrdUrl+')'}}>
