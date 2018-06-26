@@ -163,7 +163,7 @@ class Signup extends Component {
     console.log(this.state)
 
     // Post request to backend
-    api.signUp(signUpFirstName, signUpLastName, signUpEmail, signUpPassword)
+    api.signUp(signUpFirstName, signUpLastName, signUpEmail.toLowerCase(), signUpPassword)
       .then(json => {
         console.log('json', json);
         console.log(json.success);

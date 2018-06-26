@@ -86,7 +86,6 @@ class Login extends Component {
   onSignIn() {
 
       let signUpEmailValid = document.getElementById("email");
-
       //email form validation
       if (signUpEmailValid.value.match(/^([\w.-]+)@([\w-]+\.)+([\w]{2,})$/i) == null){
         signUpEmailValid.style.color = 'red';
@@ -126,13 +125,8 @@ class Login extends Component {
 
     // Grab state
 
-    const {
-
-      signInEmail,
-
-      signInPassword,
-
-    } = this.state;
+    const { signInPassword } = this.state;
+    const signInEmail = this.state.signInEmail.toLowerCase(); 
 
     // Post request to backend
 
