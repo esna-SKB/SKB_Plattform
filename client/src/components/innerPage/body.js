@@ -78,7 +78,7 @@ class Body extends React.Component {
 						  <Newsfeed user={this.props.user}/>
 						)}/>
   						<Route exact path ='/courses/:name' render={(props) => (
-						  <Course user={this.props.user}/>
+						  <Course user={this.props.user} location={props.location}/>
 						)}/>
   						<Route exact path='/courses' render={(props) => (
 						  <AllCourses user={this.props.user}/>
