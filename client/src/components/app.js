@@ -15,7 +15,6 @@ class App extends React.Component {
 	this.updateEmail = this.updateEmail.bind(this);
 	this.handleLogout = this.handleLogout.bind(this);
 	this.updateUser = this.updateUser.bind(this); 
-	this.updateUser(); 
 
 	this.state = {
 		user: {},
@@ -84,12 +83,13 @@ class App extends React.Component {
 				<OuterPage updateEmail={this.updateEmail} location={this.props.location} history={this.props.history}/>
 			);
 		} 
-		else if(valide && this.state.user.email !== undefined){
+		else if(valide && user.email !== undefined){
 			return(
-				<InnerPage user={this.state.user} updateUser={this.updateUser} handleLogout={this.handleLogout}/>
+				<InnerPage user={user} updateUser={this.updateUser} handleLogout={this.handleLogout}/>
 			);
 		} else {
-			return (null); {/*when loading*/}
+			{/*when loading*/}
+			return (null); 
 		}
 
 	}

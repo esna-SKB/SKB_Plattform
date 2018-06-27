@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import '../../css/profile.css';
 /*add this css if you want the profile image on the left (circular)*/
 import '../../css/profilepicture.css';
-import Meow from'../../img/meow.png';
 const api = require('../../api');
 
 // const api = require('../../api');

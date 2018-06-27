@@ -276,14 +276,14 @@ class Course extends Component {
     });
 
     drake.on('out', (el, container) => {
-      if (container == _('.box-right')) {
-        if (el.innerHTML[0] != '<')
+      if (container === _('.box-right')) {
+        if (el.innerHTML[0] !== '<')
           el.innerHTML = getTpl(el.getAttribute('data-tpl'));
         el.className = 'drop-element';
         makeEditable();
         db.setItem('savedData', _('.box-right').innerHTML);
       }
-      if (container == _('.box-left')) {
+      if (container === _('.box-left')) {
         el.innerHTML = el.getAttribute('data-title');
       }
     });
@@ -297,7 +297,7 @@ class Course extends Component {
             i = childNodes.length;
 
         while (i--) {
-            if (childNodes[i].nodeType == 1) {
+            if (childNodes[i].nodeType === 1) {
                 children.unshift(childNodes[i]);
             }
         }
@@ -323,7 +323,7 @@ class Course extends Component {
       children = elementChildren(children)
       for (var i = 0; i < children.length; i++) {
         var child = children[i];
-        if(child.nodeName == 'H3') {
+        if(child.nodeName === 'H3') {
           let child_div = document.createElement("div");
           child_div.setAttribute('data-tpl', 'header3')
           child_div.setAttribute('data-title', 'Header 3')
@@ -331,7 +331,7 @@ class Course extends Component {
           child_div.appendChild(child)
           boxright.appendChild(child_div)
         }
-        if(child.nodeName == 'P') {
+        if(child.nodeName === 'P') {
           let child_div = document.createElement("div");
           child_div.setAttribute('data-tpl', 'shortparagraph')
           child_div.setAttribute('data-title', 'Short paragraph')
@@ -348,11 +348,11 @@ class Course extends Component {
       wrapper.style["display"] = 'none'
       this.refs.bearbeiten.innerHTML ='bearbeiten'
 
-      var children = this.refs.boxright;
+      children = this.refs.boxright;
       children = elementChildren(children)
 
       var array = []
-      for (var i = 0; i < children.length; i++) {
+      for (i = 0; i < children.length; i++) {
         array.push(children[i].childNodes[0].outerHTML)
         this.refs.kursmaterial.appendChild(children[i].childNodes[0])
       }

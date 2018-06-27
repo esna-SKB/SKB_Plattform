@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import Meow from'../../img/meow.png';
 
 
 class SmallProfile extends React.Component {
@@ -11,7 +10,7 @@ class SmallProfile extends React.Component {
 		};
 	}
 	componentWillReceiveProps(nextProps){
-		console.log("SimpleProfile, we need to take carre her, dont update to much")
+		//console.log("SimpleProfile, we need to take carre her, dont update to much")
 		this.setState({user: nextProps.user});
 	}
 
@@ -22,7 +21,7 @@ class SmallProfile extends React.Component {
 	            <div className="box col-12 text-center">
 	            <Link to={`/user/${this.props.user.email}`}>
 				<div className="profilepicleft fill">
-					<img id="cirleProfile" src ={this.state.user.picturedata}></img>
+					<img id="cirleProfile" src ={this.state.user.picturedata} alt="Profile Bild"></img>
 				</div>
 					<p></p><p><strong id="YourName01">{this.props.user.firstname +" "+ this.props.user.lastname}</strong></p>
 	            </Link>

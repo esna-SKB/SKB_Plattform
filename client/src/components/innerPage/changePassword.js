@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import '../../css/timeline.css';
 
-import cookie from 'react-cookies';
-import { updateTimeSec } from '../../utils/userSessionHelper'; 
-
 const api = require('../../api');
-const qs = require('query-string');
+//const qs = require('query-string');
 
 class ChangePassword extends Component {
 	constructor(props) {
@@ -64,7 +61,7 @@ class ChangePassword extends Component {
 
 		 //password validation
 		  if (newpassword.length < 8){
-		  		this.handleErrorMessage("Dein Passwort muss aus mind. acht Zeichen bestehen."); 
+		  		this.handleErrorMessage("Dein Passwort muss aus mindesten acht Zeichen bestehen."); 
 				console.log("Dein Passwort muss aus mindesten acht Zeichen bestehen.");
 				return false;
 		  }
@@ -113,20 +110,12 @@ class ChangePassword extends Component {
 	} = this.state;
 
     //Checks if there is an active UserSession
-    fetch('/userSession/check', {
-
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify( { token: cookie.load('userID') } )
-    }).then (res => {
-
-      if(res.status === 500){
-        this.props.history.push("/");
-      }else{
-        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
-
-      }
-    });
+    /*api.userSessionCheck()
+    .then((status)=>{
+    	if(status !== 200){
+    		this.props.history.push("/");
+    	}
+    })*/
 
     return (
       <div>
@@ -141,7 +130,7 @@ class ChangePassword extends Component {
 							<div className="row center-block">
 									<h4 className="title"><strong>Passwort ändern</strong></h4>
 							</div>
-							<div class="text-danger">
+							<div className="text-danger">
 								{errorMessage}
 							</div>
 								<div className="row">
