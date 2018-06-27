@@ -6,9 +6,7 @@ import '../../css/profile.css';
 import '../../css/profilepicture.css';
 // import Meow from'../../img/meow.png';
 
-import cookie from 'react-cookies';
-import { updateTimeSec } from '../../utils/userSessionHelper';
-
+//import cookie from 'react-cookies';
 
 class Settings extends Component {
 	constructor(props) {
@@ -22,24 +20,6 @@ class Settings extends Component {
 
 
   render() {
-
-    //Checks if there is an active UserSession
-   fetch('/userSession/check', {
-
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify( { token: cookie.load('userID') } )
-    }).then (res => {
-
-      if(res.status === 500){
-
-
-        this.props.history.push("/");
-      }else{
-        cookie.save('userID', cookie.load('userID'), {expires: updateTimeSec(60), path: '/'})
-
-      }
-    });
 
     return (
       <div>

@@ -185,9 +185,9 @@ class Login extends Component {
 
     const {
 
-      token,
+      errorMessage,
 
-      signInError,
+      infoMessage,
 
       signInEmail,
 
@@ -201,8 +201,8 @@ class Login extends Component {
 
               <p className="loginheadline">Die Lern- und Kommunikationsplattform der SKB </p>
 
-              <p className = "errorMessage" id="errorMessage" dangerouslySetInnerHTML={{ __html: this.state.errorMessage }}></p>
-              <p className = "infoMessage">{this.state.infoMessage}</p>
+              <p className = "errorMessage" id="errorMessage" dangerouslySetInnerHTML={{ __html: errorMessage }}></p>
+              <p className = "infoMessage">{infoMessage}</p>
 
 
               <input id="email" className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={signInEmail} onChange={this.onTextboxChangeSignInEmail}/><br />

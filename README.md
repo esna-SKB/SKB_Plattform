@@ -2,13 +2,10 @@
 # SKB_Plattform
 Programmierpraktikum Soziale Netzwerke MERN Gruppe entwickelt eine Netzwerkplattform für die SKB
 
-Im Laufe der Woche:
-- Treffen Montag 14 Uhr
-
 - Product Owner - Emre
 - Scrum Master - Luka
 - Quality-Assurance Manager - Jamina
-- Infrastructure Manager - Ahmed
+- Infrastructure Manager - Hung
 
 # Run
 

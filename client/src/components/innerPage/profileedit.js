@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import cookie from 'react-cookies';
-import { updateTimeSec } from '../../utils/userSessionHelper';
 
 import '../../css/timeline.css';
 import '../../css/profilepicture.css';
@@ -156,8 +154,6 @@ class Profileedit extends Component {
 		iLearn,
 		iTeach,
 		website,
-		currentpic,
-		file,
 		} = this.state;
 
 	const email = this.props.location.pathname.split("/")[2];;
@@ -167,12 +163,12 @@ class Profileedit extends Component {
 	}
 
     //Checks if there is an active UserSession
-    api.userSessionCheck()
+    /*api.userSessionCheck()
     .then((status)=>{
     	if(status !== 200){
     		this.props.history.push("/");
     	}
-    })
+    })*/
 
     return (
       <div>

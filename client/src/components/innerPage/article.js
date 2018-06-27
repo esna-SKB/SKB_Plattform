@@ -32,7 +32,7 @@ class Article extends React.Component {
 		input.onkeypress = function(e){
 	    if (!e) e = window.event;
 	    var keyCode = e.keyCode || e.which;
-	    if (keyCode == '13'){
+	    if (keyCode === '13'){
 					console.log(input.value)
 
 					let comment_div = document.createElement('DIV')
@@ -74,11 +74,11 @@ class Article extends React.Component {
 		//document.body.appendChild(image);
 	    //console.log(arrayBuffer)
 	    //console.log(arrayBuffer);
-	    if(this.state.article.type==undefined || this.state.article.type === ""){
+	    if(this.state.article.type === undefined || this.state.article.type === ""){
 
 	    } else
 	    if(this.state.article.type.includes("image")){
-	    	return(<img src={base64file} className="img-rounded img-fluid" alt="Image"/>)
+	    	return(<img src={base64file} className="img-rounded img-fluid" alt=""/>)
 	    }
 	    else {
 				return(
