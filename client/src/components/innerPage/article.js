@@ -120,7 +120,7 @@ class Article extends React.Component {
 
 			  interval = Math.floor(seconds / 86400);
 			  if (interval >= 1) {
-					if(interval = 1) return "vor " + interval + " Tag";
+				if (interval === 1) return "vor " + interval + " Tag";
 			    return "vor " + interval + " Tage";
 				}
 

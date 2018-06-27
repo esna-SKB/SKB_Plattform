@@ -26,9 +26,10 @@ Die URL bedient folgende Seitenanfragen.
 - `/createcourse/`
 - `/courses/:coursename`
 - `/groups`
-- `/profile`
-- `/profile/:email`
-- `/profileedit/`
+- `/groups/:groupname`
+- `/user/:email`
+- `/user/:email/edit/`
+- `/user/:email/changepassword/`
 - `/messages`
 - `/messages/user/:email`
 - `/calendar`
