@@ -15,7 +15,7 @@ class Settings extends Component {
 		this.state = {
 		  user: this.props.user
 		}
-	}
+	} 
 
 
 
