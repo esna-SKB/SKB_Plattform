@@ -40,7 +40,6 @@ class Courses extends React.Component {
 	}
 
 	componentDidMount(){
-		console.log(this.props)
     //get all courses that user is teaching
     if(this.props.user.isTeacher === true){
       api.getAllCourses()
@@ -144,7 +143,6 @@ class Profile extends Component {
 		user,
 		shownprofile,
 	} = this.state;
-	console.log(shownprofile)
 	if(!shownprofile){
 		return false;
 	}
