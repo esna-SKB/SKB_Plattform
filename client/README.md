@@ -129,9 +129,11 @@ my-app/
     index.html
     favicon.ico
   src/
-    App.css
-    App.js
-    App.test.js
+    components/
+    css/
+    img/
+    utils/
+    main.css
     index.css
     index.js
     logo.svg
