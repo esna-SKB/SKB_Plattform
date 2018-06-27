@@ -8,8 +8,8 @@ const api = require('../../api');
 
 // const api = require('../../api');
 function Bearbeiten(props) {
-	const isMyProfile = props.isMyProfile; 
-	const email = props.email; 
+	const isMyProfile = props.isMyProfile;
+	const email = props.email;
 	if(isMyProfile){
 		return(
 			<div className="row-12 text-muted text-right">
@@ -19,9 +19,52 @@ function Bearbeiten(props) {
 			</div>
 		);
 	}else{
-		return null; 
+		return null;
 	}
 }
+
+function Element(props) {
+	const course = props.course;
+		return (
+			<div className="w-100 course-name">
+			<Link to={'/courses/'+course.name}>{course.name}</Link>
+			</div>
+		);
+}
+class Courses extends React.Component {
+	constructor(props){
+	super(props);
+	this.state = {
+		list: []
+		};
+	}
+
+	componentDidMount(){
+		console.log(this.props)
+    //get all courses that user is teaching
+    if(this.props.user.isTeacher === true){
+      api.getAllCourses()
+			.then(courses => {
+						var freeCourses = courses.filter((c) => c.isFree === true);
+           	var myFreeCourses = freeCourses.filter((c) => c.teacher.email === this.props.user.email);
+  			 	this.setState({list: myFreeCourses.map((e)=>{ return( <Element key={e._id} course={e} mini={this.props.mini}/>);})});
+  		 });
+    }
+	}
+	render(){
+    if (this.props.user){
+  		return(
+  				<div className="courses">
+  				{this.state.list}
+  				</div>
+  			);
+	   }
+     else{
+       return null;
+     }
+   }
+}
+
 
 class Profile extends Component {
 	constructor(props) {
@@ -29,31 +72,36 @@ class Profile extends Component {
 
 		this.state = {
 		  user : this.props.user,
-		  shownprofile : {}
+		  shownprofile : undefined
 		}
 		this.handleUpdate = this.handleUpdate.bind(this);
-		this.handleIsTeacher = this.handleIsTeacher.bind(this); 
+		this.handleIsTeacher = this.handleIsTeacher.bind(this);
 	}
-	
+
 	componentWillReceiveProps(nextProps){
     if(this.props.location.pathname!==nextProps.location.pathname){
       var email = nextProps.location.pathname.split("/")[2];
-      this.handleUpdate(email, nextProps.user); 
+      this.handleUpdate(email, nextProps.user);
     	}
   	}
   	componentDidMount(){
   		var email = this.props.location.pathname.split("/")[2];
 		this.handleUpdate(email, this.props.user)
+		api.getUser(email)
+		.then(res => {
+			this.setState({shownprofile : res})
+			this.handleIsTeacher(res.isTeacher)
+		})
 	}
 
-	handleUpdate(email, user) { 
-		
+	handleUpdate(email, user) {
+
 		//check if user is different from shownuser
 			//does not end with /profile so it is /user/:email
 		api.getUser(email)
 		.then(res => {
 			this.setState({shownprofile : res})
-			this.handleIsTeacher(res.isTeacher)			
+			this.handleIsTeacher(res.isTeacher)
 		})
 	}
   	handleIsTeacher(isTeacher) {
@@ -91,12 +139,16 @@ class Profile extends Component {
 
 
   render() {
-	//grab state		
+	//grab state
 	const {
 		user,
 		shownprofile,
 	} = this.state;
-	
+	console.log(shownprofile)
+	if(!shownprofile){
+		return false;
+	}
+	else{
     return (
       <div>
 		<div className="container-fluid">
@@ -153,7 +205,9 @@ class Profile extends Component {
 									<div className="row  lineup ">
 										<div className="col-4 text-muted " id="trueLearn">ich lerne:</div>
 										<div className="col-8 text-muted" id="iLearn">{shownprofile.iLearn}</div>
-										<div className="col-12" id="trueOffer"><strong>mein kostenloses Angebot:</strong></div>
+										<div className="col-12" id="trueOffer"><strong>mein kostenloses Angebot:</strong>
+											<Courses user={this.state.shownprofile}/>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -183,6 +237,7 @@ class Profile extends Component {
 	</div>
     );
   }
+}
 }
 
 export default Profile;
