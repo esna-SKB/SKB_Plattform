@@ -262,20 +262,44 @@ deleteUser: function(email){
     },
 
   /*
-   * GET /article/group/:groupId
+   * GET /article/group/:groupname
    * returns a list of all articles of a group
    */
-  getAllArticlesOfGroup: function(groupId){
-      
+  getAllArticlesOfGroup: function(groupName){
+      return fetch('/article/group/'+groupName, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
   },
     
     
   /*
-   * POST /article/group/:groupId
+   * POST /article/group/:groupname
    * creates a new article in a group
    */
-  createGroupArticle: function(groupId, headline, author, text, type, created_at, base64file){
-      
+  createGroupArticle: function(groupName, headline, author, text, type, created_at, base64file){
+      return fetch('/article/group/'+groupName, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          group: groupName,
+          headline: headline,
+          author: author,
+          text: text,
+          data: base64file,
+          type: type,
+          created_at: created_at,
+        }),
+      })
+      .then(res => {
+        console.log(res);
+        res.json();
+      }); 
   },
     
     
@@ -333,19 +357,25 @@ deleteUser: function(email){
   },
     
 /*
- * GET /:email/group
+ * GET user/:email/group
  * returns a list of all groups of a user
 */
   getAllGroupsOfUser: function(email){
-    
+    return fetch('/user/' + email + '/group', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
   },
 
 
 /*
  * POST /groups/course/:courseName
- * creates a new course object
+ * creates a new group object
 */
-  createGroup: function(courseName, groupName, members, description){
+  
+Group: function(courseName, groupName, members, description){
     return fetch('/group/course/' + courseName, {
       method: 'POST',
       headers: {

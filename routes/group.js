@@ -41,7 +41,7 @@ router.route('/course/:name')
 					message: "This Group exists allready"
 				}); 
 			} else {
-				//if there is no group with that name jet
+				//if there is no group with that name yet
 				// Save the new group
 				const newGroup = new Group();
 				newGroup.name = name;

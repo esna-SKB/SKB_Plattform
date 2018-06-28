@@ -3,6 +3,7 @@ var router = express.Router();
 const User = require('../models/user');
 const UserSession = require('../models/UserSession');
 const Course = require('../models/course');
+const Group = require('../models/group');
 const Enrollment = require('../models/enrollment');
 
 router.route('/')
@@ -104,6 +105,26 @@ router.route('/:email/course')
 		})
 	})
 
+	
+
+router.route('/:email/group')
+
+	//get all Groups of User
+	.get((req, res, next) => {
+		var email = req.params.email;
+		User.findOne({email: email},{},function(err, user){
+			if (err) return res.status(500).send('error occured in the database');
+			else if (user == null) return res.status(401).send('user not fount');
+	       	else {
+					user.grouplist.populate({path:'members'}).populate({path:'course', populate:{path:'teacher', model:'User'}}).exec(function(err,groups){
+						if(err) return res.status(500).send('error occured in the database');
+						else{
+							return res.status(200).send(groups);	
+						}
+					})
+				}	
+	       	})
+		})
 
 
 	module.exports = router
