@@ -58,7 +58,7 @@ const UserSchema = new mongoose.Schema({
   },
   picturedata:{
     type: String,
-    default: ''
+    default: '../../../defaulticon.jpg'
   },
   type: {
     type: String,
