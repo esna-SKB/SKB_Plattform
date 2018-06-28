@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 const User = require('./user');
+const Group = require('./group');
 
 var Schema = mongoose.Schema;
 
@@ -23,7 +24,12 @@ var courseSchema = new Schema({
     content:{
         type: [String],
         default: []
-    }
+    },
+	grouplist:{
+		type: [{ type: Schema.Types.ObjectId,
+        ref: "Group"}],
+		default: []
+	}
 });
 
 module.exports = mongoose.model('Course', courseSchema);
