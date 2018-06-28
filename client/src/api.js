@@ -262,6 +262,24 @@ deleteUser: function(email){
     },
 
   /*
+   * GET /article/group/:groupId
+   * returns a list of all articles of a group
+   */
+  getAllArticlesOfGroup: function(groupId){
+      
+  },
+    
+    
+  /*
+   * POST /article/group/:groupId
+   * creates a new article in a group
+   */
+  createGroupArticle: function(groupId, headline, author, text, type, created_at, base64file){
+      
+  },
+    
+    
+  /*
    * GET /article/id
    * returns an article object
   */
@@ -313,6 +331,15 @@ deleteUser: function(email){
       }})
     .then(res => res.json())
   },
+    
+/*
+ * GET /:email/group
+ * returns a list of all groups of a user
+*/
+  getAllGroupsOfUser: function(email){
+    
+  },
+
 
 /*
  * POST /groups/course/:courseName
