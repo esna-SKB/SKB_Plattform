@@ -6,6 +6,8 @@ import Newsfeed from './newsfeed';
 import Course from './course';
 import CreateCourse from './createcourse';
 import Groups from './groups';
+import Group from './group';
+import MemberInfo from './memberInfo';
 import Profile from './profile';
 import Profileedit from './profileedit';
 import ChangePassword from './changePassword';
@@ -61,13 +63,18 @@ class Body extends React.Component {
 		        </div>
 
 		   {/* Right Container*/}
-			 <div className="col-md-3 order-md-last">
-							 <Route path='/courses/:name' render={(props) => (
-								 <div>
-									<TeacherInfo user={this.props.user}/>
-									<InviteToCourse user={this.props.user}/>
-								</div>
-								)}/>
+            <div className="col-md-3 order-md-last">
+                <Route path='/courses/:name' render={(props) => (
+                    <div>
+				        <TeacherInfo user={this.props.user}/>
+				        <InviteToCourse user={this.props.user}/>
+				    </div>
+				)}/>
+                <Route path='/groups/:id' render={(props) => (
+                    <div>
+                        <MemberInfo user={this.props.user}/>
+				    </div>
+				)}/>
 			 </div>
 
 		    {/* MainWindow */}
@@ -88,6 +95,9 @@ class Body extends React.Component {
 						)}/>
 						<Route exact path='/groups' render={(props) => (
 						  <Groups user={this.props.user}/>
+						)}/>
+                        <Route exact path ='/groups/:id' render={(props) => (
+						  <Group user={this.props.user} location={props.location}/>
 						)}/>
 						<Route exact path ='/user/:email' render={(props) => (
 						  <Profile user={this.props.user}  location={props.location}/>
