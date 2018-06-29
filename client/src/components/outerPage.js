@@ -20,7 +20,7 @@ class OuterPage extends React.Component {
 		}; 
 
 	/*for changing brackground*/
-	const totalImages = 97;
+	const totalImages = 96;
 	var chosenOne = Math.ceil(Math.random()* totalImages);
 	BckgrdUrl = '../../../backgrounds/' + chosenOne + '.jpg';
 
