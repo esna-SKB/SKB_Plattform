@@ -139,7 +139,7 @@ class Article extends React.Component {
 			return(
 				<div id={this.state.article._id}>
 					<div className='row border' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px'}}>
-					 	<div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
+					 	<div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px'}}>
 							<div className='row'>
 								<div className='col-5' style={{textTransform: 'capitalize'}}>
 								<p>{article.author.firstname} {article.author.lastname}</p>
@@ -171,7 +171,7 @@ class Article extends React.Component {
 		else {
 			return(
 				<div id={this.state.article._id}>
-					<div className='row border' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px'}}>
+					<div className='row border' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px'}}>
 					 	<div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
 							<div className='row'>
 								<div className='col-5' style={{textTransform: 'capitalize'}}>

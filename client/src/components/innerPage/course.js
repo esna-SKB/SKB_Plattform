@@ -58,7 +58,7 @@ class FeedTab extends Component{
       this.setState({
         file: event.target.files[0]
       });
-      
+
       //console.log(event.target.files[0])
     }
 
@@ -177,20 +177,20 @@ class Course extends Component {
   componentDidMount(){
     var course_name = this.props.location.pathname.split("/")[2];
     course_name = course_name.replace("%20", " ");
-    this.handleUpdate(course_name); 
+    this.handleUpdate(course_name);
   }
   componentWillReceiveProps(nextProps){
     if(this.props.location.pathname!==nextProps.location.pathname){
       var course_name = nextProps.location.pathname.split("/")[2];
       course_name = course_name.replace("%20", " ");
-      this.handleUpdate(course_name); 
+      this.handleUpdate(course_name);
     }
   }
 
   handleUpdate(course_name) {
   //get course
-    
-    
+
+
     api.getCourse(course_name)
     .then(course => {
       this.setState({
@@ -365,7 +365,7 @@ class Course extends Component {
 
 
   render() {
-    
+
     //make sure API calls are finished when rendering (better solution????)
     if(!this.state.course || !this.state.articles){
       return false;
@@ -405,7 +405,8 @@ class Course extends Component {
       </div>
       );
   }
-  else if(this.state.enrolled === true || this.props.user.email === this.state.course.teacher.email){
+  // STUDENT ENROLLED
+  else if(this.state.enrolled === true && this.props.user.email !== this.state.course.teacher.email){
       return (
         <div>
             <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
@@ -447,14 +448,9 @@ class Course extends Component {
 
                         <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
                         <div className="row">
-                          <div className="col-8">
+                          <div className="col">
                             <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Inhalt </h3>
                             </div>
-                            <div className="col-4">
-                            <button ref="bearbeiten" className='registrieren_botton' id="edit" style={{color:'rgb(24, 86, 169)', marginTop: '-67px !important', fontSize: '13px', width: '104px', float: 'right', margin: '-12px 0'}} onClick={this.bearbeiten}>
-                             bearbeiten
-                          	 </button>
-                             </div>
                         </div>
 
                           <div style={{display : 'none'}} id="wrapper" ref="wrapper">
@@ -504,6 +500,107 @@ class Course extends Component {
             </div>
         </div>
       );
+    }
+    // teacher view
+      else if(this.props.user.email === this.state.course.teacher.email){
+          return (
+            <div>
+                <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
+                    <div className="row">
+                        <div className="col" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
+                            <div className="row">
+                                <div className="col" style={{paddingRight: '0', paddingLeft: '20px'}}>
+                                    <h1 style={{textTransform: 'capitalize'}}>{this.state.course.name}</h1>
+                                </div>
+                                <div className="col-4">
+                                </div>
+                                <div className="col" style={{paddingRight: '10px'}}>
+                                    <LeaveButton user={this.props.user} course={this.state.course} enrolled={this.state.enrolled}/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="background-fluid" style={{borderBottom: '1px solid #e8e9eb'}}>
+                      <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
+                          <li className = "nav-item">
+                              <a className="nav-link tab-title active" id="lehrer-tab" data-toggle="tab" href="#ubersicht" role="tab" aria-controls="ubersicht" aria-selected="true">Übersicht</a>
+                          </li>
+
+                          <li className="nav-item">
+                              <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="false">Feed</a>
+                          </li>
+
+                          <li className="nav-item">
+                              <a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
+                          </li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div className="background container-fluid row">
+                    <div className="col col-sm-12">
+                        <div className="tab-content col-offset-6 centered" id="tab-content">
+
+                            <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
+                            <div className="row">
+                              <div className="col-8">
+                                <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Inhalt </h3>
+                                </div>
+                                <div className="col-4">
+                                <button ref="bearbeiten" className='registrieren_botton' id="edit" style={{color:'rgb(24, 86, 169)', marginTop: '-67px !important', fontSize: '13px', width: '104px', float: 'right', margin: '-12px 0'}} onClick={this.bearbeiten}>
+                                 bearbeiten
+                              	 </button>
+                                 </div>
+                            </div>
+
+                              <div style={{display : 'none'}} id="wrapper" ref="wrapper">
+                              <div className="wrapper">
+                              	<div className="box-left">
+                                <div data-tpl="header1" data-title="Header 1">
+                                  Header 1
+                                </div>
+                              		<div data-tpl="header2" data-title="Header 2">
+                              			Header 2
+                              		</div>
+                              		<div data-tpl="header3" data-title="Header 3">
+                              			Header 3
+                              		</div>
+                              		<div data-tpl="shortparagraph" data-title="Short paragraph">
+                              			paragraph
+                              		</div>
+                              		<div data-tpl="ullist" data-title="Ordened list">
+                              			Ordened list
+                              		</div>
+                              		<div data-tpl="ollist" data-title="Unordened list">
+                              			Unordened list
+                              		</div>
+                                  <div data-tpl="heade12" data-title="Unordened list">
+                                    Datei
+                                  </div>
+                                  <div data-tpl="header12" data-title="Unordened list">
+                                    Picture
+                                  </div>
+                              	</div>
+                              	<div id="boxright" ref="boxright" className="box-right"></div>
+                              </div>
+                              </div>
+
+                                <p id="description" ref="description">{this.state.course.description}</p>
+                                <div id="kursmaterial" ref="kursmaterial">
+                                <h3> Kursmaterial </h3>
+                                <h3> 16. April - 22. April </h3>
+                                <p>Folie 01</p>
+                                <p>Folie 02</p>
+                            </div>
+                            </div>
+                            <MemberTab course={this.state.course} members= {this.state.members}/>
+                            <FeedTab  user={this.props.user} course={this.state.course} articles={this.state.articles}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          );
     }
   }
 }
