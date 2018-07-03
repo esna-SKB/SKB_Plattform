@@ -20,6 +20,7 @@ class InviteToCourse extends Component {
 	super(props);
 	this.state = {
 		user: this.props.user,
+    location: this.props.location,
     query: '',
     users: [],
     courseName: '',
@@ -28,19 +29,30 @@ class InviteToCourse extends Component {
     errorMessage:''
 		};
 	}
+  componentWillReceiveProps(nextProps){
+    if(this.props.location.pathname!==nextProps.location.pathname){
+      var course_name = nextProps.location.pathname.split("/")[2];
+      course_name = course_name.replace("%20", " ");
+      this.handlesUpdate(course_name); 
+    }
+  }
 
   componentDidMount(){
-  var course_name = window.location.pathname.split("/")[2];
+  var course_name = this.props.location.pathname.split("/")[2];
   course_name = course_name.replace("%20", " ");
-  var course = api.getCourse(course_name);
-  course.then(course => {
-    this.setState({
-      courseName: course_name,
-      courseTeacher: course.teacher,
-      isFree: course.isFree
+    this.handlesUpdate(course_name); 
+  }
+
+  handlesUpdate = (course_name) => {
+    var course = api.getCourse(course_name);
+    course.then(course => {
+      this.setState({
+        courseName: course_name,
+        courseTeacher: course.teacher,
+        isFree: course.isFree
+      })
     })
-  })
-}
+  }
 
   handleInputChange = () => {
     this.setState({

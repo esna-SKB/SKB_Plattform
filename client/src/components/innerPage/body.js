@@ -11,10 +11,10 @@ import Profileedit from './profileedit';
 import ChangePassword from './changePassword';
 import Settings from './settings';
 import SmallProfile from './smallProfile';
-import InviteToCourse from './inviteToCourse';
 import MessageList from './messageList';
 import { Messages } from './messages';
 import TeacherInfo from './teacherInfo';
+import InviteToCourse from './inviteToCourse';
 import '../../css/course.css';
 
 
@@ -65,8 +65,8 @@ class Body extends React.Component {
 			 <div className="d-none d-md-block col-md-3 order-md-last">
 							 <Route path='/courses/:name' render={(props) => (
 								 <div>
-									<TeacherInfo user={this.props.user}/>
-									<InviteToCourse user={this.props.user}/>
+									<TeacherInfo location={props.location} user={this.props.user}/>
+									<InviteToCourse location={props.location} user={this.props.user}/>
 								</div>
 								)}/>
 			 </div>

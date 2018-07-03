@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Article from './article';
 import { Link } from 'react-router-dom'
+import TeacherInfo from './teacherInfo';
+import InviteToCourse from './inviteToCourse';
 // import $ from 'jquery';
 
 //import axios from 'axios';
@@ -18,8 +20,6 @@ class FeedTab extends Component{
 
     postArticle = () =>{
         var text = document.getElementById("textteilen").value;
-        //var formData = new FormData();
-        //formData.append("file", this.state.file, this.state.file.name);
         var self = this;
         if(!this.state){
           api.createArticle(self.props.course.name, "", self.props.user.email, text, "", Date.now, "").then(res => {
@@ -29,8 +29,6 @@ class FeedTab extends Component{
         }else {
           self.getBase64(self.state.file, function(base64file){
 
-            //console.log(this.state.file)
-            //console.log(base64file)
             api.createArticle(self.props.course.name, "", self.props.user.email, text, self.state.file.type, Date.now, base64file).then(res => {
 
             window.location.reload(false);
@@ -58,8 +56,6 @@ class FeedTab extends Component{
       this.setState({
         file: event.target.files[0]
       });
-
-      //console.log(event.target.files[0])
     }
 
     render(){
@@ -95,7 +91,7 @@ class FeedTab extends Component{
           </div>
         )
     }
-    else{
+    else if(this.props.enrolled){
       return(
         <div className="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
             <div className='container' id="userposts">
@@ -104,12 +100,15 @@ class FeedTab extends Component{
         </div>
       )
     }
+    else{
+      return null; 
+    }
   }
 }
 
 class MemberTab extends Component{
     render(){
-      if(this.props.members){
+      if(this.props.members && this.props.enrolled){
         return(
           <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
           <ul>
@@ -125,41 +124,47 @@ class MemberTab extends Component{
       }
     }
 }
+class EnrollButton extends Component{
+  constructor(props){
+    super(props); 
+    this.state = {
+      enrolled:props.enrolled, 
+      user: props.user,
+      course:props.course 
+    }
+  }
 
-class LeaveButton extends Component{
-    leaveCourse = () =>{
+  leaveCourse = () =>{
         api.unenrollUser(this.props.user.email, this.props.course.name).then(res => {
           window.location.reload(false);
         });
     }
-    render(){
-      if (this.props.enrolled === true  && this.props.user.email !== this.props.course.teacher.email){
-        return(
-          <button id='leavecourse' className='btn' onClick = {this.leaveCourse} style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2'}}>Abmelden</button>
-        )
-      }
-      else{
-        return null;
-      }
-    }
-}
-class JoinButton extends Component{
-    joinCourse = () =>{
+
+  joinCourse = () =>{
         api.enrollUser(this.props.user.email, this.props.course.name).then(res => {
             window.location.reload(false);
         });
     }
-    render(){
-      if (this.props.enrolled === false && this.props.user.email !== this.props.course.teacher.email){
-        return(
-          <button id='joincourse' className='btn' onClick = {this.joinCourse} style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2'}}>mich einschreiben</button>
-        )
-      }
-      else{
-        return null;
-      }
+
+  render(){
+    const {
+      enrolled,
+      user,
+      course
+    } = this.props; 
+
+    if(course.teacher.email!==user.email){
+      return(
+         <button id={(enrolled)? 'leavecourse':'joincourse'} className='btn' onClick = {(enrolled)? this.leaveCourse:this.joinCourse} 
+         style={{position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2'}}>
+         {(enrolled)?'Abmelden':'mich einschreiben'}</button>
+        );
+    }else{
+      return null; 
     }
+  }
 }
+
 class Course extends Component {
 
   constructor(props){
@@ -189,8 +194,6 @@ class Course extends Component {
 
   handleUpdate(course_name) {
   //get course
-
-
     api.getCourse(course_name)
     .then(course => {
       this.setState({
@@ -368,141 +371,10 @@ class Course extends Component {
 
     //make sure API calls are finished when rendering (better solution????)
     if(!this.state.course || !this.state.articles){
-      return false;
-    }
-    //user is not an enrolled student neither is user the responsible teacher
-    else if(this.state.enrolled === false && this.state.course.teacher.email !== this.props.user.email){
-    return (
-    <div>
-      <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '60px', paddingLeft: '30px'}}>
-        <div className="row">
-          <div className="col" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
-            <div className="row">
-              <div className="col" style={{paddingRight: '0', paddingLeft: '20px'}}>
-                 <h1>{this.state.course.name}</h1>
-              </div>
-              <div className="col-4">
-              </div>
-                <div className="col" style={{paddingRight: '10px'}}>
-                  <JoinButton user={this.props.user} course={this.state.course} enrolled={this.state.enrolled}/>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="background container-fluid row">
-          <div className="col col-sm-12" style={{paddingRight: '0', paddingLeft: '15px'}}>
-            <div className="tab-content col-offset-6 centered" style={{marginBottom: '450px'}}>
-              <div style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
-                <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Inhalt </h3>
-                  <p>
-                    {this.state.course.description}
-                  </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      );
-  }
-  // STUDENT ENROLLED
-  else if(this.state.enrolled === true && this.props.user.email !== this.state.course.teacher.email){
-      return (
-        <div>
-            <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
-                <div className="row">
-                    <div className="col" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
-                        <div className="row">
-                            <div className="col" style={{paddingRight: '0', paddingLeft: '20px'}}>
-                                <h1 style={{textTransform: 'capitalize'}}>{this.state.course.name}</h1>
-                            </div>
-                            <div className="col-4">
-                            </div>
-                            <div className="col" style={{paddingRight: '10px'}}>
-                                <LeaveButton user={this.props.user} course={this.state.course} enrolled={this.state.enrolled}/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="background-fluid" style={{borderBottom: '1px solid #e8e9eb'}}>
-                  <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
-                      <li className = "nav-item">
-                          <a className="nav-link tab-title active" id="lehrer-tab" data-toggle="tab" href="#ubersicht" role="tab" aria-controls="ubersicht" aria-selected="true">Übersicht</a>
-                      </li>
-
-                      <li className="nav-item">
-                          <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="false">Feed</a>
-                      </li>
-
-                      <li className="nav-item">
-                          <a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
-                      </li>
-                    </ul>
-                </div>
-
-            </div>
-            <div className="background container-fluid row">
-                <div className="col col-sm-12">
-                    <div className="tab-content col-offset-6 centered" id="tab-content">
-
-                        <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
-                        <div className="row">
-                          <div className="col">
-                            <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Inhalt </h3>
-                            </div>
-                        </div>
-
-                          <div style={{display : 'none'}} id="wrapper" ref="wrapper">
-                          <div className="wrapper">
-                          	<div className="box-left">
-                            <div data-tpl="header1" data-title="Header 1">
-                              Header 1
-                            </div>
-                          		<div data-tpl="header2" data-title="Header 2">
-                          			Header 2
-                          		</div>
-                          		<div data-tpl="header3" data-title="Header 3">
-                          			Header 3
-                          		</div>
-                          		<div data-tpl="shortparagraph" data-title="Short paragraph">
-                          			paragraph
-                          		</div>
-                          		<div data-tpl="ullist" data-title="Ordened list">
-                          			Ordened list
-                          		</div>
-                          		<div data-tpl="ollist" data-title="Unordened list">
-                          			Unordened list
-                          		</div>
-                              <div data-tpl="heade12" data-title="Unordened list">
-                                Datei
-                              </div>
-                              <div data-tpl="header12" data-title="Unordened list">
-                                Picture
-                              </div>
-                          	</div>
-                          	<div id="boxright" ref="boxright" className="box-right"></div>
-                          </div>
-                          </div>
-
-                            <p id="description" ref="description">{this.state.course.description}</p>
-                            <div id="kursmaterial" ref="kursmaterial">
-                            <h3> Kursmaterial </h3>
-                            <h3> 16. April - 22. April </h3>
-                            <p>Folie 01</p>
-                            <p>Folie 02</p>
-                        </div>
-                        </div>
-                        <MemberTab course={this.state.course} members= {this.state.members}/>
-                        <FeedTab  user={this.props.user} course={this.state.course} articles={this.state.articles}/>
-                    </div>
-                </div>
-            </div>
-        </div>
-      );
+      return null;
     }
     // teacher view
-      else if(this.props.user.email === this.state.course.teacher.email){
+    else{
           return (
             <div>
                 <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
@@ -515,7 +387,7 @@ class Course extends Component {
                                 <div className="col-4">
                                 </div>
                                 <div className="col" style={{paddingRight: '10px'}}>
-                                    <LeaveButton user={this.props.user} course={this.state.course} enrolled={this.state.enrolled}/>
+                                    <EnrollButton user={this.props.user} course={this.state.course} enrolled={this.state.enrolled}/>
                                 </div>
                             </div>
                         </div>
@@ -544,11 +416,17 @@ class Course extends Component {
 
                             <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
                             <div className="row">
-                              <div className="col-8">
+                               <div className="d-block d-md-none order-md-last">
+                                     <div>
+                                    <TeacherInfo location={this.props.location} user={this.props.user}/>
+                                    <InviteToCourse location={this.props.location} user={this.props.user}/>
+                                    </div>
+                                </div>
+                                <div className="col-md-8">
                                 <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Inhalt </h3>
                                 </div>
-                                <div className="col-4">
-                                <button ref="bearbeiten" className='registrieren_botton' id="edit" style={{color:'rgb(24, 86, 169)', marginTop: '-67px !important', fontSize: '13px', width: '104px', float: 'right', margin: '-12px 0'}} onClick={this.bearbeiten}>
+                                <div className="col-md-4">
+                                <button ref="bearbeiten" className='registrieren_botton' id="edit" style={(this.state.course.teacher.email!==this.props.user.email)?{display : 'none'}:{color:'rgb(24, 86, 169)', marginTop: '-67px !important', fontSize: '13px', width: '104px', float: 'right', margin: '-12px 0'}} onClick={this.bearbeiten}>
                                  bearbeiten
                               	 </button>
                                  </div>
@@ -594,13 +472,13 @@ class Course extends Component {
                                 <p>Folie 02</p>
                             </div>
                             </div>
-                            <MemberTab course={this.state.course} members= {this.state.members}/>
-                            <FeedTab  user={this.props.user} course={this.state.course} articles={this.state.articles}/>
+                            <MemberTab enrolled={this.state.enrolled} course={this.state.course} members= {this.state.members}/>
+                            <FeedTab  enrolled={this.state.enrolled} user={this.props.user} course={this.state.course} articles={this.state.articles}/>
                         </div>
                     </div>
                 </div>
             </div>
-          );
+        );
     }
   }
 }
