@@ -40,15 +40,9 @@ io.on('connection', socket => {
 			return;
 			}
 		});
-		console.log(newMessage)
 		io.sockets.emit("send message", newMessage);
 	})
-
-	socket.on('change color', color =>{
-		console.log('color changed to: '+color);
-		io.sockets.emit('change color', color);
-	} );
-
+	
 	socket.on('disconnect', () => {
     console.log('user disconnected')
   })

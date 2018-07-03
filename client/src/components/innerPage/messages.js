@@ -1,8 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
 import '../../css/messages.css';
-import io from 'socket.io-client';
-//const socket = io('http://localhost:5000/');
 import socketIOClient from 'socket.io-client'
 
 const api = require('../../api');
@@ -10,7 +7,7 @@ const api = require('../../api');
 class ElementMessage extends React.Component{
 
 	render(){
-		if(this.props.user.email == this.props.message.fromUser){
+		if(this.props.user.email === this.props.message.fromUser){
 			return(
 
 					<div className="col-message-sent">
@@ -65,14 +62,8 @@ export class Messages extends React.Component {
 
 		const socket = socketIOClient(this.state.endpoint);
 	         socket.on('send message', message => {
-	            if((message.fromUser === this.props.user.email && message.toUser === this.state.partnerEmail) || (message.toUser === this.props.user.email && message.fromUser == this.state.partnerEmail) ){
+	            if((message.fromUser === this.props.user.email && message.toUser === this.state.partnerEmail) || (message.toUser === this.props.user.email && message.fromUser === this.state.partnerEmail) ){
 	                console.log("Von: "+message.fromUser +" Zu: "+message.toUser +" Text: "+message.text);
-									var message = {
-									 fromUser: message.fromUser,
-									 toUser: message.toUser,
-									 text : message.text,
-									 created_at: message.created_at
-									}
 	               this.addMessage(message);
 	            }
 	        })
@@ -94,7 +85,7 @@ export class Messages extends React.Component {
 	}
 
 	sendMessage = (e) =>{
-		if(e.key=== "Enter" && document.getElementById("messageContent").value != ""){
+		if(e.key=== "Enter" && document.getElementById("messageContent").value !== ""){
 			var text = document.getElementById("messageContent").value
 			const socket = socketIOClient(this.state.endpoint)
 
