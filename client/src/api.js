@@ -62,26 +62,14 @@ getUser: function(email){
  * PUT /user/:email
  * updates an user object
 */
-updateUser: function(email, firstname, lastname, newEmail, isTeacher, isAdmin, isValide, description, iCan, iLearn, iTeach, website){
+updateUser: function(email, updateUser){
   return fetch('/user/' + email, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
-    body: JSON.stringify({
-      firstname: firstname,
-      lastname: lastname,
-      email: email,
-      isTeacher: isTeacher,
-      isAdmin: isAdmin,
-      isValide: isValide,
-	  description: description,
-	  iCan: iCan,
-	  iLearn: iLearn,
-	  iTeach: iTeach,
-	  website: website
-    }),
+    body: JSON.stringify(updateUser)
   })
   .then(res => res.json())
 },
@@ -176,7 +164,7 @@ deleteUser: function(email){
    * PUT /course/:courseName
    * updates a course object
   */
-  updateCourse: function(courseName, newCourseName, teacherEmail, description){
+  updateCourse: function(courseName, newCourseName, teacherEmail, description, content){
     return fetch('/course/'+courseName, {
       method: 'PUT',
       headers: {
@@ -187,6 +175,7 @@ deleteUser: function(email){
         name: newCourseName,
         teacher: teacherEmail,
         description: description,
+        content: content
       }),
     })
     .then(res => res.json())
@@ -277,7 +266,20 @@ deleteUser: function(email){
    * returns an article object
   */
   getArticle: function(articleId){
-    return fetch('/article' + articleId, {
+    return fetch('/article/' + articleId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+
+  /*
+   * GET /article/id
+   * returns an article object
+  */
+  getAllArticleComments: function(articleId){
+    return fetch('/article/comments/' + articleId, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -290,9 +292,11 @@ deleteUser: function(email){
    * deletes an article object
   */
   deleteArticle: function(articleId){
-    return fetch('/article' + articleId, {
+    return fetch('/article/' + articleId, {
       method: 'DELETE',
-      })
+      headers: {
+        'Accept': 'application/json'
+      }})
     .then(res => res.json())
   },
 
@@ -391,7 +395,7 @@ deleteUser: function(email){
 * POST /message
 * creates a new message object
 */
-sendMessage: function(fromUser, toUser, text){
+createMessage: function(fromUser, toUser, text){
 return fetch('/message', {
   method: 'POST',
   headers: {
@@ -450,6 +454,7 @@ return fetch('/message', {
     })
     .then(res => res.json())
   },
+
   /*
    * GET /message/allPartners/:userEmail'
    * returns a message object
@@ -539,7 +544,7 @@ return fetch('/message', {
   resetPassword: function(userId, signInPassword){
     return fetch('/account/resetPassword', {
 
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
