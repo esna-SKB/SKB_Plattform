@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import Chat from'../../img/chat-icon.png';
 // import {withRouter} from 'react-router'
 
 const api = require('../../api');
@@ -30,7 +31,13 @@ class MyTeachers extends React.Component{
        <div style={{marginTop : "2em"}}>
 						 <div style={{clear: "both"}} className="contentTeacherinfo" key={this.props.teacher.email}>
 						 <img  src={this.props.teacher.picturedata} alt="profilepic" ></img>
-						 <div> <strong><Link to={`/user/${this.props.teacher.email}`}>{this.props.teacher.firstname} {this.props.teacher.lastname}</Link></strong></div>
+						 <div> 
+						 <strong>
+						 	<Link to={`/user/${this.props.teacher.email}`}>{this.props.teacher.firstname} {this.props.teacher.lastname}</Link>
+						 	
+						 </strong>
+						 <Link className='float-right' to={`/messages/${this.props.teacher.email}`}><img id="chat" className="icon" style={{fontSize:'10px'}} src={Chat} alt="Chat"/></Link>
+						 </div>
 						 </div>
 			</div>
    );

@@ -3,6 +3,7 @@ import Article from './article';
 import { Link } from 'react-router-dom'
 import TeacherInfo from './teacherInfo';
 import InviteToCourse from './inviteToCourse';
+import Chat from'../../img/chat-icon.png';
 // import $ from 'jquery';
 
 //import axios from 'axios';
@@ -12,31 +13,47 @@ import api from '../../api';
 import dragula from 'dragula';
 
 class FeedTab extends Component{
-    ComponentDidMount(){
-      this.setState({
-        articles: this.props.articles
-      })
+    constructor(props){
+      super(props); 
+      this.state = {
+        courseName: props.course.name,
+        articles: undefined
+      }
+    }
+
+    componentDidMount(){
+      this.handleArticlesUpdate(this.props.course.name)
+    }
+    componentWillReceiveProps(nextProps){
+      if(this.props.course.name!==nextProps.course.name){
+        this.handleArticlesUpdate(nextProps.course.name)
+      }
+    }
+
+    handleArticlesUpdate = (course_name) => {
+      api.getAllArticlesOfCourse(course_name)
+      .then(res => {
+            this.setState({articles : res.reverse()})
+          });
     }
 
     postArticle = () =>{
         var text = document.getElementById("textteilen").value;
         var self = this;
         if(!this.state){
-          api.createArticle(self.props.course.name, "", self.props.user.email, text, "", Date.now, "").then(res => {
-
-          window.location.reload(false);
+          api.createArticle(self.props.course.name, "", self.props.user.email, text, "", Date.now, "")
+          .then(res => {
+            window.location.reload(false);
           });
         }else {
           self.getBase64(self.state.file, function(base64file){
 
-            api.createArticle(self.props.course.name, "", self.props.user.email, text, self.state.file.type, Date.now, base64file).then(res => {
-
-            window.location.reload(false);
+            api.createArticle(self.props.course.name, "", self.props.user.email, text, self.state.file.type, Date.now, base64file)
+            .then(res => {
+              window.location.reload(false);
             });
           });
         }
-
-        console.log(this.props.articles)
     }
 
     getBase64(file, cb) {
@@ -59,7 +76,11 @@ class FeedTab extends Component{
     }
 
     render(){
-      if(this.props.user.email === this.props.course.teacher.email){
+      const articles = this.state.articles; 
+
+      if(!articles){
+        return null; 
+      }else if(this.props.user.email === this.props.course.teacher.email){
         return(
           <div className="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
             <div className="col-12" id="new_status" style={{marginBottom : '20px'}}>
@@ -85,7 +106,7 @@ class FeedTab extends Component{
               </div>
             </div>
             <div className='container' id="userposts">
-            {this.props.articles.map(function(article) { return( <Article key={article._id} user={this.props.user.email} article={article} />);}, this)}
+            {articles.map(function(article) { return( <Article key={article._id} user={this.props.user.email} article={article} />);}, this)}
 
             </div>
           </div>
@@ -95,7 +116,7 @@ class FeedTab extends Component{
       return(
         <div className="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
             <div className='container' id="userposts">
-            {this.props.articles.map(function(article) { return( <Article key={article._id} user={this.props.user.email} article={article} />);}, this)}
+            {articles.map(function(article) { return( <Article key={article._id} user={this.props.user.email} article={article} />);}, this)}
             </div>
         </div>
       )
@@ -107,13 +128,41 @@ class FeedTab extends Component{
 }
 
 class MemberTab extends Component{
+    constructor(props){
+      super(props); 
+      this.state = {
+        course: props.course,
+        members: undefined
+      }
+    }
+
+    componentDidMount(){
+      this.handleUpdateMembers(this.props.course.name)
+    }
+
+    componentWillReceiveProps(nextProps){
+      if(this.props.course.name!==nextProps.course.name){
+        this.handleUpdateMembers(nextProps.course.name)
+      }
+    }
+
+    handleUpdateMembers = (course_name) => {
+      api.getAllUsersOfCourse(course_name).then(res=>{
+        this.setState({members: res.reverse()})
+      })
+    }
+
     render(){
-      if(this.props.members && this.props.enrolled){
+      const members = this.state.members; 
+      if(members && (this.props.enrolled || this.props.isTeacher)){
         return(
           <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
           <ul>
-          {this.props.members.map(function(member, i) {
-             return <li style={{textTransform: 'capitalize'}} key={i}><Link to={`/user/${member.email}`}>{member.firstname} {member.lastname}</Link></li>
+          {members.map(function(member, i) {
+             return <li className='' style={{textTransform: 'capitalize'}} key={i}>
+             <Link to={`/user/${member.email}`}>{member.firstname} {member.lastname}</Link>
+             <Link to={`/messages/${member.email}`}><img id="chat" className="icon float-right" src={Chat} alt="Chat"/></Link>
+             </li>
           })}
           </ul>
           </div>
@@ -172,9 +221,8 @@ class Course extends Component {
     this.state = {
       enrolled: false,
       course: undefined,
-      articles: undefined,
-      members: [],
       file: null,
+      isTeacher: false
       };
       this.bearbeiten = this.bearbeiten.bind(this);
     }
@@ -197,7 +245,8 @@ class Course extends Component {
     api.getCourse(course_name)
     .then(course => {
       this.setState({
-        course : course
+        course : course,
+        isTeacher: this.props.user.email===course.teacher.email
       })
     })
     // check if user is enrolled
@@ -208,15 +257,6 @@ class Course extends Component {
         })
       }
     }))
-    .then(()=>{
-        //get all feed articles
-          api.getAllArticlesOfCourse(course_name).then(res => {
-            this.setState({articles : res.reverse()})
-          });
-          api.getAllUsersOfCourse(course_name).then(res=>{
-              this.setState({members: res.reverse()})
-          })
-    })
   }
 
   bearbeiten = () => {
@@ -370,7 +410,7 @@ class Course extends Component {
   render() {
 
     //make sure API calls are finished when rendering (better solution????)
-    if(!this.state.course || !this.state.articles){
+    if(!this.state.course){
       return null;
     }
     // teacher view
@@ -472,8 +512,8 @@ class Course extends Component {
                                 <p>Folie 02</p>
                             </div>
                             </div>
-                            <MemberTab enrolled={this.state.enrolled} course={this.state.course} members= {this.state.members}/>
-                            <FeedTab  enrolled={this.state.enrolled} user={this.props.user} course={this.state.course} articles={this.state.articles}/>
+                            <MemberTab enrolled={this.state.enrolled} course={this.state.course} isTeacher={this.state.isTeacher}/>
+                            <FeedTab  enrolled={this.state.enrolled} user={this.props.user} course={this.state.course}/>
                         </div>
                     </div>
                 </div>

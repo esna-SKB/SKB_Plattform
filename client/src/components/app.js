@@ -88,7 +88,6 @@ class App extends React.Component {
 				<InnerPage user={user} updateUser={this.updateUser} handleLogout={this.handleLogout}/>
 			);
 		} else {
-			{/*when loading*/}
 			return (null); 
 		}
 

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import '../../css/profile.css';
 /*add this css if you want the profile image on the left (circular)*/
 import '../../css/profilepicture.css';
+import Chat from'../../img/chat-icon.png';
 const api = require('../../api');
 
 // const api = require('../../api');
@@ -153,14 +154,19 @@ class Profile extends Component {
 			<div className="background row">
 
 				<div className="col col-sm-12">
+
 						<div className="row box ">
 							<div className="col">
 								<div className="col">
 									<div className="row center-block ">
-
-										<div className="col profilepicbig fill col-md-12"><img id="YourPicture" src= {shownprofile.picturedata}></img>
+										
+										<div className="col profilepicbig fill col-md-12">
+											<img id="YourPicture" src= {shownprofile.picturedata}></img>
 										</div>
-
+										<div className='float-right'>
+											<Link to={`/messages/${shownprofile.email}`}><img id="chat" className="icon" style={{fontSize:'10px'}} src={Chat} alt="Chat"/></Link>
+										</div>
+										
 										<div className="makespace col">
 											<div className=" row">
 												<h4 className="title"><strong id="YourName02">{shownprofile.firstname + " " + shownprofile.lastname}</strong></h4>
@@ -188,7 +194,6 @@ class Profile extends Component {
 								<Bearbeiten email={user.email} isMyProfile={user.email===shownprofile.email}/>
 							</div>
 						</div>
-
 
 						<div className="row box newpart">
 							<div className="col-sm-12">
