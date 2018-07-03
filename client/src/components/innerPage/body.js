@@ -12,6 +12,7 @@ import ChangePassword from './changePassword';
 import Settings from './settings';
 import SmallProfile from './smallProfile';
 import InviteToCourse from './inviteToCourse';
+import MessageList from './messageList';
 import { Messages } from './messages';
 import TeacherInfo from './teacherInfo';
 import '../../css/course.css';
@@ -102,7 +103,10 @@ class Body extends React.Component {
 						  <ChangePassword user={this.props.user} history={props.history}/>
 						)}/>
 						<Route exact path='/messages' render={(props) => (
-						  <Messages user={this.props.user}/>
+						  <MessageList user={this.props.user}/>
+						)}/>
+						<Route path='/messages/:email' render={(props) => (
+							<Messages user={this.props.user}/>
 						)}/>
 					</Switch>
 		        </div>

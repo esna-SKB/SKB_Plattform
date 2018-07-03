@@ -7,10 +7,54 @@ var mongoose = require('mongoose');
 const cors = require('cors');
 var methodOverride = require('method-override');
 
+const http = require('http');
+var socketIO = require('socket.io');
+const messagePort = port+1;
+const Message = require('./models/message');
+
+
+
 mongoose.connect('mongodb://localhost/esna')
 //var esna_db = mongodb.MongoClient.connect('mongodb://localhost:27017');
 
 const app = module.exports = express();
+
+const messageServer = http.createServer(app);
+const io = socketIO(messageServer)
+
+io.on('connection', socket => {
+	console.log("user connected");
+
+	socket.on('send message', (message) => {
+		console.log("Von: "+message.fromUser+" Zu: "+message.toUser+" Text: "+message.text);
+		var d = new Date();
+		const newMessage = new Message();
+		newMessage.fromUser = message.fromUser;
+		newMessage.toUser = message.toUser;
+		newMessage.text = message.text;
+		newMessage.created_at = d.getTime();
+
+		newMessage.save(function(err){
+			if(err) handleError(err);
+			else {
+			return;
+			}
+		});
+		console.log(newMessage)
+		io.sockets.emit("send message", newMessage);
+	})
+
+	socket.on('change color', color =>{
+		console.log('color changed to: '+color);
+		io.sockets.emit('change color', color);
+	} );
+
+	socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
+});
+
+messageServer.listen(messagePort, () => console.log(`For Messages listening on port ${messagePort}`))
 
 // just middlewears
 // I don't know what this does, but it doesn't work without it
@@ -32,4 +76,4 @@ app.use(methodOverride());
 
 var server = app.listen(port, () => `Server running on port ${port}`);
 
-module.exports.server = server; 
+module.exports.server = server;
