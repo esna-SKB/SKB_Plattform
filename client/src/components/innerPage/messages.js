@@ -1,16 +1,51 @@
 import React from 'react';
-// import '../../css/messages.css';
+import '../../css/messages.css';
+import socketIOClient from 'socket.io-client'
 
-class Threads extends React.Component {
-	constructor(props){
-	super(props);
-	}
+const api = require('../../api');
 
-
+class ElementMessage extends React.Component{
 
 	render(){
-		return(
-			<div></div>
+		if(this.props.user.email === this.props.message.fromUser){
+			return(
+
+					<div className="col-message-sent">
+						<div className="message-sent">
+							<p>{this.props.message.text}</p>
+						</div>
+					</div>
+			)
+		}
+		else{
+			return(
+			<div className="col-message-received">
+				<div className="message-received">
+					<p>{this.props.message.text}</p>
+					</div>
+			</div>
+			)
+		}
+	}
+}
+
+class Conversation extends React.Component{
+
+	componentDidUpdate(){
+		const divObj = document.getElementById('messageHistory');
+		divObj.scrollTop = divObj.scrollHeight;
+	}
+
+	render(){
+			const conversationMessages = this.props.history.map((e)=>{
+				return( <ElementMessage key={e._id || "temp:" + e.created_at} user={this.props.user} message={e}/>);})
+
+			return (
+				<div id = "messageHistory" className="messageHistory" style={{height:'550px', overflow: 'auto'}}>
+					<div className="grid-message">
+						{conversationMessages}
+					</div>
+				</div>
 			);
 	}
 }
@@ -19,160 +54,78 @@ export class Messages extends React.Component {
 	constructor(props){
 	super(props);
 	this.state = {
-		user: this.props.user
+		endpoint: 'http://localhost:5001',
+		partnerEmail: window.location.pathname.split("/")[2],
+		history: undefined,
+		partner: undefined
 		};
+
+		const socket = socketIOClient(this.state.endpoint);
+	         socket.on('send message', message => {
+	            if((message.fromUser === this.props.user.email && message.toUser === this.state.partnerEmail) || (message.toUser === this.props.user.email && message.fromUser === this.state.partnerEmail) ){
+	                console.log("Von: "+message.fromUser +" Zu: "+message.toUser +" Text: "+message.text);
+	               this.addMessage(message);
+	            }
+	        })
 	}
 
+	componentDidMount(){
+			api.getUser(this.state.partnerEmail)
+			.then(res => {
+				this.setState({
+					partner: res
+				})
+			})
+			api.getConversation(this.props.user.email, window.location.pathname.split("/")[2])
+			.then((res) =>{
+				this.setState({
+					history : res,
+				})}
+			)
+	}
+
+	sendMessage = (e) =>{
+		if(e.key=== "Enter" && document.getElementById("messageContent").value !== ""){
+			var text = document.getElementById("messageContent").value
+			const socket = socketIOClient(this.state.endpoint)
+
+	    // this emits an event to the socket (server)
+	    var message = {
+				fromUser: this.props.user.email,
+			 	toUser: this.state.partnerEmail,
+			 	text : text};
+			socket.emit('send message', message);
+			document.getElementById("messageContent").value = ""
+		}
+	}
+
+	addMessage(message) {
+		//Append msg to component state
+		let newHistory = this.state.history.slice()
+		newHistory.push(message)
+		this.setState({
+			history: newHistory
+		})
+	}
 
 	render(){
-		return(
-			<div className="container" style={{backgroundColor : 'white'}}>
-                <div className="row" style={{'border': '1px solid #dee2e6'}}>
-                    <div className="col-6" style={{'borderRight': '1px solid #dee2e6'}}>
-                        <div className="col-content">
-                            <div className="messages nav nav-tabs" >
-								<ul className="nav nav-tabs" style={{listStyleType: 'none'}}>
-                                    <li role="message" className="active" style={{'borderBottom': '1px solid #dee2e6'}}>
-										<a href="#tab_default_1" data-toggle="tab">
-                                            <div className="avatar">
-                                                <div className="avatar-image">
-                                                    <div className="status online"></div>
-                                                    <img src=""/>
-                                                </div>
-                                            </div>
-                                            <h3>Nancy Scott</h3>
-										</a>
-                                    </li>
-                                    <li role="message" style={{'borderBottom': '1px solid #dee2e6'}}>
-										<a href="#tab_default_2" data-toggle="tab">
-                                            <div className="avatar">
-                                                <div className="avatar-image">
-                                                    <div className="status offline"></div>
-                                                    <img src=""/>
-                                                </div>
-                                            </div>
-                                            <h3>Cynthia Castro</h3>
-										</a>
-                                    </li>
-                                    <li role="message" style={{'borderBottom': '1px solid #dee2e6'}}>
-										<a href="#tab_default_3" data-toggle="tab">
-                                            <div className="avatar">
-                                                <div className="avatar-image">
-                                                    <div className="status online"></div>
-                                                    <img src=""/>
-                                                </div>
-                                            </div>
-                                            <h3>Ethan Gitson</h3>
-										</a>
-                                    </li>
-                                    <li role="message">
-                						<a href="#tab_default_2" data-toggle="tab">
-                                            <div className="avatar">
-                                                <div className="avatar-image">
-                                                    <div className="status online"></div>
-                                                    <img src=""/>
-                                                </div>
-                                            </div>
-                                            <h3>Philip Nelson</h3>
-                						</a>
-                                    </li>
-								</ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-6">
-                        <div className="col-content tab-content">
-                            <div className="tab-pane active" id="tab_default_1" style={{height:'550px'}}>
-                                <div className="grid-message">
-                                    <div className="col-message-sent">
-                                        <div className="message-sent">
-                                            <p>Not anymore.</p>
-                                        </div>
-                                    </div>
-                                    <div className="col-message-received">
-                                        <div className="message-received">
-                                            <p>But, can you?</p>
-                                        </div>
-                                    </div>
-                                    <div className="col-message-sent">
-                                        <div className="message-sent">
-                                            <p>I guess if I had some practice I could again. Its been years.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-            				<div className="tab-pane" id="tab_default_2" style={{height:'550px'}}>
-                                <div className="grid-message">
-                                    <div className="col-message-sent">
-                                        <div className="message-sent">
-                                            <p>Naaaaaah.</p>
-                                        </div>
-                                    </div>
-                                    <div className="col-message-received">
-                                        <div className="message-received">
-                                            <p>yaaaaah</p>
-                                        </div>
-                                    </div>
-            												<div className="col-message-received">
-                                        <div className="message-received">
-                                            <p>yaaaaah</p>
-                                        </div>
-                                    </div>
-            												<div className="col-message-received">
-                                        <div className="message-received">
-                                            <p>yaaaaah</p>
-                                        </div>
-                                    </div>
-                                    <div className="col-message-sent">
-                                        <div className="message-sent">
-                                            <p>I guess if I had some practice I could again. Its been years.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-							<div className="tab-pane" id="tab_default_3" style={{height:'550px'}}>
-								<div className="grid-message">
-									<div className="col-message-sent">
-										<div className="message-sent">
-											<p>this is tab 3.</p>
-										</div>
-									</div>
-									<div className="col-message-received">
-										<div className="message-received">
-											<p>really</p>
-										</div>
-									</div>
-									<div className="col-message-received">
-										<div className="message-received">
-											<p>yeaaah</p>
-										</div>
-									</div>
-									<div className="col-message-received">
-										<div className="message-received">
-											<p>its tab 3</p>
-										</div>
-									</div>
-									<div className="col-message-sent">
-										<div className="message-sent">
-											<p>I guess if I had some practice I could again. Its been years.</p>
-										</div>
-									</div>
+		if (!this.state.history || !this.state.partner){
+			return false;
+		}else{
+			return(
+				<div className="container" style={{backgroundColor : 'white'}}>
+							<div>Dein Chat mit {this.state.partner.firstname}</div>
+							<Conversation user={this.props.user} partnerEmail={this.state.partnerEmail} history={this.state.history}/>
+	            <div className="compose">
+	              <input id = "messageContent" placeholder="Type a message" onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => this.sendMessage(e)}/>
+								  <div className="compose-dock">
+									<ul id="messages"></ul>
 								</div>
-                            </div>
-                        </div>
-                        <div className="col-foot">
-                            <div className="compose">
-                                <input placeholder="Type a message"/>
-                                <div className="compose-dock">
-                                    <div className="dock"><img src=""/><img src=""/></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-		);
+	            </div>
+	          </div>
+			)
+		}
 	}
 }
+
+export default Messages
