@@ -26,7 +26,6 @@ router.route('/')
 		const { fromUser } = body;
 		const { toUser } = body;
 		const { text } = body;
-
 		//Check if both users exist
 		User.findOne({email: fromUser},{}, function(err, user){
 			if (err){
@@ -35,7 +34,7 @@ router.route('/')
 			}
 			else {
 				if (user === null){
-					return res.status(400).send({success: false, message: 'user not found'})
+					return res.status(400).send({success: false, message: 'from user not found'})
 				}
 				else{
 					User.findOne({email: toUser},{}, function(err, user){
@@ -45,7 +44,7 @@ router.route('/')
 						}
 						else {
 							if (user === null){
-								return res.status(400).send({success: false, message: 'user not found'})
+								return res.status(400).send({success: false, message: 'to user not found'})
 							}
 							else{
 								if(typeof text != "string"){
