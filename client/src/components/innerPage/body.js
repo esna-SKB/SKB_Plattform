@@ -53,7 +53,7 @@ class Body extends React.Component {
 		      <div className="cols background row" style={{height:'100%'}}>
 
 		    {/* Left Container*/}
-		        <div className="col-md-3" style={{zIndex: '1'}}>
+		        <div className="d-none d-md-block col-md-3" style={{zIndex: '1'}}>
 
 			        <SmallProfile user={this.props.user}/>
 							<div  style={{paddingTop: '20px'}}></div>
@@ -62,7 +62,7 @@ class Body extends React.Component {
 		        </div>
 
 		   {/* Right Container*/}
-			 <div className="col-md-3 order-md-last">
+			 <div className="d-none d-md-block col-md-3 order-md-last">
 							 <Route path='/courses/:name' render={(props) => (
 								 <div>
 									<TeacherInfo user={this.props.user}/>
