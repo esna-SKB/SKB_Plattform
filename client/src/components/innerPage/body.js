@@ -75,7 +75,7 @@ class Body extends React.Component {
                                                         <AllCourses user={ this.props.user } />
                                                       ) } />
                 <Route exact path='/createcourse' render={ (props) => (
-                                                             <CreateCourse user={ this.props.user } />
+                                                             <CreateCourse user={ this.props.user } history={props.history}/>
                                                            ) } />
                 <Route exact path='/groups' render={ (props) => (
                                                        <Groups user={ this.props.user } />
