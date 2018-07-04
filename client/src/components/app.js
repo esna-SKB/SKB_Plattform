@@ -86,7 +86,7 @@ class App extends React.Component {
       return (
         <OuterPage updateEmail={ this.updateEmail } location={ this.props.location } history={ this.props.history } />
         );
-    } else if (valide && user.email !== undefined) {
+    } else if (valide && loaded) {
       return (
         <InnerPage user={ user } updateUser={ this.updateUser } handleLogout={ this.handleLogout } />
         );

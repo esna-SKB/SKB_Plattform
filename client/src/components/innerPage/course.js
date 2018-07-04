@@ -46,17 +46,19 @@ class FeedTab extends Component {
     if (!this.state.file) {
       api.createArticle(self.props.course.name, "", self.props.user.email, text, "", Date.now, "")
         .then(res => {
-            self.handleArticlesUpdate(self.props.course.name)
-            document.getElementById("textteilen").value = "" 
+          self.handleArticlesUpdate(self.props.course.name)
+          document.getElementById("textteilen").value = ""
         });
     } else {
       self.getBase64(self.state.file, function(base64file) {
 
         api.createArticle(self.props.course.name, "", self.props.user.email, text, self.state.file.type, Date.now, base64file)
           .then(res => {
-              self.handleArticlesUpdate(self.props.course.name)
-              document.getElementById("textteilen").value = "" 
-              self.setState({file:undefined})
+            self.handleArticlesUpdate(self.props.course.name)
+            document.getElementById("textteilen").value = ""
+            self.setState({
+              file: undefined
+            })
           });
       });
     }
