@@ -39,9 +39,15 @@ class Body extends React.Component {
         { /*Navigation activeClassName='active'*/ }
         <div className="background-fluid background row">
           <nav className="offset-md-3 col-md-6 nav nav-fill justify-content-center">
-            <NavLink className="nav-item nav-link" exact={ true } activeStyle={ activeObj } to='/'>Newsfeed</NavLink>
-            <NavLink className="nav-item nav-link" activeStyle={ activeObj } to='/courses'>Kurse</NavLink>
-            <NavLink className="nav-item nav-link" activeStyle={ activeObj } to='/groups'>Gruppen</NavLink>
+            <NavLink className="nav-item nav-link" exact={ true } activeStyle={ activeObj } to='/'>
+              Newsfeed
+            </NavLink>
+            <NavLink className="nav-item nav-link" activeStyle={ activeObj } to='/courses'>
+              Kurse
+            </NavLink>
+            <NavLink className="nav-item nav-link" activeStyle={ activeObj } to='/groups'>
+              Gruppen
+            </NavLink>
           </nav>
         </div>
         <div className="container-fluid">
@@ -56,11 +62,11 @@ class Body extends React.Component {
             { /* Right Container*/ }
             <div className="d-none d-md-block col-md-3 order-md-last">
               <Route path='/courses/:name' render={ (props) => (
-                                                      <div>
-                                                        <TeacherInfo location={ props.location } user={ this.props.user } />
-                                                        <InviteToCourse location={ props.location } user={ this.props.user } />
-                                                      </div>
-                                                    ) } />
+                <div>
+                  <TeacherInfo location={ props.location } user={ this.props.user } />
+                  <InviteToCourse location={ props.location } user={ this.props.user } />
+                </div>
+              ) } />
             </div>
             { /* MainWindow */ }
             <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
@@ -75,7 +81,7 @@ class Body extends React.Component {
                                                         <AllCourses user={ this.props.user } />
                                                       ) } />
                 <Route exact path='/createcourse' render={ (props) => (
-                                                             <CreateCourse user={ this.props.user } />
+                                                             <CreateCourse user={ this.props.user } history={ props.history } />
                                                            ) } />
                 <Route exact path='/groups' render={ (props) => (
                                                        <Groups user={ this.props.user } />

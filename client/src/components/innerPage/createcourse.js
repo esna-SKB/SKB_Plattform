@@ -41,7 +41,7 @@ class CreateCourse extends Component {
       body: JSON.stringify(formObject)
     }).then(res => {
       console.log(res)
-      window.location.replace("/courses");
+      this.props.history.push("/courses");
     });
   }
 
