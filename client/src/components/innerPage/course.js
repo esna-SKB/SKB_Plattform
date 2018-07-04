@@ -17,7 +17,8 @@ class FeedTab extends Component {
     super(props);
     this.state = {
       courseName: props.course.name,
-      articles: undefined
+      articles: undefined,
+      file: undefined
     }
   }
 
@@ -42,17 +43,20 @@ class FeedTab extends Component {
   postArticle = () => {
     var text = document.getElementById("textteilen").value;
     var self = this;
-    if (!this.state) {
+    if (!this.state.file) {
       api.createArticle(self.props.course.name, "", self.props.user.email, text, "", Date.now, "")
         .then(res => {
-          window.location.reload(false);
+            self.handleArticlesUpdate(self.props.course.name)
+            document.getElementById("textteilen").value = "" 
         });
     } else {
       self.getBase64(self.state.file, function(base64file) {
 
         api.createArticle(self.props.course.name, "", self.props.user.email, text, self.state.file.type, Date.now, base64file)
           .then(res => {
-            window.location.reload(false);
+              self.handleArticlesUpdate(self.props.course.name)
+              document.getElementById("textteilen").value = "" 
+              self.setState({file:undefined})
           });
       });
     }
