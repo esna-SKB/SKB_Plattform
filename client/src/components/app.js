@@ -17,7 +17,7 @@ class App extends React.Component {
     this.updateUser = this.updateUser.bind(this);
 
     this.state = {
-      user: {},
+      user: undefined,
       email: "",
       valide: false,
       loaded: false
@@ -69,7 +69,8 @@ class App extends React.Component {
             this.updateUser();
           } else {
             this.setState({
-              loaded: true
+              loaded: true,
+              valide: false
             })
           }
         })
@@ -86,7 +87,7 @@ class App extends React.Component {
       return (
         <OuterPage updateEmail={ this.updateEmail } location={ this.props.location } history={ this.props.history } />
         );
-    } else if (valide && loaded) {
+    } else if (valide && loaded && user) {
       return (
         <InnerPage user={ user } updateUser={ this.updateUser } handleLogout={ this.handleLogout } />
         );
