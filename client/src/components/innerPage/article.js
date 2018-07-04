@@ -1,221 +1,234 @@
 import React from 'react';
 import api from '../../api';
 // import api from '../../api';
-import axios from'axios';
+import axios from 'axios';
 
 
 class Article extends React.Component {
-	constructor(props){
-	super(props);
-	this.state = {
-		article: this.props.article
-		};
-		this.remove = this.remove.bind(this);
-		this.comment = this.comment.bind(this);
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      article: this.props.article
+    };
+    this.remove = this.remove.bind(this);
+    this.comment = this.comment.bind(this);
+  }
 
-	remove = (event) => {
-		api.deleteArticle(this.props.article._id).then(response => {
-			if(response.success === true) {
-				document.getElementById(this.props.article._id).outerHTML = "";
-			}
-		})
-	}
+  remove = (event) => {
+    api.deleteArticle(this.props.article._id).then(response => {
+      if (response.success === true) {
+        document.getElementById(this.props.article._id).outerHTML = "";
+      }
+    })
+  }
 
-	comment = (event) => {
-		var div = document.getElementById(this.props.article._id)
-		div.firstChild.nextSibling.style["display"] = 'block'
+  comment = (event) => {
+    var div = document.getElementById(this.props.article._id)
+    div.firstChild.nextSibling.style["display"] = 'block'
 
-		var input = document.getElementById(this.props.article._id).firstChild.nextSibling.firstChild.firstChild
-		input = input.firstChild.firstChild.firstChild
-		console.log(input)
-		input.onkeypress = function(e){
-	    if (!e) e = window.event;
-	    var keyCode = e.keyCode || e.which;
-	    if (keyCode === '13'){
-					console.log(input.value)
+    var input = document.getElementById(this.props.article._id).firstChild.nextSibling.firstChild.firstChild
+    input = input.firstChild.firstChild.firstChild
+    console.log(input)
+    input.onkeypress = function(e) {
+      if (!e)
+        e = window.event;
+      var keyCode = e.keyCode || e.which;
+      if (keyCode === '13') {
+        console.log(input.value)
 
-					let comment_div = document.createElement('DIV')
-					let p = document.createElement('p')
-					p.innerHTML = input.value
-					let author = document.createElement('p')
-					author.style["font-weight"] = 'bold'
-					author.style["float"] = 'left'
-					author.style["padding-right"] = '20px'
-					author.innerHTML = 'me'
+        let comment_div = document.createElement('DIV')
+        let p = document.createElement('p')
+        p.innerHTML = input.value
+        let author = document.createElement('p')
+        author.style["font-weight"] = 'bold'
+        author.style["float"] = 'left'
+        author.style["padding-right"] = '20px'
+        author.innerHTML = 'me'
 
-					comment_div.appendChild(author)
-					comment_div.appendChild(p)
+        comment_div.appendChild(author)
+        comment_div.appendChild(p)
 
-					input.parentElement.parentElement.prepend(comment_div)
-					input.value= ''
-	      return;
-	    }
-	  }
-	}
-
-
-	/*encoder = () => {
+        input.parentElement.parentElement.prepend(comment_div)
+        input.value = ''
+        return;
+      }
+    }
+  }
 
 
-
-		var arrayBuffer = Buffer.from(this.state.article.data, 'binary').toString('base64');
-
-		let u8 = new Uint8Array(arrayBuffer)
-	    let b64encoded = btoa([].reduce.call(new Uint8Array(arrayBuffer),function(p,c){return p+String.fromCharCode(c)},''))
-	    let mimetype= this.state.article.type;
-	    //console.log(arrayBuffer)
-	    //document.getElementById("myimage") = b64encoded;
-	    return "data:"+mimetype+";base64"+arrayBuffer
-	}*/
-
-	img(){
-		var base64file = this.state.article.data
-		//document.body.appendChild(image);
-	    //console.log(arrayBuffer)
-	    //console.log(arrayBuffer);
-	    if(this.state.article.type === undefined || this.state.article.type === ""){
-
-	    } else
-	    if(this.state.article.type.includes("image")){
-	    	return(<img src={base64file} className="img-rounded img-fluid" alt=""/>)
-	    }
-	    else {
-				return(
-
-					//<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>
-					//<div className="embed-responsive embed-responsive-16by9">
-					// 	<iframe className="embed-responsive-item" src={base64file} allowFullScreen></iframe>
-					//</div>
+  /*encoder = () => {
 
 
-					<div className="embed-responsive embed-responsive-16by9">
-					    <object className="embed-responsive-item" data={base64file} type="application/pdf" internalinstanceid="9" title="pdf">
-					        <p>Your browser isnt supporting embedded pdf files. You can download the file
-					            <a href="/media/post/bootstrap-responsive-embed-aspect-ratio/example.pdf">here</a>.</p>
-					    </object>
-					</div>
+
+  	var arrayBuffer = Buffer.from(this.state.article.data, 'binary').toString('base64');
+
+  	let u8 = new Uint8Array(arrayBuffer)
+      let b64encoded = btoa([].reduce.call(new Uint8Array(arrayBuffer),function(p,c){return p+String.fromCharCode(c)},''))
+      let mimetype= this.state.article.type;
+      //console.log(arrayBuffer)
+      //document.getElementById("myimage") = b64encoded;
+      return "data:"+mimetype+";base64"+arrayBuffer
+  }*/
+
+  img() {
+    var base64file = this.state.article.data
+    //document.body.appendChild(image);
+    //console.log(arrayBuffer)
+    //console.log(arrayBuffer);
+    if (this.state.article.type === undefined || this.state.article.type === "") {
+
+    } else if (this.state.article.type.includes("image")) {
+      return (<img src={ base64file } className="img-rounded img-fluid" alt="" />)
+    } else {
+      return (
+
+        //<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>
+        //<div className="embed-responsive embed-responsive-16by9">
+        // 	<iframe className="embed-responsive-item" src={base64file} allowFullScreen></iframe>
+        //</div>
 
 
-				)
-			}
-		}
+        <div className="embed-responsive embed-responsive-16by9">
+          <object className="embed-responsive-item" data={ base64file } type="application/pdf" internalinstanceid="9" title="pdf">
+            <p>Your browser isnt supporting embedded pdf files. You can download the file
+              <a href="/media/post/bootstrap-responsive-embed-aspect-ratio/example.pdf">here</a>.</p>
+          </object>
+        </div>
 
-	render(){
 
-		const article = this.props.article;
-		const d = article.created_at.toString();
-		var date = new Date(d);
+      )
+    }
+  }
 
-		var timeSince = (date) => {
-			  var seconds = Math.floor((new Date() - date) / 1000);
+  render() {
 
-			  var interval = Math.floor(seconds / 31536000);
-			  if (interval > 1)
-			    return "vor " + interval + " Jahre";
+    const article = this.props.article;
+    const d = article.created_at.toString();
+    var date = new Date(d);
 
-			  interval = Math.floor(seconds / 2592000);
-			  if (interval > 1)
-			    return "vor " + interval + " Monate";
+    var timeSince = (date) => {
+      var seconds = Math.floor((new Date() - date) / 1000);
 
-			  interval = Math.floor(seconds / 86400);
-			  if (interval >= 1) {
-				if (interval === 1) return "vor " + interval + " Tag";
-			    return "vor " + interval + " Tage";
-				}
+      var interval = Math.floor(seconds / 31536000);
+      if (interval > 1)
+        return "vor " + interval + " Jahre";
 
-			  interval = Math.floor(seconds / 3600);
-			  if (interval >= 1)
-			    return "vor " + interval + " Stunden";
+      interval = Math.floor(seconds / 2592000);
+      if (interval > 1)
+        return "vor " + interval + " Monate";
 
-			  interval = Math.floor(seconds / 60);
-			  if (interval > 1)
-					return "vor " + interval + " Minuten";
+      interval = Math.floor(seconds / 86400);
+      if (interval >= 1) {
+        if (interval === 1) return "vor " + interval + " Tag";
+        return "vor " + interval + " Tage";
+      }
 
-			  return "vor " + Math.floor(seconds) + " Sekunden";
-		}
+      interval = Math.floor(seconds / 3600);
+      if (interval >= 1)
+        return "vor " + interval + " Stunden";
 
-		if(this.state.article.author.email !== this.props.user) {
-			return(
-				<div id={this.state.article._id}>
-					<div className='row border' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px'}}>
-					 	<div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px'}}>
-							<div className='row'>
-								<div className='col-5' style={{textTransform: 'capitalize'}}>
-								<p>{article.author.firstname} {article.author.lastname}</p>
-								<p>{ article.course.name}</p>
-								</div>
-								<div className='col-6'>
-									<time style={{float: 'right'}}>{timeSince(date)}</time>
-								</div>
-								<div className='col-1'>
-									<button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown"><h1 className="remove_article">...</h1></button>
-									<ul className="dropdown-menu" style={{ marginTop: '-35px'}}>
-							      <li className="remove" onClick={this.comment.bind(this)}><a>Kommentieren</a></li>
-							    </ul>
-								</div>
-							</div>
-						</div>
-						<div className='col-12'>
-							<h6>{article.headline}</h6>
-							<p style={{color: '#a9a8a8'}}>{article.text}</p>
+      interval = Math.floor(seconds / 60);
+      if (interval > 1)
+        return "vor " + interval + " Minuten";
 
-							{this.img()}
+      return "vor " + Math.floor(seconds) + " Sekunden";
+    }
 
-						</div>
-
-					</div>
-				</div>
-		 	);
-		}
-		else {
-			return(
-				<div id={this.state.article._id}>
-					<div className='row border' style={{borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px'}}>
-					 	<div className='col-12' style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px'}}>
-							<div className='row'>
-								<div className='col-5' style={{textTransform: 'capitalize'}}>
-								<p>{article.author.firstname} {article.author.lastname}</p>
-								<p>{ article.course.name}</p>
-								</div>
-								<div className='col-6'>
-									<time style={{float: 'right'}}>{timeSince(date)}</time>
-								</div>
-								<div className='col-1'>
-									<button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown"><h1 className="remove_article">...</h1></button>
-									<ul className="dropdown-menu" style={{ marginTop: '-35px'}}>
-							      <li className="remove" onClick={this.remove.bind(this)}><a>löschen</a></li>
-										<li className="remove" onClick={this.comment.bind(this)}><a>Kommentieren</a></li>
-							    </ul>
-								</div>
-							</div>
-						</div>
-						<div className='col-12'>
-							<h6>{article.headline}</h6>
-							<p style={{color: '#a9a8a8'}}>{article.text}</p>
-							{this.img()}
-						</div>
-					</div>
-
-					<div className="comtained border row" style={{display: 'none'}}>
-							<div className="col-sm-12">
-							<div className="panel panel-white post">
-								<div className="post-comments">
-										<div className="input-group">
-												<input className="form-control comment-input" placeholder="Add a comment..." type="text"/>
-												<span className="input-group-addon">
-														<a href="#"><i className="fa fa-check"></i></a>
-												</span>
-										</div>
-								</div>
-							</div>
-					</div>
-					</div>
-
-				</div>
-				);
-		}
-	}
+    if (this.state.article.author.email !== this.props.user) {
+      return (
+        <div id={ this.state.article._id }>
+          <div className='row border' style={ { borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px' } }>
+            <div className='col-12' style={ { borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px' } }>
+              <div className='row'>
+                <div className='col-5' style={ { textTransform: 'capitalize' } }>
+                  <p>
+                    { article.author.firstname }
+                    { article.author.lastname }
+                  </p>
+                  <p>
+                    { article.course.name }
+                  </p>
+                </div>
+                <div className='col-6'>
+                  <time style={ { float: 'right' } }>
+                    { timeSince(date) }
+                  </time>
+                </div>
+                <div className='col-1'>
+                  <button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown">
+                    <h1 className="remove_article">...</h1></button>
+                  <ul className="dropdown-menu" style={ { marginTop: '-35px' } }>
+                    <li className="remove" onClick={ this.comment.bind(this) }><a>Kommentieren</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className='col-12'>
+              <h6>{ article.headline }</h6>
+              <p style={ { color: '#a9a8a8' } }>
+                { article.text }
+              </p>
+              { this.img() }
+            </div>
+          </div>
+        </div>
+        );
+    } else {
+      return (
+        <div id={ this.state.article._id }>
+          <div className='row border' style={ { borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px' } }>
+            <div className='col-12' style={ { borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px' } }>
+              <div className='row'>
+                <div className='col-5' style={ { textTransform: 'capitalize' } }>
+                  <p>
+                    { article.author.firstname }
+                    { article.author.lastname }
+                  </p>
+                  <p>
+                    { article.course.name }
+                  </p>
+                </div>
+                <div className='col-6'>
+                  <time style={ { float: 'right' } }>
+                    { timeSince(date) }
+                  </time>
+                </div>
+                <div className='col-1'>
+                  <button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown">
+                    <h1 className="remove_article">...</h1></button>
+                  <ul className="dropdown-menu" style={ { marginTop: '-35px' } }>
+                    <li className="remove" onClick={ this.remove.bind(this) }><a>löschen</a></li>
+                    <li className="remove" onClick={ this.comment.bind(this) }><a>Kommentieren</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className='col-12'>
+              <h6>{ article.headline }</h6>
+              <p style={ { color: '#a9a8a8' } }>
+                { article.text }
+              </p>
+              { this.img() }
+            </div>
+          </div>
+          <div className="comtained border row" style={ { display: 'none' } }>
+            <div className="col-sm-12">
+              <div className="panel panel-white post">
+                <div className="post-comments">
+                  <div className="input-group">
+                    <input className="form-control comment-input" placeholder="Add a comment..." type="text" />
+                    <span className="input-group-addon">
+        														<a href="#"><i className="fa fa-check"></i></a>
+        												</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        );
+    }
+  }
 
 }
 
