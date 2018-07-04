@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../../main.css';
-import Logo from'../../img/esna.png';
+import Logo from '../../img/esna.png';
 //import Classimg from'../../img/karolina-szczur-504623-unsplash.jpg';
 // import Account_Confirm_img from'../../img/account_confirm.jpg';
 
@@ -58,107 +58,102 @@ class Signup extends Component {
   onSignUp() {
 
     let signUpFirstNameValid = document.getElementById("firstName");
-          signUpFirstNameValid.style.color = 'black';
-        if (signUpFirstNameValid.value.length === 0){
+    signUpFirstNameValid.style.color = 'black';
+    if (signUpFirstNameValid.value.length === 0) {
 
-          //fehlermeldung für den Nutzer
-          signUpFirstNameValid.style.color = 'red';
-          signUpFirstNameValid.classList.add('errorshake');
-          setTimeout(function() {
-            let signUpFirstNameValid = document.getElementById("firstName");
-            signUpFirstNameValid.classList.remove("errorshake");
-            }
-          , 500);
+      //fehlermeldung für den Nutzer
+      signUpFirstNameValid.style.color = 'red';
+      signUpFirstNameValid.classList.add('errorshake');
+      setTimeout(function() {
+        let signUpFirstNameValid = document.getElementById("firstName");
+        signUpFirstNameValid.classList.remove("errorshake");
+      }
+        , 500);
 
-          this.setState({
-            errorMessage : "Bitte fülle alle Felder aus."
-          });
+      this.setState({
+        errorMessage: "Bitte fülle alle Felder aus."
+      });
 
-          console.log('false')
+      console.log('false')
 
-          return false;
+      return false;
 
-        }
+    }
 
-  	let signUpLastNameValid = document.getElementById("lastName");
-        signUpLastNameValid.style.color = 'black';
-        if (signUpLastNameValid.value.length === 0){
+    let signUpLastNameValid = document.getElementById("lastName");
+    signUpLastNameValid.style.color = 'black';
+    if (signUpLastNameValid.value.length === 0) {
 
-  	    //fehlermeldung für den Nutzer
+      //fehlermeldung für den Nutzer
 
-  	    signUpLastNameValid.style.color = 'red';
-        signUpLastNameValid.classList.add('errorshake');
-          setTimeout(function() {
-            let signUpLastNameValid = document.getElementById("lastName");
-            signUpLastNameValid.classList.remove("errorshake");
-            }
-          , 500);
+      signUpLastNameValid.style.color = 'red';
+      signUpLastNameValid.classList.add('errorshake');
+      setTimeout(function() {
+        let signUpLastNameValid = document.getElementById("lastName");
+        signUpLastNameValid.classList.remove("errorshake");
+      }
+        , 500);
 
-        this.setState({
-        errorMessage : "Bitte fülle alle Felder aus."
-        });
+      this.setState({
+        errorMessage: "Bitte fülle alle Felder aus."
+      });
 
-  	    console.log('false')
+      console.log('false')
 
-  	    return false;
+      return false;
 
-        }
+    }
 
-  	let signUpEmailValid = document.getElementById("email");
-        signUpEmailValid.style.color = 'black';
+    let signUpEmailValid = document.getElementById("email");
+    signUpEmailValid.style.color = 'black';
 
-        if (signUpEmailValid.value.match(/^([\w.-]+)@([\w-]+\.)+([\w]{2,})$/i) == null){
+    if (signUpEmailValid.value.match(/^([\w.-]+)@([\w-]+\.)+([\w]{2,})$/i) == null) {
 
-          //fehlermeldung für den Nutzer
+      //fehlermeldung für den Nutzer
 
 
-          signUpEmailValid.style.color = 'red';
-          signUpEmailValid.classList.add('errorshake');
-          setTimeout(function() {
-            let signUpEmailValid = document.getElementById("email");
-            signUpEmailValid.classList.remove("errorshake");
-            }
-          , 500);
+      signUpEmailValid.style.color = 'red';
+      signUpEmailValid.classList.add('errorshake');
+      setTimeout(function() {
+        let signUpEmailValid = document.getElementById("email");
+        signUpEmailValid.classList.remove("errorshake");
+      }
+        , 500);
 
-          this.setState({
-          errorMessage : "Bitte gib eine gültige E-Mail Adresse an."
-          });
+      this.setState({
+        errorMessage: "Bitte gib eine gültige E-Mail Adresse an."
+      });
 
-          return false;
+      return false;
 
-        }
+    }
 
-  	let signUpPasswordValid = document.getElementById("password");
-        signUpPasswordValid.style.color = 'black';
+    let signUpPasswordValid = document.getElementById("password");
+    signUpPasswordValid.style.color = 'black';
 
-        if (signUpPasswordValid.value.length < 8){
+    if (signUpPasswordValid.value.length < 8) {
 
-  	    //fehlermeldung für den Nutzer
+      //fehlermeldung für den Nutzer
 
-  	    signUpPasswordValid.style.color = 'red';
-        signUpPasswordValid.classList.add('errorshake');
-          setTimeout(function() {
-            let signUpPasswordValid = document.getElementById("password");
-            signUpPasswordValid.classList.remove("errorshake");
-            }
-          , 500);
+      signUpPasswordValid.style.color = 'red';
+      signUpPasswordValid.classList.add('errorshake');
+      setTimeout(function() {
+        let signUpPasswordValid = document.getElementById("password");
+        signUpPasswordValid.classList.remove("errorshake");
+      }
+        , 500);
 
-        this.setState({
-          errorMessage : "Dein Passwort muss aus mind. acht Zeichen bestehen."
-        });
+      this.setState({
+        errorMessage: "Dein Passwort muss aus mind. acht Zeichen bestehen."
+      });
 
-  	    console.log('false')
+      console.log('false')
 
-  	    return false;
+      return false;
 
-        }
+    }
     // Grab state
-    const {
-      signUpFirstName,
-      signUpLastName,
-      signUpEmail,
-      signUpPassword,
-    } = this.state;
+    const {signUpFirstName, signUpLastName, signUpEmail, signUpPassword, } = this.state;
 
     console.log(this.state)
 
@@ -174,89 +169,90 @@ class Signup extends Component {
             signUpPassword: '',
           });
         } else {
-          if (json.message === 'Error: Account not verified yet.'){
+          if (json.message === 'Error: Account not verified yet.') {
             this.setState({
               status: 2,
               signUpEmail: '',
               signUpPassword: '',
               errorMessage: "Du hast deinen Account noch nicht bestätigt."
             });
-          }
-          else if(json.message === 'Error: Account already exist.')
-          this.setState({
-            status: 3,
-            signUpEmail: '',
-            signUpPassword: '',
-            errorMessage: 'Ein Account mit dieser E-Mail Adresse exisitert bereits bei uns.'
-          });
+          } else if (json.message === 'Error: Account already exist.')
+            this.setState({
+              status: 3,
+              signUpEmail: '',
+              signUpPassword: '',
+              errorMessage: 'Ein Account mit dieser E-Mail Adresse exisitert bereits bei uns.'
+            });
         }
       });
   }
 
   render() {
 
-    const {
-      signUpFirstName,
-      signUpLastName,
-      signUpEmail,
-      signUpPassword
-    } = this.state;
+    const {signUpFirstName, signUpLastName, signUpEmail, signUpPassword} = this.state;
 
 
     //when first visiting the page
-    if (this.state.status === 0){
+    if (this.state.status === 0) {
       return (
         <div className='center_signupform'>
-            <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
-            <p className="loginheadline">Bitte trag hier Deine Kontoinformationen ein</p>
-
-            <p className = "errorMessage">{this.state.errorMessage}</p>
-
-            <div className="center" style={{display: 'inline-block', textAlign: 'center'}}>
-              <input id="firstName" className="firstname" type="text" placeholder="Vorname" name="vorname" value={signUpFirstName}  onChange={this.onTextboxChangeSignUpFirstName}/>
-              <input id="lastName" className="lastname" type="text" placeholder="Nachname" name="nachname" value={signUpLastName}  onChange={this.onTextboxChangeSignUpLastName}/><br />
-            </div>
-
-            <input id="email" className="input_login" type="text" placeholder="Email Adresse" name="email" value={signUpEmail} onChange={this.onTextboxChangeSignUpEmail}/><br />
-    				<input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={signUpPassword} onChange={this.onTextboxChangeSignUpPassword}/><br />
-    				<button className="center login_button" style={{marginTop:'20px'}} type="button" value="Login" onClick={this.onSignUp}>Konto erstellen</button>
-
-            <p className="backtologin"><a href="/">zurück zum login</a></p>
+          <img id="logo" className="esna_logo" src={ Logo } alt="classroom" />
+          <p className="loginheadline">Bitte trag hier Deine Kontoinformationen ein</p>
+          <p className="errorMessage">
+            { this.state.errorMessage }
+          </p>
+          <div className="center" style={ { display: 'inline-block', textAlign: 'center' } }>
+            <input id="firstName" className="firstname" type="text" placeholder="Vorname" name="vorname" value={ signUpFirstName } onChange={ this.onTextboxChangeSignUpFirstName } />
+            <input id="lastName" className="lastname" type="text" placeholder="Nachname" name="nachname" value={ signUpLastName } onChange={ this.onTextboxChangeSignUpLastName } />
+            <br />
           </div>
-      );
+          <input id="email" className="input_login" type="text" placeholder="Email Adresse" name="email" value={ signUpEmail } onChange={ this.onTextboxChangeSignUpEmail } />
+          <br />
+          <input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={ signUpPassword } onChange={ this.onTextboxChangeSignUpPassword } />
+          <br />
+          <button className="center login_button" style={ { marginTop: '20px' } } type="button" value="Login" onClick={ this.onSignUp }>Konto erstellen</button>
+          <p className="backtologin"><a href="/">zurück zum login</a></p>
+        </div>
+        );
     }
     //when Registration was successful and Link was sent
-    else if (this.state.status === 1){
+    else if (this.state.status === 1) {
       return (
-          <div className='center_email_confirm'>
-            <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
-            <p className="infoMessage">Danke für Deine Registrierung!</p>
-            <p className="infoMessage">Wir haben Dir eine E-Mail mit einem Link zum Bestätigen Deines Kontos geschickt.</p>
-            <p className="backtologin"><a href="/">zurück zum login</a></p>
-          </div>
-      );
+        <div className='center_email_confirm'>
+          <img id="logo" className="esna_logo" src={ Logo } alt="classroom" />
+          <p className="infoMessage">Danke für Deine Registrierung!</p>
+          <p className="infoMessage">Wir haben Dir eine E-Mail mit einem Link zum Bestätigen Deines Kontos geschickt.</p>
+          <p className="backtologin"><a href="/">zurück zum login</a></p>
+        </div>
+        );
     }
     //if account is not verified yet
-    else if (this.state.status === 2){
+    else if (this.state.status === 2) {
       return (
-         <div className='center_email_confirm'>
-           <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
-           <p className="errorMessage">{this.state.errorMessage}</p>
-           <a href="resend" className='whitehover' style={{color: 'white !important'}}><div>Link nochmal senden</div></a>
-           <p className="backtologin"><a href="/">zurück zum login?</a></p>
-         </div>
-      );
+        <div className='center_email_confirm'>
+          <img id="logo" className="esna_logo" src={ Logo } alt="classroom" />
+          <p className="errorMessage">
+            { this.state.errorMessage }
+          </p>
+          <a href="resend" className='whitehover' style={ { color: 'white !important' } }>
+            <div>Link nochmal senden</div>
+          </a>
+          <p className="backtologin"><a href="/">zurück zum login?</a></p>
+        </div>
+        );
     }
     //if account already exists and also is verified
-    else if (this.state.status === 3 ){
+    else if (this.state.status === 3) {
       return (
         <div className="col-6">
-          <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
-          <p className="errorMessage">{this.state.errorMessage}</p>
+          <img id="logo" className="esna_logo" src={ Logo } alt="classroom" />
+          <p className="errorMessage">
+            { this.state.errorMessage }
+          </p>
           <p className="backtologin"><a href="/forgotPassword">passwort vergessen?</a></p>
           <p className="backtologin"><a href="/">zurück zum login</a></p>
         </div>
-      );
+        );
     }
   }
 }
