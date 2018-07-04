@@ -81,6 +81,12 @@ class Login extends Component {
   }
 
 
+  onEnter(event){
+    event.preventDefault();
+    document.getElementById("loginBtn").click();
+  }
+
+
 
   onSignIn() {
 
@@ -189,20 +195,20 @@ class Login extends Component {
     const {errorMessage, infoMessage, signInEmail, signInPassword, } = this.state;
     return (
 
-      <div className='center_loginform'>
+      <form className='center_loginform' onSubmit={this.onEnter}>
         <img id="logo" className="esna_logo" src={ Logo } alt="classroom" />
         <p className="loginheadline">Die Lern- und Kommunikationsplattform der SKB </p>
         <p className="errorMessage" id="errorMessage" dangerouslySetInnerHTML={ { __html: errorMessage } }></p>
         <p className="infoMessage">
           { infoMessage }
         </p>
-        <input id="email" className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={ signInEmail } onChange={ this.onTextboxChangeSignInEmail } />
+        <input id="email" className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={ signInEmail } onChange={ this.onTextboxChangeSignInEmail }  />
         <br />
         <input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={ signInPassword } onChange={ this.onTextboxChangeSignInPassword } />
         <br />
-        <button className="center login_button" style={ { marginTop: '10px', marginBottom: '10px' } } onClick={ this.onSignIn }>login</button>
+        <button id="loginBtn" className="center login_button" style={ { marginTop: '10px', marginBottom: '10px' } } onClick={ this.onSignIn }>login</button>
         <p style={ { color: '#a9a8a8', textAlign: 'center' } }><a href="/forgotPassword">Passwort vergessen?</a></p>
-      </div>
+      </form>
       );
 
   }
