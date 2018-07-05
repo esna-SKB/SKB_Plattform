@@ -31,23 +31,30 @@ class VerifyRegistration extends Component {
 
     };
   }
-    componentDidMount(){
+  componentDidMount() {
 
-      var registrationToken = qs.parse(this.props.location.search).token
+    var registrationToken = qs.parse(this.props.location.search).token
 
-      api.verifyRegistration(registrationToken)
+    api.verifyRegistration(registrationToken)
       .then(res => res.json())
-        .then(json => {
-          console.log('json', json);
-          this.props.history.push({pathname : "/", state : {infoMessage: "Account verified"}});
+      .then(json => {
+        console.log('json', json);
+        this.props.history.push({
+          pathname: "/",
+          state: {
+            infoMessage: "Account verified"
+          }
         });
-    };
+      });
+  }
+  ;
 
 
-    render(){
+  render() {
     return null
-    }
-};
+  }
+}
+;
 
 
 export default VerifyRegistration;

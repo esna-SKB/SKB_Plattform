@@ -1,77 +1,95 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
+import Chat from '../../img/chat-icon.png';
 // import {withRouter} from 'react-router'
 
 const api = require('../../api');
 
 
 function uniqFilterAccordingToProp(prop) {
-    if (prop)
-        return (ele, i, arr) => arr.map(ele => ele[prop]).indexOf(ele[prop]) === i
-    else
-        return (ele, i, arr) => arr.indexOf(ele) === i
+  if (prop)
+    return (ele, i, arr) => arr.map(ele => ele[prop]).indexOf(ele[prop]) === i
+  else
+    return (ele, i, arr) => arr.indexOf(ele) === i
 }
 
-class MyTeachers extends React.Component{
-	constructor(props){
-	super(props);
-	this.state = {
-			teacher: ""
-		};
-	}
+class MyTeachers extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      teacher: ""
+    };
+  }
 
-	componentDidMount(){
-		this.setState({
+  componentDidMount() {
+    this.setState({
       teacher: this.props.teacher
     })
-	}
-	render () {
-   return (
-       <div style={{marginTop : "2em"}}>
-						 <div style={{clear: "both"}} className="contentTeacherinfo" key={this.props.teacher.email}>
-						 <img  src={this.props.teacher.picturedata} alt="profilepic" ></img>
-						 <div> <strong><Link to={`/user/${this.props.teacher.email}`}>{this.props.teacher.firstname} {this.props.teacher.lastname}</Link></strong></div>
-						 </div>
-			</div>
-   );
-	}
+  }
+  render() {
+    return (
+      <div style={ { marginTop: "2em" } }>
+        <div style={ { clear: "both" } } className="contentTeacherinfo" key={ this.props.teacher.email }>
+          <img src={ this.props.teacher.picturedata } alt="profilepic"></img>
+          <div>
+            <strong>
+            			<Link to={ `/user/${this.props.teacher.email}` }>{ this.props.teacher.firstname } { this.props.teacher.lastname }</Link>
+            		</strong>
+            <Link className='float-right' to={ `/messages/${this.props.teacher.email}` }><img id="chat" className="icon" style={ { fontSize: '10px' } } src={ Chat } alt="Chat" /></Link>
+          </div>
+        </div>
+      </div>
+      );
+  }
 }
 
 class TeacherInfo extends React.Component {
-	constructor(props){
-	super(props);
-	this.state = {
-    user: this.props.user,
-    teacher: ''
-		};
-	}
-
-  componentDidMount(){
-        //get teacher of the course
-          var course = window.location.pathname.split("/")[2].replace("%20", " ");
-          api.getCourse(course).then(
-            (course) => this.setState({
-              teacher: course.teacher
-            })
-          )
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: this.props.user,
+      teacher: ''
+    };
   }
 
-	render(){
-   if(this.state.user.email !== this.state.teacher.email){
-		return(
-			<div className="row">
-	            <div className="box col-12">
-	              <div className="box-title">
-	                Kursleiter kontaktieren
-	              </div>
-					<MyTeachers myEmail={this.state.user.email} teacher={this.state.teacher}/>
-				</div>
-	          </div>
-			);
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location.pathname !== nextProps.location.pathname) {
+      var course_name = nextProps.location.pathname.split("/")[2];
+      course_name = course_name.replace("%20", " ");
+      this.handleUpdate(course_name);
     }
-    else{
+  }
+
+  componentDidMount() {
+    //get teacher of the course
+    var course_name = this.props.location.pathname.split("/")[2].replace("%20", " ");
+    course_name = course_name.replace("%20", " ");
+    this.handleUpdate(course_name);
+  }
+
+  handleUpdate = (courseName) => {
+    api.getCourse(courseName)
+      .then((course) => this.setState({
+        teacher: course.teacher
+      })
+    )
+  }
+
+  render() {
+    if (this.state.user.email !== this.state.teacher.email) {
+      return (
+        <div className="row">
+          <div className="box col-12">
+            <div className="box-title">
+              Kursleiter kontaktieren
+            </div>
+            <MyTeachers myEmail={ this.state.user.email } teacher={ this.state.teacher } />
+          </div>
+        </div>
+        );
+    } else {
       return null;
     }
-	}
+  }
 }
 export default TeacherInfo;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import '../../main.css';
 
-import Logo from'../../img/esna.png';
+import Logo from '../../img/esna.png';
 //import Classimg from'../../img/chinese2-min.png';
 
 import { setInStorage } from '../../utils/storage';
@@ -35,7 +35,7 @@ class Login extends Component {
     this.onTextboxChangeSignInPassword = this.onTextboxChangeSignInPassword.bind(this);
 
     this.onSignIn = this.onSignIn.bind(this);
-	
+
   }
 
 
@@ -43,15 +43,14 @@ class Login extends Component {
 
   componentDidMount() {
 
-    if (this.props.location.state){
-      if (this.props.location.state.infoMessage === "Password changed"){
+    if (this.props.location.state) {
+      if (this.props.location.state.infoMessage === "Password changed") {
         this.setState({
-          infoMessage : "Dein Passwort wurde geändert. Du kannst dich jetzt mit deinem neuen Passwort einloggen."
+          infoMessage: "Dein Passwort wurde geändert. Du kannst dich jetzt mit deinem neuen Passwort einloggen."
         });
-      }
-      else if (this.props.location.state.infoMessage === "Account verified"){
+      } else if (this.props.location.state.infoMessage === "Account verified") {
         this.setState({
-          infoMessage : "Danke für die Bestätigung deines Benutzerkontos. Du kannst dich jetzt einloggen."
+          infoMessage: "Danke für die Bestätigung deines Benutzerkontos. Du kannst dich jetzt einloggen."
         });
       }
     }
@@ -82,138 +81,135 @@ class Login extends Component {
   }
 
 
+  onEnter(event){
+    event.preventDefault();
+    document.getElementById("loginBtn").click();
+  }
+
+
 
   onSignIn() {
 
-      let signUpEmailValid = document.getElementById("email");
-      //email form validation
-      if (signUpEmailValid.value.match(/^([\w.-]+)@([\w-]+\.)+([\w]{2,})$/i) == null){
-        signUpEmailValid.style.color = 'red';
-        signUpEmailValid.classList.add('errorshake');
-        document.getElementById("errorMessage").setAttribute("style", "margin-top:-43px;");
-        setTimeout(function() {
-          let signUpEmailValid = document.getElementById("email");
-          signUpEmailValid.classList.remove("errorshake");
-          }
+    let signUpEmailValid = document.getElementById("email");
+    //email form validation
+    if (signUpEmailValid.value.match(/^([\w.-]+)@([\w-]+\.)+([\w]{2,})$/i) == null) {
+      signUpEmailValid.style.color = 'red';
+      signUpEmailValid.classList.add('errorshake');
+      document.getElementById("errorMessage").setAttribute("style", "margin-top:-43px;");
+      setTimeout(function() {
+        let signUpEmailValid = document.getElementById("email");
+        signUpEmailValid.classList.remove("errorshake");
+      }
         , 500);
 
-        this.setState({
-        errorMessage : "Bitte gib eine gültige E-Mail Adresse an."
-        });
-        return false;
-      }
+      this.setState({
+        errorMessage: "Bitte gib eine gültige E-Mail Adresse an."
+      });
+      return false;
+    }
 
-      let signUpPasswordValid = document.getElementById("password");
+    let signUpPasswordValid = document.getElementById("password");
 
-      //password form validation
-      if (signUpPasswordValid.value.length === 0){
-	    signUpPasswordValid.style.color = 'red';
+    //password form validation
+    if (signUpPasswordValid.value.length === 0) {
+      signUpPasswordValid.style.color = 'red';
       document.getElementById("errorMessage").setAttribute("style", "margin-top:-43px;");
 
       signUpPasswordValid.classList.add('errorshake');
-        setTimeout(function() {
-          let signUpPasswordValid = document.getElementById("password");
-          signUpPasswordValid.classList.remove("errorshake");
-          }
+      setTimeout(function() {
+        let signUpPasswordValid = document.getElementById("password");
+        signUpPasswordValid.classList.remove("errorshake");
+      }
         , 500);
 
-        this.setState({
-          errorMessage : "Bitte gib ein Passwort ein."
-        });
-  	    return false;
-        }
+      this.setState({
+        errorMessage: "Bitte gib ein Passwort ein."
+      });
+      return false;
+    }
 
     // Grab state
 
-    const { signInPassword } = this.state;
-    const signInEmail = this.state.signInEmail.toLowerCase(); 
+    const {signInPassword} = this.state;
+    const signInEmail = this.state.signInEmail.toLowerCase();
 
     // Post request to backend
 
-      api.signIn(signInEmail, signInPassword).then(json => {
+    api.signIn(signInEmail, signInPassword).then(json => {
 
-        console.log('json', json);
+      console.log('json', json);
 
-        if (json.success === true) {
+      if (json.success === true) {
 
-          setInStorage('login_token', { token: json.token });
-          //user registered & verified and correct password -> login successful
-          fetch('/userSession/'+signInEmail, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          }
-          ).then(res => res.json())
+        setInStorage('login_token', {
+          token: json.token
+        });
+        //user registered & verified and correct password -> login successful
+        fetch('/userSession/' + signInEmail, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        }
+        ).then(res => res.json())
           .then(json => {
             //console.log(jsonnn.token);
             let str = json.token;
-            cookie.save('userID', str, {expires: updateTimeSec(60*20), path: '/'});
+            cookie.save('userID', str, {
+              expires: updateTimeSec(60 * 20),
+              path: '/'
+            });
           })
-          .then(()=>this.props.updateEmail(signInEmail));
+          .then(() => this.props.updateEmail(signInEmail));
 
+        this.setState({
+
+          signInError: json.message,
+
+          token: json.token,
+
+        });
+
+      } else {
+        //user not registered
+        if (json.message === 'No account or wrong Password') {
           this.setState({
-
             signInError: json.message,
 
-            token: json.token,
-
+            infoMessage: "",
+            errorMessage: "E-Mail Adresse oder Passwort nicht korrekt."
           });
-
-        } else {
-          //user not registered
-          if(json.message === 'No account or wrong Password'){
-            this.setState({
-              signInError: json.message,
-
-              infoMessage: "",
-              errorMessage: "E-Mail Adresse oder Passwort nicht korrekt."
-            });
-          }
-          else if(json.message === 'User not verified yet'){
-            this.setState({
-              signInError: json.message,
-              infoMessage: "",
-              errorMessage: "Du hast Dein Konto noch nicht bestätigt. Solltest du keinen Link erhalten haben, kannst Du ihn <a href='/resend' >hier</a> noch einmal anfordern."
-            });
-          }
+        } else if (json.message === 'User not verified yet') {
+          this.setState({
+            signInError: json.message,
+            infoMessage: "",
+            errorMessage: "Du hast Dein Konto noch nicht bestätigt. Solltest du keinen Link erhalten haben, kannst Du ihn <a href='/resend' >hier</a> noch einmal anfordern."
+          });
         }
-      });
+      }
+    });
   }
 
   render() {
 
-    const {
-
-      errorMessage,
-
-      infoMessage,
-
-      signInEmail,
-
-      signInPassword,
-
-    } = this.state;
+    const {errorMessage, infoMessage, signInEmail, signInPassword, } = this.state;
     return (
-		
-        <div className='center_loginform'>
-              <img id="logo" className="esna_logo" src={Logo} alt="classroom"/>
 
-              <p className="loginheadline">Die Lern- und Kommunikationsplattform der SKB </p>
-
-              <p className = "errorMessage" id="errorMessage" dangerouslySetInnerHTML={{ __html: errorMessage }}></p>
-              <p className = "infoMessage">{infoMessage}</p>
-
-
-              <input id="email" className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={signInEmail} onChange={this.onTextboxChangeSignInEmail}/><br />
-
-              <input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={signInPassword} onChange={this.onTextboxChangeSignInPassword}/><br />
-
-              <button className="center login_button" style={{marginTop:'10px', marginBottom: '10px'}} onClick={this.onSignIn}>login</button>
-
-              <p style={{color:'#a9a8a8',textAlign: 'center'}}><a href="/forgotPassword">Passwort vergessen?</a></p>
-        </div>
-    );
+      <form className='center_loginform' onSubmit={this.onEnter}>
+        <img id="logo" className="esna_logo" src={ Logo } alt="classroom" />
+        <p className="loginheadline">Die Lern- und Kommunikationsplattform der SKB </p>
+        <p className="errorMessage" id="errorMessage" dangerouslySetInnerHTML={ { __html: errorMessage } }></p>
+        <p className="infoMessage">
+          { infoMessage }
+        </p>
+        <input id="email" className="input_login" type="text" placeholder="Deine Email Adresse" name="email" value={ signInEmail } onChange={ this.onTextboxChangeSignInEmail }  />
+        <br />
+        <input id="password" className="input_login" type="password" placeholder="Passwort" name="password" value={ signInPassword } onChange={ this.onTextboxChangeSignInPassword } />
+        <br />
+        <button id="loginBtn" className="center login_button" style={ { marginTop: '10px', marginBottom: '10px' } } onClick={ this.onSignIn }>login</button>
+        <p style={ { color: '#a9a8a8', textAlign: 'center' } }><a href="/forgotPassword">Passwort vergessen?</a></p>
+      </form>
+      );
 
   }
 

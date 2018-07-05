@@ -9,13 +9,13 @@ import '../../css/profilepicture.css';
 //import cookie from 'react-cookies';
 
 class Settings extends Component {
-	constructor(props) {
-		super(props);
+  constructor(props) {
+    super(props);
 
-		this.state = {
-		  user: this.props.user
-		}
-	} 
+    this.state = {
+      user: this.props.user
+    }
+  }
 
 
 
@@ -23,46 +23,50 @@ class Settings extends Component {
 
     return (
       <div>
-
-      <div className="container-fluid">
-
-      <div className="background row">
-
-        <div className="col col-sm-12">
-				<div className="row box ">
-					<div className="col-12">
-						<div className="col-12">
-							<h4 className="row">Einstellungen</h4>
-
-							<div className="row"><Link to={`/user/${this.props.user.email}/changepassword`} className="text-muted">Passwort ändern</Link></div>
-							<div className="row"><Link  to={`/user/${this.props.user.email}/edit`} className="text-muted">Profil bearbeiten</Link></div>
-							<div className="row"><Link  to={``} className="text-muted">Kontaktdaten ändern</Link></div>
-							<div className="row"><Link  to={``} className="text-muted">Mitteilungenkonfigurationen</Link></div>
-							<div className="row"><Link  to={``} className="text-muted">Sicherheitsschlüssel</Link></div>
-							<div className="row"><Link  to={``} className="text-muted">Feedback</Link></div>
-							<div className="row"><Link  to={``} className="text-muted">Kalendereinstellungen</Link></div>
-							<div className="row"><Link  to={``} className="text-muted">Kalendereinstellungen</Link></div>
-
-						</div>
-
-						<div className="row-12 text-muted text-right">
-							<div className="col-12">
-								<Link  to={`/`}>home</Link>
-							</div>
-						</div>
-					</div>
-				</div>
-
-
-		</div>
-
-
-
-
-    </div>
-	</div>
-	</div>
-    );
+        <div className="container-fluid">
+          <div className="background row">
+            <div className="col col-sm-12">
+              <div className="row box ">
+                <div className="col-12">
+                  <div className="col-12">
+                    <h4 className="row">Einstellungen</h4>
+                    <div className="row">
+                      <Link to={ `/user/${this.props.user.email}/changepassword` } className="text-muted">Passwort ändern</Link>
+                    </div>
+                    <div className="row">
+                      <Link to={ `/user/${this.props.user.email}/edit` } className="text-muted">Profil bearbeiten</Link>
+                    </div>
+                    <div className="row">
+                      <Link to={ `` } className="text-muted">Kontaktdaten ändern</Link>
+                    </div>
+                    <div className="row">
+                      <Link to={ `` } className="text-muted">Mitteilungenkonfigurationen</Link>
+                    </div>
+                    <div className="row">
+                      <Link to={ `` } className="text-muted">Sicherheitsschlüssel</Link>
+                    </div>
+                    <div className="row">
+                      <Link to={ `` } className="text-muted">Feedback</Link>
+                    </div>
+                    <div className="row">
+                      <Link to={ `` } className="text-muted">Kalendereinstellungen</Link>
+                    </div>
+                    <div className="row">
+                      <Link to={ `` } className="text-muted">Kalendereinstellungen</Link>
+                    </div>
+                  </div>
+                  <div className="row-12 text-muted text-right">
+                    <div className="col-12">
+                      <Link to={ `/` }>home</Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      );
   }
 }
 
