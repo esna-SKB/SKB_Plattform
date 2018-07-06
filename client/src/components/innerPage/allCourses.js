@@ -136,6 +136,7 @@ export class MyCourses extends React.Component {
   }
 
   render() {
+    const {list} = this.state; 
     return (
       <div className="box course-box col-12">
         <div className="box-title">
@@ -145,7 +146,7 @@ export class MyCourses extends React.Component {
           </Link>
         </div>
         <div className="courses">
-          { this.state.list }
+          { list }
         </div>
       </div>
       );
@@ -186,14 +187,14 @@ class OtherCourses extends React.Component {
   }
 
   render() {
-
+    const { list } = this.state; 
     return (
       <div className="box course-box col-12">
         <div className="box-title">
           Alle Kurse
         </div>
         <div className="courses">
-          { this.state.list }
+          { list }
         </div>
       </div>
       );

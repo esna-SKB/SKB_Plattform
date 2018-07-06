@@ -424,7 +424,12 @@ class Course extends Component {
 
 
   render() {
-
+    const {
+      enrolled,
+      user,
+      course,
+      isTeacher
+    } = this.state; 
     //make sure API calls are finished when rendering (better solution????)
     if (!this.state.course) {
       return null;
@@ -438,12 +443,12 @@ class Course extends Component {
               <div className="col" style={ { backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px' } }>
                 <div className="row">
                   <div className="col" style={ { paddingRight: '0', paddingLeft: '20px' } }>
-                    <h1 style={ { textTransform: 'capitalize' } }>{ this.state.course.name }</h1>
+                    <h1 style={ { textTransform: 'capitalize' } }>{ course.name }</h1>
                   </div>
                   <div className="col-4">
                   </div>
                   <div className="col" style={ { paddingRight: '10px' } }>
-                    <EnrollButton user={ this.props.user } course={ this.state.course } enrolled={ this.state.enrolled } />
+                    <EnrollButton user={ this.props.user } course={ course } enrolled={ enrolled } />
                   </div>
                 </div>
               </div>
@@ -466,8 +471,8 @@ class Course extends Component {
             <div className="col col-sm-12">
               <div className="tab-content col-offset-6 centered" id="tab-content">
                 <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
-                  <div className="row">
-                    <div className="d-block d-md-none order-md-last">
+                  <div>
+                    <div className="d-block d-md-none order-md-last justify-content-center">
                       <div>
                         <TeacherInfo location={ this.props.location } user={ this.props.user } />
                         <InviteToCourse location={ this.props.location } user={ this.props.user } />
@@ -476,8 +481,8 @@ class Course extends Component {
                     <div className="col-md-8">
                       <h3 style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px' } }>Inhalt</h3>
                     </div>
-                    <div className="col-md-4">
-                      <button ref="bearbeiten" className='registrieren_botton' id="edit" style={ (this.state.course.teacher.email !== this.props.user.email) ? {
+                    <div className="">
+                      <button ref="bearbeiten" className='registrieren_botton' id="edit" style={ (course.teacher.email !== this.props.user.email) ? {
                                                                                                    display: 'none'
                                                                                                  } : {
                                                                                                    color: 'rgb(24, 86, 169)',
@@ -523,7 +528,7 @@ class Course extends Component {
                     </div>
                   </div>
                   <p id="description" ref="description">
-                    { this.state.course.description }
+                    { course.description }
                   </p>
                   <div id="kursmaterial" ref="kursmaterial">
                     <h3>Kursmaterial</h3>
@@ -536,8 +541,8 @@ class Course extends Component {
                     </p>
                   </div>
                 </div>
-                <MemberTab enrolled={ this.state.enrolled } course={ this.state.course } isTeacher={ this.state.isTeacher } />
-                <FeedTab enrolled={ this.state.enrolled } user={ this.props.user } course={ this.state.course } />
+                <MemberTab enrolled={ enrolled } course={ course } isTeacher={ isTeacher } />
+                <FeedTab enrolled={ enrolled } user={ this.props.user } course={ course } />
               </div>
             </div>
           </div>
