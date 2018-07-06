@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
+var os = require ('os');
 
 const Email_invite = require('../emails/inviteMail');
 
@@ -16,7 +17,8 @@ router.route('/')
 			//we should probably think about an alternative solution here.
 			//sending this link is not really safe
 			//var link = "http://localhost:3000/courses/" + courseName.replace(" ", "%20");
-			var link = "https://9af1dd61.ngrok.io/courses/" + courseName.replace(" ", "%20");
+			//var link = "https://9af1dd61.ngrok.io/courses/" + courseName.replace(" ", "%20");
+			var link = os.hostname() +"/courses/" + courseName.replace(" ", "%20");
 			Email_invite.sendInviteMail(email, link, courseName);
 			res.status(200).send({
 					success: true,
