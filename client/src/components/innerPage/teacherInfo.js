@@ -76,7 +76,12 @@ class TeacherInfo extends React.Component {
   }
 
   render() {
-    if (this.state.user.email !== this.state.teacher.email) {
+    const {
+      user,
+      teacher
+    } = this.state; 
+
+    if (teacher && user.email !== teacher.email) { //if teacher is loaded and user is different from teacher, show
       return (
         <div className="row">
           <div className="box col-12">

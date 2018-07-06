@@ -63,8 +63,8 @@ export class Messages extends React.Component {
       history: undefined,
       partner: undefined
     };
-
-    const socket = socketIOClient(this.state.endpoint);
+    //falscher endpoint für server, this is allways localhost 
+    const socket = socketIOClient(this.state.endpoint); 
     socket.on('send message', message => {
       if ((message.fromUser === this.props.user.email && message.toUser === this.state.partnerEmail) || (message.toUser === this.props.user.email && message.fromUser === this.state.partnerEmail)) {
         console.log("Von: " + message.fromUser + " Zu: " + message.toUser + " Text: " + message.text);
