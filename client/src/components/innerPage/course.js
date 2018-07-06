@@ -117,7 +117,7 @@ class FeedTab extends Component {
               </div>
             </div>
           </div>
-          <div className='container' id="userposts">
+          <div>
             { articles.map(function(article) {
                 return ( <Article key={ article._id } userEmail={ this.props.user.email } article={ article } />);
               }, this) }
@@ -127,7 +127,7 @@ class FeedTab extends Component {
     } else if (this.props.enrolled) {
       return (
         <div className="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={ { padding: '20px' } }>
-          <div className='container' id="userposts">
+          <div>
             { articles.map(function(article) {
                 return ( <Article key={ article._id } user={ this.props.user.email } article={ article } />);
               }, this) }
