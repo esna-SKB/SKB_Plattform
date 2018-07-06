@@ -175,7 +175,7 @@ class MemberTab extends Component {
           <ul>
             { members.map(function(member, i) {
                 return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
-                         <Link lassName='' to={ `/user/${member.email}` }>
+                         <Link to={ `/user/${member.email}` }>
                            { member.firstname }
                            { member.lastname }
                          </Link>
