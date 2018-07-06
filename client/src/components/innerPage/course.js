@@ -119,7 +119,7 @@ class FeedTab extends Component {
           </div>
           <div className='container' id="userposts">
             { articles.map(function(article) {
-                return ( <Article key={ article._id } user={ this.props.user.email } article={ article } />);
+                return ( <Article key={ article._id } userEmail={ this.props.user.email } article={ article } />);
               }, this) }
           </div>
         </div>
@@ -174,13 +174,13 @@ class MemberTab extends Component {
         <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
           <ul>
             { members.map(function(member, i) {
-                return <li className='' style={ { textTransform: 'capitalize' } } key={ i }>
-                         <Link to={ `/user/${member.email}` }>
+                return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
+                         <Link lassName='' to={ `/user/${member.email}` }>
                            { member.firstname }
                            { member.lastname }
                          </Link>
-                         <Link to={ `/messages/${member.email}` }>
-                           <img id="chat" className="icon float-right" src={ Chat } alt="Chat" />
+                         <Link className='float-right' to={ `/messages/${member.email}` }>
+                           <img id="chat" className="icon" src={ Chat } alt="Chat" />
                          </Link>
                        </li>
               }) }
@@ -469,7 +469,7 @@ class Course extends Component {
           </div>
           <div className="background container-fluid row">
             <div className="col col-sm-12">
-              <div className="tab-content col-offset-6 centered" id="tab-content">
+              <div className="tab-content col-offset-6 centered">
                 <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
                   <div>
                     <div className="d-block d-md-none order-md-last justify-content-center">
