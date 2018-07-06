@@ -18,17 +18,18 @@ class Newsfeed extends React.Component {
       .then(res => {
         this.setState({
           articles: res.map((e) => {
-            return ( <Article key={ e._id } article={ e } />);
+            return ( <Article key={ e._id } article={ e } newsfeed={ true }/>);
           })
         })
       })
   }
 
   render() {
+    const { articles } = this.state; 
     return (
 
       <div className='container' id="userposts">
-        { this.state.articles }
+        { articles }
       </div>
       );
   }
