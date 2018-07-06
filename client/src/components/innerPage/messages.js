@@ -1,9 +1,23 @@
 import React from 'react';
 import '../../css/messages.css';
 import socketIOClient from 'socket.io-client'
+var os = require ('os')
 
 const api = require('../../api');
-
+class ChatPartner extends React.Component {
+  render(){
+    return(
+      <div>
+          <div style={ { clear: "both" } } className="contentTeacherinfo">
+            <img className="contentTeacherinfo" src={ this.props.partner.picturedata } alt="profilepicture" style = {{margin : "auto"}}/>
+          </div>
+          <div style={ { clear: "both" } }>
+            <div style = {{margin : "auto"}}>{ this.props.partner.firstname } { this.props.partner.lastname }</div>
+          </div>
+      </div>
+    )
+  }
+}
 class ElementMessage extends React.Component {
 
   render() {
@@ -58,13 +72,13 @@ export class Messages extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      endpoint: 'http://localhost:5001',
+      endpoint: os.hostname()+':5001',
       partnerEmail: window.location.pathname.split("/")[2],
       history: undefined,
       partner: undefined
     };
-    //falscher endpoint für server, this is allways localhost 
-    const socket = socketIOClient(this.state.endpoint); 
+    //falscher endpoint für server, this is allways localhost
+    const socket = socketIOClient(this.state.endpoint);
     socket.on('send message', message => {
       if ((message.fromUser === this.props.user.email && message.toUser === this.state.partnerEmail) || (message.toUser === this.props.user.email && message.fromUser === this.state.partnerEmail)) {
         console.log("Von: " + message.fromUser + " Zu: " + message.toUser + " Text: " + message.text);
@@ -120,12 +134,10 @@ export class Messages extends React.Component {
     } else {
       return (
         <div className="container" style={ { backgroundColor: 'white' } }>
-          <div>Dein Chat mit
-            { this.state.partner.firstname }
-          </div>
+          <ChatPartner partner = {this.state.partner}/>
           <Conversation user={ this.props.user } partnerEmail={ this.state.partnerEmail } history={ this.state.history } />
           <div className="compose">
-            <input id="messageContent" placeholder="Type a message" onKeyDown={ (e: KeyboardEvent<HTMLDivElement>) => this.sendMessage(e) } />
+            <input id="messageContent" placeholder="Deine Nachricht.." onKeyDown={ (e: KeyboardEvent<HTMLDivElement>) => this.sendMessage(e) } />
             <div className="compose-dock">
               <ul id="messages"></ul>
             </div>
