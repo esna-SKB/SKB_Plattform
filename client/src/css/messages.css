@@ -14,8 +14,8 @@
   margin-bottom: 2em;
 }
 
-.contentTeacherinfo h4{
-  margin-top: 1em;
+.contentTeacherinfo span{
+  margin-top: 2em;
   margin-left: 1em;
 }
 
@@ -26,4 +26,51 @@
 
 .messageHistory{
   overflow: auto;
+}
+
+.contentChatPartnerinfo {
+  display: inline-block;
+  margin-top: 1em;
+}
+
+.contentChatPartnerinfo div{
+  margin-bottom: 2em;
+}
+.contentChatPartnerinfo img {
+  margin: auto;
+  display: block;
+  width:3em;
+  height:3em;
+  border-radius: 20vw;
+}
+
+.contentChatPartnerinfo span{
+  margin-top: 0.5em;
+}
+
+#newChatPartner{
+  margin-top: 1em;
+  margin-bottom: 1em
+}
+.contentChatPartnerlist {
+  display: flex;
+}
+
+.contentChatPartnerlist img {
+  margin-right: 10px;
+  display: block;
+  width:3em;
+  height:3em;
+  border-radius: 20vw;
+  margin-bottom: 2em;
+}
+
+.contentChatPartnerlist span{
+  margin-top: 0.5em;
+  margin-left: 1em;
+}
+
+.contentChatPartnerlist div{
+  margin-top: 2em;
+  margin-left: 1em;
 }

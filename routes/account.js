@@ -156,8 +156,8 @@ router.route('/signup')
 				});
 				//actually send email
 				//var link = "http://localhost:3000/verify?token=" + token.token;
-				var link = os.hostname() + "/verify?token=" + token.token;
-				// var link = "https://9af1dd61.ngrok.io/verify?token=" + token.token;
+				//var link = os.hostname() + "/verify?token=" + token.token;
+				var link = "https://9af1dd61.ngrok.io/verify?token=" + token.token;
 				Email_register.sendSignUpMail(newUser, link);
 
 
@@ -234,8 +234,8 @@ router.route('/registration/verify')
 		            		if (err) { return res.status(500).send({ message: err.message }); }
 						});
 						// var link = "http://localhost:3000/verify?token=" + token.token;
-						var link = os.hostname() + "/verify?token=" + token.token;
-						//var link = "https://9af1dd61.ngrok.io/verify?token=" + token.token;
+						//var link = os.hostname() + "/verify?token=" + token.token;
+						var link = "https://9af1dd61.ngrok.io/verify?token=" + token.token;
 
 						Email_register.sendSignUpMail(user, link);
 					}
@@ -270,8 +270,8 @@ router.route('/registration/verify')
 				if(user && user.isVerified){
 				//actually send email
 				//var link = "http://localhost:3000/resetPassword/?id=" + user._id;
-				var link = os.hostname() + "/resetPassword/?id=" + user._id;
- 				//var link = "https://9af1dd61.ngrok.io/resetPassword/?id=" + user._id;
+				//var link = os.hostname() + "/resetPassword/?id=" + user._id;
+ 				var link = "https://9af1dd61.ngrok.io/resetPassword/?id=" + user._id;
 				Email_reset.sendResetMail(user, link);
 				}
 				return res.status(200).send({

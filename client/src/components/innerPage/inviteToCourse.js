@@ -7,7 +7,7 @@ class Suggestions extends Component {
 
   render() {
     const options = this.props.results.map(r => (
-      <option key={ r } value={ r }></option>
+      <option key={ r.email } value={ r.email }>{r.firstname} {r.lastname}</option>
     ))
     return <ul>
              { options }
@@ -28,7 +28,8 @@ class InviteToCourse extends Component {
       courseName: '',
       courseTeacher: '',
       isFree: '',
-      errorMessage: ''
+      errorMessage: '',
+      allUsers: []
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -43,6 +44,13 @@ class InviteToCourse extends Component {
     var course_name = this.props.location.pathname.split("/")[2];
     course_name = course_name.replace("%20", " ");
     this.handlesUpdate(course_name);
+
+    api.getAllUsers()
+        .then(res => {
+          this.setState({
+            allUsers: res
+          })
+        })
   }
 
   handlesUpdate = (course_name) => {
@@ -63,35 +71,30 @@ class InviteToCourse extends Component {
       infoMessage: ""
     }, () => {
       if (this.state.query && this.state.query.length > 1) {
-        if (this.state.query.length % 2 === 0) {
           this.getInfo()
         }
-      } else if (!this.state.query) {
-      }
-    })
+      })
   }
 
   getInfo = () => {
-    api.getAllUsers()
-      .then((data) => {
-        data = data.map(user => user.email);
-        const matches = data.filter(s => s.startsWith(this.state.query));
+        const matches = this.state.allUsers.filter(s =>
+          s.firstname.startsWith(this.state.query) || s.lastname.startsWith(this.state.query) || s.email.startsWith(this.state.query));
         this.setState({
           users: matches
         })
-      })
   }
 
   onSubmit = () => {
     let requestEmail = document.getElementById("inviteEmail");
     //check if Email Adress is a valid Email
-    if (requestEmail.value.match(/^([\w.-]+)@([\w-]+\.)+([\w]{2,})$/i) == null) {
+    if (requestEmail.value.match(/^([\w\d.-]+)@([\w\d-]+\.)+([\w]{2,})$/i) == null) {
       this.setState({
         errorMessage: "Bitte gib eine gültige E-Mail Adresse an."
       });
       return;
     }
     // // Post request to backend
+    //api.enrollUser(requestEmail.value, this.state.courseName)
     api.invite(requestEmail.value, this.state.courseName)
       .then(json => {
         if (json.success === true) {
