@@ -42,7 +42,7 @@ io.on('connection', socket => {
 		});
 		io.sockets.emit("send message", newMessage);
 	})
-	
+
 	socket.on('disconnect', () => {
     console.log('user disconnected')
   })

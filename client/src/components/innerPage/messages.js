@@ -7,12 +7,10 @@ const api = require('../../api');
 class ChatPartner extends React.Component {
   render(){
     return(
-      <div>
-          <div style={ { clear: "both" } } className="contentTeacherinfo">
-            <img className="contentTeacherinfo" src={ this.props.partner.picturedata } alt="profilepicture" style = {{margin : "auto"}}/>
-          </div>
-          <div style={ { clear: "both" } }>
-            <div style = {{margin : "auto"}}>{ this.props.partner.firstname } { this.props.partner.lastname }</div>
+      <div className="box-title">
+          <div className="contentChatPartnerinfo">
+            <img className="contentChatPartnerinfo" src={ this.props.partner.picturedata } alt="profilepicture"/>
+            <span className="contentChatPartnerinfo">{ this.props.partner.firstname } { this.props.partner.lastname }</span>
           </div>
       </div>
     )
@@ -48,6 +46,10 @@ class ElementMessage extends React.Component {
 
 class Conversation extends React.Component {
 
+  componentDidMount() {
+    const divObj = document.getElementById('messageHistory');
+    divObj.scrollTop = divObj.scrollHeight;
+  }
   componentDidUpdate() {
     const divObj = document.getElementById('messageHistory');
     divObj.scrollTop = divObj.scrollHeight;
@@ -59,7 +61,7 @@ class Conversation extends React.Component {
     })
 
     return (
-      <div id="messageHistory" className="messageHistory" style={ { height: '550px', overflow: 'auto' } }>
+      <div id="messageHistory" className="messageHistory" style={ { maxHeight: '60vh', overflow: 'auto' } }>
         <div className="grid-message">
           { conversationMessages }
         </div>
@@ -72,7 +74,8 @@ export class Messages extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      endpoint: os.hostname()+':5001',
+      // endpoint: os.hostname()+':5001',
+      endpoint: os.hostname() + ":5001",
       partnerEmail: window.location.pathname.split("/")[2],
       history: undefined,
       partner: undefined
@@ -106,7 +109,7 @@ export class Messages extends React.Component {
   sendMessage = (e) => {
     if (e.key === "Enter" && document.getElementById("messageContent").value !== "") {
       var text = document.getElementById("messageContent").value
-      const socket = socketIOClient(this.state.endpoint)
+      const socket = socketIOClient(this.state.endpoint);
 
       // this emits an event to the socket (server)
       var message = {
