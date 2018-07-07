@@ -34,6 +34,7 @@ router.route('/course/:name')
 		const { author } = body;
 		const { text } = body;
 		const { data } = body;
+		const { fileName} = body;
 		const { type } = body;
 		const { created_at } = body; //könnte auch automatisch gespeichert werden
 		
@@ -49,12 +50,14 @@ router.route('/course/:name')
 				if(err) return res.status(500).send('error occured in the database');
 				else if(userE == null ) return res.status(404).send('author could not be found');
 				// Save the new Article
+				fileName="JDJDJ";
 				const newArticle = new Article();
 				newArticle.course = courseE._id;
 				newArticle.headline = headline;
 				newArticle.author = userE._id;
 				newArticle.text = text;
 				newArticle.data = data;
+				newArticle.dataName = fileName;
 				newArticle.type = type;
 				newArticle.created_at = new Date();
 				newArticle.save(function(err){

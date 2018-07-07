@@ -18,6 +18,7 @@ var articleSchema = new Schema({
     headline: String,
     data: String,
     type: String,
+    dataName: String,
     author: {
         type: Schema.Types.ObjectId,
         ref: "User"

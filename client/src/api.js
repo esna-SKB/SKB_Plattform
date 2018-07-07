@@ -235,7 +235,7 @@ deleteUser: function(email){
    * POST /article/course/:courseName
    * creates a new article
   */
-    createArticle: function(courseName, headline, author, text, type, created_at, base64file){
+    createArticle: function(courseName, headline, author, text, type, created_at, base64file, fileName){
 
       return fetch('/article/course/'+courseName, {
         method: 'POST',
@@ -249,6 +249,7 @@ deleteUser: function(email){
           author: author,
           text: text,
           data: base64file,
+          fileName: fileName,
           type: type,
           created_at: created_at,
         }),

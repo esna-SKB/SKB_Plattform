@@ -1,7 +1,7 @@
 import React from 'react';
 import api from '../../api';
 // import api from '../../api';
-import axios from 'axios';
+//import axios from 'axios';
 
 
 class Article extends React.Component {
