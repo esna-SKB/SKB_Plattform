@@ -51,7 +51,7 @@ class FeedTab extends Component {
         });
     } else {
       self.getBase64(self.state.file, function(base64file) {
-
+        console.log(self.state.file.name);
         api.createArticle(self.props.course.name, "", self.props.user.email, text, self.state.file.type, Date.now, base64file, self.state.file.name)
           .then(res => {
             self.handleArticlesUpdate(self.props.course.name)

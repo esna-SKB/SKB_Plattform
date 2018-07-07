@@ -1,4 +1,4 @@
-var express = require('express');
+ var express = require('express');
 var router = express.Router();
 const Article = require('../models/article');
 const Course = require('../models/course');
@@ -50,7 +50,6 @@ router.route('/course/:name')
 				if(err) return res.status(500).send('error occured in the database');
 				else if(userE == null ) return res.status(404).send('author could not be found');
 				// Save the new Article
-				fileName="JDJDJ";
 				const newArticle = new Article();
 				newArticle.course = courseE._id;
 				newArticle.headline = headline;

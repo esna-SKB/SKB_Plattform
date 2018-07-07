@@ -71,10 +71,13 @@ class Article extends React.Component {
   }*/
 
   img() {
-    var base64file = this.state.article.data
-    //document.body.appendChild(image);
-    //console.log(arrayBuffer)
-    //console.log(arrayBuffer);
+    if(!this.state.article.data){
+      return;
+    }
+    var base64file = this.state.article.data;
+    var name = this.state.article.dataName;
+    var type = this.state.article.type;
+    
     if (this.state.article.type === undefined || this.state.article.type === "") {
 
     } else if (this.state.article.type.includes("image")) {
@@ -83,19 +86,30 @@ class Article extends React.Component {
       return (
 
         //<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>
-        //<div className="embed-responsive embed-responsive-16by9">
-        // 	<iframe className="embed-responsive-item" src={base64file} allowFullScreen></iframe>
-        //</div>
+        
 
 
-        <div className="embed-responsive embed-responsive-16by9">
-          <object className="embed-responsive-item" data={ base64file } type="application/pdf" internalinstanceid="9" title="pdf">
-            <p>Your browser isnt supporting embedded pdf files. You can download the file
-              <a href="/media/post/bootstrap-responsive-embed-aspect-ratio/example.pdf">here</a>.</p>
-          </object>
+        <div>
+          <a href={base64file} download={name}> 
+            <div className="embed-responsive embed-responsive-16by9">
+              <object className="embed-responsive-item" data={base64file} type={type} width="100%" height="400px">
+                <embed src={base64file} type={type} width="100%" height="400px" style={{border: "none"}}/>
+              </object>
+            </div>
+          </a>   
         </div>
 
-
+        /** FOR SAFARI
+        <div>
+          <a href={base64file} download={name}> 
+            <div className="embed-responsive embed-responsive-16by9">
+              <object className="embed-responsive-item" data={base64file} type={type} width="100%" height="400px">
+                <embed src={base64file} type={type} width="100%" height="400px" style={{border: "none"}}/>
+              </object>
+            </div>
+          </a>   
+        </div>
+        **/
       )
     }
   }
