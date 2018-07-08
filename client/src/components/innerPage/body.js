@@ -17,8 +17,6 @@ import TeacherInfo from './teacherInfo';
 import InviteToCourse from './inviteToCourse';
 import '../../css/course.css';
 
-const api = require('../../api');
-
 
 class Body extends React.Component {
   constructor(props) {
