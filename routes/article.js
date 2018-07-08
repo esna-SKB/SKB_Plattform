@@ -125,17 +125,17 @@ router.route('/course/:name')
 			})
 
 
-	router.route('/group/:name')
+	router.route('/group/:groupId')
 	// get all articles of a group, sorted by most resently post
 	.get((req, res, next) => {
-		var gname = req.params.name;
+		var groupId = req.params.groupId;
 
-		Group.findOne({name: gname}).exec(function(err, group){
+		Group.findOne({_id: groupId}).exec(function(err, group){
 			if (err) return res.status(500).send('error occured in the database');
 
 			else if(group == null) return res.status(404).send('no group found');
 			else {
-				Article.find({group: group}).populate('author').exec(function(err, articles){
+				Article.find({group: groupId}).populate('author').exec(function(err, articles){
 					if (err){
 						console.log('error occured in the database');
 			        	return res.status(500).send('error occured in the database');
@@ -161,10 +161,9 @@ router.route('/course/:name')
 		
 		console.log(group, author);
 
-		group.findOne({name: group}).exec(function(err, thegroup){
+		Group.findOne({_id: group}).exec(function(err, thegroup){
 			if(err) return res.status(500).send('error occured in the database');
 			else if(thegroup == null ) {
-				console.log(thegroup)
 				return res.status(404).send('group could not be found');
 			}
 			User.findOne({email:author}).exec(function(err, userE){

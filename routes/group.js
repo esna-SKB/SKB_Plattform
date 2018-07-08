@@ -73,7 +73,7 @@ router.route('/:id')
 			if (err)return res.status(500).send('error occured in the database');
 	       	else if(group == null) res.status(404).send('group could not be found');
 	       	else {
-				console.log("this is the getted grou" + group )
+				console.log("this is the getted group" + group.name )
 				return res.status(200).send(group); 
 	       	}
 		})
@@ -140,7 +140,6 @@ router.route('/:id/members')
 			if (err)return res.status(500).send('error occured in the database');
 	       	else if(group == null) res.status(404).send('group could not be found');
 	       	else {
-				console.log("this is the getted group" + group.members )
 				return res.status(200).send(group.members); 
 	       	}
 		})

@@ -15,6 +15,7 @@ var articleSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Group"
     },
+	
     headline: String,
     data: String,
     type: String,

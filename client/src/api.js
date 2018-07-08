@@ -265,8 +265,8 @@ deleteUser: function(email){
    * GET /article/group/:groupname
    * returns a list of all articles of a group
    */
-  getAllArticlesOfGroup: function(groupName){
-      return fetch('/article/group/'+groupName, {
+  getAllArticlesOfGroup: function(groupId){
+      return fetch('/article/group/'+groupId, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'

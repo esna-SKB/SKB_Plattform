@@ -4,31 +4,76 @@ import { Link } from 'react-router-dom'
 import api from '../../api';
 import dragula from 'dragula';
 
+
+class AbgabenTab extends Component{
+	constructor(props) {
+		super(props);
+		this.state = {
+			groupId: this.props.group._id,
+			groupName:this.props.group.name,  
+			abgaben: undefined,
+			homeworks: undefined,
+			file: undefined
+		}
+	}
+	 
+	 /** you can see a list of abgaben, which are part of a course (homework array) 
+		homework is: homeworkId, deadline, file, maxpoints , activated(boolean)
+	    abgabe is part of group , 
+		abgabe: abgabeId, homeworkId, file, reachedpoints
+		
+		here you see a list of activated homeworks with their deadlines and if you have uploaded a abgabe for the homework, you will see ( a linkt to it), 
+		you are able to upload a abgabe ( which is a pdf file) until deadline expires, you are able to change your abgabe(put request)
+		
+		
+		under course/homeworks the teacher is able to see (as links) all the abgaben of all groups to the corresponding homeworks, upload new homeworks, activate homeworks, and grade abgaben with points,
+	 ***/
+	
+	render(){
+		return(
+		
+		 <div className="tab-pane fade" id="abgaben" role="tabpanel" aria-labelledby="abgaben-tab" style={{ padding: '20px'}}>
+			<div className="col-12">Hello i am abgabetab </div>
+		</div>
+		
+		);
+	}
+}
+
+
 class FeedTab extends Component{
-    ComponentDidMount(props){
-	  //super(props);
-      this.setState({
-		groupId: this.props.group._id,
-		groupName:this.props.group.name,  
-		articles: undefined,
-		file: undefined
-      })
-    }
+	constructor(props) {
+		super(props);
+		this.state = {
+			groupId: this.props.group._id,
+			groupName:this.props.group.name,  
+			articles: undefined,
+			file: undefined
+		}
+	}
+	
 	  componentDidMount() {
-		this.handleArticlesUpdate(this.props.group.name)
+		this.handleArticlesUpdate(this.props.group._id)
 	  }
 	  componentWillReceiveProps(nextProps) {
 		if (this.props.group.name !== nextProps.group.name) {
-		  this.handleArticlesUpdate(nextProps.group.name)
+		  this.handleArticlesUpdate(nextProps.group._id)
 		}
 	  }
 
 	  handleArticlesUpdate = (groupId) => {
 		api.getAllArticlesOfGroup(groupId)
 		  .then(res => {
-			this.setState({
-			  articles: res.reverse()
-			})
+			  if(res !== undefined){
+				this.setState({
+				  articles: res.reverse()
+				})
+				console.log("we is here")
+			  }else{
+				this.setState({
+					articles: []
+				})	
+			  }
 		  });
 	  }
 
@@ -78,36 +123,46 @@ class FeedTab extends Component{
     }
 
     render(){
-        return(
-          <div className="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
-            <div className="col-12" id="new_status" style={{marginBottom : '20px'}}>
-              <div className="container">
-                <div className="row" style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px'}}>
-                  <div className="col-4" style={{textAlign: 'center', borderBottom: '1px solid rgb(0, 127, 178)', marginBottom: '-16px'}}>
-                    <span className="glyphicon glyphicon-pencil"></span> Text teilen
-                  </div>
-                </div>
-              </div>
-              <div className="col-12" id="post_content">
-                <div className="textarea_wrap">
-                  <textarea id='textteilen' className="col-xs-11" style={{width: '100%'}} placeholder="write something..."></textarea>
-                  <input type="file" className ="file" onChange={this.fileUploader}/>
-                </div>
-              </div>
-              <div className="col-xs-12" id="post_footer">
-                <div className="row">
-                  <div className="col-12">
-                    <button id='teilen' className="btn btn-primary" onClick= {this.postArticle} style={{float: 'right', marginBottom: '10px'}}>Teilen</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className='container' id="userposts">
-            
-            </div>
-          </div>
-        );
-  }
+		 const articles = this.state.articles;
+		if(!articles){
+				return null;
+		}else{
+			
+			return(
+			
+    
+			  <div className="tab-pane fade  show active" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
+				<div className="col-12" id="new_status" style={{marginBottom : '20px'}}>
+				  <div className="container">
+					<div className="row" style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px'}}>
+					  <div className="col-4" style={{textAlign: 'center', borderBottom: '1px solid rgb(0, 127, 178)', marginBottom: '-16px'}}>
+						<span className="glyphicon glyphicon-pencil"></span> Text teilen
+					  </div>
+					</div>
+				  </div>
+				  <div className="col-12" id="post_content">
+					<div className="textarea_wrap">
+					  <textarea id='textteilen' className="col-xs-11" style={{width: '100%'}} placeholder="write something..."></textarea>
+					  <input type="file" className ="file" onChange={this.fileUploader}/>
+					</div>
+				  </div>
+				  <div className="col-xs-12" id="post_footer">
+					<div className="row">
+					  <div className="col-12">
+						<button id='teilen' className="btn btn-primary" onClick= {this.postArticle} style={{float: 'right', marginBottom: '10px'}}>Teilen</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				<div className='container' id="userposts">
+					{ articles.map(function(article) {
+						return ( <Article key={ article._id } user={ this.props.user.email } article={ article } />);
+						}, this) }
+				</div>
+			  </div>
+			);
+		}
+	} 
 }
 
 class Group extends React.Component {
@@ -126,9 +181,9 @@ class Group extends React.Component {
     }
     
     componentDidMount(){
-	console.log(this.props.location.pathname);
-    var groupId = this.props.location.pathname.split("/")[2];
-    this.handleUpdate(groupId); 
+		console.log(this.props.location.pathname);
+		var groupId = this.props.location.pathname.split("/")[2];
+		this.handleUpdate(groupId); 
     }
 
     componentWillReceiveProps(nextProps){
@@ -179,19 +234,17 @@ class Group extends React.Component {
             <div>
             <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
                 <div className="row" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
-                    <div style={{paddingRight: '0', paddingLeft: '20px'}}>
-                        <h3>{this.state.group.name}</h3>
+                    <div className="col" style={{paddingRight: '0', paddingLeft: '20px'}}>
+                      
+                    <h1 style={ { textTransform: 'capitalize' } }>{ this.state.group.name }</h1>
                     </div>
                 </div>
 
                 <div className="background-fluid" style={{borderBottom: '1px solid #e8e9eb'}}>
                 <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
-                  <li className = "nav-item">
-                      <a className="nav-link tab-title active" id="lehrer-tab" data-toggle="tab" href="#ubersicht" role="tab" aria-controls="ubersicht" aria-selected="true">Übersicht</a>
-                  </li>
-
+                 
                   <li className="nav-item">
-                      <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="false">Feed</a>
+                      <a className="nav-link tab-title active" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="true">Feed</a>
                   </li>
 
                   <li className="nav-item">
@@ -204,53 +257,8 @@ class Group extends React.Component {
             <div className="background container-fluid row">
                 <div className="col col-sm-12">
                     <div className="tab-content col-offset-6 centered" id="tab-content">
-
-                        <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={{backgroundColor: 'white', border: '1px solid #efefef', padding: '20px'}}>
-                        <div className="row">
-                            <h3 style={{borderBottom: '1px solid #efefef', paddingBottom: '15px'}}> Inhalt </h3>
-                        </div>
-
-                        <div style={{display : 'none'}} id="wrapper" ref="wrapper">
-                          <div className="wrapper">
-                          	<div className="box-left">
-                            <div data-tpl="header1" data-title="Header 1">
-                              Header 1
-                            </div>
-                          		<div data-tpl="header2" data-title="Header 2">
-                          			Header 2
-                          		</div>
-                          		<div data-tpl="header3" data-title="Header 3">
-                          			Header 3
-                          		</div>
-                          		<div data-tpl="shortparagraph" data-title="Short paragraph">
-                          			paragraph
-                          		</div>
-                          		<div data-tpl="ullist" data-title="Ordened list">
-                          			Ordened list
-                          		</div>
-                          		<div data-tpl="ollist" data-title="Unordened list">
-                          			Unordened list
-                          		</div>
-                              <div data-tpl="heade12" data-title="Unordened list">
-                                Datei
-                              </div>
-                              <div data-tpl="header12" data-title="Unordened list">
-                                Picture
-                              </div>
-                          	</div>
-                          	<div id="boxright" ref="boxright" className="box-right"></div>
-                          </div>
-                          </div>
-
-                            <p id="description" ref="description"></p>
-                            <div id="kursmaterial" ref="kursmaterial">
-                            <h3> nächste Abgaben </h3>
-                            <h3> 16. April - abgabe01.pdf </h3>
-                            <p>23.April - noch nichts abgegeben!</p>
-                            <p>30.April</p>
-                        </div>
-                        </div>
                         <FeedTab  user={this.props.user} group={this.state.group} articles={this.state.articles}/>
+						<AbgabenTab user={this.props.user} group={this.state.group} />
                     </div>
                 </div>
             </div>

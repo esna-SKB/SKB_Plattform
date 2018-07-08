@@ -146,7 +146,7 @@ class Article extends React.Component {
                     { article.author.lastname }
                   </p>
                   <p>
-                    { article.course.name }
+                    {/* article.group.name*/ }
                   </p>
                 </div>
                 <div className='col-6'>
@@ -185,7 +185,7 @@ class Article extends React.Component {
                     { article.author.lastname }
                   </p>
                   <p>
-                    { article.course.name }
+                    { /*article.course.name*/ }
                   </p>
                 </div>
                 <div className='col-6'>

@@ -22,37 +22,40 @@ class OtherMembers extends React.Component {
 	this.state = {
 		user: this.props.user,
 		members: this.props.members,
-		list: [],
-		isMounted: false
+		list: []
 		};
+		console.log("we sent");
+		console.log(this.state.members);
+		console.log("and this is props");
+		console.log(this.props.members);
 	}
     
     componentDidMount(){
-		this.setState({ isMounted: true }, () => {
-			if (this.state.isMounted) {
-				this.setState({ isMounted: false });
-				{
-					var otherMembers = this.state.members.filter((m) => m.email !== this.state.user.email);
-					this.setState({
-						list: otherMembers.map((e) => {
-						return( <Element member={e}/>);})
-					})
-				}
-			}
-		});   
-    }
-
+		
+		var otherMembers = this.state.members.filter((m) => m.email !== this.state.user.email);
+		console.log("other members");
+		console.log(this.state.members);
+		this.setState({
+			list: this.state.members.map((e) => {
+			return( <Element member={e}/>);})
+		});
+	}
+			
     render(){
-        return(
-            <div className="box col-12">
-                <div className="box-title">
-                    Gruppenteilnehmer
-                </div>
-                <div>
-                    {this.state.list}
-                </div>
-            </div>
-        );
+		if(!this.props.members){
+			return null;
+		}else{
+			return(
+				<div className="box col-12">
+					<div className="box-title">
+						Gruppenteilnehmer
+					</div>
+					<div>
+						{this.state.list}
+					</div>
+				</div>
+			);
+		}
     }
 }
 
@@ -61,37 +64,36 @@ class MemberInfo extends React.Component {
 		super(props);
 		this.state = {
 			user: this.props.user,
-			members: undefined,
-			isMounted: false
-			};
+			members: []
+		};
 	}
 
     componentDidMount(){
-		this.setState({ isMounted: true }, () => {
-		if (this.state.isMounted) {
-			this.setState({ isMounted: false });
-			{
-			  //get group
+		//get group
 		var groupId = window.location.pathname.split("/")[2];
 		api.getAllMembersOfGroup(groupId)
 		.then(res => {
 			this.setState({
 				members : res
 			});
+			console.log("the members");
+			console.log(this.state.members);
 		})        
-			}
-		  }
-		});
-		
-		
     }
 
 	render(){
-   		return(
-            <div className="row">
-                <OtherMembers user={this.state.user} members={this.state.members}/>
-	          </div>
+		if(this.state.member === [] || !this.state.user) {return null;}
+		else{
+			const members = this.state.members;
+			console.log("das ist noch hier");
+			console.log(members);
+			
+			return(
+				<div className="row">
+					<OtherMembers user={this.state.user} members={members}/>
+				  </div>
 			);
+		}
 	}
 }
 export default MemberInfo;
