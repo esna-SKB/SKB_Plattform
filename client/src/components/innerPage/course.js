@@ -429,7 +429,7 @@ class Course extends Component {
       user,
       course,
       isTeacher
-    } = this.state; 
+    } = this.state;
     //make sure API calls are finished when rendering (better solution????)
     if (!this.state.course) {
       return null;
