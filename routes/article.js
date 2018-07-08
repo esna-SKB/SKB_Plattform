@@ -133,7 +133,7 @@ router.route('/course/:name')
 		Group.findOne({name: gname}).exec(function(err, group){
 			if (err) return res.status(500).send('error occured in the database');
 
-			else if(course == null) return res.status(404).send('no group found');
+			else if(group == null) return res.status(404).send('no group found');
 			else {
 				Article.find({group: group}).populate('author').exec(function(err, articles){
 					if (err){

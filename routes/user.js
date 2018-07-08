@@ -112,19 +112,33 @@ router.route('/:email/group')
 	//get all Groups of User
 	.get((req, res, next) => {
 		var email = req.params.email;
-		User.findOne({email: email},{},function(err, user){
-			if (err) return res.status(500).send('error occured in the database');
-			else if (user == null) return res.status(401).send('user not fount');
+		User.findOne({email: email},{})
+		.populate({path:'grouplist', model: 'Group', populate:{path:'course', model:'Course'}})
+		//.populate({path:'course', populate:{path:'teacher', model:'User'}})
+		
+		/*.populate({path:'members', model:'User'})*/
+		.exec(function(err, user){
+			if (err) {
+				console.log("error in exec group")
+			return res.status(500).send('error occured in the database');}
+			else if (user == null) 
+				return res.status(401).send('user not fount');
 	       	else {
-					user.grouplist.populate({path:'members'}).populate({path:'course', populate:{path:'teacher', model:'User'}}).exec(function(err,groups){
-						if(err) return res.status(500).send('error occured in the database');
-						else{
-							return res.status(200).send(groups);	
-						}
-					})
-				}	
-	       	})
+					/*user.grouplist
+						.populate({path:'members', model:'User'})
+						.populate({path:'course', populate:{path:'teacher', model:'User'}})
+						.exec(function(err,groups){
+								if(err){ 
+									console.log("error in exec group")
+								return res.status(500).send('error occured in the database');}
+								else{*/
+									return res.status(200).send(user.grouplist);	
+								/*}
+						})*/
+	
+			}
 		})
+	})
 
 
 	module.exports = router

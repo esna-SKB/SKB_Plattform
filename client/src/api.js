@@ -279,15 +279,15 @@ deleteUser: function(email){
    * POST /article/group/:groupname
    * creates a new article in a group
    */
-  createGroupArticle: function(groupName, headline, author, text, type, created_at, base64file){
-      return fetch('/article/group/'+groupName, {
+  createGroupArticle: function(groupId, headline, author, text, type, created_at, base64file){
+      return fetch('/article/group/'+groupId, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          group: groupName,
+          group: groupId,
           headline: headline,
           author: author,
           text: text,
@@ -369,9 +369,22 @@ deleteUser: function(email){
     .then(res => res.json())
   },
 
+  /*
+ * GET user/:email/group
+ * returns a list of all groups of a user
+*/
+  getAllMembersOfGroup: function(groupId){
+    return fetch('/group/' + groupId + '/members', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+  
 
 /*
- * POST /groups/course/:courseName
+ * POST /group/course/:courseName
  * creates a new group object
 */
   
@@ -393,7 +406,7 @@ Group: function(courseName, groupName, members, description){
   },
 /*
  * GET /groups/:groupId
- * returns a course object
+ * returns a group object
 */
   getGroup: function(groupId){
     return fetch('/group/' + groupId, {

@@ -17,6 +17,7 @@ import MessageList from './messageList';
 import { Messages } from './messages';
 import TeacherInfo from './teacherInfo';
 import InviteToCourse from './inviteToCourse';
+
 import '../../css/course.css';
 
 
@@ -69,6 +70,11 @@ class Body extends React.Component {
                   <InviteToCourse location={ props.location } user={ this.props.user } />
                 </div>
               ) } />
+			  <Route path='/group/:id' render={ (props) => (
+                <div>
+                  <MemberInfo location={ props.location } user={ this.props.user } />
+                </div>
+              ) } />
             </div>
             { /* MainWindow */ }
             <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
@@ -88,6 +94,9 @@ class Body extends React.Component {
                 <Route exact path='/groups' render={ (props) => (
                                                        <Groups user={ this.props.user } />
                                                      ) } />
+				<Route exact path='/group/:groupId' render={ (props) => (
+									   <Group user={ this.props.user }  location={ props.location } />
+									 ) } />
                 <Route exact path='/user/:email' render={ (props) => (
                                                             <Profile user={ this.props.user } location={ props.location } />
                                                           ) } />

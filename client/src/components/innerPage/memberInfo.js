@@ -5,8 +5,6 @@ const api = require('../../api');
 
 function Element(props) {
 	const member = props.member;
-	if(true){return(<h6>a</h6>);
-    }else{
     return (
         <div style={{marginTop : "2em"}}>
             <div style={{clear: "both"}} className="contentMemberinfo" key={this.props.member.email}>
@@ -15,7 +13,6 @@ function Element(props) {
             </div>
         </div>
     );
-            }
 }
 
 
@@ -23,17 +20,26 @@ class OtherMembers extends React.Component {
     constructor(props){
 	super(props);
 	this.state = {
-    user: this.props.user,
-    members: this.props.members,
+		user: this.props.user,
+		members: this.props.members,
+		list: [],
+		isMounted: false
 		};
 	}
     
     componentDidMount(){
-        var otherMembers = this.state.members.filter((m) => m.email !== this.state.user.email);
-        this.setState({
-            list: otherMembers.map((e) => {
-                return( <Element member={e}/>);})
-        })
+		this.setState({ isMounted: true }, () => {
+			if (this.state.isMounted) {
+				this.setState({ isMounted: false });
+				{
+					var otherMembers = this.state.members.filter((m) => m.email !== this.state.user.email);
+					this.setState({
+						list: otherMembers.map((e) => {
+						return( <Element member={e}/>);})
+					})
+				}
+			}
+		});   
     }
 
     render(){
@@ -52,29 +58,38 @@ class OtherMembers extends React.Component {
 
 class MemberInfo extends React.Component {
 	constructor(props){
-	super(props);
-	this.state = {
-    user: this.props.user,
-    members: []
-		};
+		super(props);
+		this.state = {
+			user: this.props.user,
+			members: undefined,
+			isMounted: false
+			};
 	}
 
     componentDidMount(){
-        //get members of the group
-        var group = window.location.pathname.split("/")[2];
-        console.log(api.getGroup(group).members);
-        api.getGroup(group).then(
-            (g)=>this.setState({
-                members: g.members
-            })
-        )
+		this.setState({ isMounted: true }, () => {
+		if (this.state.isMounted) {
+			this.setState({ isMounted: false });
+			{
+			  //get group
+		var groupId = window.location.pathname.split("/")[2];
+		api.getAllMembersOfGroup(groupId)
+		.then(res => {
+			this.setState({
+				members : res
+			});
+		})        
+			}
+		  }
+		});
+		
+		
     }
 
 	render(){
    		return(
             <div className="row">
                 <OtherMembers user={this.state.user} members={this.state.members}/>
-				
 	          </div>
 			);
 	}

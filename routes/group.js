@@ -3,7 +3,7 @@ var router = express.Router();
 const Group = require('../models/group');
 
 
-router.route('/course/:name')
+router.route('/course/:courseId')
 
 	//get all groups of courseX
 	.get((req, res, next) => {
@@ -49,8 +49,9 @@ router.route('/course/:name')
 				newGroup.course = course; 
 				newGroup.description = description;
 				newGroup.save(function(err){
-					if(err) handleError(err); 
+					if(err) return res.status(500).send('error occured in the database'); 
 					else {
+					console.log("new Group is saved! "+ newGroup.name);
 					return res.status(200).send({
 						success: true,
 						message: "new Group is saved"
@@ -63,17 +64,22 @@ router.route('/course/:name')
 
 router.route('/:id')
 	
+	/*GET group with specific id*/
 	.get((req, res, next) => {
-		var íd = req.params.id; 
-		Group.findOne({_id: id},{},function(err, group){
+		var id = req.params.id; 
+		Group.findOne({_id: id},{})
+		.populate({path:'members', model: 'User' })
+		.exec(function(err, group){
 			if (err)return res.status(500).send('error occured in the database');
 	       	else if(group == null) res.status(404).send('group could not be found');
 	       	else {
+				console.log("this is the getted grou" + group )
 				return res.status(200).send(group); 
 	       	}
 		})
 	})
-
+	
+	/*update group with specific id*/
 	.put((req, res, next) => {
 		const { body } = req; 
 		const { name } = body;
@@ -83,7 +89,7 @@ router.route('/:id')
 		var id = req.params.id; 
 
 		
-		Group.find({name : name},{}, function(err, groups){
+		Group.find({_id : id},{}, function(err, groups){
 			if(err){
 				return res.send({success : false, message : "error accured in database"})
 			}else if(groups.length == 0 ){
@@ -108,10 +114,10 @@ router.route('/:id')
 
 	//deletes one Group from DataBase 
 	.delete((req, res, next) => {
-		console.log('delete' + req.params.name)
-		var name = req.params.name; 
+		console.log('delete' + req.params.id)
+		var id = req.params.id; 
 
-		Group.deleteOne({name : name}, function(err, affected){
+		Group.deleteOne({_id : id}, function(err, affected){
 			if (err)
 	           return res.status(500).send({success : false, message : "error accured in database"});
 	       	else if(affected.n == 0){
@@ -122,5 +128,24 @@ router.route('/:id')
 		})
 	})
 
+
+router.route('/:id/members')
+	
+	/*get all members of a group */
+	.get((req, res, next) => {
+		var id = req.params.id; 
+		Group.findOne({_id: id},{})
+		.populate({path:'members', model: 'User' })
+		.exec(function(err, group){
+			if (err)return res.status(500).send('error occured in the database');
+	       	else if(group == null) res.status(404).send('group could not be found');
+	       	else {
+				console.log("this is the getted group" + group.members )
+				return res.status(200).send(group.members); 
+	       	}
+		})
+	})
+		
+	
 	module.exports = router
 

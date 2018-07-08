@@ -5,35 +5,55 @@ import api from '../../api';
 import dragula from 'dragula';
 
 class FeedTab extends Component{
-    ComponentDidMount(){
+    ComponentDidMount(props){
+	  //super(props);
       this.setState({
-        articles: this.props.articles
+		groupId: this.props.group._id,
+		groupName:this.props.group.name,  
+		articles: undefined,
+		file: undefined
       })
     }
+	  componentDidMount() {
+		this.handleArticlesUpdate(this.props.group.name)
+	  }
+	  componentWillReceiveProps(nextProps) {
+		if (this.props.group.name !== nextProps.group.name) {
+		  this.handleArticlesUpdate(nextProps.group.name)
+		}
+	  }
+
+	  handleArticlesUpdate = (groupId) => {
+		api.getAllArticlesOfGroup(groupId)
+		  .then(res => {
+			this.setState({
+			  articles: res.reverse()
+			})
+		  });
+	  }
 
     postArticle = () =>{
-        var text = document.getElementById("textteilen").value;
-        //var formData = new FormData();
-        //formData.append("file", this.state.file, this.state.file.name);
-        var self = this;
-        if(!this.state){
-          api.createArticle(self.props.group.id, "", self.props.user.email, text, "", Date.now, "").then(res => {
+			var text = document.getElementById("textteilen").value;
+			var self = this;
+			if (!this.state.file) {
+			  api.createGroupArticle(self.props.group._id, "", self.props.user.email, text, "", Date.now, "")
+				.then(res => {
+				  self.handleArticlesUpdate(self.props.group._id)
+				  document.getElementById("textteilen").value = ""
+				});
+			} else {
+			  self.getBase64(self.state.file, function(base64file) {
 
-          window.location.reload(false);
-          });
-        }else {
-          self.getBase64(self.state.file, function(base64file){
-
-            //console.log(this.state.file)
-            //console.log(base64file)
-            api.createArticle(self.props.group.id, "", self.props.user.email, text, self.state.file.type, Date.now, base64file).then(res => {
-
-            window.location.reload(false);
-            });
-          });
-        }
-
-        console.log(this.props.articles)
+				api.createArticle(self.props.group._id, "", self.props.user.email, text, self.state.file.type, Date.now, base64file)
+				  .then(res => {
+					self.handleArticlesUpdate(self.props.group._id)
+					document.getElementById("textteilen").value = ""
+					self.setState({
+					  file: undefined
+					})
+				  });
+			  });
+			}
     }
 
     getBase64(file, cb) {
@@ -95,6 +115,7 @@ class Group extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+			user: this.props.user,
             isMember: true,
             group: undefined,
             course: undefined,
@@ -105,6 +126,7 @@ class Group extends React.Component {
     }
     
     componentDidMount(){
+	console.log(this.props.location.pathname);
     var groupId = this.props.location.pathname.split("/")[2];
     this.handleUpdate(groupId); 
     }
@@ -119,20 +141,23 @@ class Group extends React.Component {
     handleUpdate(groupId) {
     //get group
     api.getGroup(groupId)
-    .then(group => {
+    .then(res => {
         this.setState({
-            group : group
-        })
+            group : res
+        });
     })
         
-    // check if user is a member
-    /*.then(() => api.getAllGroupsOfUser(this.props.user.email).then(res1 => {
-      if (res1.some(item => item != null && item.id === groupId)) {
-        this.setState({
-          isMember: true,
-        })
-      }
-    }))
+    .then(() => {// check if user is a member
+		var i;
+		for (i = 0; i < this.state.group.members.length ; i++){
+			if(this.state.group.members[i] === this.state.user._id){
+				this.setState({
+					isMember: true,
+				})
+			}
+		}
+	})
+    /*
     .then(()=>{
         //get all feed articles
           api.getAllArticlesOfGroup(groupId).then(res => {
@@ -219,10 +244,10 @@ class Group extends React.Component {
 
                             <p id="description" ref="description"></p>
                             <div id="kursmaterial" ref="kursmaterial">
-                            <h3> Kursmaterial </h3>
-                            <h3> 16. April - 22. April </h3>
-                            <p>Folie 01</p>
-                            <p>Folie 02</p>
+                            <h3> nächste Abgaben </h3>
+                            <h3> 16. April - abgabe01.pdf </h3>
+                            <p>23.April - noch nichts abgegeben!</p>
+                            <p>30.April</p>
                         </div>
                         </div>
                         <FeedTab  user={this.props.user} group={this.state.group} articles={this.state.articles}/>

@@ -459,12 +459,13 @@ class Course extends Component {
   
   saveGroups() {
 		//groups of two and one three
-		console.log("we are here")
+		console.log("we are here");
 	  api.getAllUsersOfCourse(this.state.course.name).then(res => {
 		  console.log(res.message);
 		  console.log(res)
 		 if(res.length <2){
-			api.Group(this.state.course.name,i/2, [res[i]], "Wir sind Gruppenummer:"+ i/2);	
+			 console.log("we are here one member only");
+			api.Group(this.state.course.name,i/2, [res[i]], "Wir sind Gruppenummer:"+ i/2).then(res => {console.log(res.message)});	
 		 }else{ 
 			var i;
 			for(i = 0; i < res.length-1; i= i+2){
@@ -506,7 +507,7 @@ class Course extends Component {
     }
     // teacher view
     else {
-		 const course_name = this.state.course.name;
+	/*	 const course_name = this.state.course.name;
 	  const members = this.state.members;
 	  
 		 if(members.length <2){
@@ -515,14 +516,14 @@ class Course extends Component {
 			var i;
 			for(i = 0; i < members.length-1; i= i+2){
 				
-				/*last group if uneven number of members*/
+				/*last group if uneven number of members
 			if(!(members.length % 2 == 0) && (members.length-2 == i)){
 					api.Group(course_name,i/2, [members[i],members[i+1], members[i+2]], "Wir sind Gruppenummer:"+ i/2);	
 			}else{
 				api.Group(course_name,i/2, [members[i],members[i+1]], "Wir sind Gruppenummer:"+ i/2);	
 			}
 		 }
-		}
+		}*/
       return (
         <div>
           <div className="container-fluid" style={ { marginBottom: '20px', paddingRight: '54px', paddingLeft: '24px' } }>
