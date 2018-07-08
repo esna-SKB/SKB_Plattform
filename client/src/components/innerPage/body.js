@@ -25,6 +25,7 @@ class Body extends React.Component {
       user: this.props.user
     };
   }
+
   render() {
 
     //kann man hier nach wunsch anspaaen wie der active Link aussehen soll
@@ -33,7 +34,6 @@ class Body extends React.Component {
       color: "white",
       backgroundColor: '#C0D9D9'
     }
-
     return (
       <div>
         { /*Navigation activeClassName='active'*/ }
@@ -109,7 +109,7 @@ class Body extends React.Component {
           </div>
         </div>
       </div>
-      );
+    );
   }
 }
 
