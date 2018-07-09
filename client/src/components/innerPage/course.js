@@ -18,7 +18,8 @@ class FeedTab extends Component {
     this.state = {
       courseName: props.course.name,
       articles: undefined,
-      file: undefined
+      file: undefined,
+      members: []
     }
   }
 
@@ -30,6 +31,8 @@ class FeedTab extends Component {
       this.handleArticlesUpdate(nextProps.course.name)
     }
   }
+
+
 
   handleArticlesUpdate = (course_name) => {
     api.getAllArticlesOfCourse(course_name)
@@ -147,6 +150,7 @@ class MemberTab extends Component {
       course: props.course,
       members: undefined
     }
+    this.handleUpdateMembers = this.handleUpdateMembers.bind(this)
   }
 
   componentDidMount() {
@@ -154,6 +158,7 @@ class MemberTab extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.handleUpdateMembers(nextProps.course.name)
     if (this.props.course.name !== nextProps.course.name) {
       this.handleUpdateMembers(nextProps.course.name)
     }
@@ -172,12 +177,16 @@ class MemberTab extends Component {
     if (members && (this.props.enrolled || this.props.isTeacher)) {
       return (
         <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
+          <div className="d-block d-md-none order-md-last justify-content-center">
+            <div>
+              <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite = {this.handleUpdateMembers} />
+            </div>
+          </div>
           <ul>
             { members.map(function(member, i) {
                 return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
                          <Link to={ `/user/${member.email}` }>
-                           { member.firstname }
-                           { member.lastname }
+                           { member.firstname } { member.lastname }
                          </Link>
                          <Link className='float-right' to={ `/messages/${member.email}` }>
                            <img id="chat" className="icon" src={ Chat } alt="Chat" />
@@ -216,13 +225,24 @@ class EnrollButton extends Component {
 
   render() {
     const {enrolled, user, course} = this.props;
-
     if (course.teacher.email !== user.email) {
-      return (
-        <button id={ (enrolled) ? 'leavecourse' : 'joincourse' } className='btn' onClick={ (enrolled) ? this.leaveCourse : this.joinCourse } style={ { position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2' } }>
-          { (enrolled) ? 'Abmelden' : 'mich einschreiben' }
-        </button>
-        );
+      if(course.isFree === true){
+        return (
+          <button id={ (enrolled) ? 'leavecourse' : 'joincourse' } className='btn' onClick={ (enrolled) ? this.leaveCourse : this.joinCourse } style={ { position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2' } }>
+            { (enrolled) ? 'Abmelden' : 'mich einschreiben' }
+          </button>
+          );
+      }
+      else if(course.isFree === false && enrolled === true){
+        return (
+          <button id={'leavecourse'} className='btn' onClick={  this.leaveCourse } style={ { position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2' } }>
+            { 'Abmelden' }
+          </button>
+          );
+      }
+      else{
+        return null;
+      }
     } else {
       return null;
     }
@@ -237,9 +257,11 @@ class Course extends Component {
       enrolled: false,
       course: undefined,
       file: null,
-      isTeacher: false
+      isTeacher: false,
     };
     this.bearbeiten = this.bearbeiten.bind(this);
+    this.onInvite = this.onInvite.bind(this);
+
   }
 
   componentDidMount() {
@@ -272,6 +294,12 @@ class Course extends Component {
           })
         }
       }))
+  }
+  //make sure to update member tab when a member is added by teacher
+  onInvite(){
+    this.setState(
+      this.state
+    )
   }
 
   bearbeiten = () => {
@@ -437,6 +465,9 @@ class Course extends Component {
     // teacher view
     else {
       return (
+        <div className="row">
+        <div className="col-md-8" style={ { paddingRight: '0', paddingLeft: '0' ,paddingTop: '20px'} }>
+
         <div>
           <div className="container-fluid" style={ { marginBottom: '20px', paddingRight: '54px', paddingLeft: '24px' } }>
             <div className="row">
@@ -475,7 +506,6 @@ class Course extends Component {
                     <div className="d-block d-md-none order-md-last justify-content-center">
                       <div>
                         <TeacherInfo location={ this.props.location } user={ this.props.user } />
-                        <InviteToCourse location={ this.props.location } user={ this.props.user } />
                       </div>
                     </div>
                     <div className="col-md-8">
@@ -541,14 +571,22 @@ class Course extends Component {
                     </p>
                   </div>
                 </div>
-                <MemberTab enrolled={ enrolled } course={ course } isTeacher={ isTeacher } />
+                <MemberTab enrolled={ enrolled } course={ course } isTeacher={ isTeacher } location={this.props.location} user={this.props.user} onInvite={this.onInvite}/>
                 <FeedTab enrolled={ enrolled } user={ this.props.user } course={ course } />
               </div>
             </div>
           </div>
         </div>
-        );
-    }
+        </div>
+
+        <div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
+            <div style={ { paddingTop: '20px' } }>
+              <TeacherInfo location={ this.props.location } user={ this.props.user }/>
+              <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite = {this.onInvite} mini = {true} />
+            </div>
+        </div>
+</div>
+)}
   }
 }
 

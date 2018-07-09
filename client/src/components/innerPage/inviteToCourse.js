@@ -1,17 +1,48 @@
 import React, { Component } from 'react';
+import {Link, withRouter } from 'react-router-dom'
 
 const api = require('../../api');
 
+function contains(a, obj) {
+    var i = a.length;
+    while (i--) {
+       if (a[i] === obj) {
+           return true;
+       }
+    }
+    return false;
+}
+
+class Element extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: ""
+    }
+  }
+  render() {
+    return (
+      <div className="contentMembersSearch">
+        <div onClick = {()=>this.props.onSubmit(this.props.user.email)}  style={{ textDecoration: 'none'}} >
+          <div style={ { clear: "both" } } className="contentMembersSearch">
+            <img className="contentMembersSearch" src={ this.props.user.picturedata } alt="profilepicture" />
+            <span className="contentMembersSearch course-name w-100">{ this.props.user.firstname } { this.props.user.lastname }</span>
+          </div>
+        </div>
+      </div>
+      );
+  }
+}
 //This component handles the Suggestions for emails that the user gets
 class Suggestions extends Component {
 
   render() {
     const options = this.props.results.map(r => (
-      <option key={ r.email } value={ r.email }>{r.firstname} {r.lastname}</option>
+      <Element key={ r.email } user={ r } onSubmit={this.props.onSubmit}/>
     ))
-    return <ul>
+    return <div>
              { options }
-           </ul>
+           </div>
   }
 }
 
@@ -29,8 +60,10 @@ class InviteToCourse extends Component {
       courseTeacher: '',
       isFree: '',
       errorMessage: '',
-      allUsers: []
+      allUsers: [],
+      matches: []
     };
+    this.onSubmit = this.onSubmit.bind(this)
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.location.pathname !== nextProps.location.pathname) {
@@ -46,9 +79,13 @@ class InviteToCourse extends Component {
     this.handlesUpdate(course_name);
 
     api.getAllUsers()
-        .then(res => {
-          this.setState({
-            allUsers: res
+        .then(res1 => {
+          api.getAllUsersOfCourse(course_name)
+          .then(res2 => {
+            res2 = res2.map(s => JSON.stringify(s))
+            this.setState({
+              allUsers: res1.filter(s=> !res2.includes(JSON.stringify(s)))
+            })
           })
         })
   }
@@ -59,7 +96,7 @@ class InviteToCourse extends Component {
       this.setState({
         courseName: course_name,
         courseTeacher: course.teacher,
-        isFree: course.isFree
+        isFree: course.isFree,
       })
     })
   }
@@ -67,48 +104,66 @@ class InviteToCourse extends Component {
   handleInputChange = () => {
     this.setState({
       query: this.search.value,
-      errorMessage: "",
       infoMessage: ""
     }, () => {
-      if (this.state.query && this.state.query.length > 1) {
+      if (this.state.query.length > 0) {
           this.getInfo()
-        }
-      })
+      }
+      else{
+        this.setState({
+          users : []
+        })
+      }
+    })
   }
 
   getInfo = () => {
         const matches = this.state.allUsers.filter(s =>
-          s.firstname.startsWith(this.state.query) || s.lastname.startsWith(this.state.query) || s.email.startsWith(this.state.query));
+          (s.email != this.props.user.email) && (s.firstname.startsWith(this.state.query) || s.lastname.startsWith(this.state.query) || s.email.startsWith(this.state.query)) && s.email !== this.props.user);
         this.setState({
           users: matches
         })
   }
 
-  onSubmit = () => {
-    let requestEmail = document.getElementById("inviteEmail");
-    //check if Email Adress is a valid Email
-    if (requestEmail.value.match(/^([\w\d.-]+)@([\w\d-]+\.)+([\w]{2,})$/i) == null) {
-      this.setState({
-        errorMessage: "Bitte gib eine gültige E-Mail Adresse an."
-      });
-      return;
+  onSubmit = (email) => {
+    var id = "inviteEmail"
+    if(this.props.mini){
+       id = "inviteEmailmini"
     }
+
     // // Post request to backend
-    //api.enrollUser(requestEmail.value, this.state.courseName)
-    api.invite(requestEmail.value, this.state.courseName)
+    api.enrollUser(email, this.state.courseName)
+    .then( res =>{
+      this.props.onInvite(this.state.courseName)
+      api.getAllUsers()
+          .then(res1 => {
+            api.getAllUsersOfCourse(this.state.courseName)
+            .then(res2 => {
+              res2 = res2.map(s => JSON.stringify(s))
+              this.setState({
+                allUsers: res1.filter(s=> !res2.includes(JSON.stringify(s)))
+              })
+            })
+          })
+    })
+
+    api.invite(email, this.state.courseName)
       .then(json => {
         if (json.success === true) {
           this.setState({
-            requestSent: true,
-            errorMessage: '',
-            infoMessage: "Einladungs-Email versendet"
+            infoMessage: "Einladungs-Email versendet",
+            users: []
           });
         }
       });
-    requestEmail.value = "";
+    document.getElementById(id).value="";
   }
 
   render() {
+    var id = "inviteEmail"
+    if(this.props.mini){
+       id = "inviteEmailmini"
+    }
     //check if user is responsible teacher for course and if course is not for free
     if (this.state.isFree === false && (this.state.user.email === this.state.courseTeacher.email)) {
       return (
@@ -118,22 +173,15 @@ class InviteToCourse extends Component {
               Teilnehmer hinzufügen
             </div>
             <div style={ { marginTop: "1em" } }>
-              <form>
-                <input id='inviteEmail' className="form-control" placeholder="Suche nach E-Mail-Adresse..." ref={ input => this.search = input } onChange={ this.handleInputChange } list="json-datalist"
+                <input id={id} className="form-control" placeholder="Suche nach Mitglied..." ref={ input => this.search = input } onChange={ this.handleInputChange }
                 />
-                <datalist id="json-datalist">
-                  <Suggestions results={ this.state.users } />
-                </datalist>
-                <div style={ { textAlign: "center" } }>
-                  <a id='inviteButton' className='btn' onClick={ this.onSubmit }>einladen</a>
-                </div>
+                  <Suggestions results={ this.state.users } onSubmit={this.onSubmit} />
                 <div className="errorMessage" style={ { marginTop: "0.5em" } }>
                   { this.state.errorMessage }
                 </div>
                 <div className="infoMessage" style={ { marginTop: "0.5em" } }>
                   { this.state.infoMessage }
                 </div>
-              </form>
             </div>
           </div>
         </div>
@@ -144,4 +192,4 @@ class InviteToCourse extends Component {
   }
 }
 
-export default InviteToCourse;
+export default withRouter(InviteToCourse);
