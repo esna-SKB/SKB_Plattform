@@ -75,7 +75,7 @@ export class Messages extends React.Component {
     super(props);
     this.state = {
       // endpoint: os.hostname()+':5001',
-      endpoint: os.hostname() + ":5001",
+      endpoint: os.hostname() + ":5000",
       partnerEmail: window.location.pathname.split("/")[2],
       history: undefined,
       partner: undefined
