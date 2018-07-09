@@ -9,19 +9,9 @@ var methodOverride = require('method-override');
 
 const Message = require('./models/message');
 
-
-
 mongoose.connect('mongodb://localhost/esna')
-//var esna_db = mongodb.MongoClient.connect('mongodb://localhost:27017');
 
 const app = express();
-
-// const server = http.createServer(app);
-// const io = socketIO(messageServer)
-//var exp = express();
-//var server = require('http').Server(app)
-
-// messageServer.listen(messagePort, () => console.log(`For Messages listening on port ${messagePort}`))
 
 // just middlewears
 // I don't know what this does, but it doesn't work without it
@@ -45,6 +35,8 @@ var server = app.listen(port, () => `Server running on port ${port}`);
 
 module.exports.server = server;
 
+
+//this is for live messaging
 var io = require('socket.io')(server);
 
 io.on('connection', socket => {
