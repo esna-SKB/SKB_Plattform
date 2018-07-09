@@ -93,10 +93,14 @@ class Article extends React.Component {
 
   adminDeleteArticle (){
     api.deleteArticle(this.state.article._id);
+    //besser wäre es wie beim Feed und neuen Artikeln
+    window.location.reload();
   }
 
   adminChangeArticle (){
     api.updateArticle(this.state.article._id, this.state.changedText, this.state.fileRemoved);
+    //besser wäre es wie beim Feed und neuen Artikeln
+    window.location.reload();
   }
 
   img() {

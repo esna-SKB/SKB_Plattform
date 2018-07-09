@@ -53,8 +53,33 @@ function Element(props) {
         <NavLink to={ '/courses/' + course.name }>
           { course.name }
         </NavLink>
-        <button className="btn btn-danger float-right">Delete Course</button>
-        <button className="btn btn-secondary float-right">Edit Course</button>
+        <button className="btn text-danger btn-link float-right" data-toggle="modal" data-target="#areyousure" >Delete Course</button>
+        <div className="btn-group dropleft float-right">
+          <button className="btn text-secondary btn-link dropdown-toggle" data-toggle="dropdown">Edit Course</button>
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a className="dropdown-item" href="#">Change Name</a>
+            <a className="dropdown-item" href="#">Change Teacher</a>
+            <a className="dropdown-item" href="#">Change payment</a>
+          </div>
+        </div>
+        <div id="areyousure" className="modal fade" tabIndex="-0" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered modal-sm">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Are you sure?</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <p>Are you sure you want to delete this course. This Action cannot be reversed.</p>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-danger mr-auto"  >I am Sure</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       );
 
