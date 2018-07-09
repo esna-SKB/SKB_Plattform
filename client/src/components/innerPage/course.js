@@ -471,14 +471,29 @@ class Course extends Component {
 				var members = this.state.members;
 				if(members.length < 4)
 					api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, members, "Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen")
+					.then ((res) => {
+									/*message saves the id*/
+									api.enrollUser(members[0].email,res.message, 'Group');
+								})
 				else{
 					var i;
-					for(i = 0; i < members.length-1; i= i+2){
+					for(i = 0; i < members.length-2; i= i+2){
 						/*the last group will be three people if memebers has uneven length*/
-						if(!(members.length % 2 == 0) && (members.length-2 == i)){
-								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i],members[i+1], members[i+2]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");	
+						if(!(members.length % 2 == 0) && (members.length-3 === i)){
+								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i],members[i+1], members[i+2]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen")
+								.then ((res) => {
+									/*message saves the id*/
+									api.enrollUser(members[i].email,res.message, 'Group');
+								//	api.enrollUser(members[i+1].email,res.message, 'Group');
+								//	api.enrollUser(members[i+2].email,res.message, 'Group');
+								})
 						}else{
-								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i], members[i+1]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");	
+								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i], members[i+1]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen")
+								.then ((res) => {
+									/*message saves the id*/
+									api.enrollUser(members[i].email,res.message, 'Group');
+									//api.enrollUser(members[i+1].email,res.message, 'Group');
+								})
 						}
 							
 					}

@@ -23,6 +23,8 @@ function getGroups(route, cb) {
 
 function Element(props) {
   const group = props.group;
+  console.log("das ist die gruppe to show")
+  console.log(group)
     return (
       <div className="box">
         <div className="w-100 course-name">
@@ -50,6 +52,8 @@ export class MyGroups extends React.Component {
 
       getGroups ('/user/' + this.props.myEmail + '/group'
         , (groups) => {
+			console.log("my groups")
+			console.log(groups)
           this.setState({
             list: groups.map((e) => {
               return ( <Element key={ e._id } group={ e } />);

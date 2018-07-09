@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const Group = require('../models/group');
+Enrollment = require('../models/enrollment');
 
 
 router.route('/course/:courseId')
@@ -19,8 +20,9 @@ router.route('/course/:courseId')
 	})
 
 	//post new group
-	/**ErrorHandling checks: are all memebers in the course, are none of them in another group of the course -> it is indeed a new group,*/
+	/*ErrorHandling checks: are all memebers in the course, are none of them in another group of the course -> it is indeed a new group,*/
 
+	
 	.post((req, res, next) => {
 		const { body } = req;
 		const { groupname } = body; 
@@ -41,7 +43,7 @@ router.route('/course/:courseId')
 			console.log("new Group is saved! "+ newGroup.name);
 			return res.status(200).send({
 				success: true,
-				message: "new Group is saved"
+				message: newGroup._id
 				});
 			}
 		});
