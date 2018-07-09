@@ -237,7 +237,7 @@ class Article extends React.Component {
 
            
           <div className="modal fade" id="editArticle" tabIndex="-1" role="dialog" aria-labelledby="editArticleLabel" aria-hidden="true">
-            <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title" id="exampleModalLabel">Artikel bearbeiten</h5>
@@ -256,10 +256,34 @@ class Article extends React.Component {
                 </div>
 
 
+
+
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-danger" onClick={this.adminDeleteArticle} >Delete Article</button>
+
+                  <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#areyousure" >Delete Article</button>
                   <button type="button" className="btn btn-success" onClick={this.adminChangeArticle} >Save changes</button>
+                
+
+                <div id="areyousure" className="modal fade" tabIndex="-0" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                  <div className="modal-dialog modal-dialog-centered modal-sm">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title">Are you sure?</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        <p>Are you sure you want to delete this article. This Action cannot be reversed.</p>
+                      </div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-danger mr-auto"  onClick={this.adminDeleteArticle}>I am Sure</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 </div>
               </div>
             </div>

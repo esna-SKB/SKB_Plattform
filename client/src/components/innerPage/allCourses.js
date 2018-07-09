@@ -47,7 +47,18 @@ function CreateCourseButton(props) {
 function Element(props) {
   const course = props.course;
   const mini = props.mini;
-  if (mini) {
+  if (props.isAdmin) {
+    return (
+      <div className="w-100 course-name">
+        <NavLink to={ '/courses/' + course.name }>
+          { course.name }
+        </NavLink>
+        <button className="btn btn-danger float-right">Delete Course</button>
+        <button className="btn btn-secondary float-right">Edit Course</button>
+      </div>
+      );
+
+  } else if (mini) {
     return (
       <div className="w-100 course-name">
         <NavLink to={ '/courses/' + course.name }>
@@ -161,8 +172,20 @@ class OtherCourses extends React.Component {
   }
 
   componentDidMount() {
-    //teacher can see all courses in "Alle Kurse"
+    //Admin can see all courses in Alle Kurse and can delete them
     if (this.props.user.isTeacher === true) {
+      console.log("IM A ADMIN")
+      getCourses('/course'
+        , (courses) => {
+          this.setState({
+            list: courses.map((e) => {
+              return ( <Element key={ e._id } course={ e } isAdmin={true} />);
+            })
+          });
+        });
+    }    
+    //teacher can see all courses in "Alle Kurse"
+    else if (this.props.user.isTeacher === true) {
       getCourses('/course'
         , (courses) => {
           this.setState({
