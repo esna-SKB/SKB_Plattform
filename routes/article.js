@@ -1,4 +1,4 @@
- var express = require('express');
+var express = require('express');
 var router = express.Router();
 const Article = require('../models/article');
 const Course = require('../models/course');
@@ -62,13 +62,12 @@ router.route('/course/:name')
 				newArticle.save(function(err){
 					if(err) return res.status(500).send('error occured in the database');
 					else {
-					return res.status(200).send({
-						success: true,
-						article: "new Article is saved",
+						return res.status(200).send({
+							success: true,
+							article: "new Article is saved",
 						});
 					}
 				});
-
 			})
 		})
 	})
@@ -112,6 +111,37 @@ router.route('/course/:name')
 			})
 		})
 
+		.put((req, res, next) => {
+			const { body } = req;
+			var articleid  = req.params.id;
+			const { updatedText } = body;
+			const { deleteFile } = body;
+
+			Article.findOne({_id: articleid}, 
+				function(err, foundArticle){
+					if (err){
+						console.log('error occured in the database');
+			        	return res.status(500).send('error occured in the database');
+			       	} else {
+			       		foundArticle.text = updatedText;
+			       		if(deleteFile){
+			       			foundArticle.data = "";
+			       			foundArticle.type = "";
+			       			foundArticle.dataName = "";
+			       		}
+			       		foundArticle.save(function(error){
+			       			if(error){
+			       				return res.status(500).send('error occured in the database');
+			       			} else{
+								return res.status(200).send({success : true, article : "Article is updated"});
+			       			}
+			       		})
+			       	}
+				}
+			);
+
+		})
+
 		router.route('/:id/comments')
 
 			.get((req, res, next) => {
@@ -121,7 +151,7 @@ router.route('/course/:name')
 			        	return res.status(500).send('error occured in the database');
 			       	}else {
 						return res.status(200).send(article.comments);
-			     }
+			     	}
 				})
 			})
 

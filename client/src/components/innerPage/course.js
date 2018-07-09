@@ -41,6 +41,11 @@ class FeedTab extends Component {
   }
 
   postArticle = () => {
+
+    if(this.state.file){
+
+    }
+
     var text = document.getElementById("textteilen").value;
     var self = this;
     if (!this.state.file) {
@@ -51,7 +56,7 @@ class FeedTab extends Component {
         });
     } else {
       self.getBase64(self.state.file, function(base64file) {
-        console.log(self.state.file.name);
+        var name = self.state.file.name;
         api.createArticle(self.props.course.name, "", self.props.user.email, text, self.state.file.type, Date.now, base64file, self.state.file.name)
           .then(res => {
             self.handleArticlesUpdate(self.props.course.name)
@@ -88,6 +93,7 @@ class FeedTab extends Component {
   render() {
     const articles = this.state.articles;
 
+
     if (!articles) {
       return null;
     } else if (this.props.user.email === this.props.course.teacher.email) {
@@ -119,7 +125,7 @@ class FeedTab extends Component {
           </div>
           <div>
             { articles.map(function(article) {
-                return ( <Article key={ article._id } userEmail={ this.props.user.email } article={ article } />);
+                return ( <Article key={ article._id } userEmail={ this.props.user.email } article={ article } isAdmin={this.props.user.isAdmin} />);
               }, this) }
           </div>
         </div>

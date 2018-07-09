@@ -276,6 +276,27 @@ deleteUser: function(email){
   },
 
   /*
+   * PUT /course/:courseName
+   * updates a course object
+  */
+  updateArticle: function(articleId, updatedText, deleteFile){
+    return fetch('/article/'+articleId, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        articleId: articleId,
+        updatedText: updatedText,
+        deleteFile: deleteFile
+      }),
+    })
+    .then(res => res.json())
+  },
+
+
+  /*
    * GET /article/id
    * returns an article object
   */

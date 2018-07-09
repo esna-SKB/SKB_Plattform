@@ -8,10 +8,17 @@ class Article extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      article: this.props.article
+      article: this.props.article,
+      changedText: this.props.article.text,
+      fileRemoved: false
     };
     this.remove = this.remove.bind(this);
     this.comment = this.comment.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.delData = this.delData.bind(this);
+    this.adminDeleteArticle = this.adminDeleteArticle.bind(this);
+    this.adminChangeArticle = this.adminChangeArticle.bind(this);
+
   }
 
   remove = (event) => {
@@ -55,20 +62,42 @@ class Article extends React.Component {
     }
   }
 
+  adminArticle(){
+    if(this.props.isAdmin){
 
-  /*encoder = () => {
+      return(
+
+        <li><a className="text-danger btn" data-toggle="modal" data-target="#editArticle"> Bearbeiten/ Löschen </a></li>
 
 
+      )
+    }
+  }
 
-  	var arrayBuffer = Buffer.from(this.state.article.data, 'binary').toString('base64');
+  onChange (e) {
+    
+    this.setState({
+      changedText: e.target.value
+    })
+    console.log(this.state.article._id)
 
-  	let u8 = new Uint8Array(arrayBuffer)
-      let b64encoded = btoa([].reduce.call(new Uint8Array(arrayBuffer),function(p,c){return p+String.fromCharCode(c)},''))
-      let mimetype= this.state.article.type;
-      //console.log(arrayBuffer)
-      //document.getElementById("myimage") = b64encoded;
-      return "data:"+mimetype+";base64"+arrayBuffer
-  }*/
+  }
+
+  delData (e) {
+    this.setState({
+      fileRemoved: e.target.checked
+    })
+
+
+  }
+
+  adminDeleteArticle (){
+    api.deleteArticle(this.state.article._id);
+  }
+
+  adminChangeArticle (){
+    api.updateArticle(this.state.article._id, this.state.changedText, this.state.fileRemoved);
+  }
 
   img() {
     if(!this.state.article.data){
@@ -76,6 +105,11 @@ class Article extends React.Component {
     }
     var base64file = this.state.article.data;
     var name = this.state.article.dataName;
+
+    if (!this.state.article.dataName) {
+      name = "undefined";
+    }
+
     var type = this.state.article.type;
     
     if (this.state.article.type === undefined || this.state.article.type === "") {
@@ -171,8 +205,9 @@ class Article extends React.Component {
                   <button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown">
                     <h1 className="remove_article">...</h1></button>
                   <ul className="dropdown-menu" style={ { marginTop: '-35px' } }>
-                    <li className={(isAuthor)? "remove":"d-none"} onClick={ this.remove.bind(this) }><a>löschen</a></li>
-                    <li className="remove" onClick={ this.comment.bind(this) }><a>Kommentieren</a></li>
+                    <li className={(isAuthor)? "remove":"d-none"} onClick={ this.remove.bind(this) }><a className="btn">löschen</a></li>
+                    <li className="remove" onClick={ this.comment.bind(this) }><a className="btn">Kommentieren</a></li>
+                    {this.adminArticle()}
                   </ul>
                 </div>
               </div>
@@ -195,6 +230,36 @@ class Article extends React.Component {
         														<a href="#"><i className="fa fa-check"></i></a>
         												</span>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+           
+          <div className="modal fade" id="editArticle" tabIndex="-1" role="dialog" aria-labelledby="editArticleLabel" aria-hidden="true">
+            <div className="modal-dialog modal-dialog-centered" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">Artikel bearbeiten</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  
+
+                <div className="form-group">
+                  <textarea id='ArticleTextAdmin' className="col-xs-11" style={ { width: '100%' } } value={this.state.changedText} onChange = {this.onChange} />
+                  <label className="checkbox-inline">
+                    Datei löschen? <input type="checkbox" data-toggle="toggle" onChange={this.delData} />
+                  </label>
+                </div>
+
+
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-danger" onClick={this.adminDeleteArticle} >Delete Article</button>
+                  <button type="button" className="btn btn-success" onClick={this.adminChangeArticle} >Save changes</button>
                 </div>
               </div>
             </div>
