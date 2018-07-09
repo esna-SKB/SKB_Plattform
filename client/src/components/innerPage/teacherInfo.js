@@ -79,7 +79,7 @@ class TeacherInfo extends React.Component {
     const {
       user,
       teacher
-    } = this.state; 
+    } = this.state;
 
     if (teacher && user.email !== teacher.email) { //if teacher is loaded and user is different from teacher, show
       return (

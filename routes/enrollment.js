@@ -7,8 +7,8 @@ const Enrollment = require('../models/enrollment');
 router.route('/user/:email/course/:name')
 
 	.post((req, res, next) => {
-		var email = req.params.email; 
-		var name = req.params.name; 
+		var email = req.params.email;
+		var name = req.params.name;
 
 		User.findOne({email: email}, {}).exec(function(err, user){
 			if (err) return res.status(500).send('1');
@@ -20,11 +20,11 @@ router.route('/user/:email/course/:name')
 
 				Enrollment.findOne({user:user._id, course:course._id}).exec(function(err, enroll){
 					if(err) return res.status(500).send('');
-					if(enroll != null) return res.status(404).send({success: false, message: 'enrollment allready exists'});
+					if(enroll != null) return res.status(200).send({success: false, message: 'enrollment allready exists'});
 					else{
 						var en = new Enrollment({user: user._id, course: course._id})
 						en.save(function(err){
-							if(err) return res.status(500).send('err'); 
+							if(err) return res.status(500).send('err');
 							else {
 							return res.status(200).send({
 								success: true,
@@ -34,15 +34,15 @@ router.route('/user/:email/course/:name')
 						})
 					}
 				})
-				
+
 			})
 		})
 
 	})
 
 	.delete((req, res, next) => {
-		var email = req.params.email; 
-		var name = req.params.name; 
+		var email = req.params.email;
+		var name = req.params.name;
 		User.findOne({email: email}, {}).exec(function(err, user){
 			if (err) return res.status(500).send('1');
 			if(user == null) return res.status(404).send('user does not exists');
@@ -57,7 +57,7 @@ router.route('/user/:email/course/:name')
 			       	else if(affected.n == 0){
 			       		return res.status(404).send({success : true, message : "user was not in course"});
 			       	} else{
-						return res.status(200).send({success : true, message : "user is signed out of course"}); 
+						return res.status(200).send({success : true, message : "user is signed out of course"});
 			       	}
 				})
 			})
