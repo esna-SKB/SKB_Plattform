@@ -73,9 +73,10 @@ class Conversation extends React.Component {
 export class Messages extends React.Component {
   constructor(props) {
     super(props);
+    console.log(os.hostname())
     this.state = {
       // endpoint: os.hostname()+':5001',
-      endpoint: os.hostname() + ":5000",
+      endpoint: os.hostname(),
       partnerEmail: window.location.pathname.split("/")[2],
       history: undefined,
       partner: undefined
