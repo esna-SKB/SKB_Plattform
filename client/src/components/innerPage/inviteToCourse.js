@@ -3,16 +3,6 @@ import {Link, withRouter } from 'react-router-dom'
 
 const api = require('../../api');
 
-function contains(a, obj) {
-    var i = a.length;
-    while (i--) {
-       if (a[i] === obj) {
-           return true;
-       }
-    }
-    return false;
-}
-
 class Element extends React.Component {
   constructor(props) {
     super(props);
@@ -167,8 +157,8 @@ class InviteToCourse extends Component {
     //check if user is responsible teacher for course and if course is not for free
     if (this.state.isFree === false && (this.state.user.email === this.state.courseTeacher.email)) {
       return (
-        <div className="row">
-          <div className="box col-12">
+        <div className="row" style={ { border: '1px solid rgb(232, 233, 235)' } }>
+          <div className="box col-12 text-center">
             <div className="box-title">
               Teilnehmer hinzufügen
             </div>
@@ -183,8 +173,8 @@ class InviteToCourse extends Component {
                   { this.state.infoMessage }
                 </div>
             </div>
-          </div>
         </div>
+      </div>
         );
     } else {
       return null;
