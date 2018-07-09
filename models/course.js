@@ -31,9 +31,13 @@ var courseSchema = new Schema({
 		default: []
 	},
 	
-	groupSizes: {
+	groupSizesMin: {
 		type: Number,
 		default: 2	
+	},
+	groupSizesMax: {
+		type: Number,
+		default: 4	
 	},
 	
 	groupPrefenceDeadline:{

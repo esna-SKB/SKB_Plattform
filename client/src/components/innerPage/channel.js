@@ -191,29 +191,37 @@ class Group extends React.Component {
             this.handleUpdate(groupId);  
         }
     }
-	
-	
     
     handleUpdate(groupId) {
 			//get group
-		api.getGroup(groupId)
+			api.getGroup(groupId)
 			.then(res => {
 				this.setState({
 					group : res
 				});
-			})
-			
-			 // check if user is a member   
-			.then(() =>
-				api.checkEnrolledUser(this.props.user.email, groupId)
-				.then(res => {
-					console.log(res.success);
+				
+			//check if member
+			api.checkEnrolledUser(this.state.user,groupId)
+			.then( res => 
+				{
+					console.log(res.success)
 					this.setState({
 						isMember: res.success
-					});
-					
-				}))
-  }
+					})
+				})
+		})
+	}
+    /*
+    .then(()=>{
+        //get all feed articles
+          api.getAllArticlesOfGroup(groupId).then(res => {
+            this.setState({articles : res.reverse()})
+          });
+          api.getAllMembersOfGroup(groupId).then(res=>{
+              this.setState({members: res.reverse()})
+          })
+    })*/
+ 
     
     render() {
 		
@@ -221,7 +229,7 @@ class Group extends React.Component {
         if(!this.state.group /*|| !this.state.articles*/){
             return null;
         }else if(this.state.isMember === false){
-           return null;
+            <div> You are not a member of the group </div>
         }else{
             return (
             <div>

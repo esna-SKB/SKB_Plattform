@@ -19,47 +19,32 @@ router.route('/course/:courseId')
 	})
 
 	//post new group
+	/**ErrorHandling checks: are all memebers in the course, are none of them in another group of the course -> it is indeed a new group,*/
+
 	.post((req, res, next) => {
 		const { body } = req;
-		const { name } = body; 
+		const { groupname } = body; 
 		const { members } = body; //array
-		const { course } = body; 
+		const { courseId } = body; 
 		const { description } = body;
 
-		Group.find({name: name},{}, function(err, otherGroup){
-
-			if (err){
-	           console.log('error occured in the database');
-	           return res.status(500).send({
-			    success: false,
-			    message: 'Error: Server error'
-			  });
-			}else if(otherGroup.length > 0){
-				console.log(otherGroup + " length is " + otherGroup.length); 
-				return res.status(404).send({
-					success: false,
-					message: "This Group exists allready"
-				}); 
-			} else {
-				//if there is no group with that name yet
-				// Save the new group
-				const newGroup = new Group();
-				newGroup.name = name;
-				newGroup.members = members;
-				newGroup.course = course; 
-				newGroup.description = description;
-				newGroup.save(function(err){
-					if(err) return res.status(500).send('error occured in the database'); 
-					else {
-					console.log("new Group is saved! "+ newGroup.name);
-					return res.status(200).send({
-						success: true,
-						message: "new Group is saved"
-						});
-					}
+		//if there is no group with those members for that course yet  (yet to implement)
+		// Save the new group
+		const newGroup = new Group();
+		newGroup.name = groupname;
+		newGroup.members = members;
+		newGroup.course = courseId; 
+		newGroup.description = description;
+		newGroup.save(function(err){
+			if(err) return res.status(500).send('error occured in the database'); 
+			else {
+			console.log("new Group is saved! "+ newGroup.name);
+			return res.status(200).send({
+				success: true,
+				message: "new Group is saved"
 				});
 			}
-		})
+		});
 	})
 
 router.route('/:id')

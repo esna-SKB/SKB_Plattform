@@ -101,10 +101,11 @@ class Article extends React.Component {
   }
 
   render() {
-
     const article = this.props.article;
     const d = article.created_at.toString();
     var date = new Date(d);
+	    //finde herraus von wo der artikel kommt 
+	
 
     var timeSince = (date) => {
       var seconds = Math.floor((new Date() - date) / 1000);
@@ -146,7 +147,7 @@ class Article extends React.Component {
                     { article.author.lastname }
                   </p>
                   <p>
-                    {/* article.group.name*/ }
+                    { article.NameOfModel }
                   </p>
                 </div>
                 <div className='col-6'>
@@ -185,7 +186,7 @@ class Article extends React.Component {
                     { article.author.lastname }
                   </p>
                   <p>
-                    { /*article.course.name*/ }
+                    { article.NameOfModel }
                   </p>
                 </div>
                 <div className='col-6'>

@@ -17,6 +17,7 @@ class FeedTab extends Component {
   constructor(props) {
     super(props);
     this.state = {
+	  courseId: this.props.course._id,
       courseName: props.course.name,
       articles: undefined,
       file: undefined
@@ -24,16 +25,16 @@ class FeedTab extends Component {
   }
 
   componentDidMount() {
-    this.handleArticlesUpdate(this.props.course.name)
+    this.handleArticlesUpdate(this.state.courseId)
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.course.name !== nextProps.course.name) {
-      this.handleArticlesUpdate(nextProps.course.name)
+      this.handleArticlesUpdate(nextProps.course._id)
     }
   }
 
-  handleArticlesUpdate = (course_name) => {
-    api.getAllArticlesOfCourse(course_name)
+  handleArticlesUpdate = (courseid) => {
+    api.getAllArticles(courseid)
       .then(res => {
         this.setState({
           articles: res.reverse()
@@ -45,15 +46,15 @@ class FeedTab extends Component {
     var text = document.getElementById("textteilen").value;
     var self = this;
     if (!this.state.file) {
-      api.createArticle(self.props.course.name, "", self.props.user.email, text, "", Date.now, "")
+      api.createArticle(self.props.course._id,'Course',this.state.courseName, "", self.props.user.email, text, "", Date.now, "")
         .then(res => {
-          self.handleArticlesUpdate(self.props.course.name)
+          self.handleArticlesUpdate(self.props.course._id)
           document.getElementById("textteilen").value = ""
         });
     } else {
       self.getBase64(self.state.file, function(base64file) {
 
-        api.createArticle(self.props.course.name, "", self.props.user.email, text, self.state.file.type, Date.now, base64file)
+        api.createArticle(self.props.course._id,'Course',this.state.courseName, "", self.props.user.email, text, self.state.file.type, Date.now, base64file)
           .then(res => {
             self.handleArticlesUpdate(self.props.course.name)
             document.getElementById("textteilen").value = ""
@@ -204,13 +205,13 @@ class EnrollButton extends Component {
   }
 
   leaveCourse = () => {
-    api.unenrollUser(this.props.user.email, this.props.course.name).then(res => {
+    api.unenrollUser(this.props.user.email, this.props.course._id).then(res => {
       window.location.reload(false);
     });
   }
 
   joinCourse = () => {
-    api.enrollUser(this.props.user.email, this.props.course.name).then(res => {
+    api.enrollUser(this.props.user.email, this.props.course._id, 'Course').then(res => {
       window.location.reload(false);
     });
   }
@@ -458,19 +459,42 @@ class Course extends Component {
   }
   
   saveGroups() {
-		//groups of two and one three
-		console.log("we are here");
-	  api.getAllUsersOfCourse(this.state.course.name).then(res => {
-		  console.log(res.message);
-		  console.log(res)
-		 if(res.length <2){
+		//groups of two and one three, if one person only incourse then one
+		  api.getAllUsersOfCourse(this.state.course.name).then(res => {
+			this.setState({
+				members: res.reverse()
+			})
+		})
+		.then(() => {
+				console.log("these are the members");
+				console.log(this.state.members)
+				var members = this.state.members;
+				if(members.length < 4)
+					api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, members, "Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen")
+				else{
+					var i;
+					for(i = 0; i < members.length-1; i= i+2){
+						/*the last group will be three people if memebers has uneven length*/
+						if(!(members.length % 2 == 0) && (members.length-2 == i)){
+								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i],members[i+1], members[i+2]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");	
+						}else{
+								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i], members[i+1]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");	
+						}
+							
+					}
+				}
+		})
+		
+	
+	
+		/* if(res.length <2){
 			 console.log("we are here one member only");
 			api.Group(this.state.course.name,i/2, [res[i]], "Wir sind Gruppenummer:"+ i/2).then(res => {console.log(res.message)});	
 		 }else{ 
 			var i;
 			for(i = 0; i < res.length-1; i= i+2){
 				
-				/*last group if uneven number of members*/
+				/*last group if uneven number of members
 			if(!(res.length % 2 == 0) && (res.length-2 == i)){
 					api.Group(this.state.course.name,i/2, [res[i],res[i+1], res[i+2]], "Wir sind Gruppenummer:"+ i/2);	
 			}else{
@@ -478,9 +502,15 @@ class Course extends Component {
 			}
 		 }
 		}
-    });
+    });*/
   }
   
+  
+    joinCourse = () => {
+    api.enrollUser(this.props.user.email, this.props.course._id, 'Course').then(res => {
+      window.location.reload(false);
+    });
+  }
     gruppenbilden = () => {
 		let groupmaker = this.refs.groupmaker
 
@@ -649,7 +679,7 @@ class Course extends Component {
                           <small id="Help3" className="form-text text-muted">Bis dahin haben die Studenten_innen Zeit, ihre Präferenzen abzugeben</small>
                         </div>
 						
-						 <button ref="gruppenbildenspeichern" className='registrieren_botton' id="grspeichern" style={{
+						 <div ref="gruppenbildenspeichern" className='registrieren_botton' id="grspeichern" style={{
                                                                                                    color: 'rgb(24, 86, 169)',
                                                                                                    marginTop: '-67px !important',
                                                                                                    fontSize: '13px',
@@ -658,7 +688,7 @@ class Course extends Component {
                                                                                                    margin: '-12px 0'
                                                                                                  } } onClick={ this.saveGroups }>
                         speichern
-                      </button>
+                      </div>
 						
 					</form>
 				  </div>

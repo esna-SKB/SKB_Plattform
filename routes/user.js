@@ -88,6 +88,7 @@ router.route('/:email')
 		})
 	})
 
+	/*get all courses of user**/
 router.route('/:email/course')
 	.get((req, res, next) => {
 		var email = req.params.email;
@@ -95,10 +96,10 @@ router.route('/:email/course')
 			if (err) return res.status(500).send('error occured in the database');
 			else if (user == null) return res.status(401).send('user not fount');
 	       	else {
-	       		Enrollment.find({user:user._id}).populate({path: 'course', populate: {path:'teacher', model:'User'} }).exec(function(err, enroll){
+	       		Enrollment.find({user:user._id}).populate({path: 'theChosenModel.ModelId',model: 'Course', populate: {path:'teacher', model:'User'} }).exec(function(err, enroll){
 	       			if(err) return res.status(500).send('error occured in the database');
 	       			else{
-	       				return res.status(200).send(enroll.map(c => c.course));
+	       				return res.status(200).send(enroll.map(c => c.theChosenModel.ModelId));
 	       			}
 	       		})
 	       	}

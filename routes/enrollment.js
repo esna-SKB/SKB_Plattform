@@ -4,54 +4,62 @@ const User = require('../models/user');
 const Course = require('../models/course');
 const Enrollment = require('../models/enrollment');
 
-router.route('/user/:email/course/:name')
+router.route('/')
 
 	.post((req, res, next) => {
-		var email = req.params.email; 
-		var name = req.params.name; 
+		const { body } = req;
+		const { ModelId } = body;
+		const { kind } = body;
+		const { email } = body;
 
 		User.findOne({email: email}, {}).exec(function(err, user){
 			if (err) return res.status(500).send('1');
 			if(user == null) return res.status(404).send('user does not exists');
 
-			Course.findOne({name:name}, {}).exec(function(err, course){
+			/*Course.findOne({name:name}, {}).exec(function(err, course){
 				if(err) return res.status(500).send('2');
-				if(course == null) return res.status(404).send('course does not exists');
+				if(course == null) return res.status(404).send('course does not exists');*/
 
-				Enrollment.findOne({user:user._id, course:course._id}).exec(function(err, enroll){
+				Enrollment.findOne({user:user._id, 'theChosenModel.ModelId':ModelId}).exec(function(err, enroll){
 					if(err) return res.status(500).send('');
 					if(enroll != null) return res.status(404).send({success: false, message: 'enrollment allready exists'});
 					else{
-						var en = new Enrollment({user: user._id, course: course._id})
+						var en = new Enrollment();
+						en.user = user._id;
+						en.theChosenModel.kind = kind;
+						en.theChosenModel.ModelId =ModelId;
+						console.log(en);
 						en.save(function(err){
 							if(err) return res.status(500).send('err'); 
 							else {
 							return res.status(200).send({
 								success: true,
 								message: "new Enrollment is saved"
+								
 								});
 							}
 						})
 					}
 				})
-				
-			})
+
 		})
 
 	})
 
+	
+router.route('/email/:email/id/:id')	
 	.delete((req, res, next) => {
 		var email = req.params.email; 
-		var name = req.params.name; 
+		var id = req.params.id; 
 		User.findOne({email: email}, {}).exec(function(err, user){
 			if (err) return res.status(500).send('1');
 			if(user == null) return res.status(404).send('user does not exists');
 
-			Course.findOne({name:name}, {}).exec(function(err, course){
+		/*	Course.findOne({name:name}, {}).exec(function(err, course){
 				if(err) return res.status(500).send('2');
 				if(course == null) return res.status(404).send('course does not exists');
-
-				Enrollment.deleteOne({course : course._id, user:user._id}, function(err, affected){
+				*/
+				Enrollment.deleteOne({'theChosenModel.ModelId':id, user:user._id}, function(err, affected){
 					if (err)
 			           return res.status(500).send({success : false, message : "error accured in database"});
 			       	else if(affected.n == 0){
@@ -60,8 +68,32 @@ router.route('/user/:email/course/:name')
 						return res.status(200).send({success : true, message : "user is signed out of course"}); 
 			       	}
 				})
-			})
+		
 		})
 	})
+	
+	.post((req, res, next) => {
+		var email = req.params.email; 
+		var id = req.params.id; 
+		
+		User.findOne({email: email}, {}).exec(function(err, user){
+			if (err) return res.status(500).send('1');
+			if(user == null) return res.status(404).send('user does not exists');
 
+		/*	Course.findOne({name:name}, {}).exec(function(err, course){
+				if(err) return res.status(500).send('2');
+				if(course == null) return res.status(404).send('course does not exists');
+				*/
+				Enrollment.findOne({'theChosenModel.ModelId':id, user:user._id}, function(err, affected){
+					if (err)
+			           return res.status(500).send({success : false, message : "error accured in database"});
+			       	else if(affected.length == 0){
+			       		return res.status(404).send({success : false, message : "user was not enrolled"});
+			       	} else{
+						return res.status(200).send({success : true, message : "user is enrolled"}); 
+			       	}
+				})
+		
+		})
+	})
 module.exports = router

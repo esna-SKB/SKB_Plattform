@@ -5,17 +5,13 @@ const Course = require('../models/course');
 const User = require('../models/user');
 const Group = require('../models/group');
 
-router.route('/course/:name')
-	// get all articles of a course, sorted by most resently post
+router.route('/all/:id')
+
+	// get all articles of a course/group/channel aka cgc
 	.get((req, res, next) => {
-		var cname = req.params.name;
-
-		Course.findOne({name: cname}).exec(function(err, course){
-			if (err) return res.status(500).send('error occured in the database');
-
-			else if(course == null) return res.status(404).send('error occured in the database');
-			else {
-				Article.find({course: course}).populate('author').exec(function(err, articles){
+		var id = req.params.id;
+				//we have no errorHandling if course/group/channel doesnt exists....it's about trust XD  or we check all three possibilites(or maybe theres a shorter way)
+				Article.find({'theChosenModel.ModelId': id}).populate('author').exec(function(err, articles){
 					if (err){
 						console.log('error occured in the database');
 			        	return res.status(500).send('error occured in the database');
@@ -23,14 +19,16 @@ router.route('/course/:name')
 						return res.status(200).send(articles);
 			       	}
 				})
-			}
-		})
 	})
+	
+	
 	//post new Article
 	.post((req, res, next) => {
 
 		const { body } = req;
-		const { course } = body;
+		const { ModelId } = body;
+		const { kind } = body;
+		const { NameOfModel } = body;
 		const { headline } = body;
 		const { author } = body;
 		const { text } = body;
@@ -38,20 +36,22 @@ router.route('/course/:name')
 		const { type } = body;
 		const { created_at } = body; //könnte auch automatisch gespeichert werden
 		
-		console.log(course, author);
+		console.log(ModelId,kind, author);
 
-		Course.findOne({name: course}).exec(function(err, courseE){
+		/*Course.findOne({name: course}).exec(function(err, courseE){
 			if(err) return res.status(500).send('error occured in the database');
 			else if(courseE == null ) {
 				console.log(courseE)
 				return res.status(404).send('course could not be found');
-			}
+			}*/
 			User.findOne({email:author}).exec(function(err, userE){
 				if(err) return res.status(500).send('error occured in the database');
 				else if(userE == null ) return res.status(404).send('author could not be found');
 				// Save the new Article
 				const newArticle = new Article();
-				newArticle.course = courseE._id;
+				newArticle.theChosenModel.kind = kind;
+				newArticle.theChosenModel.ModelId = ModelId;
+				newArticle.NameOfModel = NameOfModel;
 				newArticle.headline = headline;
 				newArticle.author = userE._id;
 				newArticle.text = text;
@@ -63,18 +63,20 @@ router.route('/course/:name')
 					else {
 					return res.status(200).send({
 						success: true,
-						article: "new Article is saved",
+						message: "new Article is saved",
 						});
 					}
 				});
 
 			})
 		})
-	})
 
 	
 
-	router.route('/file/:articleid').get((req, res, next) => {
+	router.route('/file/:articleid')
+	
+	/*get file of one article*/
+	.get((req, res, next) => {
 		var id = req.params.articleid
 		Article.findOne({_id: id}, function(err, foundArticle) {
 			if(err) {
@@ -87,9 +89,10 @@ router.route('/course/:name')
 
 	router.route('/:id')
 
+		/*get one specific article*/
 		.get((req, res, next) => {
 			var id = req.params.id;
-			Article.findById(id).populate('teacher').populate('course').exec(function(err, article){
+			Article.findById(id).populate('author').exec(function(err, article){
 				if (err){
 		        	return res.status(500).send('error occured in the database');
 		       	}else {
@@ -98,6 +101,8 @@ router.route('/course/:name')
 			})
 		})
 
+		
+		/*delete one article*/
 		.delete((req, res, next) => {
 			var id = req.params.id;
 
@@ -113,9 +118,10 @@ router.route('/course/:name')
 
 		router.route('/:id/comments')
 
+			/*get comments of article*/
 			.get((req, res, next) => {
 				var id = req.params.id;
-				Article.findById(id).populate('teacher').populate('course').exec(function(err, article){
+				Article.findById(id).populate('teacher').exec(function(err, article){
 					if (err){
 			        	return res.status(500).send('error occured in the database');
 			       	}else {
@@ -124,71 +130,4 @@ router.route('/course/:name')
 				})
 			})
 
-
-	router.route('/group/:groupId')
-	// get all articles of a group, sorted by most resently post
-	.get((req, res, next) => {
-		var groupId = req.params.groupId;
-
-		Group.findOne({_id: groupId}).exec(function(err, group){
-			if (err) return res.status(500).send('error occured in the database');
-
-			else if(group == null) return res.status(404).send('no group found');
-			else {
-				Article.find({group: groupId}).populate('author').exec(function(err, articles){
-					if (err){
-						console.log('error occured in the database');
-			        	return res.status(500).send('error occured in the database');
-			       	}else {
-						return res.status(200).send(articles);
-			       	}
-				})
-			}
-		})
-	})
-	
-	//post new Article for Group
-	.post((req, res, next) => {
-
-		const { body } = req;
-		const { group } = body;
-		const { headline } = body;
-		const { author } = body;
-		const { text } = body;
-		const { data } = body;
-		const { type } = body;
-		const { created_at } = body; //könnte auch automatisch gespeichert werden
-		
-		console.log(group, author);
-
-		Group.findOne({_id: group}).exec(function(err, thegroup){
-			if(err) return res.status(500).send('error occured in the database');
-			else if(thegroup == null ) {
-				return res.status(404).send('group could not be found');
-			}
-			User.findOne({email:author}).exec(function(err, userE){
-				if(err) return res.status(500).send('error occured in the database');
-				else if(userE == null ) return res.status(404).send('author could not be found');
-				// Save the new Article
-				const newArticle = new Article();
-				newArticle.group = thegroup._id;
-				newArticle.headline = headline;
-				newArticle.author = userE._id;
-				newArticle.text = text;
-				newArticle.data = data;
-				newArticle.type = type;
-				newArticle.created_at = new Date();
-				newArticle.save(function(err){
-					if(err) return res.status(500).send('error occured in the database');
-					else {
-					return res.status(200).send({
-						success: true,
-						article: "new Article is saved for group",
-						});
-					}
-				});
-
-			})
-		})
-	})
 	module.exports = router
