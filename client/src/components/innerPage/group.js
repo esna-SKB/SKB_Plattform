@@ -33,7 +33,7 @@ class AbgabenTab extends Component{
 		return(
 		
 		 <div className="tab-pane fade" id="abgaben" role="tabpanel" aria-labelledby="abgaben-tab" style={{ padding: '20px'}}>
-			<div className="col-12">Hello i am abgabetab </div>
+			<div className="box col-12">Hello i am Abgabetab </div>
 		</div>
 		
 		);

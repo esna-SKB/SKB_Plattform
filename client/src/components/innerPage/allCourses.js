@@ -47,6 +47,8 @@ function CreateCourseButton(props) {
 function Element(props) {
   const course = props.course;
   const mini = props.mini;
+  console.log("Das ist ein Element")
+  console.log(course)
   if (mini) {
     return (
       <div className="w-100 course-name">
@@ -87,6 +89,8 @@ export class MyTeacherCourses extends React.Component {
       getCourses('/course'
         , (courses) => {
           var coursesForFree = courses.filter((c) => c.teacher.email === this.props.user.email);
+		  console.log("Freie KURRRSSE")
+		  console.log(coursesForFree)
           this.setState({
             list: coursesForFree.map((e) => {
               return ( <Element key={ e._id } course={ e } mini={ this.props.mini } />);

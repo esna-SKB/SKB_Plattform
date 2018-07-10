@@ -5,35 +5,20 @@ import api from '../../api';
 import dragula from 'dragula';
 
 
-class AbgabenTab extends Component{
+export class Beschreibung extends Component{
 	constructor(props) {
 		super(props);
 		this.state = {
-			groupId: this.props.group._id,
-			groupName:this.props.group.name,  
-			abgaben: undefined,
-			homeworks: undefined,
-			file: undefined
+			description: this.props.description,
 		}
 	}
-	 
-	 /** you can see a list of abgaben, which are part of a course (homework array) 
-		homework is: homeworkId, deadline, file, maxpoints , activated(boolean)
-	    abgabe is part of group , 
-		abgabe: abgabeId, homeworkId, file, reachedpoints
-		
-		here you see a list of activated homeworks with their deadlines and if you have uploaded a abgabe for the homework, you will see ( a linkt to it), 
-		you are able to upload a abgabe ( which is a pdf file) until deadline expires, you are able to change your abgabe(put request)
-		
-		
-		under course/homeworks the teacher is able to see (as links) all the abgaben of all groups to the corresponding homeworks, upload new homeworks, activate homeworks, and grade abgaben with points,
-	 ***/
+
 	
 	render(){
 		return(
 		
-		 <div className="tab-pane fade" id="abgaben" role="tabpanel" aria-labelledby="abgaben-tab" style={{ padding: '20px'}}>
-			<div className="col-12">Hello i am abgabetab </div>
+		 <div className="row" id="">
+			<div className=" box col-12">{this.props.description}</div>
 		</div>
 		
 		);
@@ -45,24 +30,24 @@ class FeedTab extends Component{
 	constructor(props) {
 		super(props);
 		this.state = {
-			groupId: this.props.group._id,
-			groupName:this.props.group.name,  
+			channelId: this.props.channel._id,
+			channelName:this.props.channel.name,  
 			articles: undefined,
 			file: undefined
 		}
 	}
 	
 	  componentDidMount() {
-		this.handleArticlesUpdate(this.props.group._id)
+		this.handleArticlesUpdate(this.props.channel._id)
 	  }
 	  componentWillReceiveProps(nextProps) {
-		if (this.props.group.name !== nextProps.group.name) {
-		  this.handleArticlesUpdate(nextProps.group._id)
+		if (this.props.channel.name !== nextProps.channel.name) {
+		  this.handleArticlesUpdate(nextProps.channel._id)
 		}
 	  }
 
-	  handleArticlesUpdate = (groupId) => {
-		api.getAllArticles(groupId)
+	  handleArticlesUpdate = (channelId) => {
+		api.getAllArticles(channelId)
 		  .then(res => {
 			  if(res !== undefined){
 				this.setState({
@@ -80,17 +65,17 @@ class FeedTab extends Component{
 		var text = document.getElementById("textteilen").value;
 		var self = this;
 		if (!this.state.file) {
-		  api.createArticle(self.props.group._id,'Group', self.state.groupName, "", self.props.user.email, text, "", Date.now, "")
+		  api.createArticle(self.props.channel._id,'Channel', self.state.channelName, "", self.props.user.email, text, "", Date.now, "")
 			.then(res => {
-			  self.handleArticlesUpdate(self.props.group._id)
+			  self.handleArticlesUpdate(self.props.channel._id)
 			  document.getElementById("textteilen").value = ""
 			});
 		} else {
 		  self.getBase64(self.state.file, function(base64file) {
 
-			api.createArticle(self.props.group._id,'Group', self.state.groupName, "", self.props.user.email, text, self.state.file.type, Date.now, base64file)
+			api.createArticle(self.props.channel._id,'Channel', self.state.channelName, "", self.props.user.email, text, self.state.file.type, Date.now, base64file)
 			  .then(res => {
-				self.handleArticlesUpdate(self.props.group._id)
+				self.handleArticlesUpdate(self.props.channel._id)
 				document.getElementById("textteilen").value = ""
 				self.setState({
 				  file: undefined
@@ -164,15 +149,14 @@ class FeedTab extends Component{
 	} 
 }
 
-class Group extends React.Component {
+class Channel extends React.Component {
 
     constructor(props){
         super(props);
         this.state = {
 			user: this.props.user,
             isMember: false,
-            group: undefined,
-            course: undefined,
+            channel: undefined,
             articles: undefined,
             members: [],
             file: null,
@@ -181,27 +165,27 @@ class Group extends React.Component {
     
     componentDidMount(){
 		console.log(this.props.location.pathname);
-		var groupId = this.props.location.pathname.split("/")[2];
-		this.handleUpdate(groupId); 
+		var channelId = this.props.location.pathname.split("/")[2];
+		this.handleUpdate(ChannelId); 
     }
 
     componentWillReceiveProps(nextProps){
         if(this.props.location.pathname!==nextProps.location.pathname){
-            var groupId = this.props.location.pathname.split("/")[2];
-            this.handleUpdate(groupId);  
+            var channelId = this.props.location.pathname.split("/")[2];
+            this.handleUpdate(channelId);  
         }
     }
     
-    handleUpdate(groupId) {
-			//get group
-			api.getGroup(groupId)
+    handleUpdate(channelId) {
+			//get channel
+			api.getChannel(channelId)
 			.then(res => {
 				this.setState({
-					group : res
+					channel : res
 				});
 				
 			//check if member
-			api.checkEnrolledUser(this.state.user,groupId)
+			api.checkEnrolledUser(this.state.user.email,channelId)
 			.then( res => 
 				{
 					console.log(res.success)
@@ -211,33 +195,22 @@ class Group extends React.Component {
 				})
 		})
 	}
-    /*
-    .then(()=>{
-        //get all feed articles
-          api.getAllArticlesOfGroup(groupId).then(res => {
-            this.setState({articles : res.reverse()})
-          });
-          api.getAllMembersOfGroup(groupId).then(res=>{
-              this.setState({members: res.reverse()})
-          })
-    })*/
  
     
     render() {
 		
 			
-        if(!this.state.group /*|| !this.state.articles*/){
+        if(!this.state.channel /*|| !this.state.articles*/){
             return null;
-        }else if(this.state.isMember === false){
-            <div> You are not a member of the group </div>
+         }else if(this.state.isMember === false){
+           return null;
         }else{
             return (
             <div>
             <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
                 <div className="row" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
                     <div className="col" style={{paddingRight: '0', paddingLeft: '20px'}}>
-                      
-                    <h1 style={ { textTransform: 'capitalize' } }>{ this.state.group.name }</h1>
+						<h1 style={ { textTransform: 'capitalize' } }>{ this.state.channel.name }</h1>
                     </div>
                 </div>
 
@@ -249,7 +222,7 @@ class Group extends React.Component {
                   </li>
 
                   <li className="nav-item">
-                      <a className="nav-link tab-title" id="abgaben-tab" data-toggle="tab" href="#abgaben" role="tab" aria-controls="agbaben" aria-selected="false">Abgaben</a>
+                      <a className="nav-link tab-title" id="abgaben-tab" data-toggle="tab" href="#abgaben" role="tab" aria-controls="agbaben" aria-selected="false">Teilnehmer</a>
                   </li>
                 </ul>
                 </div>
@@ -258,8 +231,8 @@ class Group extends React.Component {
             <div className="background container-fluid row">
                 <div className="col col-sm-12">
                     <div className="tab-content col-offset-6 centered" id="tab-content">
-                        <FeedTab  user={this.props.user} group={this.state.group} articles={this.state.articles}/>
-						<AbgabenTab user={this.props.user} group={this.state.group} />
+                        <FeedTab  user={this.props.user} channel={this.state.channel} articles={this.state.articles}/>
+						<Teilnehmer user={this.props.user} channel={this.state.channel} />
                     </div>
                 </div>
             </div>
@@ -270,4 +243,4 @@ class Group extends React.Component {
 }
 
 
-export default Group;
+export default Channel;

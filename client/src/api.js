@@ -368,8 +368,6 @@ deleteUser: function(email){
  * POST /group/course/:courseName
  * creates a new group object, group name does not have to be unique. in route there will be checked if: are all members in course, is none of them already in a group(for the course)
 */
-
- 
 Group: function(courseId, groupName, members, description){
     return fetch('/group/course/' + courseId, {
       method: 'POST',
@@ -400,7 +398,7 @@ Group: function(courseId, groupName, members, description){
   },
 /*
  * PUT /groups/:groupId
- * updates a course object
+ * updates a group object
 */
   updateGroup: function(groupId, groupName, members, description){
     return fetch('/group/'+ groupId, {
@@ -418,8 +416,8 @@ Group: function(courseId, groupName, members, description){
     .then(res => res.json())
   },
 /*
- * GET /groups/:groupId
- * deletes a course object
+ * DELETE /groups/:groupId
+ * deletes a group object
 */
   deleteGroup: function(groupId){
     return fetch('/group/' + groupId, {
@@ -430,6 +428,75 @@ Group: function(courseId, groupName, members, description){
     .then(res => res.json())
   },
 
+  
+//ChANNELS
+
+/*
+ * POST /channel/
+ * creates a new group object, group name does not have to be unique. in route there will be checked if: are all members in course, is none of them already in a group(for the course)
+*/
+Group: function(channelName,description){
+    return fetch('/channel/new', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        channelname: channelName,
+        description: description,
+      }),
+    })
+    .then(res => res.json())
+  },
+/*
+ * GET /channel/:channelId
+ * returns a channel object
+*/
+  getChannel: function(channelId){
+    return fetch('/channel/' + channelId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+  
+  /*
+ * PUT /channel/:channelId
+ * updates a channel object
+*/
+  updateChannel: function(channelId, channelName, members, description){
+    return fetch('/channel/'+ channelId, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        name: channelName,
+        members: members,
+        description: description,
+      }),
+    })
+    .then(res => res.json())
+  },
+  
+  
+  /*
+ * DELETE /channel/:channelId
+ * deletes a channel object
+*/
+  deleteGroup: function(groupId){
+    return fetch('/group/' + groupId, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+  
+  
 //MESSAGES
 /*
  * GET /messages
