@@ -15,6 +15,7 @@ class Article extends React.Component {
     this.remove = this.remove.bind(this);
     this.comment = this.comment.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.adminArticle = this.adminArticle.bind(this);
     this.delData = this.delData.bind(this);
     this.adminDeleteArticle = this.adminDeleteArticle.bind(this);
     this.adminChangeArticle = this.adminChangeArticle.bind(this);
