@@ -198,8 +198,7 @@ class OtherCourses extends React.Component {
 
   componentDidMount() {
     //Admin can see all courses in Alle Kurse and can delete them
-    if (this.props.user.isTeacher === true) {
-      console.log("IM A ADMIN")
+    if (this.props.user.isAdmin === true) {
       getCourses('/course'
         , (courses) => {
           this.setState({
