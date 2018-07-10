@@ -133,7 +133,7 @@ class FeedTab extends Component {
         <div className="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={ { padding: '20px' } }>
           <div>
             { articles.map(function(article) {
-                return ( <Article key={ article._id } user={ this.props.user.email } article={ article } />);
+                return ( <Article key={ article._id } user={ this.props.user.email } userEmail={ this.props.user.email } article={ article } isAdmin={this.props.user.isAdmin} />);
               }, this) }
           </div>
         </div>
@@ -174,23 +174,45 @@ class MemberTab extends Component {
   render() {
     const members = this.state.members;
     if (members && (this.props.enrolled || this.props.isTeacher)) {
-      return (
-        <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
-          <ul>
-            { members.map(function(member, i) {
-                return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
-                         <Link to={ `/user/${member.email}` }>
-                           { member.firstname }
-                           { member.lastname }
-                         </Link>
-                         <Link className='float-right' to={ `/messages/${member.email}` }>
-                           <img id="chat" className="icon" src={ Chat } alt="Chat" />
-                         </Link>
-                       </li>
-              }) }
-          </ul>
-        </div>
-      )
+      if(this.props.isTeacher || this.props.isAdmin){
+        return (
+          <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
+            <ul>
+              { members.map(function(member, i) {
+                  return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
+                           <Link to={ `/user/${member.email}` }>
+                             { member.firstname }
+                             { member.lastname }
+                           </Link>
+                           <button className="btn btn-danger btn-sm float-right"> X </button>
+                           <Link className='float-right' to={ `/messages/${member.email}` }>
+                             <img id="chat" className="icon" src={ Chat } alt="Chat" />
+                           </Link>
+                         </li>
+                }) }
+            </ul>
+          </div>
+        )
+      } else {
+
+        return (
+          <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
+            <ul>
+              { members.map(function(member, i) {
+                  return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
+                           <Link to={ `/user/${member.email}` }>
+                             { member.firstname }
+                             { member.lastname }
+                           </Link>
+                           <Link className='float-right' to={ `/messages/${member.email}` }>
+                             <img id="chat" className="icon" src={ Chat } alt="Chat" />
+                           </Link>
+                         </li>
+                }) }
+            </ul>
+          </div>
+        )
+      }
     } else {
       return null;
     }
@@ -546,7 +568,7 @@ class Course extends Component {
                   </div>
                 </div>
                 <MemberTab enrolled={ enrolled } course={ course } isTeacher={ isTeacher } />
-                <FeedTab enrolled={ enrolled } user={ this.props.user } course={ course } />
+                <FeedTab enrolled={ enrolled } user={ this.props.user } isAdmin={ this.props.user.isAdmin} course={ course } />
               </div>
             </div>
           </div>
