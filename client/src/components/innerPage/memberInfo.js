@@ -24,19 +24,15 @@ class OtherMembers extends React.Component {
 		members: this.props.members,
 		list: []
 		};
-		console.log("we sent");
-		console.log(this.state.members);
-		console.log("and this is props");
-		console.log(this.props.members);
 	}
     
     componentDidMount(){
-		
-		var otherMembers = this.state.members.filter((m) => m.email !== this.state.user.email);
-		console.log("other members");
-		console.log(this.state.members);
+			console.log("other members");
+		console.log(this.props.members);
+		var otherMembers = this.props.members.filter((m) => m.email !== this.props.user.email);
+	
 		this.setState({
-			list: this.state.members.map((e) => {
+			list: this.props.members.map((e) => {
 			return( <Element member={e}/>);})
 		});
 	}
@@ -73,11 +69,11 @@ class MemberInfo extends React.Component {
 		var groupId = window.location.pathname.split("/")[2];
 		api.getAllMembersOfGroup(groupId)
 		.then(res => {
+			var mem = [];
+			res.map((e) => {mem.push(e.user)})
 			this.setState({
-				members : res
+				members : mem
 			});
-			console.log("the members");
-			console.log(this.state.members);
 		})        
     }
 

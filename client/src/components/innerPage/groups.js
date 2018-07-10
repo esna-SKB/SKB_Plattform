@@ -23,8 +23,6 @@ function getGroups(route, cb) {
 
 function Element(props) {
   const group = props.group;
-  console.log("das ist die gruppe to show")
-  console.log(group)
     return (
       <div className="box">
         <div className="w-100 course-name">

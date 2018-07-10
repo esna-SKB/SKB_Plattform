@@ -121,13 +121,15 @@ router.route('/:id/members')
 	/*get all members of a group */
 	.get((req, res, next) => {
 		var id = req.params.id; 
-		Group.findOne({_id: id},{})
-		.populate({path:'members', model: 'User' })
-		.exec(function(err, group){
+		Enrollment.find({ 'theChosenModel.ModelId': id},{})
+		.populate({path:'user', model: 'User' })
+		.exec(function(err, enrollments){
 			if (err)return res.status(500).send('error occured in the database');
-	       	else if(group == null) res.status(404).send('group could not be found');
+	       	else if(enrollments == null) res.status(404).send('group could not be found');
 	       	else {
-				return res.status(200).send(group.members); 
+				console.log("theenrollments")
+				console.log(enrollments)
+				return res.status(200).send(enrollments); 
 	       	}
 		})
 	})

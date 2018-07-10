@@ -86,11 +86,9 @@ export class MyTeacherCourses extends React.Component {
   componentDidMount() {
     //get all courses that user is teaching
     if (this.props.user.isTeacher === true) {
-      getCourses('/course'
+      getCourses('/course/'
         , (courses) => {
           var coursesForFree = courses.filter((c) => c.teacher.email === this.props.user.email);
-		  console.log("Freie KURRRSSE")
-		  console.log(coursesForFree)
           this.setState({
             list: coursesForFree.map((e) => {
               return ( <Element key={ e._id } course={ e } mini={ this.props.mini } />);
