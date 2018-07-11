@@ -120,8 +120,6 @@ router.route('/:email/group')
 	       		Enrollment.find({user:user._id, 'theChosenModel.kind': 'Group'}).populate({path: 'theChosenModel.ModelId',model: 'Group'/*, populate: {path:'members', model:'User'}, populate: {path:'course', model:'Course'}*/ }).exec(function(err, enroll){
 	       			if(err) return res.status(500).send('error occured in the database');
 	       			else{
-						console.log("groups of user")
-						console.log(enroll)
 	       				return res.status(200).send(enroll.map(c => c.theChosenModel.ModelId));
 	       			}
 	       		})

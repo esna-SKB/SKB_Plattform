@@ -12,8 +12,6 @@ router.route('/')
 			if (err) {
 	        	return res.status(500).send('error occured in the database');
 			} else {
-				console.log("We send all those courses")
-				console.log(courses)
 				return res.status(200).send(courses);
 	       	}
 		})

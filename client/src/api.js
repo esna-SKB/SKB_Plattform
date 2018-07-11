@@ -197,7 +197,6 @@ deleteUser: function(email){
    * enrolls an user in a course
   */
   enrollUser: function(email, ModelId,kind){
-	  console.log(email, ModelId, kind);
     return fetch('/enrollment/', {
       method: 'POST',
       headers: {
@@ -275,7 +274,6 @@ deleteUser: function(email){
         }),
       })
       .then(res => {
-        console.log(res);
         res.json();
 
 
@@ -435,7 +433,7 @@ Group: function(courseId, groupName, members, description){
  * POST /channel/
  * creates a new group object, group name does not have to be unique. in route there will be checked if: are all members in course, is none of them already in a group(for the course)
 */
-Group: function(channelName,description){
+Channel: function(channelName,description){
     return fetch('/channel/new', {
       method: 'POST',
       headers: {
@@ -487,7 +485,7 @@ Group: function(channelName,description){
  * DELETE /channel/:channelId
  * deletes a channel object
 */
-  deleteGroup: function(groupId){
+  deleteChannel: function(groupId){
     return fetch('/group/' + groupId, {
       method: 'DELETE',
       headers: {

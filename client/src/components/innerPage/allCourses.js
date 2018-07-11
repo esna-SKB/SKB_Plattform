@@ -49,8 +49,6 @@ function CreateCourseButton(props) {
 function Element(props) {
   const course = props.course;
   const mini = props.mini;
-  console.log("Das ist ein Element")
-  console.log(course)
   if (mini) {
     return (
       <div className="w-100 course-name">
