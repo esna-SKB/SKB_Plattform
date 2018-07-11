@@ -3,6 +3,7 @@
 var PriorityQueue = require('js-priority-queue');
 
 function tinder(users, matrix, sizeOfG){
+	if(user.length>20) return null; //safty dauert zu lange :(
 	var nrOfGroups = Math.ceil(users.length/sizeOfG);
 	var rest = sizeOfG - (users.length % sizeOfG); //damit die Gruppen gleichmäßig verteilt sind. also keine einser Gruppen entstehen und so 
 	console.log(rest)
@@ -11,7 +12,7 @@ function tinder(users, matrix, sizeOfG){
 		value: 0, 
 		next: 0, 
 	}
-	 
+	
 	for (var i = nrOfGroups - 1; i >= 0; i--) {
 		groups.g[i] = []; 
 	}
