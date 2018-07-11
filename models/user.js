@@ -67,12 +67,8 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  grouplist:{
-		type: [{ type: Schema.Types.ObjectId,
-        ref: "Group"}],
-		default: []
-	},
 });
+
 UserSchema.methods.generateHash = function(password) {
    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };

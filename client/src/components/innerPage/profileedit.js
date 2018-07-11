@@ -213,14 +213,6 @@ class Profileedit extends Component {
                           <input type="checkbox" className="form-check-input" id="Check1"></input>
                           <label className="form-check-label" htmlFor="exampleCheck1">Zeige deine Email-Adresse an</label>
                         </div>
-                        <div className="form-group form-check row" id="countgroup">
-                          <input type="checkbox" className="form-check-input" id="eCheck2"></input>
-                          <label className="form-check-label" htmlFor="exampleCheck1">Zeige deine Gruppenanzahl an</label>
-                        </div>
-                        <div className="form-group form-check row" id="countKurs">
-                          <input type="checkbox" className="form-check-input" id="Check3"></input>
-                          <label className="form-check-label" htmlFor="exampleCheck1">Zeige deine Kursanzahl an</label>
-                        </div>
                       </div>
                     </div>
                     <button type="button" href="/profile" className="btn btn-primary" onClick={ this.onSave }>Speichern</button>
