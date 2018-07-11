@@ -79,12 +79,13 @@ class ElementPartner extends React.Component {
       })
   }
   render() {
+    const { partner } = this.state; 
     return (
       <div className="contentChatPartnerlist">
-        <Link to={ `/messages/${this.state.partner.email}` } style={{ textDecoration: 'none'}} >
+        <Link to={ `/messages/${partner.email}` } style={{ textDecoration: 'none'}} >
           <div style={ { clear: "both" } } className="contentChatPartnerlist">
-            <img className="contentChatPartnerlist" src={ this.state.partner.picturedata } alt="profilepicture" />
-            <span className="contentChatPartnerlistElem course-name w-100">{ this.state.partner.firstname } { this.state.partner.lastname }</span>
+            <img className="contentChatPartnerlist" src={ partner.picturedata } alt="profilepicture" />
+            <span className="contentChatPartnerlistElem course-name w-100">{ partner.firstname } { partner.lastname }</span>
           </div>
         </Link>
       </div>
@@ -109,9 +110,10 @@ class ConversationPartners extends React.Component {
       })
   }
   render() {
+    const {conversationPartners} = this.state; 
     return (
       <div>
-        { this.state.conversationPartners }
+        { conversationPartners }
       </div>
       );
   }
@@ -135,12 +137,13 @@ export class MessageList extends React.Component {
   }
 
   render() {
+    const allUsers = this.state.allUsers; 
     return (
       <div className="box col-12">
         <div className="container" style={ { backgroundColor: 'white' } }>
           <div className="box-title"> Neue Nachricht </div>
           <div>
-            <NewMessage user={ this.props.user } history = {this.props.history} allUsers = {this.state.allUsers} />
+            <NewMessage user={ this.props.user } history = {this.props.history} allUsers = {allUsers} />
           </div>
           <div className="box-title"> Meine Nachrichten </div>
           <div>
