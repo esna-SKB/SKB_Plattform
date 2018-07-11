@@ -65,10 +65,11 @@ class Article extends React.Component {
 
   adminArticle(){
     if(this.props.isAdmin){
+      const edArt = "#"+this.state.article._id+"modal";
 
       return(
 
-        <li><a className="text-danger btn" data-toggle="modal" data-target="#editArticle"> Bearbeiten/ Löschen </a></li>
+        <li><a className="text-danger btn" data-toggle="modal" data-target={edArt}> Bearbeiten/ Löschen </a></li>
 
 
       )
@@ -158,6 +159,7 @@ class Article extends React.Component {
     const isNewsfeed = (this.props.newsfeed)? this.props.newsfeed : false;  
     const isAuthor = (article.author.email === this.props.userEmail); 
     const d = article.created_at.toString();
+    const label = article._id + "Label"
     var date = new Date(d);
 
     var timeSince = (date) => {
@@ -241,7 +243,7 @@ class Article extends React.Component {
           </div>
 
            
-          <div className="modal fade" id="editArticle" tabIndex="-1" role="dialog" aria-labelledby="editArticleLabel" aria-hidden="true">
+          <div className="modal fade" id={article._id+"modal"} tabIndex="-1" role="dialog" aria-labelledby={label} aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div className="modal-content">
                 <div className="modal-header">
@@ -266,11 +268,11 @@ class Article extends React.Component {
                 </div>
                 <div className="modal-footer">
 
-                  <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#areyousure" >Delete Article</button>
+                  <button type="button" className="btn btn-danger" data-toggle="modal" data-target={"#"+article._id+"areyousure"} >Delete Article</button>
                   <button type="button" className="btn btn-success" onClick={this.adminChangeArticle} >Save changes</button>
                 
 
-                <div id="areyousure" className="modal fade" tabIndex="-0" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                <div id={article._id+"areyousure"} className="modal fade" tabIndex="-0" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                   <div className="modal-dialog modal-dialog-centered modal-sm">
                     <div className="modal-content">
                       <div className="modal-header">

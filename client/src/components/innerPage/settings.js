@@ -17,6 +17,19 @@ class Settings extends Component {
     }
   }
 
+  adminAllUsers(){
+    console.log("KSKSKSK")
+    if(this.props.user.isAdmin){
+      return (
+
+        <div className="row">
+          <Link to={ `/allUsers` } className="text-muted">All Users</Link>
+        </div>
+      
+      )
+    }
+  }
+
 
 
   render() {
@@ -51,9 +64,7 @@ class Settings extends Component {
                     <div className="row">
                       <Link to={ `` } className="text-muted">Kalendereinstellungen</Link>
                     </div>
-                    <div className="row">
-                      <Link to={ `` } className="text-muted">Kalendereinstellungen</Link>
-                    </div>
+                    {this.adminAllUsers()}
                   </div>
                   <div className="row-12 text-muted text-right">
                     <div className="col-12">

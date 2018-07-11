@@ -15,6 +15,8 @@ import MessageList from './messageList';
 import { Messages } from './messages';
 import TeacherInfo from './teacherInfo';
 import InviteToCourse from './inviteToCourse';
+import AllUsers from './allUsers';
+
 import '../../css/course.css';
 
 
@@ -103,6 +105,9 @@ class Body extends React.Component {
                                                        ) } />
                 <Route path='/messages/:email' render={ (props) => (
                                                           <Messages user={ this.props.user } />
+                                                        ) } />
+                <Route path='/allUsers' render={ (props) => (
+                                                          <AllUsers user={ this.props.user } />
                                                         ) } />
               </Switch>
             </div>
