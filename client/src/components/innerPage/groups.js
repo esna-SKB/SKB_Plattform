@@ -83,8 +83,6 @@ class Groups extends React.Component {
 		}; 
 	}
 
-
-
 	render(){
 		return(
 			<div>
