@@ -259,34 +259,33 @@ class Course extends Component {
       course: undefined,
       file: null,
       isTeacher: false,
-	  minimumSize: 2,
-	  maximumSize: 4,
-	  prefDeadline: Date.now(),
-	  members: undefined
+      content: '',
+  	  minimumSize: 2,
+  	  maximumSize: 4,
+  	  prefDeadline: Date.now(),
+  	  members: undefined
     };
     this.onInvite = this.onInvite.bind(this);
     this.bearbeiten = this.bearbeiten.bind(this);
-	this.gruppenbilden = this.gruppenbilden.bind(this);
-	this.onChange = this.onChange.bind(this);
-	this.saveGroups = this.saveGroups.bind(this);
-
-
+  	this.gruppenbilden = this.gruppenbilden.bind(this);
+  	this.onChange = this.onChange.bind(this);
+  	this.saveGroups = this.saveGroups.bind(this);
   }
 
-  
+
   componentDidMount() {
     var course_name = this.props.location.pathname.split("/")[2];
     course_name = course_name.replace("%20", " ");
     this.handleUpdate(course_name);
 
-		
+
 	api.getAllUsersOfCourse(course_name).then(res => {
 		this.setState({
         members: res.reverse()
       })
-		 
+
     });
-	
+
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.location.pathname !== nextProps.location.pathname) {
@@ -304,6 +303,13 @@ class Course extends Component {
           course: course,
           isTeacher: this.props.user.email === course.teacher.email
         })
+        if (course.content[0]){
+         for(let i = 0; i < course.content.length; i++){
+           document.getElementById('kursmaterial').innerHTML += course.content[i];
+         }} else {
+           document.getElementById('kursmaterial').innerHTML = '<p>kein Inhalt..</p>'
+         }
+
       })
       // check if user is enrolled
       .then(() => api.getAllCoursesOfUser(this.props.user.email).then(res1 => {
@@ -313,8 +319,8 @@ class Course extends Component {
           })
         }
       }))
-	 
-	  
+
+
   }
   //make sure to update member tab when a member is added by teacher
   onInvite(){
@@ -323,9 +329,9 @@ class Course extends Component {
     )
   }
 
-  
-  
-  
+
+
+
   bearbeiten = () => {
     const db = localStorage;
     const _ = (el) => {
@@ -364,7 +370,7 @@ class Course extends Component {
       });
       return html;
     };
-	
+
 
     const tpl = {
       'header1': '<h1>I am header 1</h1>',
@@ -373,7 +379,6 @@ class Course extends Component {
       'shortparagraph': '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et</p>',
       'ullist': '<ul><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ul>',
       'ollist': '<ol><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ol>',
-      'image': '<img src="">'
     };
 
     const containers = [_('.box-left'), _('.box-right')];
@@ -435,6 +440,22 @@ class Course extends Component {
       children = elementChildren(children)
       for (var i = 0; i < children.length; i++) {
         var child = children[i];
+        if (child.nodeName === 'H1') {
+          let child_div = document.createElement("div");
+          child_div.setAttribute('data-tpl', 'header1')
+          child_div.setAttribute('data-title', 'Header 1')
+          child_div.setAttribute('class', 'drop-element')
+          child_div.appendChild(child)
+          boxright.appendChild(child_div)
+        }
+        if (child.nodeName === 'H2') {
+          let child_div = document.createElement("div");
+          child_div.setAttribute('data-tpl', 'header2')
+          child_div.setAttribute('data-title', 'Header 2')
+          child_div.setAttribute('class', 'drop-element')
+          child_div.appendChild(child)
+          boxright.appendChild(child_div)
+        }
         if (child.nodeName === 'H3') {
           let child_div = document.createElement("div");
           child_div.setAttribute('data-tpl', 'header3')
@@ -451,7 +472,6 @@ class Course extends Component {
           child_div.appendChild(child)
           boxright.appendChild(child_div)
         }
-        console.log(child)
         console.log(child.nodeName)
       }
 
@@ -469,20 +489,24 @@ class Course extends Component {
         this.refs.kursmaterial.appendChild(children[i].childNodes[0])
       }
       console.log(array)
+      var course = this.state.course;
+      course.content = array;
+      this.setState({
+        course: course
+      })
+      api.updateCourse(course.name, course.name, this.props.user.email, course.description, array)
 
     }
-
-
   }
-  
-  
-	
+
+
+
   onChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     });
   }
-  
+
   saveGroups() {
 		//groups of two and one three, if one person only incourse then one
 		  api.getAllUsersOfCourse(this.state.course.name).then(res => {
@@ -523,32 +547,32 @@ class Course extends Component {
 									//api.enrollUser(members[i+1].email,res.message, 'Group');
 								})
 						}
-							
+
 					}
 				}
 		})
-		
-	
-	
+
+
+
 		/* if(res.length <2){
 			 console.log("we are here one member only");
-			api.Group(this.state.course.name,i/2, [res[i]], "Wir sind Gruppenummer:"+ i/2).then(res => {console.log(res.message)});	
-		 }else{ 
+			api.Group(this.state.course.name,i/2, [res[i]], "Wir sind Gruppenummer:"+ i/2).then(res => {console.log(res.message)});
+		 }else{
 			var i;
 			for(i = 0; i < res.length-1; i= i+2){
-				
+
 				/*last group if uneven number of members
 			if(!(res.length % 2 == 0) && (res.length-2 == i)){
-					api.Group(this.state.course.name,i/2, [res[i],res[i+1], res[i+2]], "Wir sind Gruppenummer:"+ i/2);	
+					api.Group(this.state.course.name,i/2, [res[i],res[i+1], res[i+2]], "Wir sind Gruppenummer:"+ i/2);
 			}else{
-				api.Group(this.state.course.name,i/2, [res[i],res[i+1]], "Wir sind Gruppenummer:"+ i/2);	
+				api.Group(this.state.course.name,i/2, [res[i],res[i+1]], "Wir sind Gruppenummer:"+ i/2);
 			}
 		 }
 		}
     });*/
   }
-  
-  
+
+
     joinCourse = () => {
     api.enrollUser(this.props.user.email, this.props.course._id, 'Course').then(res => {
       window.location.reload(false);
@@ -567,7 +591,7 @@ class Course extends Component {
 
 		}
 	}
-	
+
 
   render() {
     const {
@@ -577,7 +601,7 @@ class Course extends Component {
       isTeacher
     } = this.state;
 
-	
+
     //make sure API calls are finished when rendering (better solution????)
     if (!this.state.course) {
       return null;
@@ -586,18 +610,18 @@ class Course extends Component {
     else {
 	/*	 const course_name = this.state.course.name;
 	  const members = this.state.members;
-	  
+
 		 if(members.length <2){
-			api.Group(course_name,i/2, [members[0]], "Wir sind Gruppenummer:"+ i/2);	
-		 }else{ 
+			api.Group(course_name,i/2, [members[0]], "Wir sind Gruppenummer:"+ i/2);
+		 }else{
 			var i;
 			for(i = 0; i < members.length-1; i= i+2){
-				
+
 				/*last group if uneven number of members
 			if(!(members.length % 2 == 0) && (members.length-2 == i)){
-					api.Group(course_name,i/2, [members[i],members[i+1], members[i+2]], "Wir sind Gruppenummer:"+ i/2);	
+					api.Group(course_name,i/2, [members[i],members[i+1], members[i+2]], "Wir sind Gruppenummer:"+ i/2);
 			}else{
-				api.Group(course_name,i/2, [members[i],members[i+1]], "Wir sind Gruppenummer:"+ i/2);	
+				api.Group(course_name,i/2, [members[i],members[i+1]], "Wir sind Gruppenummer:"+ i/2);
 			}
 		 }
 		}*/
@@ -610,12 +634,10 @@ class Course extends Component {
             <div className="row">
               <div className="col" style={ { backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px' } }>
                 <div className="row">
-                  <div className="col" style={ { paddingRight: '0', paddingLeft: '20px' } }>
+                  <div className="col-7" style={ { paddingRight: '0', paddingLeft: '20px' } }>
                     <h1 style={ { textTransform: 'capitalize' } }>{ course.name }</h1>
                   </div>
-                  <div className="col-4">
-                  </div>
-                  <div className="col" style={ { paddingRight: '10px' } }>
+                  <div className="col-4" style={ { paddingRight: '10px' } }>
                     <EnrollButton user={ this.props.user } course={ course } enrolled={ enrolled } />
                   </div>
                 </div>
@@ -646,7 +668,7 @@ class Course extends Component {
                       </div>
                     </div>
                     <div className="">
-                      <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px' } }>Inhalt</div>
+                      <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px' } }>Beschreibung</div>
                     </div>
 
 					<div className="float-right">
@@ -671,7 +693,7 @@ class Course extends Component {
                         bearbeiten
                       </button>
 					  </div>
-					  
+
                   </div>
                   <div style={ { display: 'none' } } id="wrapper" ref="wrapper">
                     <div className="wrapper">
@@ -689,22 +711,16 @@ class Course extends Component {
                           paragraph
                         </div>
                         <div data-tpl="ullist" data-title="Ordened list">
-                          Ordened list
-                        </div>
-                        <div data-tpl="ollist" data-title="Unordened list">
                           Unordened list
                         </div>
-                        <div data-tpl="heade12" data-title="Unordened list">
-                          Datei
-                        </div>
-                        <div data-tpl="header12" data-title="Unordened list">
-                          Picture
+                        <div data-tpl="ollist" data-title="Unordened list">
+                          Ordened list
                         </div>
                       </div>
                       <div id="boxright" ref="boxright" className="box-right"></div>
                     </div>
                   </div>
-				  
+
 				  <div style={ { display: 'none' } } id="groupmaker" ref="groupmaker">
 					<form>
 						<div className="" id="minSize">
@@ -722,7 +738,7 @@ class Course extends Component {
 						  <input type="datetime-local" className="form-control" name="prefdeadline" aria-describedby="Help3" value={ this.state.prefdeadline } min= {this.state.prefdeadline} onChange={ this.onChange }></input>
                           <small id="Help3" className="form-text text-muted">Bis dahin haben die Studenten_innen Zeit, ihre Präferenzen abzugeben</small>
                         </div>
-						
+
 						 <div ref="gruppenbildenspeichern" className='registrieren_botton' id="grspeichern" style={{
                                                                                                    color: 'rgb(24, 86, 169)',
                                                                                                    marginTop: '-67px !important',
@@ -733,22 +749,15 @@ class Course extends Component {
                                                                                                  } } onClick={ this.saveGroups }>
                         speichern
                       </div>
-						
+
 					</form>
 				  </div>
-				  
+
                   <p id="description" ref="description">
                     { course.description }
                   </p>
+                  <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px' } }>Inhalt</div>
                   <div id="kursmaterial" ref="kursmaterial">
-                    <h3>Kursmaterial</h3>
-                    <h3>16. April - 22. April</h3>
-                    <p>
-                      Folie 01
-                    </p>
-                    <p>
-                      Folie 02
-                    </p>
                   </div>
                 </div>
                 <MemberTab enrolled={ enrolled } course={ course } isTeacher={ isTeacher } location={this.props.location} user={this.props.user} onInvite={this.onInvite}/>
