@@ -125,7 +125,7 @@ export class MyTeacherCourses extends React.Component {
           var coursesForFree = courses.filter((c) => c.teacher.email === this.props.user.email);
           this.setState({
             list: coursesForFree.map((e) => {
-              return ( <Element key={ e._id } course={ e } mini={ this.props.mini } />);
+              return ( <Element key={ e._id } course={ e } mini={ this.props.mini } teacherCourse={true} />);
             })
           });
         });

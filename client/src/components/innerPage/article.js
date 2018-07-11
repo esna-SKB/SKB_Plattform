@@ -19,6 +19,8 @@ class Article extends React.Component {
     this.delData = this.delData.bind(this);
     this.adminDeleteArticle = this.adminDeleteArticle.bind(this);
     this.adminChangeArticle = this.adminChangeArticle.bind(this);
+    this.showFile = this.showFile.bind(this);
+    this.img = this.img.bind(this);
 
   }
 
@@ -105,6 +107,33 @@ class Article extends React.Component {
     window.location.reload();
   }
 
+  showFile(blob){
+    var newBlob = new Blob([blob], {type: "application/pdf"})
+    const data = window.URL.createObjectURL(newBlob);
+    var link = document.createElement('a');
+
+    link.style.display = 'none';
+
+    link.href = data;
+    link.setAttribute("download",this.state.article.dataName);
+    //console.log(link)
+    //link.click();
+
+
+
+
+    return(
+       <div>
+            <div className="embed-responsive embed-responsive-16by9">
+              <object id="frame" data={link} type={this.state.article.type} width="100%" height="400px">
+                 Ihr Browser kann die Daten nicht anzeigen. Sie können dieses aber trotzdem   downloaden  
+              </object>
+            </div>
+        </div>
+    )
+
+  }
+
   img() {
     if(!this.state.article.data){
       return;
@@ -123,34 +152,28 @@ class Article extends React.Component {
     } else if (this.state.article.type.includes("image")) {
       return (<img src={ base64file } className="img-rounded img-fluid" alt="" />)
     } else {
-      return (
 
-        //<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>
-        
+      var byteString = atob(base64file.split(',')[1]);
+
+      // separate out the mime component
+      var mimeString = base64file.split(',')[0].split(':')[1].split(';')[0]
+
+      // write the bytes of the string to an ArrayBuffer
+      var ab = new ArrayBuffer(byteString.length);
+      var ia = new Uint8Array(ab);
+      for (var i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+      }
+
+      // write the ArrayBuffer to a blob, and you're done
+      var bb = new Blob([ab], {type: type});
 
 
-        <div>
-          <a href={base64file} download={name}> 
-            <div className="embed-responsive embed-responsive-16by9">
-              <object className="embed-responsive-item" data={base64file} type={type} width="100%" height="400px">
-                <embed src={base64file} type={type} width="100%" height="400px" style={{border: "none"}}/>
-              </object>
-            </div>
-          </a>   
-        </div>
+      return((this.showFile(bb)));
 
-        /** FOR SAFARI
-        <div>
-          <a href={base64file} download={name}> 
-            <div className="embed-responsive embed-responsive-16by9">
-              <object className="embed-responsive-item" data={base64file} type={type} width="100%" height="400px">
-                <embed src={base64file} type={type} width="100%" height="400px" style={{border: "none"}}/>
-              </object>
-            </div>
-          </a>   
-        </div>
-        **/
-      )
+
+
+      
     }
   }
 

@@ -97,6 +97,11 @@ class AllUsers extends React.Component{
 			              		changeVerified = changeVerified.bind(this)
 
 			              		function deleteUser(e){
+			              			api.getAllCoursesOfUser(this.state.users[i].email).then(res => {
+			              				res.map((course) => {
+			              					api.unenrollUser(this.state.users[i].email, course.name)
+			              				})
+			              			})
 			              			api.deleteUser(this.state.users[i].email);
 			              			window.location.reload();
 			              		}
