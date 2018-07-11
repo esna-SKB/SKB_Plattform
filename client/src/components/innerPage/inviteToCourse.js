@@ -51,7 +51,8 @@ class InviteToCourse extends Component {
       isFree: '',
       errorMessage: '',
       allUsers: [],
-      matches: []
+      matches: [],
+	  courseId: ''
     };
     this.onSubmit = this.onSubmit.bind(this)
   }
@@ -87,6 +88,7 @@ class InviteToCourse extends Component {
         courseName: course_name,
         courseTeacher: course.teacher,
         isFree: course.isFree,
+		courseId: course._id,
       })
     })
   }
@@ -122,7 +124,7 @@ class InviteToCourse extends Component {
     }
 
     // // Post request to backend
-    api.enrollUser(email, this.state.courseName)
+    api.enrollUser(email, this.state.courseId, 'Course')
     .then( res =>{
       this.props.onInvite(this.state.courseName)
       api.getAllUsers()
