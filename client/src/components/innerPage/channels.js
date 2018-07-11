@@ -30,7 +30,7 @@ function CreateChannelButton(props) {
           <div className='row'>
             <div className='col'>
               <Link to={ `/createchannel` } className='whitehover' style={ { color: 'white !important' } }>
-                <div className='registrieren_botton' style={ { marginTop: '-6px', fontSize: '16px', float: 'none', margin: '0 auto', width: '160px' } }>
+                <div className='registrieren_botton' style={ { marginTop: '-6px', fontSize: '16px', float: 'none', margin: '0 auto', width: '198px' } }>
                   + Channel anlegen
                 </div>
               </Link>
@@ -52,9 +52,6 @@ function Element(props) {
           <Link to={ `/channel/${channel._id}` }>
             { channel.name }
           </Link>
-        /*  <Link className="float-right" to={ `/courses/${group.course.name}` }>
-            { group.course.name }
-          </Link>*/
         </div>
       </div>
       );
@@ -71,7 +68,7 @@ export class MyChannels extends React.Component {
   componentDidMount() {
     if (this.props.myEmail != null) {
 
-      getGroups ('/user/' + this.props.myEmail + '/channel'
+      getChannels ('/user/' + this.props.myEmail + '/channel'
         , (channels) => {
           this.setState({
             list: channels.map((e) => {
@@ -109,7 +106,7 @@ class OtherChannels extends React.Component {
     
     if (this.props.user.isTeacher === true) {
       getChannels('/channel'
-        , (channel) => {
+        , (channels) => {
           this.setState({
             list: channels.map((e) => {
               return ( <Element key={ e._id } channel={ e } />);
@@ -139,7 +136,7 @@ class OtherChannels extends React.Component {
 }
 
 
-class Channel extends React.Component {
+class Channels extends React.Component {
 	constructor(props){
 	super(props);
 	this.state = {
@@ -160,4 +157,4 @@ class Channel extends React.Component {
 	}
 }
 
-export default Groups; 
+export default Channels; 

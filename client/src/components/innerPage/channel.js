@@ -3,6 +3,7 @@ import Article from './article';
 import { Link } from 'react-router-dom'
 import api from '../../api';
 import dragula from 'dragula';
+import Chat from '../../img/chat-icon.png';
 
 
 export class Beschreibung extends Component{
@@ -16,13 +17,115 @@ export class Beschreibung extends Component{
 	
 	render(){
 		return(
-		
-		 <div className="row" id="">
-			<div className=" box col-12">{this.props.description}</div>
-		</div>
+		<div className="row" style={ { border: '1px solid rgb(232, 233, 235)'} }>
+					<div className="box col-12">
+						<div className="box-title">
+							Gruppenteilnehmer
+						</div>
+						<div>
+							{this.props.description}
+						</div>
+					</div>
+				  </div>
 		
 		);
 	}
+}
+
+class MemberTab extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      channel: props.channel,
+      members: []
+    }
+    this.handleUpdateMembers = this.handleUpdateMembers.bind(this)
+  }
+
+  componentDidMount() {
+    this.handleUpdateMembers(this.props.channel._id)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.handleUpdateMembers(nextProps.channel._id)
+    if (this.props.channel.name !== nextProps.channel._id) {
+      this.handleUpdateMembers(nextProps.channel._id)
+    }
+  }
+
+  handleUpdateMembers = (channelid) => {
+    api.getAllMembersOfChannel(channelid).then(res => {
+      this.setState({
+        members: res.reverse()
+      })
+    })
+  }
+
+  render() {
+    const members = this.state.members;
+    if (members && ( this.props.isTeacher)) {
+		console.log("we are here")
+      return (
+        <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="member-tab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
+          <div className="d-block d-md-none order-md-last justify-content-center">
+            <div>
+              <Beschreibung location={ this.props.location } user={ this.props.user } onInvite = {this.handleUpdateMembers} />
+			  heeeee
+            </div>
+          </div>
+          <ul>
+            { members.map(function(member, i) {
+                return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
+                         <Link to={ `/user/${member.email}` }>
+                           { member.firstname } { member.lastname }
+                         </Link>
+                         <Link className='float-right' to={ `/messages/${member.email}` }>
+                           <img id="chat" className="icon" src={ Chat } alt="Chat" />
+                         </Link>
+                       </li>
+              }) }
+          </ul>
+        </div>
+      )
+    }else{
+
+	return(null);}
+  }
+}
+class EnrollButton extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      enrolled: props.enrolled,
+      user: props.user,
+      channel: props.channel
+    }
+  }
+
+  leaveCourse = () => {
+    api.unenrollUser(this.props.user.email, this.props.channel._id).then(res => {
+      window.location.reload(false);
+    });
+  }
+
+  joinCourse = () => {
+    api.enrollUser(this.props.user.email, this.props.channel._id, 'Channel').then(res => {
+      window.location.reload(false);
+    });
+  }
+
+  render() {
+    const {enrolled, user, channel} = this.props;
+    if (user.isTeacher || user.isAdmin) {
+        return (
+          <button id={ (enrolled) ? 'leavecourse' : 'joincourse' } className='btn' onClick={ (enrolled) ? this.leaveCourse : this.joinCourse } style={ { position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2' } }>
+            { (enrolled) ? 'Abmelden' : 'mich einschreiben' }
+          </button>
+          );
+    } else {
+      return null;
+    }
+  }
 }
 
 
@@ -115,7 +218,7 @@ class FeedTab extends Component{
 			return(
 			
     
-			  <div className="tab-pane fade  show active" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
+			  <div className="tab-pane fade show active" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
 				<div className="col-12" id="new_status" style={{marginBottom : '20px'}}>
 				  <div className="container">
 					<div className="row" style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px'}}>
@@ -166,7 +269,7 @@ class Channel extends React.Component {
     componentDidMount(){
 		console.log(this.props.location.pathname);
 		var channelId = this.props.location.pathname.split("/")[2];
-		this.handleUpdate(ChannelId); 
+		this.handleUpdate(channelId); 
     }
 
     componentWillReceiveProps(nextProps){
@@ -178,6 +281,7 @@ class Channel extends React.Component {
     
     handleUpdate(channelId) {
 			//get channel
+			console.log("we get channel")
 			api.getChannel(channelId)
 			.then(res => {
 				this.setState({
@@ -202,7 +306,7 @@ class Channel extends React.Component {
 			
         if(!this.state.channel /*|| !this.state.articles*/){
             return null;
-         }else if(this.state.isMember === false){
+         }else if(this.state.user.isTeacher === false && this.state.user.isAdmin === false){
            return null;
         }else{
             return (
@@ -222,17 +326,17 @@ class Channel extends React.Component {
                   </li>
 
                   <li className="nav-item">
-                      <a className="nav-link tab-title" id="abgaben-tab" data-toggle="tab" href="#abgaben" role="tab" aria-controls="agbaben" aria-selected="false">Teilnehmer</a>
+                      <a className="nav-link tab-title" id="member-tab" data-toggle="tab" href="#member" role="tab" aria-controls="member" aria-selected="false">Teilnehmer</a>
                   </li>
                 </ul>
                 </div>
             </div>
                 
-            <div className="background container-fluid row">
+            <div className=" container-fluid row">
                 <div className="col col-sm-12">
                     <div className="tab-content col-offset-6 centered" id="tab-content">
                         <FeedTab  user={this.props.user} channel={this.state.channel} articles={this.state.articles}/>
-						<Teilnehmer user={this.props.user} channel={this.state.channel} />
+						<MemberTab user={this.props.user} channel={this.state.channel} />
                     </div>
                 </div>
             </div>

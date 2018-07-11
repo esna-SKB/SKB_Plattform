@@ -4,12 +4,8 @@ import { Link } from 'react-router-dom'
 import TeacherInfo from './teacherInfo';
 import InviteToCourse from './inviteToCourse';
 import Chat from '../../img/chat-icon.png';
-// import $ from 'jquery';
-
-//import axios from 'axios';
 
 import api from '../../api';
-// import builder from '../../utils/builder';
 import dragula from 'dragula';
 
 
@@ -519,34 +515,43 @@ class Course extends Component {
 				console.log(this.state.members)
 				var members = this.state.members;
 				if(members.length < 4){
-					console.log("we are less then four members!")
 					api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, members, "Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen")
 					.then ((res) => {
-									/*message saves the id*/
-									api.enrollUser(members[0].email,res.message, 'Group');
-								})
+						var j;
+						for(j = 0; (j < members.length); j++){
+							/*response message saves the id of the group*/
+							api.enrollUser(members[j].email,res.message, 'Group');
+						}
+					})
 				}else{
 					var i;
-					for(i = 0; i < members.length-2; i= i+2){
+					for(i = 0; (i < (members.length-2));){
 						/*the last group will be three people if memebers has uneven length*/
-						if((members.length % 2 == 1) && (members.length-3 === i)){
-									console.log("we are uneven number")
+						console.log("wir sind bei:" + i+ "und länge ist"+ members.length);
+						if(((members.length % 2 == 1)/* && ((members.length-2) === i))*/)){
+								console.log("we are uneven number")
 								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i],members[i+1], members[i+2]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen")
 								.then ((res) => {
 									/*message saves the id*/
-									api.enrollUser(members[i].email,res.message, 'Group');
+								console.log("iher: "+ i);
+								console.log( [ members[i],members[i+1], members[i+2]])
+									//api.enrollUser(members[i].email,res.message, 'Group');
 								//	api.enrollUser(members[i+1].email,res.message, 'Group');
 								//	api.enrollUser(members[i+2].email,res.message, 'Group');
 								})
 						}else{
-										console.log("we are even number!")
+								console.log("we are even number!")
 								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i], members[i+1]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen")
 								.then ((res) => {
 									/*message saves the id*/
-									api.enrollUser(members[i].email,res.message, 'Group');
+								
+											console.log("iher: "+ i);
+									console.log([members[i], members[i+1]]);
+									//api.enrollUser(members[i].email,res.message, 'Group');
 									//api.enrollUser(members[i+1].email,res.message, 'Group');
 								})
 						}
+						i = i+2;
 
 					}
 				}
@@ -657,7 +662,7 @@ class Course extends Component {
               </ul>
             </div>
           </div>
-          <div className="background container-fluid row">
+          <div className="container-fluid row">
             <div className="col col-sm-12">
               <div className="tab-content col-offset-6 centered">
                 <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>

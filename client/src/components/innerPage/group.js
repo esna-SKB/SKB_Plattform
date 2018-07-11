@@ -180,7 +180,6 @@ class Group extends React.Component {
     }
     
     componentDidMount(){
-		console.log(this.props.location.pathname);
 		var groupId = this.props.location.pathname.split("/")[2];
 		this.handleUpdate(groupId); 
     }
@@ -241,13 +240,13 @@ class Group extends React.Component {
                   </li>
 
                   <li className="nav-item">
-                      <a className="nav-link tab-title" id="abgaben-tab" data-toggle="tab" href="#abgaben" role="tab" aria-controls="agbaben" aria-selected="false">Abgaben</a>
+                      <a className="nav-link tab-title" id="abgaben-tab" data-toggle="tab" href="#abgaben" role="tab" aria-controls="abgaben" aria-selected="false">Abgaben</a>
                   </li>
                 </ul>
                 </div>
             </div>
                 
-            <div className="background container-fluid row">
+            <div className="container-fluid row">
                 <div className="col col-sm-12">
                     <div className="tab-content col-offset-6 centered" id="tab-content">
                         <FeedTab  user={this.props.user} group={this.state.group} articles={this.state.articles}/>

@@ -12,6 +12,7 @@ router.use('/timeline', require('./timeline'))
 router.use('/userSession', require('./userSession'))
 router.use('/enrollment', require('./enrollment'))
 router.use('/invitation', require('./invitation'))
+router.use('/channel', require('./channel'))
 router.use('/image', require('./image'))
 
 

@@ -126,6 +126,26 @@ router.route('/:email/group')
 	       	}
 		})
 	})
+	
+	
+	router.route('/:email/channel')
+
+	//get all Channels of User
+	.get((req, res, next) => {
+		var email = req.params.email;
+		User.findOne({email: email},{},function(err, user){
+			if (err) return res.status(500).send('error occured in the database');
+			else if (user == null) return res.status(401).send('user not fount');
+	       	else {
+	       		Enrollment.find({user:user._id, 'theChosenModel.kind': 'Channel'}).populate({path: 'theChosenModel.ModelId',model: 'Channel'/*, populate: {path:'members', model:'User'}, populate: {path:'course', model:'Course'}*/ }).exec(function(err, enroll){
+	       			if(err) return res.status(500).send('error occured in the database');
+	       			else{
+	       				return res.status(200).send(enroll.map(c => c.theChosenModel.ModelId));
+	       			}
+	       		})
+	       	}
+		})
+	})
 
 
 	module.exports = router

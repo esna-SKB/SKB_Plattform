@@ -24,7 +24,7 @@ router.route('/')
 
 				Enrollment.findOne({user:user._id, 'theChosenModel.ModelId':ModelId}).exec(function(err, enroll){
 					if(err) return res.status(500).send('');
-					if(enroll != null) return res.status(200).send({success: false, message: 'enrollment allready exists'});
+					if(enroll != null) return res.status(200).send({success: false, message: 'enrollment already exists'});
 					else{
 						var en = new Enrollment();
 						en.user = user._id;
@@ -90,7 +90,7 @@ router.route('/email/:email/id/:id')
 				Enrollment.findOne({'theChosenModel.ModelId':id, user:user._id}, function(err, affected){
 					if (err)
 			           return res.status(500).send({success : false, message : "error accured in database"});
-			       	else if(affected.length == 0){
+			       	else if(affected === null){
 			       		return res.status(404).send({success : false, message : "user was not enrolled"});
 			       	} else{
 						return res.status(200).send({success : true, message : "user is enrolled"}); 

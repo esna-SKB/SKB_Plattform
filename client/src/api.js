@@ -229,7 +229,7 @@ deleteUser: function(email){
   */
   unenrollUser: function(email, id){
     return fetch('/enrollment/email/'+email+'/id/'+id, {
-      method: 'POST'
+      method: 'DELETE'
     })
     .then(res => res.json())
   },
@@ -434,7 +434,7 @@ Group: function(courseId, groupName, members, description){
  * creates a new group object, group name does not have to be unique. in route there will be checked if: are all members in course, is none of them already in a group(for the course)
 */
 Channel: function(channelName,description){
-    return fetch('/channel/new', {
+    return fetch('/channel/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -480,13 +480,26 @@ Channel: function(channelName,description){
     .then(res => res.json())
   },
   
+    /*
+ * GET channel/:id/members
+ * returns a list of all users of a group
+*/
+  getAllMembersOfChannel: function(channelId){
+    return fetch('/channel/' + channelId + '/members', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+  
   
   /*
  * DELETE /channel/:channelId
  * deletes a channel object
 */
-  deleteChannel: function(groupId){
-    return fetch('/group/' + groupId, {
+  deleteChannel: function(channelId){
+    return fetch('/group/' + channelId, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json'
@@ -495,6 +508,8 @@ Channel: function(channelName,description){
   },
   
   
+  
+ 
 //MESSAGES
 /*
  * GET /messages
