@@ -17,7 +17,6 @@ import MessageList from './messageList';
 import { Messages } from './messages';
 import TeacherInfo from './teacherInfo';
 import InviteToCourse from './inviteToCourse';
-
 import '../../css/course.css';
 
 
@@ -28,7 +27,6 @@ class Body extends React.Component {
       user: this.props.user
     };
   }
-
   render() {
 
     //kann man hier nach wunsch anspaaen wie der active Link aussehen soll
@@ -37,6 +35,7 @@ class Body extends React.Component {
       color: "white",
       backgroundColor: '#C0D9D9'
     }
+
     return (
       <div>
         { /*Navigation activeClassName='active'*/ }
@@ -63,77 +62,64 @@ class Body extends React.Component {
               <MyCourses myEmail={ this.props.user.email } mini={ true } />
             </div>
             { /* Right Container*/ }
-			  <Route path='/group/:id' render={ (props) => (
+            <div className="d-none d-md-block col-md-3 order-md-last">
+              <Route path='/courses/:name' render={ (props) => (
+                <div>
+                  <TeacherInfo location={ props.location } user={ this.props.user } />
+                  <InviteToCourse location={ props.location } user={ this.props.user } />
+                </div>
+              ) } />
+			<Route path='/group/:id' render={ (props) => (
                 <div>
                   <MemberInfo location={ props.location } user={ this.props.user } />
                 </div>
               ) } />
             </div>
-
             { /* MainWindow */ }
+            <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
               <Switch>
+                <Route exact path='/' render={ (props) => (
+                                                 <Newsfeed user={ this.props.user } />
+                                               ) } />
                 <Route exact path='/courses/:name' render={ (props) => (
-                  <div className="col-md-9" style={ { paddingRight: '0', paddingLeft: '0' } }>
-                          <Course user={ this.props.user } location={props.location}/>
-                  </div>
-                ) } />
-                  <Route exact path='/' render={ (props) => (
-                    <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
-                            <Newsfeed user={ this.props.user } />
-                    </div>
-                  ) } />
-                  <Route exact path='/courses' render={ (props) => (
-                    <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
-                            <AllCourses user={ this.props.user } />
-                    </div>
-                  ) } />
-                  <Route exact path='/createcourse' render={ (props) => (
-                    <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
-                            <CreateCourse user={ this.props.user } history={ props.history } />
-                    </div>
-                  ) } />
-                  <Route exact path='/groups' render={ (props) => (
-                    <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
-                            <Groups user={ this.props.user } />
-                    </div>
-                  ) } />
-				  <Route exact path='/group/:groupId' render={ (props) => (
-									   <Group user={ this.props.user }  location={ props.location } />
+                                                    <Course user={ this.props.user } location={ props.location } />
+                                                            ) } />
+                <Route exact path='/courses' render={ (props) => (
+                                                    <AllCourses user={ this.props.user } />
+                                                      ) } />
+                <Route exact path='/createcourse' render={ (props) => (
+                                                    <CreateCourse user={ this.props.user } history={ props.history } />
+                                                           ) } />
+                <Route exact path='/groups' render={ (props) => (
+													<Groups user={ this.props.user } />
+                                                     ) } />
+				<Route exact path='/group/:groupId' render={ (props) => (
+													<Group user={ this.props.user }  location={ props.location } />
 				) } />
-                  <Route exact path='/user/:email' render={ (props) => (
-                    <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
-                            <Profile user={ this.props.user } location={ props.location } />
-                    </div>
-                  ) } />
-                  <Route exact path='/user/:email/edit' render={ (props) => (
-                    <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
-                            <Profileedit user={ this.props.user } location={ props.location } updateUser={ this.props.updateUser } history={ props.history } />
-                    </div>
-                  ) } />
-                  <Route exact path='/settings' render={ (props) => (
-                    <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
-                            <Settings user={ this.props.user } />
-                    </div>
-                  ) } />
-                  <Route exact path='/user/:email/changePassword' render={ (props) => (
-                    <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
-                            <ChangePassword user={ this.props.user } history={ props.history } />
-                    </div>
-                  ) } />
-                  <Route exact path='/messages' render={ (props) => (
-                    <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
-                            <MessageList user={ this.props.user } />
-                    </div>
-                  ) } />
-                  <Route path='/messages/:email' render={ (props) => (
-                    <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
-                            <Messages user={ this.props.user } />
-                    </div>
-                  ) } />
+                <Route exact path='/user/:email' render={ (props) => (
+                                                            <Profile user={ this.props.user } location={ props.location } />
+                                                          ) } />
+                <Route exact path='/user/:email/edit' render={ (props) => (
+                                                                 <Profileedit user={ this.props.user } location={ props.location } updateUser={ this.props.updateUser } history={ props.history } />
+                                                               ) } />
+                <Route exact path='/settings' render={ (props) => (
+                                                         <Settings user={ this.props.user } />
+                                                       ) } />
+                <Route exact path='/user/:email/changePassword' render={ (props) => (
+                                                                           <ChangePassword user={ this.props.user } history={ props.history } />
+                                                                         ) } />
+                <Route exact path='/messages' render={ (props) => (
+                                                         <MessageList user={ this.props.user } />
+                                                       ) } />
+                <Route path='/messages/:email' render={ (props) => (
+                                                          <Messages user={ this.props.user } />
+                                                        ) } />
               </Switch>
-		</div>
+            </div>
+          </div>
+        </div>
       </div>
-    );
+      );
   }
 }
 
