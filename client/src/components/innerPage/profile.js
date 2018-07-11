@@ -12,11 +12,10 @@ function Bearbeiten(props) {
   const email = props.email;
   if (isMyProfile) {
     return (
-      <div className="row-12 text-muted text-right">
-        <div className="col-12 edit">
-          <Link to={ `/user/${email}/edit` }>Profil bearbeiten</Link>
-        </div>
-      </div>
+          <Link to={ `/user/${email}/edit` } style={{marginLeft: '10px', color: 'rgb(24, 86, 169)',
+              fontSize: '13px', width: '104px', border: '2px solid rgb(24, 86, 169)', padding: '5px'}}>
+            bearbeiten
+          </Link>
       );
   } else {
     return null;
@@ -161,18 +160,13 @@ class Profile extends Component {
                   <div className="col">
                     <div className="col">
                       <div className="row center-block ">
-                        <div className="col profilepicbig fill col-md-12">
+                        <div className="col profilepicbig fill col-md-4">
                           <img id="YourPicture" src={ shownprofile.picturedata }></img>
                         </div>
-                       
-                        <div className="makespace col">
-                          <div className=" row">
-                            <h4 className="title"><strong id="YourName02">{ shownprofile.firstname + " " + shownprofile.lastname }</strong></h4>
-                          </div>
-                          <div className="row  text-muted">
-                            <p className="lineup" id="role"></p>
-                          </div>
-                          <div className=" row ">
+                        <div className="col-md-8">
+                          <h4 className="title" style={{float:'left'}}><strong id="YourName02">{ shownprofile.firstname + " " + shownprofile.lastname }</strong></h4>
+                          <Bearbeiten email={ user.email } isMyProfile={ user.email === shownprofile.email } />
+                          <div className="row" style={{clear: 'both', paddingTop:'30px'}}>
                             <div className="col-sm-12 col-lg-6  text-center d-none d-md-block">
                               <strong id="countCourses2"></strong>
                               <br /><small className="text-muted ">Kurse</small>
@@ -183,6 +177,13 @@ class Profile extends Component {
                             </div>
                           </div>
                         </div>
+
+                        <div className="makespace col">
+                          <div className="row  text-muted">
+                            <p className="lineup" id="role"></p>
+                          </div>
+
+                        </div>
                       </div>
                     </div>
                     <div className="row-12 text-muted">
@@ -190,7 +191,6 @@ class Profile extends Component {
                         { shownprofile.description }
                       </div>
                     </div>
-                    <Bearbeiten email={ user.email } isMyProfile={ user.email === shownprofile.email } />
                   </div>
                 </div>
                 <div className="row box newpart">
@@ -201,7 +201,7 @@ class Profile extends Component {
                         <div className="col-8" id="iCan">
                           { shownprofile.iCan }
                         </div>
-                        <div className="col-4" id="trueTeach">ich bringe bei:</div>
+                        <div className="col-4" id="trueTeach" style={{color: 'black'}}><strong>ich bringe bei:</strong></div>
                         <div className="col-8" id="iTeach">
                           { shownprofile.iTeach }
                         </div>
@@ -222,13 +222,13 @@ class Profile extends Component {
                   <div className=" col-sm-12">
                     <div className="col">
                       <div className="row  text-muted">
-                        <div className="col-4">E-Mail:</div>
+                        <div className="col-4" style={{color: 'black'}}><strong>E-Mail:</strong></div>
                         <a className="col-8" id="email" href={ "mailto:" + shownprofile.email }>
                           { shownprofile.email }
                         </a>
                       </div>
                       <div className="row text-muted lineup ">
-                        <div className="col-4 ">Website:</div>
+                        <div className="col-4" style={{color: 'black'}}><strong>Website:</strong></div>
                         <a className="col-8" id="website" href={ "http://" + shownprofile.website }>
                           { shownprofile.website }
                         </a>
