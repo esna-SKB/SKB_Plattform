@@ -494,7 +494,7 @@ Channel: function(channelName,description){
     .then(res => res.json())
   },
   
-  
+ 
 //MESSAGES
 /*
  * GET /messages

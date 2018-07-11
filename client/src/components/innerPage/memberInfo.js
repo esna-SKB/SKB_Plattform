@@ -1,66 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import '../../css/profilepicture.css';
 const api = require('../../api');
 
 function Element(props) {
 	const member = props.member;
     return (
         <div style={{marginTop : "2em"}}>
-            <div style={{clear: "both"}} className="contentMemberinfo" key={this.props.member.email}>
-                <img  src={this.props.member.picturedata} alt="profilepic" ></img>
-                <div> <strong><Link to={'/user/'+this.props.member.email}>{this.props.member.firstname} {this.props.member.lastname}</Link></strong></div>
+            <div style={{clear: "both"}} className="contentMemberinfo" key={member.email}>
+               <div className="ProfileIcon"><img  src={member.picturedata} alt="profile picture" ></img></div>
+                <div> <strong><Link to={'/user/'+member.email}>{member.firstname} {member.lastname}</Link></strong></div>
             </div>
         </div>
     );
 }
 
 
-class OtherMembers extends React.Component {
-    constructor(props){
-	super(props);
-	this.state = {
-		user: this.props.user,
-		members: this.props.members,
-		list: []
-		};
-	}
-    
-    componentDidMount(){
-			console.log("other members");
-		console.log(this.props.members);
-		var otherMembers = this.props.members.filter((m) => m.email !== this.props.user.email);
-	
-		this.setState({
-			list: this.props.members.map((e) => {
-			return( <Element member={e}/>);})
-		});
-	}
-			
-    render(){
-		if(!this.props.members){
-			return null;
-		}else{
-			return(
-				<div className="box col-12">
-					<div className="box-title">
-						Gruppenteilnehmer
-					</div>
-					<div>
-						{this.state.list}
-					</div>
-				</div>
-			);
-		}
-    }
-}
-
 class MemberInfo extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
 			user: this.props.user,
-			members: []
+			members: [],
+			list: []
 		};
 	}
 
@@ -74,19 +36,34 @@ class MemberInfo extends React.Component {
 			this.setState({
 				members : mem
 			});
-		})        
+			console.log(this.state.members);
+			
+			var Members = this.state.members;
+			console.log(Members)
+	
+			this.setState({
+				list: Members.map((e) => {
+				return( <Element key= {e._id} member={e}/>);})
+			});
+		})
     }
 
 	render(){
 		if(this.state.member === [] || !this.state.user) {return null;}
 		else{
-			const members = this.state.members;
-			console.log("das ist noch hier");
-			console.log(members);
+			const list = this.state.list;
+
 			
 			return(
-				<div className="row">
-					<OtherMembers user={this.state.user} members={members}/>
+				<div className="row" style={ { border: '1px solid rgb(232, 233, 235)'} }>
+					<div className="box col-12">
+						<div className="box-title">
+							Gruppenteilnehmer
+						</div>
+						<div>
+							{list}
+						</div>
+					</div>
 				  </div>
 			);
 		}

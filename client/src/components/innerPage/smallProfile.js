@@ -10,14 +10,9 @@ class SmallProfile extends React.Component {
     };
 
   }
-  componentWillReceiveProps(nextProps) {
-    //console.log("SimpleProfile, we need to take carre her, dont update to much")
-    this.setState({
-      user: nextProps.user
-    });
-	
-	console.log("i am "+this.state.user.isAdmin+ this.state.user.isTeacher )
-	if(this.state.user.isAdmin){
+  
+  componentDidMount(){
+	  	if(this.state.user.isAdmin){
 	   document.getElementById("role").innerHTML = "Admin";	
 	}else if (this.state.user.isTeacher) {
       document.getElementById("role").innerHTML = "Lehrer_in";
@@ -26,11 +21,19 @@ class SmallProfile extends React.Component {
 	}
   }
   
+  componentWillReceiveProps(nextProps) {
+    //console.log("SimpleProfile, we need to take carre her, dont update to much")
+    this.setState({
+      user: nextProps.user
+    });
+
+  }
+  
 
   render() {
     return (
       <div>
-        <div className="row" style={ { border: '1px solid rgb(232, 233, 235)', borderBottom: 'transparent' } }>
+        <div className="row" style={ { border: '1px solid rgb(232, 233, 235)'} }>
           <div className="box col-12 text-center">
             <Link to={ `/user/${this.props.user.email}` }>
               <div className="profilepicleft fill">

@@ -29,7 +29,6 @@ class Body extends React.Component {
   }
 
   render() {
-
     //kann man hier nach wunsch anspaaen wie der active Link aussehen soll
     const activeObj = {
       //fontWeight: 'bold',
@@ -39,7 +38,7 @@ class Body extends React.Component {
     return (
       <div>
         { /*Navigation activeClassName='active'*/ }
-        <div className="background-fluid background row">
+        <div className="background-fluid row">
           <nav className="offset-md-3 col-md-6 nav nav-fill justify-content-center">
             <NavLink className="nav-item nav-link" exact={ true } activeStyle={ activeObj } to='/'>
               Newsfeed
@@ -53,7 +52,7 @@ class Body extends React.Component {
           </nav>
         </div>
         <div className="container-fluid">
-          <div className="cols background row" style={ { height: '100%' } }>
+          <div className="cols row" style={ { height: '100%' } }>
             { /* Left Container*/ }
             <div className="d-none d-md-block col-md-3" style={ { zIndex: '1' } }>
               <SmallProfile user={ this.props.user } />
@@ -98,7 +97,7 @@ class Body extends React.Component {
                   ) } />
                   <Route exact path='/group/:groupId' render={ (props) => (
                     <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
-                         <Group user={ this.props.user } />
+                         <Group user={ this.props.user } location={ props.location } />
                     </div>
                        ) } />
                   <Route exact path='/user/:email' render={ (props) => (

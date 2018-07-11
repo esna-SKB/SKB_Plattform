@@ -180,7 +180,6 @@ class Group extends React.Component {
     }
     
     componentDidMount(){
-		console.log(this.props.location.pathname);
 		var groupId = this.props.location.pathname.split("/")[2];
 		this.handleUpdate(groupId); 
     }
@@ -247,7 +246,7 @@ class Group extends React.Component {
                 </div>
             </div>
                 
-            <div className="background container-fluid row">
+            <div className="container-fluid row">
                 <div className="col col-sm-12">
                     <div className="tab-content col-offset-6 centered" id="tab-content">
                         <FeedTab  user={this.props.user} group={this.state.group} articles={this.state.articles}/>
