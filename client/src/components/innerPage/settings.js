@@ -18,12 +18,11 @@ class Settings extends Component {
   }
 
   adminAllUsers(){
-    console.log("KSKSKSK")
     if(this.props.user.isAdmin){
       return (
 
         <div className="row">
-          <Link to={ `/allUsers` } className="text-muted">All Users</Link>
+          <Link to={ `/allUsers` } className="text-info">All Users</Link>
         </div>
       
       )
