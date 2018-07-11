@@ -44,7 +44,7 @@ class FeedTab extends Component {
     var text = document.getElementById("textteilen").value;
     var self = this;
     if (!this.state.file) {
-      api.createArticle(self.props.course._id,'Course',this.state.courseName, "", self.props.user.email, text, "", Date.now, "")
+      api.createArticle(self.props.course._id,'Course',self.state.courseName, "", self.props.user.email, text, "", Date.now, "")
         .then(res => {
           self.handleArticlesUpdate(self.props.course._id)
           document.getElementById("textteilen").value = ""
@@ -52,9 +52,9 @@ class FeedTab extends Component {
     } else {
       self.getBase64(self.state.file, function(base64file) {
 
-        api.createArticle(self.props.course._id,'Course',this.state.courseName, "", self.props.user.email, text, self.state.file.type, Date.now, base64file)
+        api.createArticle(self.props.course._id,'Course',self.state.courseName, "", self.props.user.email, text, self.state.file.type, Date.now, base64file)
           .then(res => {
-            self.handleArticlesUpdate(self.props.course.name)
+            self.handleArticlesUpdate(self.props.course._id)
             document.getElementById("textteilen").value = ""
             self.setState({
               file: undefined

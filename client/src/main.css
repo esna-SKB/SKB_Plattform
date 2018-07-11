@@ -5,6 +5,20 @@ html, body{
   box-sizing: border-box;
 }
 
+.backgrd{
+	background-color: #f7f8f9;
+	/*background-image: url("../../../backgrounds/80.jpg")s;*/
+
+	/* Full height */
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+
+}
 
 .background_illustration{
 	min-height: 100%;
