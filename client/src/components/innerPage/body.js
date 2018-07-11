@@ -6,6 +6,8 @@ import Newsfeed from './newsfeed';
 import Course from './course';
 import CreateCourse from './createcourse';
 import Groups from './groups';
+import Group from './group';
+import MemberInfo from './memberInfo';
 import Profile from './profile';
 import Profileedit from './profileedit';
 import ChangePassword from './changePassword';
@@ -15,6 +17,7 @@ import MessageList from './messageList';
 import { Messages } from './messages';
 import TeacherInfo from './teacherInfo';
 import InviteToCourse from './inviteToCourse';
+
 import '../../css/course.css';
 
 
@@ -60,6 +63,13 @@ class Body extends React.Component {
               <MyCourses myEmail={ this.props.user.email } mini={ true } />
             </div>
             { /* Right Container*/ }
+			  <Route path='/group/:id' render={ (props) => (
+                <div>
+                  <MemberInfo location={ props.location } user={ this.props.user } />
+                </div>
+              ) } />
+            </div>
+
             { /* MainWindow */ }
               <Switch>
                 <Route exact path='/courses/:name' render={ (props) => (
@@ -87,6 +97,9 @@ class Body extends React.Component {
                             <Groups user={ this.props.user } />
                     </div>
                   ) } />
+				  <Route exact path='/group/:groupId' render={ (props) => (
+									   <Group user={ this.props.user }  location={ props.location } />
+				) } />
                   <Route exact path='/user/:email' render={ (props) => (
                     <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
                             <Profile user={ this.props.user } location={ props.location } />
@@ -118,8 +131,7 @@ class Body extends React.Component {
                     </div>
                   ) } />
               </Switch>
-          </div>
-        </div>
+		</div>
       </div>
     );
   }

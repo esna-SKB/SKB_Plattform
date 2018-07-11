@@ -12,6 +12,8 @@ router.route('/')
 			if (err) {
 	        	return res.status(500).send('error occured in the database');
 			} else {
+				console.log("We send all those courses")
+				console.log(courses)
 				return res.status(200).send(courses);
 	       	}
 		})
@@ -75,7 +77,7 @@ router.route('/:name/user')
 	       	} else if(course == null){
 	       		return res.status(404).send('course not found');
 	       	} else {
-	       		Enrollment.find({course:course._id}).populate('user').exec(function(err, enrolls){
+	       		Enrollment.find({'theChosenModel.ModelId':course._id}).populate('user').exec(function(err, enrolls){
 	       			if(err) return res.status(500).send('error occured in the database');
 	       			else if(enrolls == 0) res.status(204).send('there are no user in that course');
 	       			else{

@@ -29,7 +29,36 @@ var courseSchema = new Schema({
 		type: [{ type: Schema.Types.ObjectId,
         ref: "Group"}],
 		default: []
+	},
+	
+	groupSizesMin: {
+		type: Number,
+		default: 2	
+	},
+	groupSizesMax: {
+		type: Number,
+		default: 4	
+	},
+	
+	groupPrefenceDeadline:{
+		type: Date,
+		default: Date.now
+	},
+	
+	withHomework: {
+		type: Boolean,
+		default: false
 	}
+	
+	/*PreferenceList: {
+		type: [{type: Schema.Types.ObjectId, ref: "Homework"}],
+		default: []
+	}*/
+	
+	/*Homeworks: {
+		type: [{type: Schema.Types.ObjectId, ref: "Homework"}],
+		default: []
+	}*/
 });
 
 module.exports = mongoose.model('Course', courseSchema);

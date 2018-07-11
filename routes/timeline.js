@@ -14,11 +14,11 @@ router.route('/user/:email/course/article')
 				if(err) return res.status(500).send('error occured in the database');
 				else if(enroll.length == null) return res.status(404).send('no courses found');
 				else {
-					var array = enroll.map(c => c.course._id); 
+					var array = enroll.map(c => c.theChosenModel.ModelId); 
 					console.log(array); 
-					Article.find({course: {$in: array}})
+					Article.find({'theChosenModel.ModelId': {$in: array}})
 							.populate('author')
-							.populate('course')
+							.populate('theChosenModel.ModelId')
 							.sort({created_at: -1})
 							.exec(function(err, articles){
 								if (err){

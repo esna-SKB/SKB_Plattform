@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import Chat from '../../img/chat-icon.png';
 // import {withRouter} from 'react-router'
+import '../../css/profilepicture.css';
 
 const api = require('../../api');
 
@@ -30,7 +31,7 @@ class MyTeachers extends React.Component {
     return (
       <div style={ { marginTop: "2em" } }>
         <div style={ { clear: "both" } } className="contentTeacherinfo" key={ this.props.teacher.email }>
-          <img src={ this.props.teacher.picturedata } alt="profilepic"></img>
+         <div className="ProfileIcon"> <img src={ this.props.teacher.picturedata } alt="profilepic"></img></div>
           <div>
             <strong>
             			<Link to={ `/user/${this.props.teacher.email}` }>{ this.props.teacher.firstname } { this.props.teacher.lastname }</Link>

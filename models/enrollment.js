@@ -9,10 +9,10 @@ var enrollmentSchema = new Schema({
     	type: Schema.Types.ObjectId,
         ref: "User"
     },
-    course: {
-        type: Schema.Types.ObjectId,
-        ref: "Course"
-    }
+	theChosenModel: {
+		kind: String,			// write 'Course' , 'Group' or 'Channel'
+		ModelId : {type: Schema.Types.ObjectId, refPath: 'theChosenModel.kind'} //save the Id of the group / course or channel
+	},
     
 });
 
