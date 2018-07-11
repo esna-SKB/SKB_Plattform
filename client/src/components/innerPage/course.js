@@ -644,40 +644,34 @@ class Course extends Component {
             <div className="col col-sm-12">
               <div className="tab-content col-offset-6 centered">
                 <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
-                  <div>
+                  <div className="clearfix">
                     <div className="d-block d-md-none order-md-last justify-content-center">
                       <div>
                         <TeacherInfo location={ this.props.location } user={ this.props.user } />
                       </div>
                     </div>
-                    <div className="col-md-8">
-                      <h3 style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px' } }>Inhalt</h3>
+                    <div className="">
+                      <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px' } }>Inhalt</div>
                     </div>
 
-					<div className="col-md-2">
+					<div className="float-right">
 					   <button ref="gruppenbilden" className='registrieren_botton' id="makegroups" style={ (this.state.course.teacher.email !== this.props.user.email) ? {
                                                                                                    display: 'none'
                                                                                                  } : {
                                                                                                    color: 'rgb(24, 86, 169)',
-                                                                                                   marginTop: '-67px !important',
                                                                                                    fontSize: '13px',
                                                                                                    width: '139px',
-                                                                                                   float: 'right',
-                                                                                                   margin: '-12px 12px'
                                                                                                  } } onClick={ this.gruppenbilden }>
                         Gruppen bilden
                       </button>
                     </div>
-                    <div className="col-md-2">
+                    <div className="float-right">
                       <button ref="bearbeiten" className='registrieren_botton' id="edit" style={ (course.teacher.email !== this.props.user.email) ? {
                                                                                                    display: 'none'
                                                                                                  } : {
                                                                                                    color: 'rgb(24, 86, 169)',
-                                                                                                   marginTop: '-67px !important',
                                                                                                    fontSize: '13px',
                                                                                                    width: '104px',
-                                                                                                   float: 'right',
-                                                                                                   margin: '-12px 0'
                                                                                                  } } onClick={ this.bearbeiten }>
                         bearbeiten
                       </button>

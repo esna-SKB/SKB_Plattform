@@ -48,7 +48,7 @@ class OuterPage extends React.Component {
               <Route path='/verify' component={ VerifyRegistration } />
               <Route path='/resend' component={ SendRegistrationAgain } />
               <Route path='/' render={ (props) => (
-                                         <Login updateEmail={ this.props.updateEmail } location={ this.props.location } history={ this.props.history } />
+                                         <Login updateEmail={ this.props.updateEmail } location={ this.props.location } history={ props.history } />
                                        ) } />
             </Switch>
             <div className="center loginfooter_parent">

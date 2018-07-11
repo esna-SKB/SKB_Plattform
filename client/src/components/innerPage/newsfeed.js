@@ -24,6 +24,8 @@ class Newsfeed extends React.Component {
 
   render() {
     const { articles } = this.state; 
+
+    
     return (
 
       <div className='container' id="userposts">
