@@ -20,6 +20,35 @@ import MemberInfo from './memberInfo';
 import '../../css/course.css';
 
 
+ //kann man hier nach wunsch anspaaen wie der active Link aussehen soll
+    const activeObj = {
+      //fontWeight: 'bold',
+      color: "white",
+      backgroundColor: '#C0D9D9'
+    }
+
+function GroupNavBar(props){	
+	if(!props.user.isTeacher || props.user.isAdmin){
+		return(
+			<NavLink className="nav-item nav-link" activeStyle={ activeObj } to='/groups'>
+				  Gruppen
+			</NavLink>
+		);
+	}
+	return(null);
+}
+
+function ChannelNavBar(props){
+	if(props.user.isTeacher || props.user.isAdmin){
+		return(
+			<NavLink className="nav-item nav-link" activeStyle={ activeObj } to='/channels'>
+				  Channels
+			</NavLink>
+		);
+	}
+	return(null);
+}
+
 class Body extends React.Component {
   constructor(props) {
     super(props);
@@ -29,12 +58,7 @@ class Body extends React.Component {
   }
 
   render() {
-    //kann man hier nach wunsch anspaaen wie der active Link aussehen soll
-    const activeObj = {
-      //fontWeight: 'bold',
-      color: "white",
-      backgroundColor: '#C0D9D9'
-    }
+   
     return (
       <div>
         { /*Navigation activeClassName='active'*/ }
@@ -46,9 +70,8 @@ class Body extends React.Component {
             <NavLink className="nav-item nav-link" activeStyle={ activeObj } to='/courses'>
               Kurse
             </NavLink>
-            <NavLink className="nav-item nav-link" activeStyle={ activeObj } to='/groups'>
-              Gruppen
-            </NavLink>
+            <ChannelNavBar user={this.props.user}/>
+			<GroupNavBar user={this.props.user}/>
           </nav>
         </div>
         <div className="container-fluid">
