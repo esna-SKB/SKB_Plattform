@@ -22,14 +22,6 @@ class Header extends React.Component {
           <div className="navbar-header">
             <Link className="navbar-brand" to={ `/` }><img id="logo" className="logo" src={ Logo } alt="Logo" /></Link>
           </div>
-          <form className="navbar-form navbar-center" action="/search">
-            <div className="input-group">
-              <div className="input-group-btn">
-                <button className="searchbutton btn" type="submit"></button>
-              </div>
-              <input type="text" className="searchbar form-control" placeholder="Search" name="srch-term" id="srch-term" />
-            </div>
-          </form>
           <ul className="nav navbar-nav navbar-right">
             <li>
               <Link to={ `/messages` }><img id="chat" className="icon" src={ Chat } alt="Chat" /></Link>

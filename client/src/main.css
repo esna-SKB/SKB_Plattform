@@ -1049,3 +1049,21 @@ pre {
 	overflow: hidden;
 	background-color: rgba(255,255,255, 0.3);
 }
+
+.profile_setting{
+  height: 80px;
+  line-height: 80px;
+  border: 1px solid #c8cbd2;
+  border-radius: 11px;
+  text-align: center;
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  margin-bottom: 20px;
+}
+
+.profile_setting:hover {
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 0px 3px 0px, rgba(0, 0, 0, 0.05) 0px 2px 11px 0px;
+}

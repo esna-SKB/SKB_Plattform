@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const Group = require('./group');
+
+var Schema = mongoose.Schema;
 
 
 const UserSchema = new mongoose.Schema({
@@ -65,6 +68,7 @@ const UserSchema = new mongoose.Schema({
     default: ''
   },
 });
+
 UserSchema.methods.generateHash = function(password) {
    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };

@@ -19,8 +19,7 @@ module.exports = {
           subject: 'Einladung zum Kurs ' + courseName, // Subject line
           html: '<p>Hallo!</p>\
           <p>Du wurdest für den Kurs' + courseName + ' freigeschaltet.</p>\
-          <p>Du kannst dich jetzt auch auf Esna in den Kurs einschreiben, klicke dafür bitte <a href =' + link + ' >hier</a>.</p> \
-          <div>Achtung, um dich einschreiben zu können, benötigst du einen aktiven Account.</div>'
+          <p><a href =' + link + ' >Hier</a> kommst du direkt zum Kurs.</p>'
           // html body
       };
     // send mail with defined transport object

@@ -8,13 +8,24 @@ class SmallProfile extends React.Component {
     this.state = {
       user: this.props.user
     };
+
   }
   componentWillReceiveProps(nextProps) {
     //console.log("SimpleProfile, we need to take carre her, dont update to much")
     this.setState({
       user: nextProps.user
     });
+	
+	console.log("i am "+this.state.user.isAdmin+ this.state.user.isTeacher )
+	if(this.state.user.isAdmin){
+	   document.getElementById("role").innerHTML = "Admin";	
+	}else if (this.state.user.isTeacher) {
+      document.getElementById("role").innerHTML = "Lehrer_in";
+	}else{
+	   document.getElementById("role").innerHTML = "Student_in"; 
+	}
   }
+  
 
   render() {
     return (
@@ -27,8 +38,13 @@ class SmallProfile extends React.Component {
               </div>
               <p></p><p><strong id="YourName01">{ this.props.user.firstname + " " + this.props.user.lastname }</strong></p>
             </Link>
+			 <div className = "text-muted">
+				<p className="lineup" id="role"></p>
+			 </div>
           </div>
+		 
         </div>
+	
         { /*<div className="row" style={{border: '1px solid rgb(232, 233, 235)', borderTop: 'transparent'}}>
                       	            <div className="box col-sm-6 text-center">
                       	              <strong>2</strong><br /><small className="text-muted">Kurse</small>

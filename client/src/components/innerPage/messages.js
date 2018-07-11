@@ -74,8 +74,7 @@ export class Messages extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // endpoint: os.hostname()+':5001',
-      endpoint: os.hostname() + ":5001",
+      endpoint: os.hostname(),
       partnerEmail: window.location.pathname.split("/")[2],
       history: undefined,
       partner: undefined
@@ -84,7 +83,7 @@ export class Messages extends React.Component {
     const socket = socketIOClient(this.state.endpoint);
     socket.on('send message', message => {
       if ((message.fromUser === this.props.user.email && message.toUser === this.state.partnerEmail) || (message.toUser === this.props.user.email && message.fromUser === this.state.partnerEmail)) {
-        console.log("Von: " + message.fromUser + " Zu: " + message.toUser + " Text: " + message.text);
+        //console.log("Von: " + message.fromUser + " Zu: " + message.toUser + " Text: " + message.text);
         this.addMessage(message);
       }
     })

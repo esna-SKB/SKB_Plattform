@@ -35,6 +35,11 @@ export class NewMessage extends React.Component {
       if (this.state.query.length > 0) {
           this.getInfo()
       }
+      else{
+        this.setState({
+          matches : []
+        })
+      }
     })
   }
 

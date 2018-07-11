@@ -193,26 +193,43 @@ deleteUser: function(email){
 
 //ENROLLMENT
   /*
-   * POST enrollment/user/:email/course/:coursename
+   * POST enrollment/:email/:kind/:id
    * enrolls an user in a course
   */
-  enrollUser: function(email, coursename){
-    return fetch('/enrollment/user/'+email+'/course/'+coursename, {
+  enrollUser: function(email, ModelId,kind){
+    return fetch('/enrollment/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        email: email,
+        kind: kind,
+        ModelId: ModelId,
+      }),
     })
     .then(res => res.json())
   },
+    
   /*
-   * DELETE /enrollment/user/:email/course/:coursename
-   * enrolls an user in a course
+   * POST /enrollment/email/:email/id/:id
+   * checks if user is enrolled ( success = true/false)
   */
-  unenrollUser: function(email, coursename){
-    return fetch('/enrollment/user/'+email+'/course/'+coursename, {
-      method: 'DELETE'
+  checkEnrolledUser: function(email, id){
+    return fetch('/enrollment/email/'+email+'/id/'+id, {
+      method: 'POST'
+    })
+    .then(res => res.json())
+  },
+
+  /*
+   * DELETE /enrollment/email/:email/id/:id
+   * unenrolls an user from a course
+  */
+  unenrollUser: function(email, id){
+    return fetch('/enrollment/email/'+email+'/id/'+id, {
+      method: 'POST'
     })
     .then(res => res.json())
   },
@@ -222,8 +239,8 @@ deleteUser: function(email){
  * GET /article/course/:courseName
  * returns a list of all articles of a course
 */
-  getAllArticlesOfCourse: function(courseName){
-    return fetch('/article/course/'+courseName, {
+  getAllArticles: function(ModelId){
+    return fetch('/article/all/'+ModelId, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
@@ -234,17 +251,20 @@ deleteUser: function(email){
   /*
    * POST /article/course/:courseName
    * creates a new article
+   * ps: NameOfModel = Name of the Course/Group/Channel
   */
-    createArticle: function(courseName, headline, author, text, type, created_at, base64file){
+    createArticle: function(ModelId,kind,NameOfModel,headline, author, text, type, created_at, base64file){
 
-      return fetch('/article/course/'+courseName, {
+      return fetch('/article/all/'+ModelId, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          course: courseName,
+          ModelId: ModelId,
+		  kind: kind,
+		  NameOfModel: NameOfModel,
           headline: headline,
           author: author,
           text: text,
@@ -254,13 +274,14 @@ deleteUser: function(email){
         }),
       })
       .then(res => {
-        console.log(res);
         res.json();
 
 
       });
     },
 
+    
+ 
   /*
    * GET /article/id
    * returns an article object
@@ -313,22 +334,49 @@ deleteUser: function(email){
       }})
     .then(res => res.json())
   },
+    
+/*
+ * GET user/:email/group
+ * returns a list of all groups of a user
+*/
+  getAllGroupsOfUser: function(email){
+    return fetch('/user/' + email + '/group', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+
+  /*
+ * GET user/:email/group
+ * returns a list of all users of a group
+*/
+  getAllMembersOfGroup: function(groupId){
+    return fetch('/group/' + groupId + '/members', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+  
 
 /*
- * POST /groups/course/:courseName
- * creates a new course object
+ * POST /group/course/:courseName
+ * creates a new group object, group name does not have to be unique. in route there will be checked if: are all members in course, is none of them already in a group(for the course)
 */
-  createGroup: function(courseName, groupName, members, description){
-    return fetch('/group/course/' + courseName, {
+Group: function(courseId, groupName, members, description){
+    return fetch('/group/course/' + courseId, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-        name: groupName,
+        groupname: groupName,
         members: members,
-        course: courseName,
+        courseId: courseId,
         description: description,
       }),
     })
@@ -336,7 +384,7 @@ deleteUser: function(email){
   },
 /*
  * GET /groups/:groupId
- * returns a course object
+ * returns a group object
 */
   getGroup: function(groupId){
     return fetch('/group/' + groupId, {
@@ -348,7 +396,7 @@ deleteUser: function(email){
   },
 /*
  * PUT /groups/:groupId
- * updates a course object
+ * updates a group object
 */
   updateGroup: function(groupId, groupName, members, description){
     return fetch('/group/'+ groupId, {
@@ -366,8 +414,8 @@ deleteUser: function(email){
     .then(res => res.json())
   },
 /*
- * GET /groups/:groupId
- * deletes a course object
+ * DELETE /groups/:groupId
+ * deletes a group object
 */
   deleteGroup: function(groupId){
     return fetch('/group/' + groupId, {
@@ -378,6 +426,75 @@ deleteUser: function(email){
     .then(res => res.json())
   },
 
+  
+//ChANNELS
+
+/*
+ * POST /channel/
+ * creates a new group object, group name does not have to be unique. in route there will be checked if: are all members in course, is none of them already in a group(for the course)
+*/
+Channel: function(channelName,description){
+    return fetch('/channel/new', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        channelname: channelName,
+        description: description,
+      }),
+    })
+    .then(res => res.json())
+  },
+/*
+ * GET /channel/:channelId
+ * returns a channel object
+*/
+  getChannel: function(channelId){
+    return fetch('/channel/' + channelId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+  
+  /*
+ * PUT /channel/:channelId
+ * updates a channel object
+*/
+  updateChannel: function(channelId, channelName, members, description){
+    return fetch('/channel/'+ channelId, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        name: channelName,
+        members: members,
+        description: description,
+      }),
+    })
+    .then(res => res.json())
+  },
+  
+  
+  /*
+ * DELETE /channel/:channelId
+ * deletes a channel object
+*/
+  deleteChannel: function(groupId){
+    return fetch('/group/' + groupId, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
+  },
+  
+  
 //MESSAGES
 /*
  * GET /messages
