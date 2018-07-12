@@ -19,6 +19,7 @@ import TeacherInfo from './teacherInfo';
 import InviteToCourse from './inviteToCourse';
 import Group from './group';
 import Channel from './channel';
+import AllUsers from './allUsers';
 
 import '../../css/course.css';
 
@@ -163,6 +164,11 @@ class Body extends React.Component {
                   <Route path='/messages/:email' render={ (props) => (
                     <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
                             <Messages user={ this.props.user } />
+                    </div>
+                  ) } />
+                  <Route path='/allUsers' render={ (props) => (
+                    <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
+                            <AllUsers user={ this.props.user } />
                     </div>
                   ) } />
               </Switch>

@@ -25,6 +25,7 @@ var articleSchema = new Schema({
 	NameOfModel: String,
     data: String,
     type: String,
+    dataName: String,
     author: {
         type: Schema.Types.ObjectId,
         ref: "User"

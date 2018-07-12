@@ -49,7 +49,43 @@ function CreateCourseButton(props) {
 function Element(props) {
   const course = props.course;
   const mini = props.mini;
-  if (mini) {
+  if (props.isAdmin) {
+    return (
+      <div className="w-100 course-name">
+        <NavLink to={ '/courses/' + course.name }>
+          { course.name }
+        </NavLink>
+        <button className="btn text-danger btn-link float-right" data-toggle="modal" data-target="#areyousure" >Delete Course</button>
+        <div className="btn-group dropleft float-right">
+          <button className="btn text-secondary btn-link dropdown-toggle" data-toggle="dropdown">Edit Course</button>
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a className="dropdown-item" href="#">Change Name</a>
+            <a className="dropdown-item" href="#">Change Teacher</a>
+            <a className="dropdown-item" href="#">Change payment</a>
+          </div>
+        </div>
+        <div id="areyousure" className="modal fade" tabIndex="-0" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered modal-sm">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Are you sure?</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <p>Are you sure you want to delete this course. This Action cannot be reversed.</p>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-danger mr-auto"  >I am Sure</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      );
+
+  } else if (mini) {
     return (
       <div className="w-100 course-name">
         <NavLink to={ '/courses/' + course.name }>
@@ -175,7 +211,7 @@ export class MyTeacherCourses extends React.Component {
             var coursesForFree = courses.filter((c) => c.teacher.email === this.props.user.email);
             this.setState({
               list: coursesForFree.map((e) => {
-                return ( <Element key={ e._id } course={ e } mini={ this.props.mini } />);
+                return ( <Element key={ e._id } course={ e } mini={ this.props.mini } teacherCourse={true}  />);
               })
             });
 
@@ -249,8 +285,20 @@ class OtherCourses extends React.Component {
   }
 
   componentDidMount() {
+    //Admin can see all courses in Alle Kurse and can delete them
+    if (this.props.user.isAdmin === true) {
+      getCourses('/course'
+        , (courses) => {
+          this.setState({
+            list: courses.map((e) => {
+              return ( <Element key={ e._id } course={ e } isAdmin={true} />);
+            })
+          });
+        });
+    }    
     //teacher can see all courses in "Alle Kurse"
     if (this.props.user.isTeacher === true) {
+
           this.setState({
             list: this.props.allCourses.map((e) => {
               return ( <Element key={ e._id } course={ e } />);

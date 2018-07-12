@@ -253,7 +253,8 @@ deleteUser: function(email){
    * creates a new article
    * ps: NameOfModel = Name of the Course/Group/Channel
   */
-    createArticle: function(ModelId,kind,NameOfModel,headline, author, text, type, created_at, base64file){
+    createArticle: function(ModelId,kind,NameOfModel,headline, author, text, type, created_at, base64file, fileName){
+
 
       return fetch('/article/all/'+ModelId, {
         method: 'POST',
@@ -269,6 +270,7 @@ deleteUser: function(email){
           author: author,
           text: text,
           data: base64file,
+          fileName: fileName,
           type: type,
           created_at: created_at,
         }),
@@ -294,6 +296,27 @@ deleteUser: function(email){
       }})
     .then(res => res.json())
   },
+
+  /*
+   * PUT /course/:courseName
+   * updates a course object
+  */
+  updateArticle: function(articleId, updatedText, deleteFile){
+    return fetch('/article/'+articleId, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        articleId: articleId,
+        updatedText: updatedText,
+        deleteFile: deleteFile
+      }),
+    })
+    .then(res => res.json())
+  },
+
 
   /*
    * GET /article/id
