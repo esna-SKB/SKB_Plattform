@@ -36,7 +36,6 @@ class Header extends React.Component {
               <div className="dropdown-menu dropdown-menu-right" style={{position: 'absolute'}}>
                 <Link className="dropdown-item" to={ `/user/${this.props.user.email}` }>Mein Profil</Link>
                 <Link className="dropdown-item" to={ `/settings` }>Einstellungen</Link>
-                <Link className="dropdown-item" to={ `/#` }>Something else here</Link>
                 <div className="dropdown-divider"></div>
                 <Link className="dropdown-item text-danger" onClick={ this.props.handleLogout } to={ `/` }>Log Out</Link>
               </div>
