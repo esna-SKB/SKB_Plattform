@@ -153,6 +153,7 @@ class MemberTab extends Component {
       members: undefined
     }
     this.handleUpdateMembers = this.handleUpdateMembers.bind(this)
+    this.render = this.render.bind(this)
   }
 
   componentDidMount() {
@@ -174,8 +175,12 @@ class MemberTab extends Component {
     })
   }
 
+
+
+
   render() {
     const members = this.state.members;
+    var course = (this.props.course)
     if (members && (this.props.enrolled || this.props.isTeacher)) {
       if(this.props.isTeacher || this.props.isAdmin){
         return (
@@ -187,11 +192,17 @@ class MemberTab extends Component {
             </div>
             <ul>
               { members.map(function(member, i) {
+                  unenrollUser = unenrollUser.bind(this)
+                  function unenrollUser() {
+                    api.unenrollUser(member.email, course.name).then(res => {
+                      window.location.reload(false);
+                    });
+                  }
                   return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
                            <Link to={ `/user/${member.email}` }>
                              { member.firstname } { member.lastname }
                            </Link>
-                           <button className="btn btn-danger btn-sm float-right"> X </button>
+                           <button className="btn btn-danger btn-sm float-right" onClick={unenrollUser}> X </button>
                            <Link className='float-right' to={ `/messages/${member.email}` }>
                              <img id="chat" className="icon" src={ Chat } alt="Chat" />
                            </Link>
