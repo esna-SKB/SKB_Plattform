@@ -1,21 +1,21 @@
-1. Die SKB Lehrer wünschen sich eine bessere Plattform, um die Kommunikation zwischen  ihnen und denen Kursteilnehmenden zu vereinfachen
+1. Die SKB Lehrer wünschen sich eine bessere Plattform, um die Kommunikation zwischen  ihnen und denen Kursteilnehmenden zu vereinfachen ✅
 
-2. Die IT-Administratoren wünschen sich Sonderrechte für Moderation und Nutzerverwaltung 
+2. Die IT-Administratoren wünschen sich Sonderrechte für Moderation und Nutzerverwaltung ✅ 
 
-3. Die Lehrer wünschen sich auch interne Kommunikationsmöglichkeiten, wo Sie miteinander diverse Sachen teilen können, wie zum Beispiel Dokumente, generelle Ankündigungen, Beiträge, usw. 
+3. Die Lehrer wünschen sich auch interne Kommunikationsmöglichkeiten, wo Sie miteinander diverse Sachen teilen können, wie zum Beispiel Dokumente, generelle Ankündigungen, Beiträge, usw. ✅❌
 
 4. System von außen zugreifbar durch eine API ✅
 
-5. Kursteilnehmende dürfen keinen Zugriff auf interne Sachen haben 
+5. Kursteilnehmende dürfen keinen Zugriff auf interne Sachen haben ✅
 
 6. Die Lehrer können Kurse aufmachen, die frei für alle oder zahlungspflichtig sind ✅
 
 7. Zahlungspflichtige Kurse können nur per Einladung gefunden werden ✅
 
-8. Einladungen und neue Beiträge sollen zusätzlich per Email versendet werden 
+8. Einladungen und neue Beiträge sollen zusätzlich per Email versendet werden ✅
 
-9. Kursübersicht für Lehrer und Kursteilnehmende 
+9. Kursübersicht für Lehrer und Kursteilnehmende ✅
 
-10. Kalender mit allen Kursen und Terminen, nur für Lehrer sichtbar
+10. Kalender mit allen Kursen und Terminen, nur für Lehrer sichtbar ❌
 
-Zusätzliches Feature: Tinder
+Zusätzliches Feature: Tinder ✅❌
