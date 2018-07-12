@@ -2,16 +2,16 @@ var express = require('express');
 var router = express.Router();
 const Course = require('../models/course');
 const User = require('../models/user');
-const Preference = require('../models/preference');
-const tinder = require('./tinder');
+Preference = require('../models/preference');
+//const tinder = require('./tinder');
 
 
-router.route('/makegroups/:courseId').
+router.route('/makegroups/:courseId')
 	.get((req, res, next) => {
 		var courseId = req.params.courseId;
 			Preference.findOne({course: courseId}).exec(function(err, pref){
 				if(err) return res.status(500).send('error occured in the database');
-				else if(pref === null) return res.status(404).send('pref not found');#
+				else if(pref === null) return res.status(404).send('pref not found');
 				else{
 					var groups = tinder.main(pref.users, pref.matrix, pref.groupSize); 
 					return res.status(200).send(groups);
@@ -44,7 +44,6 @@ router.route('/')
 				})
 			} else return res.status(404).send('there is no such course');
 		})
-		Preference.
 	})
 
 router.route('/:courseId')
@@ -74,8 +73,9 @@ router.route('/:courseId')
 						} else {
 				       		return res.status(200).send({success : true, message : "pref is updated"});
 				       	}
-					}
+					})
 	})
+
 	.delete((req, res, next) => {
 			var id = req.params.coursesId;
 			Preference.deleteOne({course:id}, function(err){
@@ -85,5 +85,6 @@ router.route('/:courseId')
 					return res.status(200).send('pref is saved');
 			    }
 			})
+		})
 
 	
