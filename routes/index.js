@@ -14,7 +14,7 @@ router.use('/enrollment', require('./enrollment'))
 router.use('/invitation', require('./invitation'))
 router.use('/channel', require('./channel'))
 router.use('/image', require('./image'))
-//router.use('/preference', require('./preference'))
+router.use('/preference', require('./preference'))
 
 
 

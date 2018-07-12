@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 const Course = require('../models/course');
 const User = require('../models/user');
-Preference = require('../models/preference');
-//const tinder = require('./tinder');
+const Preference = require('../models/preference');
+const tinder = require('./tinder');
 
 
 router.route('/makegroups/:courseId')
@@ -87,4 +87,4 @@ router.route('/:courseId')
 			})
 		})
 
-	
+	module.exports = router
