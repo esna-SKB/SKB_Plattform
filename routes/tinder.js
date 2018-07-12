@@ -8,12 +8,37 @@ function main(users, matrix, sizeOfG){
 
 	var groups = controlTinder(users, matrix, sizeOfG)
 	groups.sort(function(a,b){ return b.length - a.length; }); 
-	/*var finalGroups = []; 
+	var finalGroups = []; 
 	while(groups.length>0) {
-		var group = groups.pop(); 
-		if(group.length===sizeOfG) 
-	}*/
-	return groups; 
+		var group = groups.shift(); 
+		if(group.length===sizeOfG) finalGroups.push(group)
+		else {
+			var notFound = false; 
+			while(!notFound){
+				var index = groups.findIndex((g) => {return ((g.length+group.length)<=sizeOfG);}); 
+				if(index >= 0) { //group and groups[index] fit together
+					group = group.concat(groups[index]); 
+					groups.splice(index,1);
+				}else{ //not fitting or last round. 
+					finalGroups.push(group); 
+					notFound = true; 
+				}
+			}
+			
+		}
+	}
+	while(finalGroups.length>nrOfGroups){
+		finalGroups.sort(function(a,b){ return b.length - a.length; }); 
+		var lastG = finalGroups.pop(); 
+		var i = finalGroups.length - 1; 
+		while (lastG.length>0) {
+			var left = sizeOfG - finalGroups[i].length; 
+			if(left===0) i--; 
+			else finalGroups[i].push(lastG.pop())
+		}
+	}
+
+	return finalGroups; 
 }
 
 function controlTinder(users, matrix, sizeOfG){
@@ -35,7 +60,6 @@ function controlTinder(users, matrix, sizeOfG){
 function tinder(users, matrix, sizeOfG){
 	var nrOfGroups = Math.ceil(users.length/sizeOfG);
 	var rest = sizeOfG - (users.length % sizeOfG); //damit die Gruppen gleichmäßig verteilt sind. also keine einser Gruppen entstehen und so 
-	console.log(rest)
 	var groups = {
 		g: [],
 		value: 0, 
@@ -201,6 +225,7 @@ var mtx = [
 			]; 
 
 var groups = main(userArray, mtx, 4); 
+console.log('g:');
 console.log(groups);
 //console.log(floydWarshall(mtx)); 
 
@@ -223,6 +248,7 @@ mtx = [
 			[0,1,0,1,0,0,1,0,0,0,1,0,0,1,0]
 			];  
 groups = main(userArray, mtx, 4); 
+console.log('g:');
 console.log(groups);
 //console.log(floydWarshall(mtx)); 
 
@@ -254,5 +280,6 @@ mtx = [
 			[0,1,0,1,0,0,1,0,1,0,1,0,0,0,1,0,1,1,0,0,1,0,1,0,1],
 			[0,1,0,1,0,0,1,0,0,0,1,0,0,1,0,0,1,1,0,0,1,0,1,0,1]
 			];  
-groups = main(userArray, mtx, 4); 
+groups = main(userArray, mtx, 4);
+console.log('g:'); 
 console.log(groups);

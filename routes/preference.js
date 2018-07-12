@@ -3,6 +3,21 @@ var router = express.Router();
 const Course = require('../models/course');
 const User = require('../models/user');
 const Preference = require('../models/preference');
+const tinder = require('./tinder');
+
+
+router.route('/makegroups/:courseId').
+	.get((req, res, next) => {
+		var courseId = req.params.courseId;
+			Preference.findOne({course: courseId}).exec(function(err, pref){
+				if(err) return res.status(500).send('error occured in the database');
+				else if(pref === null) return res.status(404).send('pref not found');#
+				else{
+					var groups = tinder.main(pref.users, pref.matrix, pref.groupSize); 
+					return res.status(200).send(groups);
+				}
+			})
+		})
 
 router.route('/')
 	.post((req, res, next) => {
@@ -39,7 +54,6 @@ router.route('/:courseId')
 				//we have no errorHandling if course/group/channel doesnt exists....it's about trust XD  or we check all three possibilites(or maybe theres a shorter way)
 			Preference.find({course: id}).exec(function(err, preference){
 				if (err){
-					console.log('error occured in the database');
 		        	return res.status(500).send('error occured in the database');
 		       	}else {
 					return res.status(200).send(preference);
