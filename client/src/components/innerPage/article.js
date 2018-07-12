@@ -238,7 +238,8 @@ class Article extends React.Component {
                   <button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown">
                     <h1 className="remove_article">...</h1></button>
                   <ul className="dropdown-menu" style={ { marginTop: '-35px' } }>
-                    <li className="remove" onClick={ this.comment.bind(this) }><a>Kommentieren</a></li>
+                    <li className="remove btn" onClick={ this.comment.bind(this) }><a>Kommentieren</a></li>
+                    {this.adminArticle()}
                   </ul>
                 </div>
               </div>
