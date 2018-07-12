@@ -172,10 +172,6 @@ class AllUsers extends React.Component{
 													    </div>
 											        </div>
 
-											        <div className="form-group row">
-
-											        </div>
-
 											      </div>
 											      <div className="modal-footer">
 											        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
