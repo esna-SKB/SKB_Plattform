@@ -1,17 +1,27 @@
 import React from 'react';
 import api from '../../api';
 // import api from '../../api';
-import axios from 'axios';
+//import axios from 'axios';
 
 
 class Article extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      article: this.props.article
+      article: this.props.article,
+      changedText: this.props.article.text,
+      fileRemoved: false
     };
     this.remove = this.remove.bind(this);
     this.comment = this.comment.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.adminArticle = this.adminArticle.bind(this);
+    this.delData = this.delData.bind(this);
+    this.adminDeleteArticle = this.adminDeleteArticle.bind(this);
+    this.adminChangeArticle = this.adminChangeArticle.bind(this);
+    this.showFile = this.showFile.bind(this);
+    this.img = this.img.bind(this);
+
   }
 
   remove = (event) => {
@@ -53,48 +63,115 @@ class Article extends React.Component {
     }
   }
 
+  adminArticle(){
+    if(this.props.isAdmin){
+      const edArt = "#"+this.state.article._id+"modal";
 
-  /*encoder = () => {
+      return(
+
+        <li><a className="text-danger btn" data-toggle="modal" data-target={edArt}> Bearbeiten/ Löschen </a></li>
+
+
+      )
+    }
+  }
+
+  onChange (e) {
+    
+    this.setState({
+      changedText: e.target.value
+    })
+    console.log(this.state.article._id)
+
+  }
+
+  delData (e) {
+    this.setState({
+      fileRemoved: e.target.checked
+    })
+
+
+  }
+
+  adminDeleteArticle (){
+    api.deleteArticle(this.state.article._id).then(() => window.location.reload());
+    //besser wäre es wie beim Feed und neuen Artikeln
+    
+  }
+
+  adminChangeArticle (){
+    api.updateArticle(this.state.article._id, this.state.changedText, this.state.fileRemoved).then(() => window.location.reload())
+    //besser wäre es wie beim Feed und neuen Artikeln
+    
+  }
+
+  showFile(blob){
+    var newBlob = new Blob([blob], {type: "application/pdf"})
+    const data = window.URL.createObjectURL(newBlob);
+    var link = document.createElement('a');
+
+    link.style.display = 'none';
+
+    link.href = data;
+    link.setAttribute("download",this.state.article.dataName);
+    //console.log(link)
+    //link.click();
 
 
 
-  	var arrayBuffer = Buffer.from(this.state.article.data, 'binary').toString('base64');
 
-  	let u8 = new Uint8Array(arrayBuffer)
-      let b64encoded = btoa([].reduce.call(new Uint8Array(arrayBuffer),function(p,c){return p+String.fromCharCode(c)},''))
-      let mimetype= this.state.article.type;
-      //console.log(arrayBuffer)
-      //document.getElementById("myimage") = b64encoded;
-      return "data:"+mimetype+";base64"+arrayBuffer
-  }*/
+    return(
+       <div>
+            <div className="embed-responsive embed-responsive-16by9">
+              <object id="frame" data={link} type={this.state.article.type} width="100%" height="400px">
+                 Ihr Browser kann die Daten nicht anzeigen. Sie können dieses aber trotzdem   downloaden  
+              </object>
+            </div>
+        </div>
+    )
+
+  }
 
   img() {
-    var base64file = this.state.article.data
-    //document.body.appendChild(image);
-    //console.log(arrayBuffer)
-    //console.log(arrayBuffer);
+    if(!this.state.article.data){
+      return;
+    }
+    var base64file = this.state.article.data;
+    var name = this.state.article.dataName;
+
+    if (!this.state.article.dataName) {
+      name = "undefined";
+    }
+
+    var type = this.state.article.type;
+    
     if (this.state.article.type === undefined || this.state.article.type === "") {
 
     } else if (this.state.article.type.includes("image")) {
       return (<img src={ base64file } className="img-rounded img-fluid" alt="" />)
     } else {
-      return (
 
-        //<img src={base64file} className="img-rounded img-fluid" alt="Image template"/>
-        //<div className="embed-responsive embed-responsive-16by9">
-        // 	<iframe className="embed-responsive-item" src={base64file} allowFullScreen></iframe>
-        //</div>
+      var byteString = atob(base64file.split(',')[1]);
+
+      // separate out the mime component
+      var mimeString = base64file.split(',')[0].split(':')[1].split(';')[0]
+
+      // write the bytes of the string to an ArrayBuffer
+      var ab = new ArrayBuffer(byteString.length);
+      var ia = new Uint8Array(ab);
+      for (var i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+      }
+
+      // write the ArrayBuffer to a blob, and you're done
+      var bb = new Blob([ab], {type: type});
 
 
-        <div className="embed-responsive embed-responsive-16by9">
-          <object className="embed-responsive-item" data={ base64file } type="application/pdf" internalinstanceid="9" title="pdf">
-            <p>Your browser isnt supporting embedded pdf files. You can download the file
-              <a href="/media/post/bootstrap-responsive-embed-aspect-ratio/example.pdf">here</a>.</p>
-          </object>
-        </div>
+      return((this.showFile(bb)));
 
 
-      )
+
+      
     }
   }
 
@@ -104,6 +181,7 @@ class Article extends React.Component {
     const isNewsfeed = (this.props.newsfeed)? this.props.newsfeed : false;
     const isAuthor = (article.author.email === this.props.userEmail);
     const d = article.created_at.toString();
+    const label = article._id + "Label"
     var date = new Date(d);
 	    //finde herraus von wo der artikel kommt
 
@@ -215,8 +293,9 @@ class Article extends React.Component {
                   <button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown">
                     <h1 className="remove_article">...</h1></button>
                   <ul className="dropdown-menu" style={ { marginTop: '-35px' } }>
-                    <li className={(isAuthor)? "remove":"d-none"} onClick={ this.remove.bind(this) }><a>löschen</a></li>
-                    <li className="remove" onClick={ this.comment.bind(this) }><a>Kommentieren</a></li>
+                    <li className={(isAuthor)? "remove":"d-none"} onClick={ this.remove.bind(this) }><a className="btn">löschen</a></li>
+                    <li className="remove" onClick={ this.comment.bind(this) }><a className="btn">Kommentieren</a></li>
+                    {this.adminArticle()}
                   </ul>
                 </div>
               </div>
@@ -239,6 +318,60 @@ class Article extends React.Component {
         														<a href="#"><i className="fa fa-check"></i></a>
         												</span>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+           
+          <div className="modal fade" id={article._id+"modal"} tabIndex="-1" role="dialog" aria-labelledby={label} aria-hidden="true">
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">Artikel bearbeiten</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  
+
+                <div className="form-group">
+                  <textarea id='ArticleTextAdmin' className="col-xs-11" style={ { width: '100%' } } value={this.state.changedText} onChange = {this.onChange} />
+                  <label className="checkbox-inline">
+                    Datei löschen? <input type="checkbox" data-toggle="toggle" onChange={this.delData} />
+                  </label>
+                </div>
+
+
+
+
+                </div>
+                <div className="modal-footer">
+
+                  <button type="button" className="btn btn-danger" data-toggle="modal" data-target={"#"+article._id+"areyousure"} >Delete Article</button>
+                  <button type="button" className="btn btn-success" onClick={this.adminChangeArticle} >Save changes</button>
+                
+
+                <div id={article._id+"areyousure"} className="modal fade" tabIndex="-0" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                  <div className="modal-dialog modal-dialog-centered modal-sm">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title">Are you sure?</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        <p>Are you sure you want to delete this article. This Action cannot be reversed.</p>
+                      </div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-danger mr-auto"  onClick={this.adminDeleteArticle}>I am Sure</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 </div>
               </div>
             </div>

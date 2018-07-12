@@ -33,6 +33,7 @@ router.route('/all/:id')
 		const { author } = body;
 		const { text } = body;
 		const { data } = body;
+		const { fileName} = body;
 		const { type } = body;
 		const { created_at } = body; //könnte auch automatisch gespeichert werden
 		
@@ -56,14 +57,16 @@ router.route('/all/:id')
 				newArticle.author = userE._id;
 				newArticle.text = text;
 				newArticle.data = data;
+				newArticle.dataName = fileName;
 				newArticle.type = type;
 				newArticle.created_at = new Date();
 				newArticle.save(function(err){
 					if(err) return res.status(500).send('error occured in the database');
 					else {
-					return res.status(200).send({
-						success: true,
-						message: "new Article is saved",
+            return res.status(200).send({
+              success: true,
+              message: "new Article is saved",
+
 						});
 					}
 				});
@@ -115,6 +118,37 @@ router.route('/all/:id')
 			})
 		})
 
+		.put((req, res, next) => {
+			const { body } = req;
+			var articleid  = req.params.id;
+			const { updatedText } = body;
+			const { deleteFile } = body;
+
+			Article.findOne({_id: articleid}, 
+				function(err, foundArticle){
+					if (err){
+						console.log('error occured in the database');
+			        	return res.status(500).send('error occured in the database');
+			       	} else {
+			       		foundArticle.text = updatedText;
+			       		if(deleteFile){
+			       			foundArticle.data = "";
+			       			foundArticle.type = "";
+			       			foundArticle.dataName = "";
+			       		}
+			       		foundArticle.save(function(error){
+			       			if(error){
+			       				return res.status(500).send('error occured in the database');
+			       			} else{
+								return res.status(200).send({success : true, article : "Article is updated"});
+			       			}
+			       		})
+			       	}
+				}
+			);
+
+		})
+
 		router.route('/:id/comments')
 
 			/*get comments of article*/
@@ -125,7 +159,7 @@ router.route('/all/:id')
 			        	return res.status(500).send('error occured in the database');
 			       	}else {
 						return res.status(200).send(article.comments);
-			     }
+			     	}
 				})
 			})
 

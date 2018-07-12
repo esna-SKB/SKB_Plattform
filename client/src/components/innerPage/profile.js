@@ -160,7 +160,7 @@ class Profile extends Component {
                   <div className="">
                     <div className="col">
                       <div className="row center-block ">
-                        <div className="col profilepicbig fill col-md-4">
+                        <div className="col profilepicbig fill col-md-4" style={{paddingBottom: '20px'}}>
                           <img id="YourPicture" src={ shownprofile.picturedata }></img>
                         </div>
                         <div className="col-md-8">
