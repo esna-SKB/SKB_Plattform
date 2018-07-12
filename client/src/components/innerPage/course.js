@@ -535,7 +535,6 @@ class Course extends Component {
 									console.log("we are even number" + members.length +", "+ i)
 								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i], members[i+1]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");
 						}
-
 					}
 				}
 		})

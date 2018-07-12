@@ -19,7 +19,7 @@ import TeacherInfo from './teacherInfo';
 import InviteToCourse from './inviteToCourse';
 import Group from './group';
 import Channel from './channel';
-import MemberInfo from './memberInfo';
+
 import '../../css/course.css';
 
 
@@ -87,13 +87,7 @@ class Body extends React.Component {
               <MyCourses myEmail={ this.props.user.email } mini={ true } />
             </div>
             { /* Right Container*/ }
-            <div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
-              <Route path='/group/:id' render={ (props) => (
-                <div>
-                  <MemberInfo location={ props.location } user={ this.props.user } />
-                </div>
-              ) } />
-            </div>
+            
             { /* MainWindow */ }
               <Switch>
                 <Route exact path='/courses/:name' render={ (props) => (
