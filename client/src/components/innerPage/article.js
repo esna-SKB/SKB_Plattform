@@ -102,13 +102,13 @@ class Article extends React.Component {
 
   render() {
 
-    const article = this.props.article; 
-    const isNewsfeed = (this.props.newsfeed)? this.props.newsfeed : false;  
-    const isAuthor = (article.author.email === this.props.userEmail); 
+    const article = this.props.article;
+    const isNewsfeed = (this.props.newsfeed)? this.props.newsfeed : false;
+    const isAuthor = (article.author.email === this.props.userEmail);
     const d = article.created_at.toString();
     var date = new Date(d);
-	    //finde herraus von wo der artikel kommt 
-	
+	    //finde herraus von wo der artikel kommt
+
 
     var timeSince = (date) => {
       var seconds = Math.floor((new Date() - date) / 1000);
@@ -145,21 +145,20 @@ class Article extends React.Component {
           <div className='row border' style={ { borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px' } }>
             <div className='col-12' style={ { borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px' } }>
               <div className='row'>
-                <div className='col-5' style={ { textTransform: 'capitalize' } }>
+                <div className='col-6' style={ { textTransform: 'capitalize' } }>
                   <p>
-                    { article.author.firstname }
+                    { article.author.firstname + ' '}
                     { article.author.lastname }
-                  </p>
-                  <p>
+                    <i className="_gb8 img sp_m2iS_2eDAn9_2x sx_1494c6"><u></u></i>
                     { article.NameOfModel }
                   </p>
                 </div>
-                <div className='col-6'>
+                <div className='col-5'>
                   <time style={ { float: 'right' } }>
                     { timeSince(date) }
                   </time>
                 </div>
-                <div className='col-1'>
+                <div className='col-1' style={{position: 'absolute', right: '3px'}}>
                   <button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown">
                     <h1 className="remove_article">...</h1></button>
                   <ul className="dropdown-menu" style={ { marginTop: '-35px' } }>
@@ -170,10 +169,24 @@ class Article extends React.Component {
             </div>
             <div className='col-12'>
               <h6>{ article.headline }</h6>
-              <p style={ { color: '#a9a8a8' } }>
+              <p style={ { color: '#rgb(105, 105, 105)', marginTop:'1rem' } }>
                 { article.text }
               </p>
               { this.img() }
+            </div>
+          </div>
+          <div className="comtained border row" style={ { display: 'none', marginBottom: '20px', marginTop: '-20px' } }>
+            <div className="col-sm-12">
+              <div className="panel panel-white post">
+                <div className="post-comments">
+                  <div className="input-group">
+                    <input className="form-control comment-input" placeholder="Add a comment..." type="text" />
+                    <span className="input-group-addon">
+                                    <a href="#"><i className="fa fa-check"></i></a>
+                                </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -184,9 +197,9 @@ class Article extends React.Component {
           <div className='row border' style={ { borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px' } }>
             <div className='col-12' style={ { borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px', marginBottom: '20px' } }>
               <div className='row'>
-                <div className='col-5' style={ { textTransform: 'capitalize' } }>
+                <div className='col-6' style={ { textTransform: 'capitalize' } }>
                   <p>
-                    { article.author.firstname }
+                    { article.author.firstname + ' '}
                     { article.author.lastname }
                   </p>
 
@@ -195,12 +208,12 @@ class Article extends React.Component {
                   </p>
 
                 </div>
-                <div className='col-6'>
+                <div className='col-5'>
                   <time style={ { float: 'right' } }>
                     { timeSince(date) }
                   </time>
                 </div>
-                <div className='col-1'>
+                <div className='col-1' style={{position: 'absolute', right: '3px'}}>
                   <button className="dropdown-toggle remove_button_arrow" type="button" data-toggle="dropdown">
                     <h1 className="remove_article">...</h1></button>
                   <ul className="dropdown-menu" style={ { marginTop: '-35px' } }>
@@ -212,7 +225,7 @@ class Article extends React.Component {
             </div>
             <div className='col-12'>
               <h6>{ article.headline }</h6>
-              <p style={ { color: '#a9a8a8' } }>
+              <p style={ { color: '#rgb(105, 105, 105)', marginTop:'1rem' } }>
                 { article.text }
               </p>
               { this.img() }
