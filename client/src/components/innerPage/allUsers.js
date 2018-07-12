@@ -29,12 +29,10 @@ class AllUsers extends React.Component{
 
 	render(){
 		const users = this.state.users;
-		console.log('USERS: ' + users);
 
 
 
 		if (this.props.user.isAdmin && users){
-			console.log('DRINNE: ' + users);
 			return(
 				<div>
 				<div id="members" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
@@ -102,14 +100,14 @@ class AllUsers extends React.Component{
 			              					api.unenrollUser(this.state.users[i].email, course.name)
 			              				})
 			              			})
-			              			api.deleteUser(this.state.users[i].email);
-			              			window.location.reload();
+			              			api.deleteUser(this.state.users[i].email).then(()=>window.location.reload());
+			              			;
 			              		}
 			              		deleteUser = deleteUser.bind(this)
 
 			              		function updateUser(e){
-			              			api.updateUser(this.state.users[i].email, this.state.users[i]);
-			              			window.location.reload();
+			              			api.updateUser(this.state.users[i].email, this.state.users[i]).then(() => window.location.reload())
+			              			
 			              		}
 			              		updateUser = updateUser.bind(this)
 
