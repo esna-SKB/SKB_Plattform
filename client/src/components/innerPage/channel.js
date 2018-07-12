@@ -339,19 +339,20 @@ class Channel extends React.Component {
             </div>
                 
             <div className=" container-fluid row">
-                <div className="col col-sm-12">
-                    <div className="tab-content col-offset-6 centered" id="tab-content">
+                <div className="col col-md-8">
+                    <div className="tab-content centered" id="tab-content">
                         <FeedTab  user={this.props.user} channel={this.state.channel} articles={this.state.articles}/>
 						<MemberTab  channel={ this.state.channel } isTeacher={ this.props.user.isTeacher } location={this.props.location} user={this.props.user} />
                     </div>
                 </div>
+                <div className="d-none d-md-block col-md-4 order-md-last">
+					<div>
+					  <Beschreibung description={ this.state.channel.description } mini = {true} />
+					</div>
+				</div>
             </div>
 			
-			<div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
-				<div style={ { paddingTop: '20px' } }>
-				  <Beschreibung description={ this.state.channel.description } mini = {true} />
-				</div>
-			</div>
+			
         </div>
       );
     }
