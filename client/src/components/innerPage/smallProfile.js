@@ -10,17 +10,17 @@ class SmallProfile extends React.Component {
     };
 
   }
-  
+
   componentDidMount(){
 	  	if(this.state.user.isAdmin){
-	   document.getElementById("role").innerHTML = "Admin";	
+	   document.getElementById("role").innerHTML = "Admin";
 	}else if (this.state.user.isTeacher) {
       document.getElementById("role").innerHTML = "Lehrer_in";
 	}else{
-	   document.getElementById("role").innerHTML = "Student_in"; 
+	   document.getElementById("role").innerHTML = "Student_in";
 	}
   }
-  
+
   componentWillReceiveProps(nextProps) {
     //console.log("SimpleProfile, we need to take carre her, dont update to much")
     this.setState({
@@ -28,12 +28,12 @@ class SmallProfile extends React.Component {
     });
 
   }
-  
+
 
   render() {
     return (
       <div>
-        <div className="row" style={ { border: '1px solid rgb(232, 233, 235)'} }>
+        <div className="" style={ { border: '1px solid rgb(232, 233, 235)', borderRadius: '5px'} }>
           <div className="box col-12 text-center">
             <Link to={ `/user/${this.props.user.email}` }>
               <div className="profilepicleft fill">
@@ -45,9 +45,9 @@ class SmallProfile extends React.Component {
 				<p className="lineup" id="role"></p>
 			 </div>
           </div>
-		 
+
         </div>
-	
+
         { /*<div className="row" style={{border: '1px solid rgb(232, 233, 235)', borderTop: 'transparent'}}>
                       	            <div className="box col-sm-6 text-center">
                       	              <strong>2</strong><br /><small className="text-muted">Kurse</small>
