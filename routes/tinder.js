@@ -3,7 +3,7 @@
 var PriorityQueue = require('js-priority-queue');
 
 function tinder(users, matrix, sizeOfG){
-	if(user.length>20) return null; //safty dauert zu lange :(
+	if(users.length>25) return null; //safty dauert zu lange :(
 	var nrOfGroups = Math.ceil(users.length/sizeOfG);
 	var rest = sizeOfG - (users.length % sizeOfG); //damit die Gruppen gleichmäßig verteilt sind. also keine einser Gruppen entstehen und so 
 	console.log(rest)
@@ -22,6 +22,39 @@ function tinder(users, matrix, sizeOfG){
 	}); 
 	return groups; 
 }
+
+function floydWarshall(matrix){
+
+	var fW = new Array(matrix.length)
+	for (var i = matrix.length - 1; i >= 0; i--) {
+		fW[i] = []; 
+	}
+
+	for (var i = 0; i < fW.length; i++) {
+		for (var j = i; j < fW.length; j++) {
+			if(i===j) fW[i][j] = 0; 
+			else if(matrix[i][j]===1 && matrix[j][i]===1) {
+				fW[i][j] = 1; 
+				fW[j][i] = 1; 
+			}else if(matrix[i][j]===1 || matrix[j][i]===1) {
+				fW[i][j] = 2; 
+				fW[j][i] = 2; 
+			}else{
+				fW[i][j] = Infinity; 
+				fW[j][i] = Infinity;
+			}
+		}
+	}
+	for (var k = 0; k < fW.length; k++) {
+		for (var i = 0; i < fW.length; i++) {
+			for (var j = 0; j < fW.length; j++) {
+				if(fW[i][j]>fW[i][k]+fW[k][j]) fW[i][j] = fW[i][k]+fW[k][j]; 
+			}
+		}
+	}
+	return fW;
+}
+
 
 
 function dijkstraSuche(matrix, groups, sizeOfG, rest){
@@ -75,16 +108,17 @@ var mtx = [
 			[0,1,0,0,0,0,1,1,0],
 			[1,0,1,0,0,0,1,1,1],
 			[1,1,0,0,1,0,0,0,1],
-			[0,1,0,0,0,0,1,1,1],
-			[0,0,1,1,0,1,0,0,1],
-			[0,1,0,0,1,0,1,1,0],
+			[0,1,0,0,0,0,0,1,1],
+			[0,0,1,0,0,0,0,0,1],
+			[0,0,0,0,0,0,0,0,0],
 			[0,1,0,0,0,0,0,1,0],
-			[0,1,0,1,0,0,1,0,1],
-			[0,1,0,1,0,0,1,0,0]
+			[0,1,0,0,0,0,1,0,1],
+			[0,1,0,0,0,0,1,0,0]
 			]; 
 
 var groups = tinder(userArray, mtx, 4); 
 console.log(groups);
+console.log(floydWarshall(mtx)); 
 
 userArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p"]; 
 mtx = [
@@ -106,6 +140,7 @@ mtx = [
 			];  
 groups = tinder(userArray, mtx, 4); 
 console.log(groups);
+console.log(floydWarshall(mtx)); 
 
 userArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]; 
 mtx = [
