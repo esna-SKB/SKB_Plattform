@@ -16,7 +16,7 @@ class Newsfeed extends React.Component {
       .then(res => {
         this.setState({
           articles: res.map((e) => {
-            return ( <Article key={ e._id } article={ e } newsfeed={ true }/>);
+            return ( <Article key={ e._id } userEmail={ this.props.user.email } article={ e } isAdmin={this.props.user.isAdmin} newsfeed={ true }/>);
           })
         })
       })

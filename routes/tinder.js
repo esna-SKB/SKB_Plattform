@@ -2,8 +2,37 @@
 'strict'
 var PriorityQueue = require('js-priority-queue');
 
+function main(users, matrix, sizeOfG){
+	var nrOfGroups = Math.ceil(users.length/sizeOfG);
+	var rest = sizeOfG - (users.length % sizeOfG);
+
+	var groups = controlTinder(users, matrix, sizeOfG)
+	groups.sort(function(a,b){ return b.length - a.length; }); 
+	/*var finalGroups = []; 
+	while(groups.length>0) {
+		var group = groups.pop(); 
+		if(group.length===sizeOfG) 
+	}*/
+	return groups; 
+}
+
+function controlTinder(users, matrix, sizeOfG){
+	if(users.length > 12){
+		var distmtx = floydWarshall(matrix); 
+		var twoGoups = splitUsers(distmtx); 
+		//console.log(twoGoups)
+		var mI = builtMatrix(matrix,twoGoups.usersI)
+		var mJ = builtMatrix(matrix,twoGoups.usersJ)
+		var usersI = twoGoups.usersI.map(i => users[i]); 
+		var usersJ = twoGoups.usersJ.map(i => users[i]); 
+		//console.log(usersI, usersJ)
+		var gruppen1 = controlTinder(usersI, mI, sizeOfG); 
+		var gruppen2 = controlTinder(usersJ, mJ, sizeOfG); 
+		return gruppen1.concat(gruppen2); 
+	} else return tinder(users, matrix, sizeOfG); 
+}
+
 function tinder(users, matrix, sizeOfG){
-	if(users.length>25) return null; //safty dauert zu lange :(
 	var nrOfGroups = Math.ceil(users.length/sizeOfG);
 	var rest = sizeOfG - (users.length % sizeOfG); //damit die Gruppen gleichmäßig verteilt sind. also keine einser Gruppen entstehen und so 
 	console.log(rest)
@@ -20,7 +49,18 @@ function tinder(users, matrix, sizeOfG){
 	groups.g = groups.g.map((group)=>{
 		return group.map(index => users[index]); 
 	}); 
-	return groups; 
+	return groups.g; 
+}
+
+function builtMatrix(matrix, userIndex){
+	var mI = [];
+	for (var i = 0; i < userIndex.length; i++) {
+		mI[i] = []; 
+		for (var j = 0; j < userIndex.length; j++) {
+			mI[i][j]= matrix[userIndex[i]][userIndex[j]]; 
+		}
+	}
+	return mI; 
 }
 
 function floydWarshall(matrix){
@@ -55,6 +95,50 @@ function floydWarshall(matrix){
 	return fW;
 }
 
+
+function splitUsers(distmtx){
+	var max = getMaxDistUsers(distmtx);
+	var usersI = []; 
+	var usersJ = []; 
+	if(max.value === Infinity){
+		for (var k = 0; k < distmtx.length; k++) {
+			if(distmtx[max.i][k]!==Infinity) usersI.push(k); 
+			else usersJ.push(k);
+		}
+	}else{
+		for (var k = 0; k < distmtx.length; k++) {
+			if(distmtx[max.i][k] < distmtx[max.j][k]) usersI.push(k); 
+			else usersJ.push(k);
+		}
+	}
+
+	var obj = {usersI: usersI, usersJ: usersJ}
+	return obj; 
+}
+
+function getMaxDistUsers(distmtx){
+	var max = {
+		value: 0,
+		i: 0,
+		j: 0
+	}; 
+	for (var i = 0; i < distmtx.length; i++) {
+		for (var j = i; j < distmtx.length; j++) {
+			if(Infinity === distmtx[i][j]){
+				max.value = Infinity; 
+				max.i = i; 
+				max.j = j; 
+				break; 
+			}
+			else if(max.value < distmtx[i][j]) {
+				max.value = distmtx[i][j]; 
+				max.i = i; 
+				max.j = j; 
+			} 
+		}
+	}
+	return max; 
+}
 
 
 function dijkstraSuche(matrix, groups, sizeOfG, rest){
@@ -105,20 +189,20 @@ function singleSatisfation(group, matrix){
 
 var userArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]; 
 var mtx = [
-			[0,1,0,0,0,0,1,1,0],
-			[1,0,1,0,0,0,1,1,1],
-			[1,1,0,0,1,0,0,0,1],
-			[0,1,0,0,0,0,0,1,1],
-			[0,0,1,0,0,0,0,0,1],
-			[0,0,0,0,0,0,0,0,0],
-			[0,1,0,0,0,0,0,1,0],
+			[0,1,0,0,1,0,0,0,0],
+			[1,0,1,0,0,0,0,1,0],
+			[1,1,0,0,1,0,0,0,0],
+			[0,1,0,0,1,0,0,0,0],
+			[0,0,1,0,0,0,0,0,0],
+			[0,0,0,0,0,0,1,0,0],
+			[0,0,0,0,0,1,0,1,0],
 			[0,1,0,0,0,0,1,0,1],
-			[0,1,0,0,0,0,1,0,0]
+			[0,0,0,0,0,0,1,0,0]
 			]; 
 
-var groups = tinder(userArray, mtx, 4); 
+var groups = main(userArray, mtx, 4); 
 console.log(groups);
-console.log(floydWarshall(mtx)); 
+//console.log(floydWarshall(mtx)); 
 
 userArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p"]; 
 mtx = [
@@ -138,9 +222,9 @@ mtx = [
 			[0,1,0,1,0,0,1,0,1,0,1,0,0,0,1],
 			[0,1,0,1,0,0,1,0,0,0,1,0,0,1,0]
 			];  
-groups = tinder(userArray, mtx, 4); 
+groups = main(userArray, mtx, 4); 
 console.log(groups);
-console.log(floydWarshall(mtx)); 
+//console.log(floydWarshall(mtx)); 
 
 userArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]; 
 mtx = [
@@ -170,5 +254,5 @@ mtx = [
 			[0,1,0,1,0,0,1,0,1,0,1,0,0,0,1,0,1,1,0,0,1,0,1,0,1],
 			[0,1,0,1,0,0,1,0,0,0,1,0,0,1,0,0,1,1,0,0,1,0,1,0,1]
 			];  
-//groups = tinder(userArray, mtx, 4); 
-//console.log(groups);
+groups = main(userArray, mtx, 4); 
+console.log(groups);

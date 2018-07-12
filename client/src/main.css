@@ -226,7 +226,7 @@ a {
 
 .registrieren_botton{
     border: 2px solid rgb(24, 86, 169);
-    margin: 10px 22px;
+    margin: 10px 3px;
     padding: 10px 22px;
     float: right;
 	background-color: rgba(255,255,255, 0.6);
@@ -1092,4 +1092,10 @@ pre {
 
 .sp_m2iS_2eDAn9_2x.sx_1494c6 {
     background-position: 0 -532px;
+}
+
+@media Screen and (max-width: 500px) {
+  .bilden_bearbeiten_button{
+    position: relative !important;
+  }
 }

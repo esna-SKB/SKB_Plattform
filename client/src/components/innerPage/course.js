@@ -41,6 +41,9 @@ class FeedTab extends Component {
   }
 
   postArticle = () => {
+
+    
+
     var text = document.getElementById("textteilen").value;
     var self = this;
     if (!this.state.file) {
@@ -51,8 +54,9 @@ class FeedTab extends Component {
         });
     } else {
       self.getBase64(self.state.file, function(base64file) {
+        var name = self.state.file.name;
+        api.createArticle(self.props.course._id,'Course',self.state.courseName, "", self.props.user.email, text, self.state.file.type, Date.now, base64file, self.state.file.name)
 
-        api.createArticle(self.props.course._id,'Course',self.state.courseName, "", self.props.user.email, text, self.state.file.type, Date.now, base64file)
           .then(res => {
             self.handleArticlesUpdate(self.props.course._id)
             document.getElementById("textteilen").value = ""
@@ -88,6 +92,7 @@ class FeedTab extends Component {
   render() {
     const articles = this.state.articles;
 
+
     if (!articles) {
       return null;
     } else if (this.props.user.email === this.props.course.teacher.email) {
@@ -119,7 +124,7 @@ class FeedTab extends Component {
           </div>
           <div>
             { articles.map(function(article) {
-                return ( <Article key={ article._id } userEmail={ this.props.user.email } article={ article } />);
+                return ( <Article key={ article._id } userEmail={ this.props.user.email } article={ article } isAdmin={this.props.user.isAdmin} />);
               }, this) }
           </div>
         </div>
@@ -129,7 +134,7 @@ class FeedTab extends Component {
         <div className="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={ { padding: '20px' } }>
           <div>
             { articles.map(function(article) {
-                return ( <Article key={ article._id } user={ this.props.user.email } article={ article } />);
+                return ( <Article key={ article._id } user={ this.props.user.email } userEmail={ this.props.user.email } article={ article } isAdmin={this.props.user.isAdmin} />);
               }, this) }
           </div>
         </div>
@@ -172,27 +177,52 @@ class MemberTab extends Component {
   render() {
     const members = this.state.members;
     if (members && (this.props.enrolled || this.props.isTeacher)) {
-      return (
-        <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
-          <div className="d-block d-md-none order-md-last justify-content-center">
-            <div>
-              <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite = {this.handleUpdateMembers} />
+      if(this.props.isTeacher || this.props.isAdmin){
+        return (
+          <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
+            <div className="d-block d-md-none order-md-last justify-content-center">
+              <div>
+                <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite = {this.handleUpdateMembers} />
+              </div>
             </div>
+            <ul>
+              { members.map(function(member, i) {
+                  return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
+                           <Link to={ `/user/${member.email}` }>
+                             { member.firstname } { member.lastname }
+                           </Link>
+                           <button className="btn btn-danger btn-sm float-right"> X </button>
+                           <Link className='float-right' to={ `/messages/${member.email}` }>
+                             <img id="chat" className="icon" src={ Chat } alt="Chat" />
+                           </Link>
+                         </li>
+                }) }
+            </ul>
           </div>
-          <ul>
-            { members.map(function(member, i) {
-                return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
-                         <Link to={ `/user/${member.email}` }>
-                           { member.firstname } { member.lastname }
-                         </Link>
-                         <Link className='float-right' to={ `/messages/${member.email}` }>
-                           <img id="chat" className="icon" src={ Chat } alt="Chat" />
-                         </Link>
-                       </li>
-              }) }
-          </ul>
-        </div>
-      )
+        )
+      }else {
+        return (
+          <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
+            <div className="d-block d-md-none order-md-last justify-content-center">
+              <div>
+                <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite = {this.handleUpdateMembers} />
+              </div>
+            </div>
+            <ul>
+              { members.map(function(member, i) {
+                  return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
+                           <Link to={ `/user/${member.email}` }>
+                             { member.firstname } { member.lastname }
+                           </Link>
+                           <Link className='float-right' to={ `/messages/${member.email}` }>
+                             <img id="chat" className="icon" src={ Chat } alt="Chat" />
+                           </Link>
+                         </li>
+                }) }
+            </ul>
+          </div>
+        )
+      }
     } else {
       return null;
     }
@@ -530,12 +560,11 @@ class Course extends Component {
 						if(((members.length % 2 == 1) && ((members.length-3) === i))){
 								console.log("we are uneven number" + members.length +", "+ i)
 								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i],members[i+1], members[i+2]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");
-								
+
 						}else{
 									console.log("we are even number" + members.length +", "+ i)
 								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i], members[i+1]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");
 						}
-
 					}
 				}
 		})
@@ -656,31 +685,33 @@ class Course extends Component {
                       </div>
                     </div>
                     <div className="">
-                      <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px' } }>Beschreibung</div>
-                    </div>
+                      <div style={{position: 'absolute',top: '2px', right:'20px'}} className="bilden_bearbeiten_button">
+                        <div className="float-right">
+              					   <button ref="gruppenbilden" className='registrieren_botton' id="makegroups" style={ (this.state.course.teacher.email !== this.props.user.email) ? {
+                                                                                                                 display: 'none'
+                                                                                                               } : {
+                                                                                                                 color: 'rgb(24, 86, 169)',
+                                                                                                                 fontSize: '13px',
+                                                                                                                 width: '139px',
+                                                                                                               } } onClick={ this.gruppenbilden }>
+                                      Gruppen bilden
+                                    </button>
+                                  </div>
+                                  <div className="float-right">
+                                    <button ref="bearbeiten" className='registrieren_botton' id="edit" style={ (course.teacher.email !== this.props.user.email) ? {
+                                                                                                                 display: 'none'
+                                                                                                               } : {
+                                                                                                                 color: 'rgb(24, 86, 169)',
+                                                                                                                 fontSize: '13px',
+                                                                                                                 width: '104px',
+                                                                                                               } } onClick={ this.bearbeiten }>
+                                      bearbeiten
+                                    </button>
+              					 </div>
+                          </div>
+                      <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px', marginBottom: '20px' } }>Beschreibung</div>
 
-					<div className="float-right">
-					   <button ref="gruppenbilden" className='registrieren_botton' id="makegroups" style={ (this.state.course.teacher.email !== this.props.user.email) ? {
-                                                                                                   display: 'none'
-                                                                                                 } : {
-                                                                                                   color: 'rgb(24, 86, 169)',
-                                                                                                   fontSize: '13px',
-                                                                                                   width: '139px',
-                                                                                                 } } onClick={ this.gruppenbilden }>
-                        Gruppen bilden
-                      </button>
                     </div>
-                    <div className="float-right">
-                      <button ref="bearbeiten" className='registrieren_botton' id="edit" style={ (course.teacher.email !== this.props.user.email) ? {
-                                                                                                   display: 'none'
-                                                                                                 } : {
-                                                                                                   color: 'rgb(24, 86, 169)',
-                                                                                                   fontSize: '13px',
-                                                                                                   width: '104px',
-                                                                                                 } } onClick={ this.bearbeiten }>
-                        bearbeiten
-                      </button>
-					  </div>
 
                   </div>
                   <div style={ { display: 'none' } } id="wrapper" ref="wrapper">
@@ -744,12 +775,12 @@ class Course extends Component {
                   <p id="description" ref="description">
                     { course.description }
                   </p>
-                  <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px' } }>Inhalt</div>
+                  <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px', marginBottom:'20px' } }>Inhalt</div>
                   <div id="kursmaterial" ref="kursmaterial">
                   </div>
                 </div>
                 <MemberTab enrolled={ enrolled } course={ course } isTeacher={ isTeacher } location={this.props.location} user={this.props.user} onInvite={this.onInvite}/>
-                <FeedTab enrolled={ enrolled } user={ this.props.user } course={ course } />
+                <FeedTab enrolled={ enrolled } user={ this.props.user } course={ course } isAdmin={ this.props.user.isAdmin} />
               </div>
             </div>
           </div>
