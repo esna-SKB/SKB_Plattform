@@ -28,13 +28,11 @@ class Article extends React.Component {
 
     var input = document.getElementById(this.props.article._id).firstChild.nextSibling.firstChild.firstChild
     input = input.firstChild.firstChild.firstChild
-    console.log(input)
+    console.log(this.props)
     input.onkeypress = function(e) {
-      if (!e)
-        e = window.event;
       var keyCode = e.keyCode || e.which;
-      if (keyCode === '13') {
-        console.log(input.value)
+      if (keyCode == '13') {
+        console.log("hrllo ")
 
         let comment_div = document.createElement('DIV')
         let p = document.createElement('p')
@@ -178,7 +176,7 @@ class Article extends React.Component {
           <div className="comtained border row" style={ { display: 'none', marginBottom: '20px', marginTop: '-20px' } }>
             <div className="col-sm-12">
               <div className="panel panel-white post">
-                <div className="post-comments">
+                <div className="post-comments" style={{ margin: '10px 0'}}>
                   <div className="input-group">
                     <input className="form-control comment-input" placeholder="Add a comment..." type="text" />
                     <span className="input-group-addon">
@@ -234,7 +232,7 @@ class Article extends React.Component {
           <div className="comtained border row" style={ { display: 'none' } }>
             <div className="col-sm-12">
               <div className="panel panel-white post">
-                <div className="post-comments">
+                <div className="post-comments" style={{ margin: '10px 0'}}>
                   <div className="input-group">
                     <input className="form-control comment-input" placeholder="Add a comment..." type="text" />
                     <span className="input-group-addon">
