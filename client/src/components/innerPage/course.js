@@ -42,7 +42,7 @@ class FeedTab extends Component {
 
   postArticle = () => {
 
-    
+
 
     var text = document.getElementById("textteilen").value;
     var self = this;
