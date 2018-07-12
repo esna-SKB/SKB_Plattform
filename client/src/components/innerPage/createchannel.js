@@ -16,12 +16,12 @@ class CreateChannel extends Component {
 
     if (c_name === '' || c_description === '')
       return;
-
-	api.Channel(c_name, c_description).then(res => {
-      console.log(res)
-	  api.enrollUser(this.props.user.email,res.message,'Channel').then(() =>{
+  
+	/*userId : is optional for automatic enrollment of creator */
+	api.Channel(c_name, c_description, this.props.user._id).then(res => {
+	  //api.enrollUser(this.props.user.email,res.message,'Channel').then(() =>{
       this.props.history.push("/channels");
-	  })
+	  
     })
 	
   }
