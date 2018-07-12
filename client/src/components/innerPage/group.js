@@ -249,17 +249,16 @@ class Group extends React.Component {
                 
             <div className="container-fluid row">
                 <div className="col-12 col-md-8">
-                    <div className="tab-content col-offset-6 centered" id="tab-content">
+                    <div className="tab-content centered" id="tab-content">
                         <FeedTab  user={this.props.user} group={this.state.group} articles={this.state.articles}/>
 						<AbgabenTab user={this.props.user} group={this.state.group} />
                     </div>
                 </div>
-                <div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
+                <div className="d-none d-md-block col-md-4 order-md-last">
 	                <div>
 	                  <MemberInfo location={ this.props.location } user={ this.props.user } />
 	                </div>
 	            </div>
-
             </div>
         </div>
       );

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 const Course = require('./course');
-//const Channel = require('./channel');
+
 
 
 var Schema = mongoose.Schema;
