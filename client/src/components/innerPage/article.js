@@ -266,6 +266,58 @@ class Article extends React.Component {
               </div>
             </div>
           </div>
+          <div className="modal fade" id={article._id+"modal"} tabIndex="-1" role="dialog" aria-labelledby={label} aria-hidden="true">
+            <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">Artikel bearbeiten</h5>
+                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  
+
+                <div className="form-group">
+                  <textarea id='ArticleTextAdmin' className="col-xs-11" style={ { width: '100%' } } value={this.state.changedText} onChange = {this.onChange} />
+                  <label className="checkbox-inline">
+                    Datei löschen? <input type="checkbox" data-toggle="toggle" onChange={this.delData} />
+                  </label>
+                </div>
+
+
+
+
+                </div>
+                <div className="modal-footer">
+
+                  <button type="button" className="btn btn-danger" data-toggle="modal" data-target={"#"+article._id+"areyousure"} >Delete Article</button>
+                  <button type="button" className="btn btn-success" onClick={this.adminChangeArticle} >Save changes</button>
+                
+
+                <div id={article._id+"areyousure"} className="modal fade" tabIndex="-0" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                  <div className="modal-dialog modal-dialog-centered modal-sm">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title">Are you sure?</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        <p>Are you sure you want to delete this article. This Action cannot be reversed.</p>
+                      </div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-danger mr-auto"  onClick={this.adminDeleteArticle}>I am Sure</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         );
     } else {
