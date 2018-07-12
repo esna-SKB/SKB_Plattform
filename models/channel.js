@@ -10,10 +10,6 @@ const ChannelSchema = new Schema({
     type: String,
     default: ''
   },
-  members: [{
-    type: Schema.Types.ObjectId,
-    ref: "User"
-  }],
   description: {
     type: String,
     default: ''

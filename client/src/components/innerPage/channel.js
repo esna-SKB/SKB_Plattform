@@ -32,13 +32,12 @@ export class Beschreibung extends Component{
 	}
 }
 
-
 class MemberTab extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      channel: props.channel,
-      members: []
+      course: props.channel,
+      members: undefined
     }
     this.handleUpdateMembers = this.handleUpdateMembers.bind(this)
   }
@@ -49,33 +48,32 @@ class MemberTab extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.handleUpdateMembers(nextProps.channel._id)
-    if (this.props.channel.name !== nextProps.channel._id) {
+    if (this.props.channel._id !== nextProps.channel._id) {
       this.handleUpdateMembers(nextProps.channel._id)
     }
   }
 
-  handleUpdateMembers = (channelid) => {
-    api.getAllMembersOfChannel(channelid).then(res => {
+  handleUpdateMembers = (channelId) => {
+    api.getAllMembersOfChannel(channelId).then(res => {
       this.setState({
         members: res.reverse()
       })
     })
   }
 
-  render() {
+  render() {/*
     const members = this.state.members;
-    if (members && ( this.props.isTeacher)) {
-		console.log("we are here")
+    if (members && (this.props.enrolled || this.props.isTeacher)) {
       return (
-        <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="member-tab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
-          <div className="d-block d-md-none order-md-last justify-content-center">
-            <div>
-              <Beschreibung location={ this.props.location } user={ this.props.user } onInvite = {this.handleUpdateMembers} />
-			  heeeee
-            </div>
-          </div>
+        <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
           <ul>
             { members.map(function(member, i) {
+				if(members.length === 0){
+					return null;
+				}	else{
+					console.log(members)	
+				}
+				
                 return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
                          <Link to={ `/user/${member.email}` }>
                            { member.firstname } { member.lastname }
@@ -87,12 +85,16 @@ class MemberTab extends Component {
               }) }
           </ul>
         </div>
+		null;
       )
-    }else{
-
-	return(null);}
+    } else {
+      return null;
+    }
+  }*/
+  return null;
   }
 }
+
 class EnrollButton extends Component {
   constructor(props) {
     super(props);
@@ -260,10 +262,11 @@ class Channel extends React.Component {
         this.state = {
 			user: this.props.user,
             isMember: false,
-            channel: undefined,
+            channel: "",
             articles: undefined,
             members: [],
             file: null,
+			description: "",
         };
     }
     
@@ -276,6 +279,7 @@ class Channel extends React.Component {
     componentWillReceiveProps(nextProps){
         if(this.props.location.pathname!==nextProps.location.pathname){
             var channelId = this.props.location.pathname.split("/")[2];
+			console.log("this is prps" + channelId);
             this.handleUpdate(channelId);  
         }
     }
@@ -286,9 +290,10 @@ class Channel extends React.Component {
 			api.getChannel(channelId)
 			.then(res => {
 				this.setState({
-					channel : res
+					channel : res,
+					description : res.description
 				});
-				
+				console.log(res)
 			//check if member
 			api.checkEnrolledUser(this.state.user.email,channelId)
 			.then( res => 
@@ -310,6 +315,7 @@ class Channel extends React.Component {
          }else if(this.state.user.isTeacher === false && this.state.user.isAdmin === false){
            return null;
         }else{
+		
             return (
             <div>
             <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
@@ -319,32 +325,31 @@ class Channel extends React.Component {
                     </div>
                 </div>
 
-                <div className="background-fluid" style={{borderBottom: '1px solid #e8e9eb'}}>
-                <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
-                 
-                  <li className="nav-item">
-                      <a className="nav-link tab-title active" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="true">Feed</a>
-                  </li>
+                <div className="background-fluid" style={ { borderBottom: '1px solid #e8e9eb' } }>
+              <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
 
-                  <li className="nav-item">
-					<a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
-				  </li>
-                </ul>
-                </div>
+                <li className="nav-item">
+                  <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="true">Feed</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
+                </li>
+              </ul>
+            </div>
             </div>
                 
             <div className=" container-fluid row">
                 <div className="col col-sm-12">
                     <div className="tab-content col-offset-6 centered" id="tab-content">
                         <FeedTab  user={this.props.user} channel={this.state.channel} articles={this.state.articles}/>
-						<MemberTab user={this.props.user} channel={this.state.channel} />
+						<MemberTab  channel={ this.state.channel } isTeacher={ this.props.user.isTeacher } location={this.props.location} user={this.props.user} />
                     </div>
                 </div>
             </div>
 			
 			<div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
 				<div style={ { paddingTop: '20px' } }>
-				  <Beschreibung description={ this.props.channel.description } mini = {true} />
+				  <Beschreibung description={ this.state.channel.description } mini = {true} />
 				</div>
 			</div>
         </div>

@@ -133,13 +133,16 @@ router.route('/:id/members')
 	/*get all members of a channel */
 	.get((req, res, next) => {
 		var id = req.params.id; 
-		Enrollment.find({ 'theChosenModel.ModelId': id},{}, function(err, enrollments){
+		Enrollment.find({ 'theChosenModel.ModelId': id},{})
+		.populate({path:'user', model: 'User' })
+		.exec(function(err, enrollments){
 			if (err)return res.status(500).send('error occured in the database');
-	       	else if(enrollments == null) res.status(404).send('channel could not be found');
+	       	else if(enrollments == null) res.status(404).send('group could not be found');
 	       	else {
-				console.log("the enrollments")
+				console.log("theenrollments")
 				console.log(enrollments)
-				return res.status(200).send(enrollments); 
+				var users = enrollments.map((e) => e.users)
+				return res.status(200).send(users); 
 	       	}
 		})
 	})
