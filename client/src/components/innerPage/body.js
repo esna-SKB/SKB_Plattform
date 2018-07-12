@@ -122,7 +122,7 @@ class Body extends React.Component {
                     </div>
                   ) } />
                   <Route exact path='/group/:groupId' render={ (props) => (
-                    <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
+                    <div className="col-md-9" style={ { paddingRight: '0', paddingLeft: '0' } }>
                          <Group user={ this.props.user } location={ props.location } />
                     </div>
                        ) } />
@@ -132,7 +132,7 @@ class Body extends React.Component {
                     </div>
                   ) } />
 				   <Route exact path='/channel/:channelId' render={ (props) => (
-                    <div className="col-md-6" style={ { paddingRight: '0', paddingLeft: '0' } }>
+                    <div className="col-md-9" style={ { paddingRight: '0', paddingLeft: '0' } }>
                             <Channel user={ this.props.user }  location={ props.location } />
                     </div>
                   ) } />
