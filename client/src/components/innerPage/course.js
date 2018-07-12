@@ -525,33 +525,16 @@ class Course extends Component {
 					})
 				}else{
 					var i;
-					for(i = 0; (i < (members.length-2));){
+					for(i = 0; (i < (members.length-2));  i = i+2){
 						/*the last group will be three people if memebers has uneven length*/
-						console.log("wir sind bei:" + i+ "und länge ist"+ members.length);
-						if(((members.length % 2 == 1)/* && ((members.length-2) === i))*/)){
-								console.log("we are uneven number")
-								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i],members[i+1], members[i+2]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen")
-								.then ((res) => {
-									/*message saves the id*/
-								console.log("iher: "+ i);
-								console.log( [ members[i],members[i+1], members[i+2]])
-									//api.enrollUser(members[i].email,res.message, 'Group');
-								//	api.enrollUser(members[i+1].email,res.message, 'Group');
-								//	api.enrollUser(members[i+2].email,res.message, 'Group');
-								})
-						}else{
-								console.log("we are even number!")
-								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i], members[i+1]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen")
-								.then ((res) => {
-									/*message saves the id*/
+						if(((members.length % 2 == 1) && ((members.length-3) === i))){
+								console.log("we are uneven number" + members.length +", "+ i)
+								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i],members[i+1], members[i+2]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");
 								
-											console.log("iher: "+ i);
-									console.log([members[i], members[i+1]]);
-									//api.enrollUser(members[i].email,res.message, 'Group');
-									//api.enrollUser(members[i+1].email,res.message, 'Group');
-								})
+						}else{
+									console.log("we are even number" + members.length +", "+ i)
+								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i], members[i+1]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");
 						}
-						i = i+2;
 
 					}
 				}
