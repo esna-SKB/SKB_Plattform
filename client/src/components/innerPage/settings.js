@@ -80,17 +80,11 @@ class Settings extends Component {
                           <Link to={ `` } className="text-muted">Kalendereinstellungen</Link>
                         </div>
                       </div>
-                      <div className="col-6">
-                        <div className ="profile_setting">
-                          <Link to={ `` } className="text-muted">Kalendereinstellungen</Link>
-                        </div>
-                      </div>
                       {this.adminAllUsers()}
                     </div>
                   </div>
                   <div className="row-12 text-muted text-right">
                     <div className="col-12">
-                      <Link to={ `/` }>home</Link>
                     </div>
                   </div>
                 </div>
