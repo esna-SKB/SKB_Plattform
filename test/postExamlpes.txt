@@ -7,6 +7,6 @@ curl -X "DELETE" http://localhost/course/drei
 curl -X POST -H "Content-Type: application/json" -d '{ "toUser":"
 luka.staerk@campus.tu-berlin.de", "fromUser":"searmus@web.de", "text":"Sehr gut, caffee trinken"}' http://localhost:5000/message
 
-curl -X PUT -H "Content-Type: application/json" -d '{"firstname":"Luka", "lastname": "Staerk", "email": "staerk12@gmail.com", "isTeacher":"true", "isAdmin": "true", "isValide" : "true"}' http://localhost:5000/user/staerk12@gmail.com
+curl -X PUT -H "Content-Type: application/json" -d '{"isTeacher":"true", "isAdmin": "true"}' https://9af1dd61.ngrok.io/user/yourEmail
 
 curl -X DELETE http://localhost:5000/message/5b101c907b9d6e3a56e93861 
