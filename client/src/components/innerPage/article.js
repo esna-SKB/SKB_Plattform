@@ -215,7 +215,7 @@ class Article extends React.Component {
     }
 
 
-    if (this.state.article.author.email !== this.props.user) {
+    if (this.state.article.author.email !== this.props.userEmail) {
       return (
         <div id={ this.state.article._id }>
           <div className='row border' style={ { borderBottom: '1px solid rgb(232, 233, 235)', backgroundColor: 'white', padding: '10px', marginBottom: '20px' } }>
