@@ -20,10 +20,10 @@ router.route('/')
 	
 	//post new channel
 	.post((req, res, next) => {
-		console.log("posting is happening")
 		const { body } = req;
 		const { channelname } = body; 
 		const { description } = body;
+		const { userId } = body;
 
 		// Save the new channel
 		const newChannel = new Channel();
@@ -33,11 +33,32 @@ router.route('/')
 			if(err) return res.status(500).send('error occured in the database'); 
 			else {
 			console.log("new Channel is saved! "+ newChannel.name);
+			var BreakException = {};
+
+			try {
+					if(userId !== ""){
+						const Enroll = new Enrollment();
+						var en = new Enrollment();
+						en.user = userId;
+						en.theChosenModel.kind = 'Channel';
+						en.theChosenModel.ModelId =newChannel._id;
+						en.save(function(err){
+							if(err) {
+								return res.status(500).send('error occured in the database');
+								throw BreakException;
+							}
+						});
+					}
+				} catch (e) {
+				  if (e !== BreakException) throw e;
+				}
+
+				
+				return res.status(200).send({
+					success: true,
+					message: newChannel._id
+				});			
 			
-			return res.status(200).send({
-				success: true,
-				message: newChannel._id
-				});
 			}
 		});
 	})
@@ -48,14 +69,11 @@ router.route('/:id')
 	
 	/*GET channel with specific id*/
 	.get((req, res, next) => {
-		
-		console.log("get one is happening")
 		var id = req.params.id; 
 		Channel.findOne({_id: id},{}, function(err, channel){
 			if (err)return res.status(500).send('error occured in the database');
 	       	else if(channel == null) res.status(404).send('channel could not be found');
 	       	else {
-				console.log("this is the getted channel" + channel.name )
 				return res.status(200).send(channel); 
 	       	}
 		})
