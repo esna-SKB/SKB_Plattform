@@ -70,6 +70,7 @@ a {
   border: transparent;
   border-bottom: 1px solid black;
   width: 350px;
+  background-color: transparent;
 }
 
 .login_button {
@@ -212,6 +213,20 @@ a {
 @media Screen and (max-width: 870px){
   .center_loginform{
     width: 450px;
+	length:auto;
+  }
+}
+
+@media Screen and (max-width: 464px){
+  .center_loginform{
+    width: 380px;
+	length:auto;
+  }
+}
+
+@media Screen and (max-width: 392px){
+  .center_loginform{
+    width: 340px;
 	length:auto;
   }
 }
@@ -1098,4 +1113,11 @@ pre {
   .bilden_bearbeiten_button{
     position: relative !important;
   }
+}
+
+.logo:hover {
+  height: 46px;
+}
+.icon:hover {
+  height: 33px;
 }

@@ -51,9 +51,7 @@ class OuterPage extends React.Component {
                                          <Login updateEmail={ this.props.updateEmail } location={ this.props.location } history={ props.history } />
                                        ) } />
             </Switch>
-            <div className="center loginfooter_parent">
-              <span>Impressum</span> <span className="float-right">Datenschutz</span>
-            </div>
+ 
           </div>
         </div>
       </div>
