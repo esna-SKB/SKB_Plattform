@@ -1093,3 +1093,9 @@ pre {
 .sp_m2iS_2eDAn9_2x.sx_1494c6 {
     background-position: 0 -532px;
 }
+
+@media Screen and (max-width: 500px) {
+  .bilden_bearbeiten_button{
+    position: relative !important;
+  }
+}

@@ -685,8 +685,7 @@ class Course extends Component {
                       </div>
                     </div>
                     <div className="">
-                      <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px', marginBottom: '20px' } }>Beschreibung</div>
-                      <div style={{position: 'absolute',top: '2px', right:'20px'}}>
+                      <div style={{position: 'absolute',top: '2px', right:'20px'}} className="bilden_bearbeiten_button">
                         <div className="float-right">
               					   <button ref="gruppenbilden" className='registrieren_botton' id="makegroups" style={ (this.state.course.teacher.email !== this.props.user.email) ? {
                                                                                                                  display: 'none'
@@ -710,7 +709,9 @@ class Course extends Component {
                                     </button>
               					 </div>
                           </div>
-            </div>
+                      <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px', marginBottom: '20px' } }>Beschreibung</div>
+
+                    </div>
 
                   </div>
                   <div style={ { display: 'none' } } id="wrapper" ref="wrapper">
