@@ -166,6 +166,9 @@ class Profile extends Component {
                         <div className="col-md-8">
                           <h4 className="title" style={{float:'left'}}><strong id="YourName02">{ shownprofile.firstname + " " + shownprofile.lastname }</strong></h4>
                           <Bearbeiten email={ user.email } isMyProfile={ user.email === shownprofile.email } />
+					
+						<Link to={ `/messages/${shownprofile.email}` }><img id="chat" className="icon" style={ { fontSize: '10px' } } src={ Chat } alt="Chat" /></Link>
+					
                           <div className="row" style={{clear: 'both', paddingTop:'30px'}}>
                             <div className="col-sm-12 col-lg-6  text-center d-none d-md-block">
                               <strong id="countCourses2"></strong>
