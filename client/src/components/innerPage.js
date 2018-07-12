@@ -15,7 +15,7 @@ class InnerPage extends React.Component {
 
   render() {
     return (
-      <div className="background_illustration" style={ { backgroundColor: 'rgb(238, 239, 243)' } }>
+      <div className="background_illustration" style={ { backgroundColor: 'rgba(238, 239, 243, 0.79)' } }>
         <Header user={ this.props.user } handleLogout={ this.props.handleLogout } />
         <Body updateUser={ this.props.updateUser } user={ this.props.user } />
       </div>
