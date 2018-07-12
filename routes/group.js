@@ -41,10 +41,33 @@ router.route('/course/:courseId')
 			if(err) return res.status(500).send('error occured in the database'); 
 			else {
 			console.log("new Group is saved! "+ newGroup.name);
-			return res.status(200).send({
-				success: true,
-				message: newGroup._id
-				});
+			var BreakException = {};
+
+			try {
+				members.forEach((m) => {
+					const Enroll = new Enrollment();
+					var en = new Enrollment();
+					en.user = m._id;
+					en.theChosenModel.kind = 'Group';
+					en.theChosenModel.ModelId =newGroup._id;
+					en.save(function(err){
+						if(err) {
+							return res.status(500).send('error occured in the database');
+							throw BreakException;
+						}
+					console.log(en)	
+					})
+					});
+				} catch (e) {
+				  if (e !== BreakException) throw e;
+				}
+
+				
+				return res.status(200).send({
+					success: true,
+					message: newGroup._id
+				});			
+			
 			}
 		});
 	})

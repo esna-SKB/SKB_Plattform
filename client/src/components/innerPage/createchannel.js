@@ -19,8 +19,9 @@ class CreateChannel extends Component {
 
 	api.Channel(c_name, c_description).then(res => {
       console.log(res)
+	  api.enrollUser(this.props.user.email,res.message,'Channel').then(() =>{
       this.props.history.push("/channels");
-	  api.enrollUser(this.props.user.email,res.message,'Channel')
+	  })
     })
 	
   }
@@ -41,10 +42,12 @@ class CreateChannel extends Component {
                 <p>Beschreibung: </p>
                 <textarea rows="4" cols="50" name="description" id="channel_description" style={ { width: '100%' } } />
                 <br />
-
+				<p className= "text-muted" >Achtung: Nur ein Admin, kann die angelegten Informationen wieder ändern.</p>
+				<br />
                 <a className='whitehover' style={ { color: 'white !important' } }>
                   <button id="anlegen" className='registrieren_botton' onClick={ this.anlegen } style={ { float: 'none', fontSize: '16px', display: 'block', margin: '0 auto' } }>anlegen</button>
                 </a>
+				
               </div>
             </div>
           </div>

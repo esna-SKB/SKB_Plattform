@@ -157,7 +157,7 @@ class Profile extends Component {
             <div className="background row">
               <div className="col col-sm-12">
                 <div className="row box ">
-                  <div className="col">
+                  <div className="">
                     <div className="col">
                       <div className="row center-block ">
                         <div className="col profilepicbig fill col-md-4">
@@ -165,7 +165,11 @@ class Profile extends Component {
                         </div>
                         <div className="col-md-8">
                           <h4 className="title" style={{float:'left'}}><strong id="YourName02">{ shownprofile.firstname + " " + shownprofile.lastname }</strong></h4>
+                          <Link to={ `/messages/${shownprofile.email}` }><img id="chat" className="icon" style={ { fontSize: '10px', paddingRight: '0', float:'left' } } src={ Chat } alt="Chat" /></Link>
+
                           <Bearbeiten email={ user.email } isMyProfile={ user.email === shownprofile.email } />
+
+
                           <div className="row" style={{clear: 'both', paddingTop:'30px'}}>
                             <div className="col-sm-12 col-lg-6  text-center d-none d-md-block">
                               <strong id="countCourses2"></strong>

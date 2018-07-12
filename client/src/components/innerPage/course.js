@@ -524,31 +524,16 @@ class Course extends Component {
 						}
 					})
 				}else{
-					for(var i = 0; (i < (members.length-2)); i = i+2){
+					var i;
+					for(i = 0; (i < (members.length-2));  i = i+2){
 						/*the last group will be three people if memebers has uneven length*/
-						console.log("wir sind bei:" + i+ "und länge ist"+ members.length);
-						if(((members.length % 2 == 1)/* && ((members.length-2) === i))*/)){
-								console.log("we are uneven number")
-								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i],members[i+1], members[i+2]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen")
-								.then ((res) => {
-									/*message saves the id*/
-								console.log("iher: "+ i);
-								console.log( [ members[i],members[i+1], members[i+2]])
-								//  api.enrollUser(members[i].email,res.message, 'Group');
-								//	api.enrollUser(members[i+1].email,res.message, 'Group');
-								//	api.enrollUser(members[i+2].email,res.message, 'Group');
-								})
+						if(((members.length % 2 == 1) && ((members.length-3) === i))){
+								console.log("we are uneven number" + members.length +", "+ i)
+								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i],members[i+1], members[i+2]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");
+
 						}else{
-								console.log("we are even number!")
-								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i], members[i+1]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen")
-								.then ((res) => {
-									/*message saves the id*/
-								
-									console.log("iher: "+ i);
-									console.log([members[i], members[i+1]]);
-									//api.enrollUser(members[i].email,res.message, 'Group');
-									//api.enrollUser(members[i+1].email,res.message, 'Group');
-								})
+									console.log("we are even number" + members.length +", "+ i)
+								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i], members[i+1]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");
 						}
 					}
 				}
@@ -670,31 +655,32 @@ class Course extends Component {
                       </div>
                     </div>
                     <div className="">
-                      <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px' } }>Beschreibung</div>
-                    </div>
-
-					<div className="float-right">
-					   <button ref="gruppenbilden" className='registrieren_botton' id="makegroups" style={ (this.state.course.teacher.email !== this.props.user.email) ? {
-                                                                                                   display: 'none'
-                                                                                                 } : {
-                                                                                                   color: 'rgb(24, 86, 169)',
-                                                                                                   fontSize: '13px',
-                                                                                                   width: '139px',
-                                                                                                 } } onClick={ this.gruppenbilden }>
-                        Gruppen bilden
-                      </button>
-                    </div>
-                    <div className="float-right">
-                      <button ref="bearbeiten" className='registrieren_botton' id="edit" style={ (course.teacher.email !== this.props.user.email) ? {
-                                                                                                   display: 'none'
-                                                                                                 } : {
-                                                                                                   color: 'rgb(24, 86, 169)',
-                                                                                                   fontSize: '13px',
-                                                                                                   width: '104px',
-                                                                                                 } } onClick={ this.bearbeiten }>
-                        bearbeiten
-                      </button>
-					  </div>
+                      <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px', marginBottom: '20px' } }>Beschreibung</div>
+                      <div style={{position: 'absolute',top: '2px', right:'20px'}}>
+                        <div className="float-right">
+              					   <button ref="gruppenbilden" className='registrieren_botton' id="makegroups" style={ (this.state.course.teacher.email !== this.props.user.email) ? {
+                                                                                                                 display: 'none'
+                                                                                                               } : {
+                                                                                                                 color: 'rgb(24, 86, 169)',
+                                                                                                                 fontSize: '13px',
+                                                                                                                 width: '139px',
+                                                                                                               } } onClick={ this.gruppenbilden }>
+                                      Gruppen bilden
+                                    </button>
+                                  </div>
+                                  <div className="float-right">
+                                    <button ref="bearbeiten" className='registrieren_botton' id="edit" style={ (course.teacher.email !== this.props.user.email) ? {
+                                                                                                                 display: 'none'
+                                                                                                               } : {
+                                                                                                                 color: 'rgb(24, 86, 169)',
+                                                                                                                 fontSize: '13px',
+                                                                                                                 width: '104px',
+                                                                                                               } } onClick={ this.bearbeiten }>
+                                      bearbeiten
+                                    </button>
+              					 </div>
+                          </div>
+            </div>
 
                   </div>
                   <div style={ { display: 'none' } } id="wrapper" ref="wrapper">
@@ -758,7 +744,7 @@ class Course extends Component {
                   <p id="description" ref="description">
                     { course.description }
                   </p>
-                  <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px' } }>Inhalt</div>
+                  <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px', marginBottom:'20px' } }>Inhalt</div>
                   <div id="kursmaterial" ref="kursmaterial">
                   </div>
                 </div>

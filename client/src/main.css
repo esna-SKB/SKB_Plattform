@@ -22,7 +22,7 @@ html, body{
 
 .background_illustration{
 	min-height: 100%;
-	
+
 	/* Center and scale the image nicely */
 	background-image: url("./img/03transparent.png");
     background-position: center;
@@ -226,7 +226,7 @@ a {
 
 .registrieren_botton{
     border: 2px solid rgb(24, 86, 169);
-    margin: 10px 22px;
+    margin: 10px 3px;
     padding: 10px 22px;
     float: right;
 	background-color: rgba(255,255,255, 0.6);
@@ -1073,4 +1073,23 @@ pre {
 
 .profile_setting:hover {
   box-shadow: rgba(0, 0, 0, 0.18) 0px 0px 3px 0px, rgba(0, 0, 0, 0.05) 0px 2px 11px 0px;
+}
+
+
+.sp_m2iS_2eDAn9_2x {
+    background-image: url(https://www.facebook.com/rsrc.php/v3/yW/r/W_zsJQ_TetX.png);
+    background-size: 28px 920px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+}
+
+._gb8 {
+    position: relative;
+    top: 3px;
+}
+
+.sp_m2iS_2eDAn9_2x.sx_1494c6 {
+    background-position: 0 -532px;
 }

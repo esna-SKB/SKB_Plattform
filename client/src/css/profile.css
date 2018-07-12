@@ -54,7 +54,7 @@
 #mytabs .active{
     color: black;
     border: none;
-    background-color: #F7F8FA;
+    background-color: transparent;
     padding-top: 12px;
     font-size: 20px;
     border-bottom: 2px solid #07A7DA;
@@ -70,6 +70,7 @@
     border-width: thin;
     border-color: #F7F8FA;
     padding: 20px;
+    border-radius: 5px;
 }
 
 .whitebox{
@@ -102,7 +103,7 @@ html, body{
 }
 
 .description{
-	padding-top:15px;		
+	padding-top:15px;
 }
 
 .lineup{
@@ -116,23 +117,23 @@ html, body{
 }
 
 .newpart{
-	margin-top: 15px; 	
+	margin-top: 15px;
 }
 
 .edit{
-	margin-top:10px;	
+	margin-top:10px;
 	margin-bottom:0px;
 }
 
 #trueOffer{
 	border-bottom:1px solid #E0E0E0;
-	padding-top: 35px;	
+	padding-top: 35px;
 }
 
 .colwhite{
-	background-color: white !important;	
+	background-color: white !important;
 }
 
 .makespace{
-	margin-left: 30px;	
+	margin-left: 30px;
 }

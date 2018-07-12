@@ -20,7 +20,7 @@ export class Beschreibung extends Component{
 		<div className="row" style={ { border: '1px solid rgb(232, 233, 235)'} }>
 					<div className="box col-12">
 						<div className="box-title">
-							Gruppenteilnehmer
+							Beschreibung
 						</div>
 						<div>
 							{this.props.description}
@@ -31,6 +31,7 @@ export class Beschreibung extends Component{
 		);
 	}
 }
+
 
 class MemberTab extends Component {
   constructor(props) {
@@ -326,8 +327,8 @@ class Channel extends React.Component {
                   </li>
 
                   <li className="nav-item">
-                      <a className="nav-link tab-title" id="member-tab" data-toggle="tab" href="#member" role="tab" aria-controls="member" aria-selected="false">Teilnehmer</a>
-                  </li>
+					<a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
+				  </li>
                 </ul>
                 </div>
             </div>
@@ -340,6 +341,12 @@ class Channel extends React.Component {
                     </div>
                 </div>
             </div>
+			
+			<div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
+				<div style={ { paddingTop: '20px' } }>
+				  <Beschreibung description={ this.props.channel.description } mini = {true} />
+				</div>
+			</div>
         </div>
       );
     }
