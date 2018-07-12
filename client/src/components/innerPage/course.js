@@ -524,8 +524,7 @@ class Course extends Component {
 						}
 					})
 				}else{
-					var i;
-					for(i = 0; (i < (members.length-2));){
+					for(var i = 0; (i < (members.length-2)); i = i+2){
 						/*the last group will be three people if memebers has uneven length*/
 						console.log("wir sind bei:" + i+ "und länge ist"+ members.length);
 						if(((members.length % 2 == 1)/* && ((members.length-2) === i))*/)){
@@ -535,7 +534,7 @@ class Course extends Component {
 									/*message saves the id*/
 								console.log("iher: "+ i);
 								console.log( [ members[i],members[i+1], members[i+2]])
-									//api.enrollUser(members[i].email,res.message, 'Group');
+								//  api.enrollUser(members[i].email,res.message, 'Group');
 								//	api.enrollUser(members[i+1].email,res.message, 'Group');
 								//	api.enrollUser(members[i+2].email,res.message, 'Group');
 								})
@@ -545,14 +544,12 @@ class Course extends Component {
 								.then ((res) => {
 									/*message saves the id*/
 								
-											console.log("iher: "+ i);
+									console.log("iher: "+ i);
 									console.log([members[i], members[i+1]]);
 									//api.enrollUser(members[i].email,res.message, 'Group');
 									//api.enrollUser(members[i+1].email,res.message, 'Group');
 								})
 						}
-						i = i+2;
-
 					}
 				}
 		})

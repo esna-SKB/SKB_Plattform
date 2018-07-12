@@ -3,6 +3,7 @@ import Article from './article';
 import { Link } from 'react-router-dom'
 import api from '../../api';
 import dragula from 'dragula';
+import MemberInfo from './memberInfo';
 
 
 class AbgabenTab extends Component{
@@ -247,12 +248,18 @@ class Group extends React.Component {
             </div>
                 
             <div className="container-fluid row">
-                <div className="col col-sm-12">
+                <div className="col-12 col-md-8">
                     <div className="tab-content col-offset-6 centered" id="tab-content">
                         <FeedTab  user={this.props.user} group={this.state.group} articles={this.state.articles}/>
 						<AbgabenTab user={this.props.user} group={this.state.group} />
                     </div>
                 </div>
+                <div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
+	                <div>
+	                  <MemberInfo location={ this.props.location } user={ this.props.user } />
+	                </div>
+	            </div>
+
             </div>
         </div>
       );
