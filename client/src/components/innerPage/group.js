@@ -266,8 +266,6 @@ class Group extends React.Component {
 				  </div>
 				</div>
 				</div>
-				
-
 				<div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
 					<div style={ { paddingTop: '20px' } }>
 					  <MemberInfo location={ this.props.location } user={ this.props.user }/>

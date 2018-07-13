@@ -13,7 +13,7 @@ class FeedTab extends Component {
   constructor(props) {
     super(props);
     this.state = {
-	  courseId: this.props.course._id,
+      courseId: this.props.course._id,
       courseName: props.course.name,
       articles: undefined,
       file: undefined,
@@ -47,7 +47,7 @@ class FeedTab extends Component {
     var text = document.getElementById("textteilen").value;
     var self = this;
     if (!this.state.file) {
-      api.createArticle(self.props.course._id,'Course',self.state.courseName, "", self.props.user.email, text, "", Date.now, "")
+      api.createArticle(self.props.course._id, 'Course', self.state.courseName, "", self.props.user.email, text, "", Date.now, "")
         .then(res => {
           self.handleArticlesUpdate(self.props.course._id)
           document.getElementById("textteilen").value = ""
@@ -55,7 +55,7 @@ class FeedTab extends Component {
     } else {
       self.getBase64(self.state.file, function(base64file) {
         var name = self.state.file.name;
-        api.createArticle(self.props.course._id,'Course',self.state.courseName, "", self.props.user.email, text, self.state.file.type, Date.now, base64file, self.state.file.name)
+        api.createArticle(self.props.course._id, 'Course', self.state.courseName, "", self.props.user.email, text, self.state.file.type, Date.now, base64file, self.state.file.name)
 
           .then(res => {
             self.handleArticlesUpdate(self.props.course._id)
@@ -124,7 +124,7 @@ class FeedTab extends Component {
           </div>
           <div>
             { articles.map(function(article) {
-                return ( <Article key={ article._id } userEmail={ this.props.user.email } article={ article } isAdmin={this.props.user.isAdmin} />);
+                return ( <Article key={ article._id } userEmail={ this.props.user.email } article={ article } isAdmin={ this.props.user.isAdmin } />);
               }, this) }
           </div>
         </div>
@@ -134,7 +134,7 @@ class FeedTab extends Component {
         <div className="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={ { padding: '20px' } }>
           <div>
             { articles.map(function(article) {
-                return ( <Article key={ article._id } user={ this.props.user.email } userEmail={ this.props.user.email } article={ article } isAdmin={this.props.user.isAdmin} />);
+                return ( <Article key={ article._id } user={ this.props.user.email } userEmail={ this.props.user.email } article={ article } isAdmin={ this.props.user.isAdmin } />);
               }, this) }
           </div>
         </div>
@@ -182,12 +182,12 @@ class MemberTab extends Component {
     const members = this.state.members;
     var course = (this.props.course)
     if (members && (this.props.enrolled || this.props.isTeacher)) {
-      if(this.props.isTeacher || this.props.isAdmin){
+      if (this.props.isTeacher || this.props.isAdmin) {
         return (
           <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
             <div className="d-block d-md-none order-md-last justify-content-center">
               <div>
-                <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite = {this.handleUpdateMembers} />
+                <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite={ this.handleUpdateMembers } />
               </div>
             </div>
             <ul>
@@ -200,9 +200,10 @@ class MemberTab extends Component {
                   }
                   return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
                            <Link to={ `/user/${member.email}` }>
-                             { member.firstname } { member.lastname }
+                             { member.firstname }
+                             { member.lastname }
                            </Link>
-                           <button className="btn btn-danger btn-sm float-right" onClick={unenrollUser}> X </button>
+                           <button className="btn btn-danger btn-sm float-right" onClick={ unenrollUser }> X </button>
                            <Link className='float-right' to={ `/messages/${member.email}` }>
                              <img id="chat" className="icon" src={ Chat } alt="Chat" />
                            </Link>
@@ -211,19 +212,20 @@ class MemberTab extends Component {
             </ul>
           </div>
         )
-      }else {
+      } else {
         return (
           <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
             <div className="d-block d-md-none order-md-last justify-content-center">
               <div>
-                <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite = {this.handleUpdateMembers} />
+                <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite={ this.handleUpdateMembers } />
               </div>
             </div>
             <ul>
               { members.map(function(member, i) {
                   return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
                            <Link to={ `/user/${member.email}` }>
-                             { member.firstname } { member.lastname }
+                             { member.firstname }
+                             { member.lastname }
                            </Link>
                            <Link className='float-right' to={ `/messages/${member.email}` }>
                              <img id="chat" className="icon" src={ Chat } alt="Chat" />
@@ -264,21 +266,19 @@ class EnrollButton extends Component {
   render() {
     const {enrolled, user, course} = this.props;
     if (course.teacher.email !== user.email) {
-      if(course.isFree === true){
+      if (course.isFree === true) {
         return (
           <button id={ (enrolled) ? 'leavecourse' : 'joincourse' } className='btn' onClick={ (enrolled) ? this.leaveCourse : this.joinCourse } style={ { position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2' } }>
             { (enrolled) ? 'Abmelden' : 'mich einschreiben' }
           </button>
           );
-      }
-      else if(course.isFree === false && enrolled === true){
+      } else if (course.isFree === false && enrolled === true) {
         return (
-          <button id={'leavecourse'} className='btn' onClick={  this.leaveCourse } style={ { position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2' } }>
+          <button id={ 'leavecourse' } className='btn' onClick={ this.leaveCourse } style={ { position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2' } }>
             { 'Abmelden' }
           </button>
           );
-      }
-      else{
+      } else {
         return null;
       }
     } else {
@@ -297,16 +297,16 @@ class Course extends Component {
       file: null,
       isTeacher: false,
       content: '',
-  	  minimumSize: 2,
-  	  maximumSize: 4,
-  	  prefDeadline: Date.now(),
-  	  members: undefined
+      minimumSize: 2,
+      maximumSize: 4,
+      prefDeadline: Date.now(),
+      members: undefined
     };
     this.onInvite = this.onInvite.bind(this);
     this.bearbeiten = this.bearbeiten.bind(this);
-  	this.gruppenbilden = this.gruppenbilden.bind(this);
-  	this.onChange = this.onChange.bind(this);
-  	this.saveGroups = this.saveGroups.bind(this);
+    this.gruppenbilden = this.gruppenbilden.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.saveGroups = this.saveGroups.bind(this);
   }
 
 
@@ -316,8 +316,8 @@ class Course extends Component {
     this.handleUpdate(course_name);
 
 
-	api.getAllUsersOfCourse(course_name).then(res => {
-		this.setState({
+    api.getAllUsersOfCourse(course_name).then(res => {
+      this.setState({
         members: res.reverse()
       })
 
@@ -340,12 +340,13 @@ class Course extends Component {
           course: course,
           isTeacher: this.props.user.email === course.teacher.email
         })
-        if (course.content[0]){
-         for(let i = 0; i < course.content.length; i++){
-           document.getElementById('kursmaterial').innerHTML += course.content[i];
-         }} else {
-           document.getElementById('kursmaterial').innerHTML = '<p>kein Inhalt..</p>'
-         }
+        if (course.content[0]) {
+          for (let i = 0; i < course.content.length; i++) {
+            document.getElementById('kursmaterial').innerHTML += course.content[i];
+          }
+        } else {
+          document.getElementById('kursmaterial').innerHTML = '<p>kein Inhalt..</p>'
+        }
 
       })
       // check if user is enrolled
@@ -360,7 +361,7 @@ class Course extends Component {
 
   }
   //make sure to update member tab when a member is added by teacher
-  onInvite(){
+  onInvite() {
     this.setState(
       this.state
     )
@@ -545,95 +546,90 @@ class Course extends Component {
   }
 
   saveGroups() {
-		//groups of two and one three, if one person only incourse then one
-		
-		
-		  api.getAllUsersOfCourse(this.state.course.name).then(res => {
-			this.setState({
-				members: res.reverse()
-			})
-		})
-		.then(() => {
-				console.log("these are the members");
-				console.log(this.state.members)
-				var members = this.state.members;
-				if(members.length < 4){
-					api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, members, "Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen")
-					.then ((res) => {
-						var j;
-						for(j = 0; (j < members.length); j++){
-							/*response message saves the id of the group*/
-							api.enrollUser(members[j].email,res.message, 'Group');
-						}
-					})
-				}else{
-					var i;
-					for(i = 0; (i < (members.length-2));  i = i+2){
-						/*the last group will be three people if memebers has uneven length*/
-						if(((members.length % 2 == 1) && ((members.length-3) === i))){
-								console.log("we are uneven number" + members.length +", "+ i)
-								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i],members[i+1], members[i+2]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");
-
-						}else{
-									console.log("we are even number" + members.length +", "+ i)
-								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i], members[i+1]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");
-						}
-						this.refs.groupmaker.style["display"] = 'none';
-						this.refs.gruppenbilden.innerHTML = 'fertig'
-						
-						
-					}
-				}
-		})
+    //groups of two and one three, if one person only incourse then one
 
 
+    api.getAllUsersOfCourse(this.state.course.name).then(res => {
+      this.setState({
+        members: res.reverse()
+      })
+    })
+      .then(() => {
+        console.log("these are the members");
+        console.log(this.state.members)
+        var members = this.state.members;
+        if (members.length < 4) {
+          api.Group(this.state.course._id, "Gruppe: " + this.state.course.name, members, "Das ist die Gruppe für '" + this.state.course.name + "'. Hier könnt ihr eure Abgaben besprechen")
+            .then((res) => {
+              var j;
+              for (j = 0; (j < members.length); j++) {
+                /*response message saves the id of the group*/
+                api.enrollUser(members[j].email, res.message, 'Group');
+              }
+            })
+        } else {
+          var i;
+          for (i = 0; (i < (members.length - 2)); i = i + 2) {
+            /*the last group will be three people if memebers has uneven length*/
+            if( ((members.length % 2 == 1) && ((members.length - 3) === i)) ) {
+              console.log("we are uneven number" + members.length + ", " + i)
+              api.Group(this.state.course._id, "Gruppe: " + this.state.course.name, [members[i], members[i + 1], members[i + 2]], "Das ist die Gruppe für '" + this.state.course.name + "'. Hier könnt ihr eure Abgaben besprechen");
 
-		/* if(res.length <2){
-			 console.log("we are here one member only");
-			api.Group(this.state.course.name,i/2, [res[i]], "Wir sind Gruppenummer:"+ i/2).then(res => {console.log(res.message)});
-		 }else{
-			var i;
-			for(i = 0; i < res.length-1; i= i+2){
+            } else {
+              console.log("we are even number" + members.length + ", " + i)
+              api.Group(this.state.course._id, "Gruppe: " + this.state.course.name, [members[i], members[i + 1]], "Das ist die Gruppe für '" + this.state.course.name + "'. Hier könnt ihr eure Abgaben besprechen");
+            }
+            this.refs.groupmaker.style["display"] = 'none';
+            this.refs.gruppenbilden.innerHTML = 'fertig'
 
-				/*last group if uneven number of members
-			if(!(res.length % 2 == 0) && (res.length-2 == i)){
-					api.Group(this.state.course.name,i/2, [res[i],res[i+1], res[i+2]], "Wir sind Gruppenummer:"+ i/2);
-			}else{
-				api.Group(this.state.course.name,i/2, [res[i],res[i+1]], "Wir sind Gruppenummer:"+ i/2);
-			}
-		 }
-		}
-    });*/
+
+          }
+        }
+      })
+
+
+
+  /* if(res.length <2){
+     console.log("we are here one member only");
+    api.Group(this.state.course.name,i/2, [res[i]], "Wir sind Gruppenummer:"+ i/2).then(res => {console.log(res.message)});
+   }else{
+    var i;
+    for(i = 0; i < res.length-1; i= i+2){
+
+      /*last group if uneven number of members
+    if(!(res.length % 2 == 0) && (res.length-2 == i)){
+        api.Group(this.state.course.name,i/2, [res[i],res[i+1], res[i+2]], "Wir sind Gruppenummer:"+ i/2);
+    }else{
+      api.Group(this.state.course.name,i/2, [res[i],res[i+1]], "Wir sind Gruppenummer:"+ i/2);
+    }
+   }
+  }
+  });*/
   }
 
 
-    joinCourse = () => {
+  joinCourse = () => {
     api.enrollUser(this.props.user.email, this.props.course._id, 'Course').then(res => {
       window.location.reload(false);
     });
   }
-    gruppenbilden = () => {
-		let groupmaker = this.refs.groupmaker
+  gruppenbilden = () => {
+    let groupmaker = this.refs.groupmaker
 
-		if (groupmaker.style["display"] === 'none') {
-		  groupmaker.style["display"] = 'block'
-		  this.refs.gruppenbilden.innerHTML = 'schließen'
-		  return;
-		} else {
-		  groupmaker.style["display"] = 'none'
-		  this.refs.gruppenbilden.innerHTML = 'Gruppen bilden'
+    if (groupmaker.style["display"] === 'none') {
+      groupmaker.style["display"] = 'block'
+      this.refs.gruppenbilden.innerHTML = 'schließen'
+      return;
+    } else {
+      groupmaker.style["display"] = 'none'
+      this.refs.gruppenbilden.innerHTML = 'Gruppen bilden'
 
-		}
-	}
+    }
+  }
 
 
   render() {
-    const {
-      enrolled,
-      user,
-      course,
-      isTeacher
-    } = this.state;
+    const {enrolled, user, course, isTeacher} = this.state;
 
 
     //make sure API calls are finished when rendering (better solution????)
@@ -642,171 +638,158 @@ class Course extends Component {
     }
     // teacher view
     else {
-	/*	 const course_name = this.state.course.name;
-	  const members = this.state.members;
+      /*   const course_name = this.state.course.name;
+        const members = this.state.members;
 
-		 if(members.length <2){
-			api.Group(course_name,i/2, [members[0]], "Wir sind Gruppenummer:"+ i/2);
-		 }else{
-			var i;
-			for(i = 0; i < members.length-1; i= i+2){
+         if(members.length <2){
+          api.Group(course_name,i/2, [members[0]], "Wir sind Gruppenummer:"+ i/2);
+         }else{
+          var i;
+          for(i = 0; i < members.length-1; i= i+2){
 
-				/*last group if uneven number of members
-			if(!(members.length % 2 == 0) && (members.length-2 == i)){
-					api.Group(course_name,i/2, [members[i],members[i+1], members[i+2]], "Wir sind Gruppenummer:"+ i/2);
-			}else{
-				api.Group(course_name,i/2, [members[i],members[i+1]], "Wir sind Gruppenummer:"+ i/2);
-			}
-		 }
-		}*/
+            /*last group if uneven number of members
+          if(!(members.length % 2 == 0) && (members.length-2 == i)){
+              api.Group(course_name,i/2, [members[i],members[i+1], members[i+2]], "Wir sind Gruppenummer:"+ i/2);
+          }else{
+            api.Group(course_name,i/2, [members[i],members[i+1]], "Wir sind Gruppenummer:"+ i/2);
+          }
+         }
+        }*/
       return (
         <div className="row">
-        <div className="col-md-8" style={ { paddingRight: '0', paddingLeft: '0' ,paddingTop: '20px'} }>
-
-        <div>
-          <div className="container-fluid" style={ { marginBottom: '20px', paddingRight: '54px', paddingLeft: '24px' } }>
-            <div className="row">
-              <div className="col" style={ { backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px' } }>
+          <div className="col-md-8" style={ { paddingRight: '0', paddingLeft: '0', paddingTop: '20px' } }>
+            <div>
+              <div className="container-fluid" style={ { marginBottom: '20px', paddingRight: '54px', paddingLeft: '24px' } }>
                 <div className="row">
-                  <div className="col-7" style={ { paddingRight: '0', paddingLeft: '20px' } }>
-                    <h1 style={ { textTransform: 'capitalize' } }>{ course.name }</h1>
-                  </div>
-                  <div className="col-4" style={ { paddingRight: '10px' } }>
-                    <EnrollButton user={ this.props.user } course={ course } enrolled={ enrolled } />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="background-fluid" style={ { borderBottom: '1px solid #e8e9eb' } }>
-              <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
-                <li className="nav-item">
-                  <a className="nav-link tab-title active" id="lehrer-tab" data-toggle="tab" href="#ubersicht" role="tab" aria-controls="ubersicht" aria-selected="true">Übersicht</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="false">Feed</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="container-fluid row">
-            <div className="col col-sm-12">
-              <div className="tab-content col-offset-6 centered">
-                <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
-                  <div className="clearfix">
-                    <div className="d-block d-md-none order-md-last justify-content-center">
-                      <div>
-                        <TeacherInfo location={ this.props.location } user={ this.props.user } />
+                  <div className="col" style={ { backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px' } }>
+                    <div className="row">
+                      <div className="col-7" style={ { paddingRight: '0', paddingLeft: '20px' } }>
+                        <h1 style={ { textTransform: 'capitalize' } }>{ course.name }</h1>
+                      </div>
+                      <div className="col-4" style={ { paddingRight: '10px' } }>
+                        <EnrollButton user={ this.props.user } course={ course } enrolled={ enrolled } />
                       </div>
                     </div>
-                    <div className="">
-                      <div style={{position: 'absolute',top: '2px', right:'20px'}} className="bilden_bearbeiten_button">
-                        <div className="float-right">
-              					   <button ref="gruppenbilden" className='registrieren_botton' id="makegroups" style={ (this.state.course.teacher.email !== this.props.user.email) ? {
-                                                                                                                 display: 'none'
-                                                                                                               } : {
-                                                                                                                 color: 'rgb(24, 86, 169)',
-                                                                                                                 fontSize: '13px',
-                                                                                                                 width: '139px',
-                                                                                                               } } onClick={ this.gruppenbilden }>
-                                      Gruppen bilden
-                                    </button>
-                                  </div>
-                                  <div className="float-right">
-                                    <button ref="bearbeiten" className='registrieren_botton' id="edit" style={ (course.teacher.email !== this.props.user.email) ? {
-                                                                                                                 display: 'none'
-                                                                                                               } : {
-                                                                                                                 color: 'rgb(24, 86, 169)',
-                                                                                                                 fontSize: '13px',
-                                                                                                                 width: '104px',
-                                                                                                               } } onClick={ this.bearbeiten }>
-                                      bearbeiten
-                                    </button>
-              					 </div>
+                  </div>
+                </div>
+                <div className="background-fluid" style={ { borderBottom: '1px solid #e8e9eb' } }>
+                  <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
+                    <li className="nav-item">
+                      <a className="nav-link tab-title active" id="lehrer-tab" data-toggle="tab" href="#ubersicht" role="tab" aria-controls="ubersicht" aria-selected="true">Übersicht</a>
+                    </li>
+                    <li className="nav-item">
+                      <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="false">Feed</a>
+                    </li>
+                    <li className="nav-item">
+                      <a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="container-fluid row">
+                <div className="col col-sm-12">
+                  <div className="tab-content col-offset-6 centered">
+                    <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
+                      <div className="clearfix">
+                        <div className="d-block d-md-none order-md-last justify-content-center">
+                          <div>
+                            <TeacherInfo location={ this.props.location } user={ this.props.user } />
                           </div>
-                      <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px', marginBottom: '20px' } }>Beschreibung</div>
-
-                    </div>
-
-                  </div>
-                  <div style={ { display: 'none' } } id="wrapper" ref="wrapper">
-                    <div className="wrapper">
-                      <div className="box-left">
-                        <div data-tpl="header1" data-title="Header 1">
-                          Header 1
                         </div>
-                        <div data-tpl="header2" data-title="Header 2">
-                          Header 2
-                        </div>
-                        <div data-tpl="header3" data-title="Header 3">
-                          Header 3
-                        </div>
-                        <div data-tpl="shortparagraph" data-title="Short paragraph">
-                          paragraph
-                        </div>
-                        <div data-tpl="ullist" data-title="Ordened list">
-                          Unordened list
-                        </div>
-                        <div data-tpl="ollist" data-title="Unordened list">
-                          Ordened list
+                        <div className="">
+                          <div style={ { position: 'absolute', top: '2px', right: '20px' } } className="bilden_bearbeiten_button">
+                            <div className="float-right">
+                              <button ref="gruppenbilden" className='registrieren_botton' id="makegroups" style={ (this.state.course.teacher.email !== this.props.user.email) ? {
+                                                                                                                    display: 'none'
+                                                                                                                  } : {
+                                                                                                                    color: 'rgb(24, 86, 169)',
+                                                                                                                    fontSize: '13px',
+                                                                                                                    width: '139px',
+                                                                                                                  } } onClick={ this.gruppenbilden }>
+                                Gruppen bilden
+                              </button>
+                            </div>
+                            <div className="float-right">
+                              <button ref="bearbeiten" className='registrieren_botton' id="edit" style={ (course.teacher.email !== this.props.user.email) ? {
+                                                                                                           display: 'none'
+                                                                                                         } : {
+                                                                                                           color: 'rgb(24, 86, 169)',
+                                                                                                           fontSize: '13px',
+                                                                                                           width: '104px',
+                                                                                                         } } onClick={ this.bearbeiten }>
+                                bearbeiten
+                              </button>
+                            </div>
+                          </div>
+                          <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px', marginBottom: '20px' } }>Beschreibung</div>
                         </div>
                       </div>
-                      <div id="boxright" ref="boxright" className="box-right"></div>
-                    </div>
-                  </div>
-
-				  <div style={ { display: 'none' } } id="groupmaker" ref="groupmaker">
-					<form>
-						<div className="" id="maxSize">
-                          <label htmlFor="maximumSize">maximale Gruppengröße:</label>
-                          <input type="text" className="form-control" name="maximumSize" aria-describedby="Help" value={ this.state.maximumSize } onChange={ this.onChange }></input>
-                          <small id="Help" className="form-text text-muted">So groß soll eine Gruppe höhstens sein</small>
+                      <div style={ { display: 'none' } } id="wrapper" ref="wrapper">
+                        <div className="wrapper">
+                          <div className="box-left">
+                            <div data-tpl="header1" data-title="Header 1">
+                              Header 1
+                            </div>
+                            <div data-tpl="header2" data-title="Header 2">
+                              Header 2
+                            </div>
+                            <div data-tpl="header3" data-title="Header 3">
+                              Header 3
+                            </div>
+                            <div data-tpl="shortparagraph" data-title="Short paragraph">
+                              paragraph
+                            </div>
+                            <div data-tpl="ullist" data-title="Ordened list">
+                              Unordened list
+                            </div>
+                            <div data-tpl="ollist" data-title="Unordened list">
+                              Ordened list
+                            </div>
+                          </div>
+                          <div id="boxright" ref="boxright" className="box-right"></div>
                         </div>
-						<div className="form-group row newpart" id="teach">
-                          <label htmlFor="prefdeadline">Deadline:</label>
-						  <input type="datetime-local" className="form-control" name="prefdeadline" aria-describedby="Help3" value={ this.state.prefdeadline } min= {this.state.prefdeadline} onChange={ this.onChange }></input>
-                          <small id="Help3" className="form-text text-muted">Bis dahin haben die Studenten_innen Zeit, ihre Präferenzen abzugeben</small>
-                        </div>
-
-						 <div ref="gruppenbildenspeichern" className='registrieren_botton' id="grspeichern" style={{
-                                                                                                   color: 'rgb(24, 86, 169)',
-                                                                                                   marginTop: '-67px !important',
-                                                                                                   fontSize: '13px',
-                                                                                                   width: '104px',
-                                                                                                   float: 'right',
-                                                                                                   margin: '-12px 0'
-                                                                                                 } } onClick={ this.saveGroups }>
-                        speichern
                       </div>
-
-					</form>
-				  </div>
-
-                  <p id="description" ref="description">
-                    { course.description }
-                  </p>
-                  <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px', marginBottom:'20px' } }>Inhalt</div>
-                  <div id="kursmaterial" ref="kursmaterial">
+                      <div style={ { display: 'none' } } id="groupmaker" ref="groupmaker">
+                        <form>
+                          <div className="" id="maxSize">
+                            <label htmlFor="maximumSize">maximale Gruppengröße:</label>
+                            <input type="text" className="form-control" name="maximumSize" aria-describedby="Help" value={ this.state.maximumSize } onChange={ this.onChange }></input>
+                            <small id="Help" className="form-text text-muted">So groß soll eine Gruppe höhstens sein</small>
+                          </div>
+                          <div className="form-group row newpart" id="teach">
+                            <label htmlFor="prefdeadline">Deadline:</label>
+                            <input type="datetime-local" className="form-control" name="prefdeadline" aria-describedby="Help3" value={ this.state.prefdeadline } min={ this.state.prefdeadline } onChange={ this.onChange }></input>
+                            <small id="Help3" className="form-text text-muted">Bis dahin haben die Studenten_innen Zeit, ihre Präferenzen abzugeben</small>
+                          </div>
+                          <div ref="gruppenbildenspeichern" className='registrieren_botton' id="grspeichern" style={ { color: 'rgb(24, 86, 169)', marginTop: '-67px !important', fontSize: '13px', width: '104px', float: 'right', margin: '-12px 0' } } onClick={ this.saveGroups }>
+                            speichern
+                          </div>
+                        </form>
+                      </div>
+                      <p id="description" ref="description">
+                        { course.description }
+                      </p>
+                      <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px', marginBottom: '20px' } }>Inhalt</div>
+                      <div id="kursmaterial" ref="kursmaterial">
+                      </div>
+                    </div>
+                    <MemberTab enrolled={ enrolled } course={ course } isTeacher={ isTeacher } location={ this.props.location } user={ this.props.user }
+                      onInvite={ this.onInvite } />
+                    <FeedTab enrolled={ enrolled } user={ this.props.user } course={ course } isAdmin={ this.props.user.isAdmin } />
                   </div>
                 </div>
-                <MemberTab enrolled={ enrolled } course={ course } isTeacher={ isTeacher } location={this.props.location} user={this.props.user} onInvite={this.onInvite}/>
-                <FeedTab enrolled={ enrolled } user={ this.props.user } course={ course } isAdmin={ this.props.user.isAdmin} />
               </div>
             </div>
           </div>
-        </div>
-        </div>
-
-        <div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
+          <div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0' } }>
             <div style={ { paddingTop: '20px' } }>
-              <TeacherInfo location={ this.props.location } user={ this.props.user }/>
-              <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite = {this.onInvite} mini = {true} />
+              <TeacherInfo location={ this.props.location } user={ this.props.user } />
+              <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite={ this.onInvite } mini={ true } />
             </div>
+          </div>
         </div>
-</div>
-)}
+      )
+    }
   }
 }
 
