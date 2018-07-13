@@ -33,7 +33,7 @@ class AbgabenTab extends Component{
 	render(){
 		return(
 		
-		 <div className="tab-pane fade" id="abgaben" role="tabpanel" aria-labelledby="abgaben-tab" style={{ padding: '20px'}}>
+		 <div className="tab-pane fade" id="abgaben" role="tabpanel" aria-labelledby="abgabentab" style={{ padding: '20px'}}>
 			<div className="box col-12">Hello i am Abgabetab </div>
 		</div>
 		
@@ -123,7 +123,7 @@ class FeedTab extends Component{
     }
 
     render(){
-		 const articles = this.state.articles;
+		const articles = this.state.articles;
 		if(!articles){
 				return null;
 		}else{
@@ -131,7 +131,7 @@ class FeedTab extends Component{
 			return(
 			
     
-			  <div className="tab-pane fade  show active" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
+			  <div className="tab-pane fade show active" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
 				<div className="col-12" id="new_status" style={{marginBottom : '20px'}}>
 				  <div className="container">
 					<div className="row" style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px'}}>
@@ -224,44 +224,54 @@ class Group extends React.Component {
            return null;
         }else{
             return (
-            <div className="row">
-            <div className="container-fluid col col-md-8" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
-                <div className="row" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
-                    <div className="col" style={{paddingRight: '0', paddingLeft: '20px'}}>
-                      
-                    <h1 style={ { textTransform: 'capitalize' } }>{ this.state.group.name }</h1>
-                    </div>
-                </div>
-
-                <div className="background-fluid" style={{borderBottom: '1px solid #e8e9eb'}}>
-                <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
-                 
-                  <li className="nav-item">
-                      <a className="nav-link tab-title active" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="true">Feed</a>
-                  </li>
-
-                  <li className="nav-item">
-                      <a className="nav-link tab-title" id="abgaben-tab" data-toggle="tab" href="#abgaben" role="tab" aria-controls="abgaben" aria-selected="false">Abgaben</a>
-                  </li>
-                </ul>
-                </div>
-                <div className="container-fluid">
-	                <div className="">
-	                    <div className="tab-content centered" id="tab-content">
-	                        <FeedTab  user={this.props.user} group={this.state.group} articles={this.state.articles}/>
-							<AbgabenTab user={this.props.user} group={this.state.group} />
-	                    </div>
-	                </div>
-	            </div>
-            </div>
-                
-            
-            <div className="d-none d-md-block col-md-4 order-md-last">
-                <div>
-                  <MemberInfo location={ this.props.location } user={ this.props.user } />
-                </div>
-            </div>
-        </div>
+           <div className="row">
+			<div className="col-md-8" style={ { paddingRight: '0', paddingLeft: '0' ,paddingTop: '20px'} }>
+				<div>
+				  <div className="container-fluid" style={ { marginBottom: '20px', paddingRight: '54px', paddingLeft: '24px' } }>
+					<div className="row">
+					  <div className="col" style={ { backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px' } }>
+						<div className="row">
+						  <div className="col-11" style={ { paddingRight: '0', paddingLeft: '20px' } }>
+							<h1 style={ { textTransform: 'capitalize' } }>{ this.state.group.name }</h1>
+						  </div>
+						</div>
+					  </div>
+					</div>
+					<div className="background-fluid" style={ { borderBottom: '1px solid #e8e9eb' } }>
+					  <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
+						<li className="nav-item">
+						  <a className="nav-link tab-title active" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="true">Feed</a>
+						</li>
+						<li className="nav-item">
+						  <a className="nav-link tab-title" id="abgaben-tab" data-toggle="tab" href="#abgaben" role="tab" aria-controls="abgabentab" aria-selected="false">Abgaben</a>
+						</li>
+					  </ul>
+					</div>
+				  </div>
+				  <div className="container-fluid row">
+					<div className="col col-sm-12">
+					  <div className="tab-content col-offset-6 centered">
+						  <div className="clearfix">
+							<div className="d-block d-md-none order-md-last justify-content-center">
+							  <div>
+								<MemberInfo location={ this.props.location } user={ this.props.user }/>
+							  </div>
+							</div>
+						
+							<AbgabenTab isMember={ this.state.isMember } group={ this.state.group }  location={this.props.location} user={this.props.user} />
+							<FeedTab isMember={  this.state.isMember } user={ this.props.user } group={ this.state.group } isAdmin={ this.props.user.isAdmin} />
+						  </div>
+					  </div>
+					</div>
+				  </div>
+				</div>
+				</div>
+				<div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
+					<div style={ { paddingTop: '20px' } }>
+					  <MemberInfo location={ this.props.location } user={ this.props.user }/>
+					</div>
+				</div>
+		</div>
       );
     }
   }

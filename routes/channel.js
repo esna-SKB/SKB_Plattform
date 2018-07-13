@@ -141,7 +141,9 @@ router.route('/:id/members')
 	       	else {
 				console.log("theenrollments")
 				console.log(enrollments)
-				var users = enrollments.map((e) => e.users)
+				var users = enrollments.map((e) => e.user)
+				console.log("the users")
+				console.log(users)
 				return res.status(200).send(users); 
 	       	}
 		})

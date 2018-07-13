@@ -12,7 +12,7 @@ function Bearbeiten(props) {
   const email = props.email;
   if (isMyProfile) {
     return (
-          <Link to={ `/user/${email}/edit` } style={{marginLeft: '10px', color: 'rgb(24, 86, 169)',
+          <Link className='bl_botton' to={ `/user/${email}/edit` } style={{marginLeft: '10px',
               fontSize: '13px', width: '104px', border: '2px solid rgb(24, 86, 169)', padding: '5px'}}>
             bearbeiten
           </Link>
@@ -100,18 +100,17 @@ class Profile extends Component {
   }
 
   handleUpdate(email, user) {
-
-    //check if user is different from shownuser
-    //does not end with /profile so it is /user/:email
     api.getUser(email)
       .then(res => {
         this.setState({
           shownprofile: res
         })
-        this.handleIsTeacher(res.isTeacher)
+        this.handleIsTeacher(res.isTeacher, res.isAdmin)
       })
   }
-  handleIsTeacher(isTeacher) {
+  
+  handleIsTeacher(isTeacher, isAdmin) {
+	
     if (isTeacher) {
       document.getElementById("role").innerHTML = "Lehrer_in";
 
@@ -137,12 +136,11 @@ class Profile extends Component {
       document.getElementById("iTeach").style.display = 'none';
       document.getElementById("trueOffer").style.display = 'none';
     }
-    //dummy values
-    var countCourses = 4;
-    var countGroups = 3;
-    document.getElementById("countCourses2").innerHTML = countCourses;
-    document.getElementById("countGroups2").innerHTML = countGroups;
   }
+  
+	if(isAdmin){
+      document.getElementById("role").innerHTML = "Admin";
+	}
 
 
   render() {
@@ -160,34 +158,33 @@ class Profile extends Component {
                   <div className="">
                     <div className="col">
                       <div className="row center-block ">
-                        <div className="col profilepicbig fill col-md-4" style={{paddingBottom: '20px'}}>
+                        <div className="col  col-md-4"><div className=" profilepicbig " style={{paddingBottom: '20px'}}>
                           <img id="YourPicture" src={ shownprofile.picturedata }></img>
-                        </div>
+                        </div></div>
                         <div className="col-md-8">
                           <h4 className="title" style={{float:'left'}}><strong id="YourName02">{ shownprofile.firstname + " " + shownprofile.lastname }</strong></h4>
                           <Link to={ `/messages/${shownprofile.email}` }><img id="chat" className="icon" style={ { fontSize: '10px', paddingRight: '0', float:'left' } } src={ Chat } alt="Chat" /></Link>
 
                           <Bearbeiten email={ user.email } isMyProfile={ user.email === shownprofile.email } />
 
-
+                
                           <div className="row" style={{clear: 'both', paddingTop:'30px'}}>
                             <div className="col-sm-12 col-lg-6  text-center d-none d-md-block">
-                              <strong id="countCourses2"></strong>
-                              <br /><small className="text-muted ">Kurse</small>
+                            
                             </div>
                             <div className="col-sm-12  col-lg-6  text-center d-none d-md-block">
-                              <strong id="countGroups2"></strong>
-                              <br /><small className="textstrong text-muted ">Gruppen</small>
+                    
                             </div>
-                          </div>
-                        </div>
-
-                        <div className="makespace col">
+							
+							
+				
                           <div className="row  text-muted">
-                            <p className="lineup" id="role"></p>
+                            <p className="col lineup" id="role"></p>
                           </div>
-
+                          </div>
                         </div>
+
+                       
                       </div>
                     </div>
                     <div className="row-12 text-muted">

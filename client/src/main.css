@@ -247,15 +247,32 @@ a {
 	background-color: rgba(255,255,255, 0.6);
 }
 
-.whitehover:hover{
-  color:white;
+
+
+.registrieren_botton{
+    border: 2px solid rgb(24, 86, 169);
+    margin: 10px 3px;
+    padding: 10px 22px;
+    float: right;
+	background-color: rgba(255,255,255, 0.6);
 }
 
+.bl_botton{
+    border: 2px solid rgb(24, 86, 169);
+	background-color: rgba(255,255,255, 0.6);
+	float:right;
+	
+}
+
+.bl_botton:hover{
+    background-color: rgb(24, 86, 169);
+    color:white;
+}
 
 
 .registrieren_botton:hover{
     background-color: rgb(24, 86, 169);
-    color:white !important;
+    color:white;
 }
 
 .errorshake {

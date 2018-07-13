@@ -58,18 +58,19 @@ class MemberTab extends Component {
       this.setState({
         members: res.reverse()
       })
+	  console.log(this.state.members)
     })
   }
 
-  render() {/*
+  render() {
     const members = this.state.members;
-    if (members && (this.props.enrolled || this.props.isTeacher)) {
+    if (members && (this.props.isAdmin|| this.props.isTeacher)) {
       return (
-        <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
+		 <div className=" box tab-pane fade" id="abgaben" role="tabpanel" aria-labelledby="abgabentab" style={{ padding: '20px'}}>
           <ul>
             { members.map(function(member, i) {
 				if(members.length === 0){
-					return null;
+					return <div>Keine Teilnehmer</div>;
 				}	else{
 					console.log(members)	
 				}
@@ -85,14 +86,12 @@ class MemberTab extends Component {
               }) }
           </ul>
         </div>
-		null;
       )
     } else {
       return null;
     }
-  }*/
-  return null;
   }
+  
 }
 
 class EnrollButton extends Component {
@@ -213,7 +212,7 @@ class FeedTab extends Component{
     }
 
     render(){
-		 const articles = this.state.articles;
+		const articles = this.state.articles;
 		if(!articles){
 				return null;
 		}else{
@@ -318,40 +317,55 @@ class Channel extends React.Component {
 		
             return (
             <div className="row">
-            <div className="container-fluid col col-md-8" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
-                <div className="row" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
-                    <div className="col" style={{paddingRight: '0', paddingLeft: '20px'}}>
-						<h1 style={ { textTransform: 'capitalize' } }>{ this.state.channel.name }</h1>
-                    </div>
-                </div>
-
-                <div className="background-fluid" style={ { borderBottom: '1px solid #e8e9eb' } }>
-              <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
-
-                <li className="nav-item">
-                  <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="true">Feed</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
-                </li>
-              </ul>
-            </div>
-	            <div className=" container-fluid">
-	                <div className="">
-	                    <div className="tab-content centered" id="tab-content">
-	                        <FeedTab  user={this.props.user} channel={this.state.channel} articles={this.state.articles}/>
-							<MemberTab  channel={ this.state.channel } isTeacher={ this.props.user.isTeacher } location={this.props.location} user={this.props.user} />
-	                    </div>
-	                </div>
-	            </div>
-            </div>
-                
-			<div className="d-none d-md-block col-md-4 order-md-last">
-				<div>
-				  <Beschreibung description={ this.state.channel.description } mini = {true} />
+				<div className=" col col-md-8" style={ { paddingRight: '0', paddingLeft: '0' ,paddingTop: '20px'} }>
+				  <div className="container-fluid" style={ { marginBottom: '20px', paddingRight: '54px', paddingLeft: '24px' } }>
+					<div className="row">
+					  <div className="col" style={ { backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px' } }>
+						<div className="row">
+						  <div className="col-7" style={ { paddingRight: '0', paddingLeft: '20px' } }>
+							<h1 style={ { textTransform: 'capitalize' } }>{ this.state.channel.name }</h1>
+						  </div>
+						  <div className="col-4" style={ { paddingRight: '10px' } }>
+							<EnrollButton user={ this.props.user } channel={ this.state.channel } enrolled={ this.state.isMember } />
+						  </div>
+						</div>
+					  </div>
+					</div>
+					<div className="background-fluid" style={ { borderBottom: '1px solid #e8e9eb' } }>
+					  <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
+						<li className="nav-item">
+						  <a className="nav-link tab-title active" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="true">Feed</a>
+						</li>
+						<li className="nav-item">
+						  <a className="nav-link tab-title" id="abgaben-tab" data-toggle="tab" href="#abgaben" role="tab" aria-controls="abgabentab" aria-selected="false">Teilnehmer</a>
+						</li>
+					  </ul>
+					</div>
+				  </div>
+				  <div className="container-fluid row">
+					<div className="col col-sm-12">
+					  <div className="tab-content col-offset-6 centered">
+						  <div className="clearfix">
+							<div className="d-block d-md-none order-md-last justify-content-center">
+							  <div>
+								<Beschreibung location={ this.props.location } description={ this.state.description }/>
+							  </div>
+							</div>
+						
+							<MemberTab isTeacher={ this.state.user.isTeacher } isAdmin={this.props.user.isAdmin} channel={ this.state.channel }  location={this.props.location} user={this.props.user}/>
+							<FeedTab isMember={  this.state.isMember } user={ this.props.user } channel={ this.state.channel } isAdmin={ this.props.user.isAdmin} />
+						  </div>
+					  </div>
+					</div>
+				  </div>
 				</div>
-			</div>
-        </div>
+				
+				<div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
+					<div style={ { paddingTop: '20px' } }>
+					  <Beschreibung location={ this.props.location } description={ this.state.description }/>
+					</div>
+				</div>
+		</div>
       );
     }
   }
