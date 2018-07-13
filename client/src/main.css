@@ -261,7 +261,7 @@ a {
     border: 2px solid rgb(24, 86, 169);
 	background-color: rgba(255,255,255, 0.6);
 	float:right;
-	
+
 }
 
 .bl_botton:hover{
@@ -449,6 +449,9 @@ button {
   font-size: 20px;
   margin-top: -20px;
   color:black;
+}
+.remove_article:not(:root:root){
+    margin-top: 0 !important;
 }
 .remove_button_arrow{
   background-color: transparent;
