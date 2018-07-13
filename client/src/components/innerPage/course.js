@@ -240,7 +240,7 @@ class ElementMember extends Component {
 
   unenrollUser = () => {
       api.unenrollUser(this.props.member.email, this.props.course._id).then(() => {
-        this.handleUpdateMembers(this.props.course.name);
+        this.props.handleUpdateMembers(this.props.course.name);
       });
     }
 
