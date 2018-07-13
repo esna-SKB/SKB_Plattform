@@ -194,7 +194,7 @@ class MemberTab extends Component {
               { members.map(function(member, i) {
                   unenrollUser = unenrollUser.bind(this)
                   function unenrollUser() {
-                    api.unenrollUser(member.email, course.name).then(res => {
+                    api.unenrollUser(member.email, course._id).then(() => {
                       window.location.reload(false);
                     });
                   }
