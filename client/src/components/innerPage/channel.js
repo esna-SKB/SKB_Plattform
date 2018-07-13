@@ -317,8 +317,8 @@ class Channel extends React.Component {
         }else{
 		
             return (
-            <div>
-            <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
+            <div className="row">
+            <div className="container-fluid col col-md-8" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
                 <div className="row" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
                     <div className="col" style={{paddingRight: '0', paddingLeft: '20px'}}>
 						<h1 style={ { textTransform: 'capitalize' } }>{ this.state.channel.name }</h1>
@@ -336,23 +336,21 @@ class Channel extends React.Component {
                 </li>
               </ul>
             </div>
+	            <div className=" container-fluid">
+	                <div className="">
+	                    <div className="tab-content centered" id="tab-content">
+	                        <FeedTab  user={this.props.user} channel={this.state.channel} articles={this.state.articles}/>
+							<MemberTab  channel={ this.state.channel } isTeacher={ this.props.user.isTeacher } location={this.props.location} user={this.props.user} />
+	                    </div>
+	                </div>
+	            </div>
             </div>
                 
-            <div className=" container-fluid row">
-                <div className="col col-md-8">
-                    <div className="tab-content centered" id="tab-content">
-                        <FeedTab  user={this.props.user} channel={this.state.channel} articles={this.state.articles}/>
-						<MemberTab  channel={ this.state.channel } isTeacher={ this.props.user.isTeacher } location={this.props.location} user={this.props.user} />
-                    </div>
-                </div>
-                <div className="d-none d-md-block col-md-4 order-md-last">
-					<div>
-					  <Beschreibung description={ this.state.channel.description } mini = {true} />
-					</div>
+			<div className="d-none d-md-block col-md-4 order-md-last">
+				<div>
+				  <Beschreibung description={ this.state.channel.description } mini = {true} />
 				</div>
-            </div>
-			
-			
+			</div>
         </div>
       );
     }

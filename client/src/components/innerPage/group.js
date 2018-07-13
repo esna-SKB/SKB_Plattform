@@ -224,8 +224,8 @@ class Group extends React.Component {
            return null;
         }else{
             return (
-            <div>
-            <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
+            <div className="row">
+            <div className="container-fluid col col-md-8" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
                 <div className="row" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
                     <div className="col" style={{paddingRight: '0', paddingLeft: '20px'}}>
                       
@@ -245,20 +245,21 @@ class Group extends React.Component {
                   </li>
                 </ul>
                 </div>
-            </div>
-                
-            <div className="container-fluid row">
-                <div className="col-12 col-md-8">
-                    <div className="tab-content centered" id="tab-content">
-                        <FeedTab  user={this.props.user} group={this.state.group} articles={this.state.articles}/>
-						<AbgabenTab user={this.props.user} group={this.state.group} />
-                    </div>
-                </div>
-                <div className="d-none d-md-block col-md-4 order-md-last">
-	                <div>
-	                  <MemberInfo location={ this.props.location } user={ this.props.user } />
+                <div className="container-fluid">
+	                <div className="">
+	                    <div className="tab-content centered" id="tab-content">
+	                        <FeedTab  user={this.props.user} group={this.state.group} articles={this.state.articles}/>
+							<AbgabenTab user={this.props.user} group={this.state.group} />
+	                    </div>
 	                </div>
 	            </div>
+            </div>
+                
+            
+            <div className="d-none d-md-block col-md-4 order-md-last">
+                <div>
+                  <MemberInfo location={ this.props.location } user={ this.props.user } />
+                </div>
             </div>
         </div>
       );
