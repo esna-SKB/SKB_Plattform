@@ -1121,3 +1121,11 @@ pre {
 .icon:hover {
   height: 33px;
 }
+
+* {
+    -webkit-overflow-scrolling: touch
+}
+
+object iframe {
+    overflow: hidden;
+}
