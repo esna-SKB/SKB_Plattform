@@ -71,13 +71,13 @@ router.route('/:name/user')
 		var name = req.params.name;
 		Course.findOne({name: name},{}, function(err, course){
 			if (err){
-	        	return res.status(500).send('error occured in the database');
+	        	return res.status(500).send({message:'error occured in the database'});
 	       	} else if(course == null){
-	       		return res.status(404).send('course not found');
+	       		return res.status(404).send({message:'course not found'});
 	       	} else {
 	       		Enrollment.find({'theChosenModel.ModelId':course._id}).populate('user').exec(function(err, enrolls){
-	       			if(err) return res.status(500).send('error occured in the database');
-	       			else if(enrolls == 0) res.status(204).send('there are no user in that course');
+	       			if(err) return res.status(500).send({message:'error occured in the database'});
+	       			else if(enrolls == 0) return res.status(204).send({message:'there are no user in that course'});
 	       			else{
 	       				var users = enrolls.map(c => c.user)
 	       				return res.status(200).send(users);

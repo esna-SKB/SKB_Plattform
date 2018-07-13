@@ -223,9 +223,9 @@ var mtx = [
 			[0,0,0,0,0,0,1,0,0]
 			]; 
 
-//var groups = main(userArray, mtx, 4); 
-//console.log('g:');
-//console.log(groups);
+var groups = main(userArray, mtx, 4); 
+console.log('g:');
+console.log(groups);
 //console.log(floydWarshall(mtx)); 
 
 userArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p"]; 
@@ -246,9 +246,9 @@ mtx = [
 			[0,1,0,1,0,0,1,0,1,0,1,0,0,0,1],
 			[0,1,0,1,0,0,1,0,0,0,1,0,0,1,0]
 			];  
-//groups = main(userArray, mtx, 4); 
-//console.log('g:');
-//console.log(groups);
+groups = main(userArray, mtx, 4); 
+console.log('g:');
+console.log(groups);
 //console.log(floydWarshall(mtx)); 
 
 userArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]; 
@@ -279,6 +279,6 @@ mtx = [
 			[0,1,0,1,0,0,1,0,1,0,1,0,0,0,1,0,1,1,0,0,1,0,1,0,1],
 			[0,1,0,1,0,0,1,0,0,0,1,0,0,1,0,0,1,1,0,0,1,0,1,0,1]
 			];  
-//groups = main(userArray, mtx, 4);
-//console.log('g:'); 
-//console.log(groups);
+groups = main(userArray, mtx, 4);
+console.log('g:'); 
+console.log(groups);
