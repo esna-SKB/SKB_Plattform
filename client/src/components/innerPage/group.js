@@ -226,7 +226,6 @@ class Group extends React.Component {
             return (
            <div className="row">
 			<div className="col-md-8" style={ { paddingRight: '0', paddingLeft: '0' ,paddingTop: '20px'} }>
-
 				<div>
 				  <div className="container-fluid" style={ { marginBottom: '20px', paddingRight: '54px', paddingLeft: '24px' } }>
 					<div className="row">

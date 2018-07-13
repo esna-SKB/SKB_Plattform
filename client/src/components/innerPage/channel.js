@@ -363,13 +363,13 @@ class Channel extends React.Component {
 				</div>
 				</div>
 				
-
 				<div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
 					<div style={ { paddingTop: '20px' } }>
 					  <Beschreibung location={ this.props.location } description={ this.state.description }/>
 					</div>
 				</div>
 		</div>
+
       );
     }
   }

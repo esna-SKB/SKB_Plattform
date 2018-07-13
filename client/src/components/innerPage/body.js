@@ -75,7 +75,7 @@ class Body extends React.Component {
               Kurse
             </NavLink>
             <ChannelNavBar user={this.props.user}/>
-			<GroupNavBar user={this.props.user}/>
+			       <GroupNavBar user={this.props.user}/>
           </nav>
         </div>
         <div className="container-fluid">
