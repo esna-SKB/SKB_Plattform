@@ -50,8 +50,8 @@ class CreateCourse extends Component {
     const {isFree} = this.state;
 
     return (
-      <div style={ { backgroundColor: '#f7f8fa' } }>
-        <div className="background container-fluid row">
+      <div>
+        <div className=" container-fluid row">
           <div className="col col-sm-12" style={ { paddingRight: '0', paddingLeft: '0' } }>
             <div className="tab-content col-offset-6 centered" id="tab-content">
               <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>

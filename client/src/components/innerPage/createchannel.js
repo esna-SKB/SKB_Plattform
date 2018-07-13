@@ -16,12 +16,12 @@ class CreateChannel extends Component {
 
     if (c_name === '' || c_description === '')
       return;
-
-	api.Channel(c_name, c_description).then(res => {
-      console.log(res)
-	  api.enrollUser(this.props.user.email,res.message,'Channel').then(() =>{
+  
+	/*userId : is optional for automatic enrollment of creator */
+	api.Channel(c_name, c_description, this.props.user._id).then(res => {
+	  //api.enrollUser(this.props.user.email,res.message,'Channel').then(() =>{
       this.props.history.push("/channels");
-	  })
+	  
     })
 	
   }
@@ -30,7 +30,7 @@ class CreateChannel extends Component {
   render() {
 
     return (
-      <div style={ { backgroundColor: '#f7f8fa' } }>
+      <div>
         <div className="container-fluid row">
           <div className="col col-sm-12" style={ { paddingRight: '0', paddingLeft: '0' } }>
             <div className="tab-content col-offset-6 centered" id="tab-content">

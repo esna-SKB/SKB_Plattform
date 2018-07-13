@@ -455,8 +455,12 @@ Group: function(courseId, groupName, members, description){
 /*
  * POST /channel/
  * creates a new group object, group name does not have to be unique. in route there will be checked if: are all members in course, is none of them already in a group(for the course)
+	userID is optional, you can let one user be automatically enrolled
 */
-Channel: function(channelName,description){
+Channel: function(channelName,description, userId){
+	if (userId === undefined){
+			userId = "";
+	}
     return fetch('/channel/', {
       method: 'POST',
       headers: {
@@ -466,6 +470,7 @@ Channel: function(channelName,description){
       body: JSON.stringify({
         channelname: channelName,
         description: description,
+		userId: userId, 
       }),
     })
     .then(res => res.json())

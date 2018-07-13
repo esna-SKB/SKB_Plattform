@@ -32,13 +32,12 @@ export class Beschreibung extends Component{
 	}
 }
 
-
 class MemberTab extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      channel: props.channel,
-      members: []
+      course: props.channel,
+      members: undefined
     }
     this.handleUpdateMembers = this.handleUpdateMembers.bind(this)
   }
@@ -49,33 +48,33 @@ class MemberTab extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.handleUpdateMembers(nextProps.channel._id)
-    if (this.props.channel.name !== nextProps.channel._id) {
+    if (this.props.channel._id !== nextProps.channel._id) {
       this.handleUpdateMembers(nextProps.channel._id)
     }
   }
 
-  handleUpdateMembers = (channelid) => {
-    api.getAllMembersOfChannel(channelid).then(res => {
+  handleUpdateMembers = (channelId) => {
+    api.getAllMembersOfChannel(channelId).then(res => {
       this.setState({
         members: res.reverse()
       })
+	  console.log(this.state.members)
     })
   }
 
   render() {
     const members = this.state.members;
-    if (members && ( this.props.isTeacher)) {
-		console.log("we are here")
+    if (members && (this.props.isAdmin|| this.props.isTeacher)) {
       return (
-        <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="member-tab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
-          <div className="d-block d-md-none order-md-last justify-content-center">
-            <div>
-              <Beschreibung location={ this.props.location } user={ this.props.user } onInvite = {this.handleUpdateMembers} />
-			  heeeee
-            </div>
-          </div>
+		 <div className=" box tab-pane fade" id="abgaben" role="tabpanel" aria-labelledby="abgabentab" style={{ padding: '20px'}}>
           <ul>
             { members.map(function(member, i) {
+				if(members.length === 0){
+					return <div>Keine Teilnehmer</div>;
+				}	else{
+					console.log(members)	
+				}
+				
                 return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
                          <Link to={ `/user/${member.email}` }>
                            { member.firstname } { member.lastname }
@@ -88,11 +87,13 @@ class MemberTab extends Component {
           </ul>
         </div>
       )
-    }else{
-
-	return(null);}
+    } else {
+      return null;
+    }
   }
+  
 }
+
 class EnrollButton extends Component {
   constructor(props) {
     super(props);
@@ -211,7 +212,7 @@ class FeedTab extends Component{
     }
 
     render(){
-		 const articles = this.state.articles;
+		const articles = this.state.articles;
 		if(!articles){
 				return null;
 		}else{
@@ -260,10 +261,11 @@ class Channel extends React.Component {
         this.state = {
 			user: this.props.user,
             isMember: false,
-            channel: undefined,
+            channel: "",
             articles: undefined,
             members: [],
             file: null,
+			description: "",
         };
     }
     
@@ -276,6 +278,7 @@ class Channel extends React.Component {
     componentWillReceiveProps(nextProps){
         if(this.props.location.pathname!==nextProps.location.pathname){
             var channelId = this.props.location.pathname.split("/")[2];
+			console.log("this is prps" + channelId);
             this.handleUpdate(channelId);  
         }
     }
@@ -286,9 +289,10 @@ class Channel extends React.Component {
 			api.getChannel(channelId)
 			.then(res => {
 				this.setState({
-					channel : res
+					channel : res,
+					description : res.description
 				});
-				
+				console.log(res)
 			//check if member
 			api.checkEnrolledUser(this.state.user.email,channelId)
 			.then( res => 
@@ -310,44 +314,62 @@ class Channel extends React.Component {
          }else if(this.state.user.isTeacher === false && this.state.user.isAdmin === false){
            return null;
         }else{
+		
             return (
-            <div>
-            <div className="container-fluid" style={{marginBottom: '20px',paddingRight: '54px', paddingLeft: '24px'}}>
-                <div className="row" style={{backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px'}}>
-                    <div className="col" style={{paddingRight: '0', paddingLeft: '20px'}}>
-						<h1 style={ { textTransform: 'capitalize' } }>{ this.state.channel.name }</h1>
-                    </div>
-                </div>
+            <div className="row">
+			<div className="col-md-8" style={ { paddingRight: '0', paddingLeft: '0' ,paddingTop: '20px'} }>
 
-                <div className="background-fluid" style={{borderBottom: '1px solid #e8e9eb'}}>
-                <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
-                 
-                  <li className="nav-item">
-                      <a className="nav-link tab-title active" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="true">Feed</a>
-                  </li>
-
-                  <li className="nav-item">
-					<a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
-				  </li>
-                </ul>
-                </div>
-            </div>
-                
-            <div className=" container-fluid row">
-                <div className="col col-sm-12">
-                    <div className="tab-content col-offset-6 centered" id="tab-content">
-                        <FeedTab  user={this.props.user} channel={this.state.channel} articles={this.state.articles}/>
-						<MemberTab user={this.props.user} channel={this.state.channel} />
-                    </div>
-                </div>
-            </div>
-			
-			<div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
-				<div style={ { paddingTop: '20px' } }>
-				  <Beschreibung description={ this.props.channel.description } mini = {true} />
+				<div>
+				  <div className="container-fluid" style={ { marginBottom: '20px', paddingRight: '54px', paddingLeft: '24px' } }>
+					<div className="row">
+					  <div className="col" style={ { backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px' } }>
+						<div className="row">
+						  <div className="col-7" style={ { paddingRight: '0', paddingLeft: '20px' } }>
+							<h1 style={ { textTransform: 'capitalize' } }>{ this.state.channel.name }</h1>
+						  </div>
+						  <div className="col-4" style={ { paddingRight: '10px' } }>
+							<EnrollButton user={ this.props.user } channel={ this.state.channel } enrolled={ this.state.isMember } />
+						  </div>
+						</div>
+					  </div>
+					</div>
+					<div className="background-fluid" style={ { borderBottom: '1px solid #e8e9eb' } }>
+					  <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
+						<li className="nav-item">
+						  <a className="nav-link tab-title active" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="true">Feed</a>
+						</li>
+						<li className="nav-item">
+						  <a className="nav-link tab-title" id="abgaben-tab" data-toggle="tab" href="#abgaben" role="tab" aria-controls="abgabentab" aria-selected="false">Teilnehmer</a>
+						</li>
+					  </ul>
+					</div>
+				  </div>
+				  <div className="container-fluid row">
+					<div className="col col-sm-12">
+					  <div className="tab-content col-offset-6 centered">
+						  <div className="clearfix">
+							<div className="d-block d-md-none order-md-last justify-content-center">
+							  <div>
+								<Beschreibung location={ this.props.location } description={ this.state.description }/>
+							  </div>
+							</div>
+						
+							<MemberTab isTeacher={ this.state.user.isTeacher } isAdmin={this.props.user.isAdmin} channel={ this.state.channel }  location={this.props.location} user={this.props.user}/>
+							<FeedTab isMember={  this.state.isMember } user={ this.props.user } channel={ this.state.channel } isAdmin={ this.props.user.isAdmin} />
+						  </div>
+					  </div>
+					</div>
+				  </div>
 				</div>
-			</div>
-        </div>
+				</div>
+				
+				<div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
+					<div style={ { paddingTop: '20px' } }>
+					  <Beschreibung location={ this.props.location } description={ this.state.description }/>
+					</div>
+				</div>
+		</div>
+
       );
     }
   }

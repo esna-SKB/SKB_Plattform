@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const Group = require('../models/group');
-Enrollment = require('../models/enrollment');
+const Enrollment = require('../models/enrollment');
 
 
 router.route('/course/:courseId')
