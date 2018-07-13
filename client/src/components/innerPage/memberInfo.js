@@ -7,7 +7,7 @@ function Element(props) {
 	const member = props.member;
     return (
         <div>
-            <div style={{clear: "both"; marginBottom: '30px'}} className="contentTeacherinfo" key={member.email}>
+            <div style={{clear: "both", marginBottom: '30px'}} className="contentTeacherinfo" key={member.email}>
                <div className="ProfileIcon"><img  src={member.picturedata} alt="profile picture" ></img></div>
                <div style={{marginTop : "2em"}}> <strong>
 							 <Link to={'/user/'+member.email}>{member.firstname} {member.lastname}</Link>
