@@ -150,7 +150,10 @@ class MemberTab extends Component {
     super(props);
     this.state = {
       course: props.course,
-      members: undefined
+      members: undefined,
+      membersList: undefined,
+      tinderIsOn: false,
+      preference: undefined
     }
     this.handleUpdateMembers = this.handleUpdateMembers.bind(this)
     this.render = this.render.bind(this)
@@ -168,79 +171,96 @@ class MemberTab extends Component {
   }
 
   handleUpdateMembers = (course_name) => {
-    api.getAllUsersOfCourse(course_name).then(res => {
+    api.getAllUsersOfCourse(course_name)
+    .then(res => {
+      var membersRes = res.reverse();
+      var memList = res.reverse().map((member, i) => {
+                return ( 
+                  <ElementMember key={i} isAllowed={(this.props.isTeacher || this.props.isAdmin)} 
+                  member={member} course={this.props.course} 
+                  handleUpdateMembers={this.handleUpdateMembers} /> 
+                  );
+              })
       this.setState({
-        members: res.reverse()
+        members: membersRes,
+        membersList: memList
       })
     })
+
+    
+    api.getPref(this.props.course._id)
+    .then(res => {
+      if(res.status===200) {
+        this.setState({
+          tinderIsOn: true,
+          preference: res.json()
+        })
+      }
+    }) 
   }
 
 
 
 
   render() {
-    const members = this.state.members;
+    const membersList = this.state.membersList;
+    console.log(membersList)
+
     var course = (this.props.course)
-    if (members && (this.props.enrolled || this.props.isTeacher)) {
-      if (this.props.isTeacher || this.props.isAdmin) {
-        return (
-          <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
-            <div className="d-block d-md-none order-md-last justify-content-center">
-              <div>
-                <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite={ this.handleUpdateMembers } />
-              </div>
+    if (membersList && (this.props.enrolled || this.props.isTeacher)) {
+      return (
+        <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
+          <div className="d-block d-md-none order-md-last justify-content-center">
+            <div>
+              <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite={ this.handleUpdateMembers } />
             </div>
-            <ul>
-              { members.map(function(member, i) {
-                  unenrollUser = unenrollUser.bind(this)
-                  function unenrollUser() {
-                    api.unenrollUser(member.email, course._id).then(() => {
-                      window.location.reload(false);
-                    });
-                  }
-                  return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
-                           <Link to={ `/user/${member.email}` }>
-                             { member.firstname }
-                             { member.lastname }
-                           </Link>
-                           <button className="btn btn-danger btn-sm float-right" onClick={ unenrollUser }> X </button>
-                           <Link className='float-right' to={ `/messages/${member.email}` }>
-                             <img id="chat" className="icon" src={ Chat } alt="Chat" />
-                           </Link>
-                         </li>
-                }) }
-            </ul>
           </div>
-        )
-      } else {
-        return (
-          <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
-            <div className="d-block d-md-none order-md-last justify-content-center">
-              <div>
-                <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite={ this.handleUpdateMembers } />
-              </div>
-            </div>
-            <ul>
-              { members.map(function(member, i) {
-                  return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
-                           <Link to={ `/user/${member.email}` }>
-                             { member.firstname }
-                             { member.lastname }
-                           </Link>
-                           <Link className='float-right' to={ `/messages/${member.email}` }>
-                             <img id="chat" className="icon" src={ Chat } alt="Chat" />
-                           </Link>
-                         </li>
-                }) }
-            </ul>
-          </div>
-        )
-      }
+          <ul>
+            {membersList}
+          </ul>
+        </div>
+      )
     } else {
-      return null;
+      return (
+         <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
+        <p>members loading ...</p>
+        </div>
+        )
     }
   }
 }
+class ElementMember extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      member: props.member,
+      course: props.course
+    }
+  }
+
+  unenrollUser = () => {
+      api.unenrollUser(this.props.member.email, this.props.course._id).then(() => {
+        this.props.handleUpdateMembers(this.props.course.name);
+      });
+    }
+
+  render() {
+    const member = this.props.member; 
+    return(
+      <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ this.props.i }>
+       <Link to={ `/user/${member.email}` }>
+         { member.firstname +" "}
+         { member.lastname }
+       </Link>
+       <button className={(this.props.isAllowed)? "btn btn-danger btn-sm float-right":"d-none"} onClick={ this.unenrollUser }> X </button>
+       <Link className='float-right' to={ `/messages/${member.email}` }>
+         <img id="chat" className="icon" src={ Chat } alt="Chat" />
+       </Link>
+     </li>
+      ); 
+    }
+  }
+
 class EnrollButton extends Component {
   constructor(props) {
     super(props);
@@ -773,9 +793,9 @@ class Course extends Component {
                       <div id="kursmaterial" ref="kursmaterial">
                       </div>
                     </div>
+                    <FeedTab enrolled={ enrolled } user={ this.props.user } course={ course } isAdmin={ this.props.user.isAdmin } />
                     <MemberTab enrolled={ enrolled } course={ course } isTeacher={ isTeacher } location={ this.props.location } user={ this.props.user }
                       onInvite={ this.onInvite } />
-                    <FeedTab enrolled={ enrolled } user={ this.props.user } course={ course } isAdmin={ this.props.user.isAdmin } />
                   </div>
                 </div>
               </div>

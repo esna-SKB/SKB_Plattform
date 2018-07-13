@@ -780,6 +780,14 @@ return fetch('/message', {
         "courseName": courseName
       }),
     }).then(res => res.json())
+  },
+
+  getPref: function(courseId){
+    return fetch('preference/' + courseId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
   }
 
 }
