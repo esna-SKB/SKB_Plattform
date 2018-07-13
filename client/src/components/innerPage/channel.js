@@ -317,9 +317,7 @@ class Channel extends React.Component {
 		
             return (
             <div className="row">
-			<div className="col-md-8" style={ { paddingRight: '0', paddingLeft: '0' ,paddingTop: '20px'} }>
-
-				<div>
+				<div className=" col col-md-8" style={ { paddingRight: '0', paddingLeft: '0' ,paddingTop: '20px'} }>
 				  <div className="container-fluid" style={ { marginBottom: '20px', paddingRight: '54px', paddingLeft: '24px' } }>
 					<div className="row">
 					  <div className="col" style={ { backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px' } }>
@@ -361,7 +359,6 @@ class Channel extends React.Component {
 					</div>
 				  </div>
 				</div>
-				</div>
 				
 				<div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0'} }>
 					<div style={ { paddingTop: '20px' } }>
@@ -369,7 +366,6 @@ class Channel extends React.Component {
 					</div>
 				</div>
 		</div>
-
       );
     }
   }

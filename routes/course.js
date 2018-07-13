@@ -8,7 +8,7 @@ const User = require('../models/user');
 router.route('/')
 	//get all courses
 	.get((req, res, next) => {
-		Course.find({}).populate('teacher').exec(function(err, courses){
+		Course.find({}).populate('teacher', 'firstname lastname email').exec(function(err, courses){
 			if (err) {
 	        	return res.status(500).send('error occured in the database');
 			} else {
