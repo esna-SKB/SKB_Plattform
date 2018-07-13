@@ -30,7 +30,7 @@ class CreateChannel extends Component {
   render() {
 
     return (
-      <div style={ { backgroundColor: '#f7f8fa' } }>
+      <div>
         <div className="container-fluid row">
           <div className="col col-sm-12" style={ { paddingRight: '0', paddingLeft: '0' } }>
             <div className="tab-content col-offset-6 centered" id="tab-content">

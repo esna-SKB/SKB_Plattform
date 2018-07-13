@@ -6,10 +6,10 @@ const api = require('../../api');
 function Element(props) {
 	const member = props.member;
     return (
-        <div style={{marginTop : "2em"}}>
+        <div>
             <div style={{clear: "both"}} className="contentMemberinfo" key={member.email}>
                <div className="ProfileIcon"><img  src={member.picturedata} alt="profile picture" ></img></div>
-                <div> <strong><Link to={'/user/'+member.email}>{member.firstname} {member.lastname}</Link></strong></div>
+               <div style={{marginTop : "2em"}}> <strong><Link to={'/user/'+member.email}>{member.firstname} {member.lastname}</Link></strong></div>
             </div>
         </div>
     );
