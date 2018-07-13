@@ -53,7 +53,7 @@ export class MyGroups extends React.Component {
 			console.log("my groups")
 			console.log(groups)
           this.setState({
-            list: groups.map((e) => {
+            list: groups.map((e) => { if(e !== null)
               return ( <Element key={ e._id } group={ e } />);
             })
           });
@@ -80,7 +80,7 @@ class Groups extends React.Component {
 	super(props);
 	this.state = {
 		 user: this.props.user
-		}; 
+		};
 	}
 
 	render(){
@@ -92,4 +92,4 @@ class Groups extends React.Component {
 	}
 }
 
-export default Groups; 
+export default Groups;
