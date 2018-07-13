@@ -7,9 +7,11 @@ function Element(props) {
 	const member = props.member;
     return (
         <div>
-            <div style={{clear: "both"}} className="contentMemberinfo" key={member.email}>
+            <div style={{clear: "both"}} className="contentTeacherinfo" key={member.email}>
                <div className="ProfileIcon"><img  src={member.picturedata} alt="profile picture" ></img></div>
-               <div style={{marginTop : "2em"}}> <strong><Link to={'/user/'+member.email}>{member.firstname} {member.lastname}</Link></strong></div>
+               <div style={{marginTop : "2em"}}> <strong>
+							 <Link to={'/user/'+member.email}>{member.firstname} {member.lastname}</Link>
+							 </strong></div>
             </div>
         </div>
     );
@@ -37,10 +39,10 @@ class MemberInfo extends React.Component {
 				members : mem
 			});
 			console.log(this.state.members);
-			
+
 			var Members = this.state.members;
 			console.log(Members)
-	
+
 			this.setState({
 				list: Members.map((e) => {
 				return( <Element key= {e._id} member={e}/>);})
@@ -53,7 +55,7 @@ class MemberInfo extends React.Component {
 		else{
 			const list = this.state.list;
 
-			
+
 			return(
 				<div className="row" style={ { border: '1px solid rgb(232, 233, 235)'} }>
 					<div className="box col-12">
