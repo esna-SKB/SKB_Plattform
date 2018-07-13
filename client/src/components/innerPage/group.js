@@ -123,7 +123,7 @@ class FeedTab extends Component{
     }
 
     render(){
-		 const articles = this.state.articles;
+		const articles = this.state.articles;
 		if(!articles){
 				return null;
 		}else{
@@ -131,7 +131,7 @@ class FeedTab extends Component{
 			return(
 			
     
-			  <div className="tab-pane fade  show active" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
+			  <div className="tab-pane fade show active" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={{ padding: '20px'}}>
 				<div className="col-12" id="new_status" style={{marginBottom : '20px'}}>
 				  <div className="container">
 					<div className="row" style={{borderBottom: '1px solid rgb(232, 233, 235)', paddingTop: '15px', paddingBottom: '15px'}}>

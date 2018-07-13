@@ -546,6 +546,8 @@ class Course extends Component {
 
   saveGroups() {
 		//groups of two and one three, if one person only incourse then one
+		
+		
 		  api.getAllUsersOfCourse(this.state.course.name).then(res => {
 			this.setState({
 				members: res.reverse()
@@ -576,6 +578,10 @@ class Course extends Component {
 									console.log("we are even number" + members.length +", "+ i)
 								api.Group(this.state.course._id, "Gruppe: "+this.state.course.name, [ members[i], members[i+1]],"Das ist die Gruppe für '"+this.state.course.name+ "'. Hier könnt ihr eure Abgaben besprechen");
 						}
+						this.refs.groupmaker.style["display"] = 'none';
+						this.refs.gruppenbilden.innerHTML = 'fertig'
+						
+						
 					}
 				}
 		})
@@ -753,11 +759,6 @@ class Course extends Component {
 
 				  <div style={ { display: 'none' } } id="groupmaker" ref="groupmaker">
 					<form>
-						<div className="" id="minSize">
-                          <label htmlFor="minimumSize">minimale Gruppengröße:</label>
-                          <input type="text" className="form-control" name="minimumSize" aria-describedby="Help2" value={ this.state.minimumSize } onChange={ this.onChange }></input>
-                          <small id="Help2" className="form-text text-muted">So groß soll eine Gruppe mindestens sein</small>
-                        </div>
 						<div className="" id="maxSize">
                           <label htmlFor="maximumSize">maximale Gruppengröße:</label>
                           <input type="text" className="form-control" name="maximumSize" aria-describedby="Help" value={ this.state.maximumSize } onChange={ this.onChange }></input>

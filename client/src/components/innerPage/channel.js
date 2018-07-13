@@ -58,14 +58,15 @@ class MemberTab extends Component {
       this.setState({
         members: res.reverse()
       })
+	  console.log(this.state.members)
     })
   }
 
   render() {
     const members = this.state.members;
-    if (members && (this.props.enrolled || this.props.isTeacher)) {
+    if (members && (this.props.isAdmin|| this.props.isTeacher)) {
       return (
-		 <div className="tab-pane fade" id="abgaben" role="tabpanel" aria-labelledby="abgabentab" style={{ padding: '20px'}}>
+		 <div className=" box tab-pane fade" id="abgaben" role="tabpanel" aria-labelledby="abgabentab" style={{ padding: '20px'}}>
           <ul>
             { members.map(function(member, i) {
 				if(members.length === 0){
@@ -211,7 +212,7 @@ class FeedTab extends Component{
     }
 
     render(){
-		 const articles = this.state.articles;
+		const articles = this.state.articles;
 		if(!articles){
 				return null;
 		}else{
@@ -353,7 +354,7 @@ class Channel extends React.Component {
 							  </div>
 							</div>
 						
-							<MemberTab isMember={ this.state.isMember } channel={ this.state.channel }  location={this.props.location} user={this.props.user}/>
+							<MemberTab isTeacher={ this.state.user.isTeacher } isAdmin={this.props.user.isAdmin} channel={ this.state.channel }  location={this.props.location} user={this.props.user}/>
 							<FeedTab isMember={  this.state.isMember } user={ this.props.user } channel={ this.state.channel } isAdmin={ this.props.user.isAdmin} />
 						  </div>
 					  </div>
