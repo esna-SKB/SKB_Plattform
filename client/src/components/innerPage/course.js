@@ -338,7 +338,6 @@ class Course extends Component {
       prefDeadline: Date.now(),
       members: undefined
     };
-    this.onInvite = this.onInvite.bind(this);
   }
 
 
@@ -363,13 +362,13 @@ class Course extends Component {
     }
   }
 
-  handleUpdate(course_name) {
+  handleUpdate = (course_name) => {
     //get course
     api.getCourse(course_name)
       .then(course => {
         this.setState({
           course: course,
-          isTeacher: this.props.user.email === course.teacher.email
+          isTeacher: (this.props.user.email === course.teacher.email)
         })
         if (course.content[0]) {
           for (let i = 0; i < course.content.length; i++) {
@@ -388,14 +387,10 @@ class Course extends Component {
           })
         }
       }))
-
-
   }
   //make sure to update member tab when a member is added by teacher
-  onInvite() {
-    this.setState(
-      this.state
-    )
+  onInvite = () => {
+    this.handleUpdate(this.state.course.name)
   }
 
 
@@ -494,26 +489,21 @@ class CourseDescription extends Component {
     this.state = {
       minimumSize: 2,
       maximumSize: 4,
+      displayGroupmaker: false
     }
   }
 
-  onChange = (e) => {
+  handleOnChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
   gruppenbilden = () => {
-    let groupmaker = this.refs.groupmaker
-
-    if (groupmaker.style["display"] === 'none') {
-      groupmaker.style["display"] = 'block'
-      this.refs.gruppenbilden.innerHTML = 'schließen'
-      return;
-    } else {
-      groupmaker.style["display"] = 'none'
-      this.refs.gruppenbilden.innerHTML = 'Gruppen bilden'
-    }
+    console.log("gruppenbilden")
+    this.setState((prevState)=>{
+      return {displayGroupmaker: !prevState.displayGroupmaker}
+    })
   }
 
   saveGroups = () => {
@@ -577,6 +567,7 @@ class CourseDescription extends Component {
   }
 
   bearbeiten = () => {
+    const handleUpdate = this.props.handleUpdate; 
     const db = localStorage;
     const _ = (el) => {
       return document.querySelector(el);
@@ -736,13 +727,23 @@ class CourseDescription extends Component {
       var course = this.props.course;
       course.content = array;
       api.updateCourse(course.name, course.name, this.props.user.email, course.description, array)
-        .then(() => this.handleUpdate(course.name))
+        .then(() => handleUpdate(course.name))
 
     }
   }
 
+  renderGroupForm = () => {
+    if(this.state.displayGroupmaker){
+      return (
+        <GroupForm handleOnChange={ this.handleOnChange } saveGroups={ this.saveGroups }/>
+      )
+    }else return null
+    
+  }
+
   render() {
     const {enrolled, user, course, isTeacher} = this.props;
+    const renderGroupForm = this.renderGroupForm(); 
     return (
       <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
         <div className="clearfix">
@@ -804,23 +805,7 @@ class CourseDescription extends Component {
             <div id="boxright" ref="boxright" className="box-right"></div>
           </div>
         </div>
-        <div style={ { display: 'none' } } id="groupmaker" ref="groupmaker">
-          <form>
-            <div className="" id="maxSize">
-              <label htmlFor="maximumSize">maximale Gruppengröße:</label>
-              <input type="text" className="form-control" name="maximumSize" aria-describedby="Help" value={ this.state.maximumSize } onChange={ this.onChange }></input>
-              <small id="Help" className="form-text text-muted">So groß soll eine Gruppe höhstens sein</small>
-            </div>
-            <div className="form-group row newpart" id="teach">
-              <label htmlFor="prefdeadline">Deadline:</label>
-              <input type="datetime-local" className="form-control" name="prefdeadline" aria-describedby="Help3" value={ this.state.prefdeadline } min={ this.state.prefdeadline } onChange={ this.onChange }></input>
-              <small id="Help3" className="form-text text-muted">Bis dahin haben die Studenten_innen Zeit, ihre Präferenzen abzugeben</small>
-            </div>
-            <div ref="gruppenbildenspeichern" className='registrieren_botton' id="grspeichern" style={ { color: 'rgb(24, 86, 169)', marginTop: '-67px !important', fontSize: '13px', width: '104px', float: 'right', margin: '-12px 0' } } onClick={ this.saveGroups }>
-              speichern
-            </div>
-          </form>
-        </div>
+        { renderGroupForm }
         <p id="description" ref="description">
           { course.description }
         </p>
@@ -828,6 +813,31 @@ class CourseDescription extends Component {
         <div id="kursmaterial" ref="kursmaterial">
         </div>
       </div>
+    )
+  }
+}
+
+class GroupForm extends Component {
+  
+  render(){
+    return (
+    <div id="groupmaker" ref="groupmaker">
+      <form className="box">
+        <div id="maxSize">
+          <label htmlFor="maximumSize">maximale Gruppengröße:</label>
+          <input type="number" className="form-control" name="maximumSize" aria-describedby="Help" min={2} onChange={ this.props.handleOnChange } required></input>
+          <small id="Help" className="form-text text-muted">So groß soll eine Gruppe höhstens sein</small>
+        </div>
+        <div id="teach">
+          <label htmlFor="prefdeadline">Deadline:</label>
+          <input type="date" className="form-control" name="prefdeadline" aria-describedby="Help3" onChange={ this.props.handleOnChange } required></input>
+          <small id="Help3" className="form-text text-muted">Bis dahin haben die Studenten_innen Zeit, ihre Präferenzen abzugeben</small>
+        </div>
+        <button type="submit" ref="gruppenbildenspeichern" className='registrieren_botton float-right' id="grspeichern" style={ { color: 'rgb(24, 86, 169)'} } onClick={ this.props.saveGroups }>
+          speichern
+        </button>
+      </form>
+    </div>
     )
   }
 }
