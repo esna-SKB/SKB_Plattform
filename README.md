@@ -1,11 +1,14 @@
 # ESNA
+- [https://9af1dd61.ngrok.io/](esna-Web)
 # SKB_Plattform
-Programmierpraktikum Soziale Netzwerke MERN Gruppe entwickelt eine Netzwerkplattform für die SKB
+Programmierpraktikum Soziale Netzwerke MERN Gruppe entwickelt eine Netzwerkplattform für die SKB [http://www.skb.tu-berlin.de/contao/index.php/en/](www.skb.tu-berlin.de)
 
-- Product Owner - Emre
-- Scrum Master - Luka
-- Quality-Assurance Manager - Jamina
-- Infrastructure Manager - Hung
+
+
+- Product Owner - [https://github.com/emle21](Emre)
+- Scrum Master - [https://github.com/luka1220](Luka)
+- Quality-Assurance Manager - [https://github.com/jamiYo](Jamina)
+- Infrastructure Manager - [https://github.com/HungHung1981](Hung)
 
 # Run
 
@@ -26,7 +29,7 @@ Die URL bedient folgende Seitenanfragen.
 - `/createcourse/`
 - `/courses/:coursename`
 - `/groups`
-- `/groups/:groupname`
+- `/groups/:_id`
 - `/user/:email`
 - `/user/:email/edit/`
 - `/user/:email/changepassword/`
@@ -55,6 +58,24 @@ The API consists of the following endpoints:
 
 - GET `timeline/user/:email/course/article`
 Returns all Articles for the timeline, newes posts form the useres courses
+
+## Preference
+
+- POST `/preference`
+Creates a new preferences Object for one course.
+
+- GET `/preference/:courseId`
+Returns the preferences submited by users of one course.
+
+- PUT `/preference/:courseId`
+Updates the preferences submited by users of one course.
+
+- DELETE `/preference/:courseId`
+Removes the preferences object submited by users of one course from Database.
+
+- GET `/preference/makegroup/:courseId`
+initiates the tinder algorithim and returns the groups thats been created. 
+
 
 ## User
 

@@ -388,6 +388,10 @@ class Course extends Component {
         }
       }))
   }
+
+  setTinderPrefObj = () => {
+    
+  }
   //make sure to update member tab when a member is added by teacher
   onInvite = () => {
     this.handleUpdate(this.state.course.name)
@@ -461,7 +465,7 @@ class Course extends Component {
                   <div className="tab-content col-offset-6 centered">
                     <CourseDescription enrolled={ enrolled } isTeacher={ isTeacher } location={ this.props.location } 
                    user={ this.props.user } handleUpdate={ this.handleUpdate } makegroups={this.makegroups}
-                      course={ course } />
+                      course={ course } setTinderPrefObj={this.props.setTinderPrefObj} />
                    }
                     <FeedTab enrolled={ enrolled } user={ this.props.user } course={ course } isAdmin={ this.props.user.isAdmin } />
                     <MemberTab enrolled={ enrolled } course={ course } isTeacher={ isTeacher } location={ this.props.location } user={ this.props.user }
@@ -735,7 +739,7 @@ class CourseDescription extends Component {
   renderGroupForm = () => {
     if(this.state.displayGroupmaker){
       return (
-        <GroupForm handleOnChange={ this.handleOnChange } saveGroups={ this.saveGroups }/>
+        <GroupForm setTinderPrefObj={this.props.setTinderPrefObj} handleOnChange={ this.handleOnChange } saveGroups={ this.saveGroups }/>
       )
     }else return null
     
@@ -773,7 +777,7 @@ class CourseDescription extends Component {
                                                                                              fontSize: '13px',
                                                                                              width: '104px',
                                                                                            } } onClick={ this.bearbeiten }>
-                  bearbeiten
+                  bearbeiten 
                 </button>
               </div>
             </div>
@@ -833,9 +837,14 @@ class GroupForm extends Component {
           <input type="date" className="form-control" name="prefdeadline" aria-describedby="Help3" onChange={ this.props.handleOnChange } required></input>
           <small id="Help3" className="form-text text-muted">Bis dahin haben die Studenten_innen Zeit, ihre Präferenzen abzugeben</small>
         </div>
+        <div>
         <button type="submit" ref="gruppenbildenspeichern" className='registrieren_botton float-right' id="grspeichern" style={ { color: 'rgb(24, 86, 169)'} } onClick={ this.props.saveGroups }>
-          speichern
+          manuell 
         </button>
+        <button type="submit" ref="gruppenbildenspeichern" className='registrieren_botton float-right' style={ { color: 'rgb(24, 86, 169)'} } onClick={this.props.setTinderPrefObj}>
+          tinder 
+        </button>
+        </div>
       </form>
     </div>
     )
