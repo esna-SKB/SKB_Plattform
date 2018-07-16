@@ -1,14 +1,14 @@
 # ESNA
-- [https://9af1dd61.ngrok.io/](esna-Web)
+- [esna-Web](https://9af1dd61.ngrok.io/)
 # SKB_Plattform
-Programmierpraktikum Soziale Netzwerke MERN Gruppe entwickelt eine Netzwerkplattform für die SKB [http://www.skb.tu-berlin.de/contao/index.php/en/](www.skb.tu-berlin.de)
+Programmierpraktikum Soziale Netzwerke MERN Gruppe entwickelt eine Netzwerkplattform für die SKB [www.skb.tu-berlin.de](http://www.skb.tu-berlin.de/contao/index.php/en/)
 
 
 
-- Product Owner - [https://github.com/emle21](Emre)
-- Scrum Master - [https://github.com/luka1220](Luka)
-- Quality-Assurance Manager - [https://github.com/jamiYo](Jamina)
-- Infrastructure Manager - [https://github.com/HungHung1981](Hung)
+- Product Owner - [Emre](https://github.com/emle21)
+- Scrum Master - [Luka](https://github.com/luka1220)
+- Quality-Assurance Manager - [Jamina](https://github.com/jamiYo)
+- Infrastructure Manager - [Hung](https://github.com/HungHung1981)
 
 # Run
 
