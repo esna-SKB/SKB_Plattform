@@ -1,7 +1,7 @@
 # ESNA
 - [esna-Web](https://9af1dd61.ngrok.io/)
 # SKB_Plattform
-Programmierpraktikum Soziale Netzwerke MERN Gruppe entwickelt eine Netzwerkplattform für die SKB [www.skb.tu-berlin.de](http://www.skb.tu-berlin.de/contao/index.php/en/)
+Programmierpraktikum Soziale Netzwerke MERN Gruppe entwickelt eine Netzwerkplattform für die SKB - [www.skb.tu-berlin.de](http://www.skb.tu-berlin.de/contao/index.php/en/)
 
 
 
