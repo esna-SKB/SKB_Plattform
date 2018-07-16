@@ -3,6 +3,7 @@ var router = express.Router();
 const User = require('../models/user');
 const UserSession = require('../models/UserSession');
 const Course = require('../models/course');
+const Group = require('../models/group');
 const Enrollment = require('../models/enrollment');
 
 router.route('/')
@@ -87,6 +88,7 @@ router.route('/:email')
 		})
 	})
 
+	/*get all courses of user**/
 router.route('/:email/course')
 	.get((req, res, next) => {
 		var email = req.params.email;
@@ -94,16 +96,56 @@ router.route('/:email/course')
 			if (err) return res.status(500).send('error occured in the database');
 			else if (user == null) return res.status(401).send('user not fount');
 	       	else {
-	       		Enrollment.find({user:user._id}).populate({path: 'course', populate: {path:'teacher', model:'User'} }).exec(function(err, enroll){
+	       		Enrollment.find({user:user._id,  'theChosenModel.kind': 'Course'}).populate({path: 'theChosenModel.ModelId',model: 'Course', populate: {path:'teacher', model:'User'} }).exec(function(err, enroll){
 	       			if(err) return res.status(500).send('error occured in the database');
 	       			else{
-	       				return res.status(200).send(enroll.map(c => c.course));
+	       				return res.status(200).send(enroll.map(c => c.theChosenModel.ModelId));
 	       			}
 	       		})
 	       	}
 		})
 	})
 
+	
+
+router.route('/:email/group')
+
+	//get all Groups of User
+	.get((req, res, next) => {
+		var email = req.params.email;
+		User.findOne({email: email},{},function(err, user){
+			if (err) return res.status(500).send('error occured in the database');
+			else if (user == null) return res.status(401).send('user not fount');
+	       	else {
+	       		Enrollment.find({user:user._id, 'theChosenModel.kind': 'Group'}).populate({path: 'theChosenModel.ModelId',model: 'Group'/*, populate: {path:'members', model:'User'}, populate: {path:'course', model:'Course'}*/ }).exec(function(err, enroll){
+	       			if(err) return res.status(500).send('error occured in the database');
+	       			else{
+	       				return res.status(200).send(enroll.map(c => c.theChosenModel.ModelId));
+	       			}
+	       		})
+	       	}
+		})
+	})
+	
+	
+	router.route('/:email/channel')
+
+	//get all Channels of User
+	.get((req, res, next) => {
+		var email = req.params.email;
+		User.findOne({email: email},{},function(err, user){
+			if (err) return res.status(500).send('error occured in the database');
+			else if (user == null) return res.status(401).send('user not fount');
+	       	else {
+	       		Enrollment.find({user:user._id, 'theChosenModel.kind': 'Channel'}).populate({path: 'theChosenModel.ModelId', model: 'Channel'/*, populate: {path:'members', model:'User'}, populate: {path:'course', model:'Course'}*/ }).exec(function(err, enroll){
+	       			if(err) return res.status(500).send('error occured in the database');
+	       			else{
+	       				return res.status(200).send(enroll.map(c => c.theChosenModel.ModelId));
+	       			}
+	       		})
+	       	}
+		})
+	})
 
 
 	module.exports = router

@@ -20,9 +20,11 @@ class Settings extends Component {
   adminAllUsers(){
     if(this.props.user.isAdmin){
       return (
-
-        <div className="row">
-          <Link to={ `/allUsers` } className="text-info">All Users</Link>
+        
+        <div className="col-6">
+          <div className ="profile_setting">
+            <Link to={ `/allUsers` } className="text-info">All Users</Link>
+          </div>
         </div>
       
       )
@@ -43,31 +45,46 @@ class Settings extends Component {
                   <div className="col-12">
                     <h4 className="row">Einstellungen</h4>
                     <div className="row">
-                      <Link to={ `/user/${this.props.user.email}/changepassword` } className="text-muted">Passwort ändern</Link>
+                      <div className="col-6">
+                          <div className ="profile_setting">
+                            <Link to={ `/user/${this.props.user.email}/changepassword` } className="text-muted">Passwort ändern</Link>
+                          </div>
+                        </div>
+                      <div className="col-6">
+                        <div className ="profile_setting">
+                          <Link to={ `/user/${this.props.user.email}/edit` } className="text-muted">Profil bearbeiten</Link>
+                        </div>
+                      </div>
+                      <div className="col-6">
+                        <div className ="profile_setting">
+                        < Link to={ `` } className="text-muted">Kontaktdaten ändern</Link>
+                      </div>
+                      </div>
+                      <div className="col-6">
+                        <div className ="profile_setting">
+                          <Link to={ `` } className="text-muted">Mitteilungenkonfigurationen</Link>
+                        </div>
+                      </div>
+                      <div className="col-6">
+                        <div className ="profile_setting">
+                          <Link to={ `` } className="text-muted">Sicherheitsschlüssel</Link>
+                        </div>
+                      </div>
+                      <div className="col-6">
+                        <div className ="profile_setting">
+                          <Link to={ `` } className="text-muted">Feedback</Link>
+                        </div>
+                      </div>
+                      <div className="col-6">
+                        <div className ="profile_setting">
+                          <Link to={ `` } className="text-muted">Kalendereinstellungen</Link>
+                        </div>
+                      </div>
+                      {this.adminAllUsers()}
                     </div>
-                    <div className="row">
-                      <Link to={ `/user/${this.props.user.email}/edit` } className="text-muted">Profil bearbeiten</Link>
-                    </div>
-                    <div className="row">
-                      <Link to={ `` } className="text-muted">Kontaktdaten ändern</Link>
-                    </div>
-                    <div className="row">
-                      <Link to={ `` } className="text-muted">Mitteilungenkonfigurationen</Link>
-                    </div>
-                    <div className="row">
-                      <Link to={ `` } className="text-muted">Sicherheitsschlüssel</Link>
-                    </div>
-                    <div className="row">
-                      <Link to={ `` } className="text-muted">Feedback</Link>
-                    </div>
-                    <div className="row">
-                      <Link to={ `` } className="text-muted">Kalendereinstellungen</Link>
-                    </div>
-                    {this.adminAllUsers()}
                   </div>
                   <div className="row-12 text-muted text-right">
                     <div className="col-12">
-                      <Link to={ `/` }>home</Link>
                     </div>
                   </div>
                 </div>

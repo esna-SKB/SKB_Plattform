@@ -20,6 +20,16 @@ html, body{
 
 }
 
+.background_illustration{
+	min-height: 100%;
+
+	/* Center and scale the image nicely */
+	background-image: url("./img/03transparent.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
 
 a {
     color: rgb(24, 86, 169);
@@ -60,6 +70,7 @@ a {
   border: transparent;
   border-bottom: 1px solid black;
   width: 350px;
+  background-color: transparent;
 }
 
 .login_button {
@@ -206,6 +217,20 @@ a {
   }
 }
 
+@media Screen and (max-width: 464px){
+  .center_loginform{
+    width: 380px;
+	length:auto;
+  }
+}
+
+@media Screen and (max-width: 392px){
+  .center_loginform{
+    width: 340px;
+	length:auto;
+  }
+}
+
 .keinMitglied{
 	color: white;
 	float: right;
@@ -216,21 +241,38 @@ a {
 
 .registrieren_botton{
     border: 2px solid rgb(24, 86, 169);
-    margin: 10px 22px;
+    margin: 10px 3px;
     padding: 10px 22px;
     float: right;
 	background-color: rgba(255,255,255, 0.6);
 }
 
-.whitehover:hover{
-  color:white;
+
+
+.registrieren_botton{
+    border: 2px solid rgb(24, 86, 169);
+    margin: 10px 3px;
+    padding: 10px 22px;
+    float: right;
+	background-color: rgba(255,255,255, 0.6);
 }
 
+.bl_botton{
+    border: 2px solid rgb(24, 86, 169);
+	background-color: rgba(255,255,255, 0.6);
+	float:right;
+
+}
+
+.bl_botton:hover{
+    background-color: rgb(24, 86, 169);
+    color:white;
+}
 
 
 .registrieren_botton:hover{
     background-color: rgb(24, 86, 169);
-    color:white !important;
+    color:white;
 }
 
 .errorshake {
@@ -245,11 +287,9 @@ a {
 
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
     color: #495057;
-    background-color: #fff;
     border-color: #dee2e6 #dee2e6 #fff;
     border: transparent;
     border-bottom: 2px solid #017fb2;
-    background-color: #f7f8fa;
 }
 
 .col {
@@ -267,7 +307,6 @@ a {
   border-color: #dee2e6 #dee2e6 #fff;
   border: transparent;
   border-bottom: 2px solid #017fb2 !important;
-  background-color: #f7f8fa;
 }
 
 .nav-link {
@@ -410,6 +449,9 @@ button {
   font-size: 20px;
   margin-top: -20px;
   color:black;
+}
+.remove_article:not(:root:root){
+    margin-top: 0 !important;
 }
 .remove_button_arrow{
   background-color: transparent;
@@ -1048,4 +1090,62 @@ pre {
 	height:100%;
 	overflow: hidden;
 	background-color: rgba(255,255,255, 0.3);
+}
+
+.profile_setting{
+  height: 80px;
+  line-height: 80px;
+  border: 1px solid #c8cbd2;
+  border-radius: 11px;
+  text-align: center;
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  margin-bottom: 20px;
+}
+
+.profile_setting:hover {
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 0px 3px 0px, rgba(0, 0, 0, 0.05) 0px 2px 11px 0px;
+}
+
+
+.sp_m2iS_2eDAn9_2x {
+    background-image: url(https://www.facebook.com/rsrc.php/v3/yW/r/W_zsJQ_TetX.png);
+    background-size: 28px 920px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+}
+
+._gb8 {
+    position: relative;
+    top: 3px;
+}
+
+.sp_m2iS_2eDAn9_2x.sx_1494c6 {
+    background-position: 0 -532px;
+}
+
+@media Screen and (max-width: 500px) {
+  .bilden_bearbeiten_button{
+    position: relative !important;
+  }
+}
+
+.logo:hover {
+  height: 46px;
+}
+.icon:hover {
+  height: 33px;
+}
+
+* {
+    -webkit-overflow-scrolling: touch
+}
+
+object iframe {
+    overflow: hidden;
 }

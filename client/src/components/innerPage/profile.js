@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-//import '../css/timeline.css';
 import '../../css/profile.css';
 /*add this css if you want the profile image on the left (circular)*/
 import '../../css/profilepicture.css';
 import Chat from '../../img/chat-icon.png';
 const api = require('../../api');
 
-// const api = require('../../api');
+
 function Bearbeiten(props) {
   const isMyProfile = props.isMyProfile;
   const email = props.email;
   if (isMyProfile) {
     return (
-      <div className="row-12 text-muted text-right">
-        <div className="col-12 edit">
-          <Link to={ `/user/${email}/edit` }>Profil bearbeiten</Link>
-        </div>
-      </div>
+          <Link className='bl_botton' to={ `/user/${email}/edit` } style={{marginLeft: '10px',
+              fontSize: '13px', width: '104px', border: '2px solid rgb(24, 86, 169)', padding: '5px'}}>
+            bearbeiten
+          </Link>
       );
   } else {
     return null;
@@ -102,18 +100,17 @@ class Profile extends Component {
   }
 
   handleUpdate(email, user) {
-
-    //check if user is different from shownuser
-    //does not end with /profile so it is /user/:email
     api.getUser(email)
       .then(res => {
         this.setState({
           shownprofile: res
         })
-        this.handleIsTeacher(res.isTeacher)
+        this.handleIsTeacher(res.isTeacher, res.isAdmin)
       })
   }
-  handleIsTeacher(isTeacher) {
+  
+  handleIsTeacher(isTeacher, isAdmin) {
+	
     if (isTeacher) {
       document.getElementById("role").innerHTML = "Lehrer_in";
 
@@ -139,12 +136,11 @@ class Profile extends Component {
       document.getElementById("iTeach").style.display = 'none';
       document.getElementById("trueOffer").style.display = 'none';
     }
-    //dummy values
-    var countCourses = 4;
-    var countGroups = 3;
-    document.getElementById("countCourses2").innerHTML = countCourses;
-    document.getElementById("countGroups2").innerHTML = countGroups;
   }
+  
+	if(isAdmin){
+      document.getElementById("role").innerHTML = "Admin";
+	}
 
 
   render() {
@@ -159,33 +155,36 @@ class Profile extends Component {
             <div className="background row">
               <div className="col col-sm-12">
                 <div className="row box ">
-                  <div className="col">
+                  <div className="">
                     <div className="col">
                       <div className="row center-block ">
-                        <div className="col profilepicbig fill col-md-12">
+                        <div className="col  col-md-4"><div className=" profilepicbig " style={{paddingBottom: '20px'}}>
                           <img id="YourPicture" src={ shownprofile.picturedata }></img>
-                        </div>
-                        <div className='float-right'>
-                          <Link to={ `/messages/${shownprofile.email}` }><img id="chat" className="icon" style={ { fontSize: '10px' } } src={ Chat } alt="Chat" /></Link>
-                        </div>
-                        <div className="makespace col">
-                          <div className=" row">
-                            <h4 className="title"><strong id="YourName02">{ shownprofile.firstname + " " + shownprofile.lastname }</strong></h4>
-                          </div>
-                          <div className="row  text-muted">
-                            <p className="lineup" id="role"></p>
-                          </div>
-                          <div className=" row ">
+                        </div></div>
+                        <div className="col-md-8">
+                          <h4 className="title" style={{float:'left'}}><strong id="YourName02">{ shownprofile.firstname + " " + shownprofile.lastname }</strong></h4>
+                          <Link to={ `/messages/${shownprofile.email}` }><img id="chat" className="icon" style={ { fontSize: '10px', paddingRight: '0', float:'left' } } src={ Chat } alt="Chat" /></Link>
+
+                          <Bearbeiten email={ user.email } isMyProfile={ user.email === shownprofile.email } />
+
+                
+                          <div className="row" style={{clear: 'both', paddingTop:'30px'}}>
                             <div className="col-sm-12 col-lg-6  text-center d-none d-md-block">
-                              <strong id="countCourses2"></strong>
-                              <br /><small className="text-muted ">Kurse</small>
+                            
                             </div>
                             <div className="col-sm-12  col-lg-6  text-center d-none d-md-block">
-                              <strong id="countGroups2"></strong>
-                              <br /><small className="textstrong text-muted ">Gruppen</small>
+                    
                             </div>
+							
+							
+				
+                          <div className="row  text-muted">
+                            <p className="col lineup" id="role"></p>
+                          </div>
                           </div>
                         </div>
+
+                       
                       </div>
                     </div>
                     <div className="row-12 text-muted">
@@ -193,7 +192,6 @@ class Profile extends Component {
                         { shownprofile.description }
                       </div>
                     </div>
-                    <Bearbeiten email={ user.email } isMyProfile={ user.email === shownprofile.email } />
                   </div>
                 </div>
                 <div className="row box newpart">
@@ -204,7 +202,7 @@ class Profile extends Component {
                         <div className="col-8" id="iCan">
                           { shownprofile.iCan }
                         </div>
-                        <div className="col-4" id="trueTeach">ich bringe bei:</div>
+                        <div className="col-4" id="trueTeach" style={{color: 'black'}}><strong>ich bringe bei:</strong></div>
                         <div className="col-8" id="iTeach">
                           { shownprofile.iTeach }
                         </div>
@@ -225,13 +223,13 @@ class Profile extends Component {
                   <div className=" col-sm-12">
                     <div className="col">
                       <div className="row  text-muted">
-                        <div className="col-4">E-Mail:</div>
+                        <div className="col-4" style={{color: 'black'}}><strong>E-Mail:</strong></div>
                         <a className="col-8" id="email" href={ "mailto:" + shownprofile.email }>
                           { shownprofile.email }
                         </a>
                       </div>
                       <div className="row text-muted lineup ">
-                        <div className="col-4 ">Website:</div>
+                        <div className="col-4" style={{color: 'black'}}><strong>Website:</strong></div>
                         <a className="col-8" id="website" href={ "http://" + shownprofile.website }>
                           { shownprofile.website }
                         </a>

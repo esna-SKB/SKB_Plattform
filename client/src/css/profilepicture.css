@@ -18,7 +18,7 @@
 	margin-right: auto;
 	margin-left: auto;
 	display: block;
-	
+
 	border-radius: 150px;
 	box-shadow: 2px 2px #E0E0E0;
 }
@@ -27,19 +27,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden
+    overflow: hidden;
 }
 
 .profilepicbig{
 	width: 150px;
 	height: 150px;
 	
-
-	max-width:150px;
-	max-height:150px;
-
+	min-height:150px;
+	min-width:150px;
+	
+	
 	box-shadow: 2px 2px #E0E0E0;
-
 }
 
 
@@ -51,4 +50,26 @@
 	object-fit:cover;
     display: block;
     margin: auto;
+	
+}
+
+.ProfileIcon > img {
+	min-height:10px;
+	min-width:10px;
+	height: 10px;
+	width:10px;
+	object-fit:cover;
+    display: block;
+    margin: auto;
+	border-radius: 10px;
+}
+
+.ProfileIcon{
+	width: 10px;
+	height: 10px;
+
+	/*be center*/
+	margin-right: auto;
+	margin-left: auto;
+	display: block;
 }

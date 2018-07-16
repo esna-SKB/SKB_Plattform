@@ -4,35 +4,37 @@ import { Link } from 'react-router-dom'
 import TeacherInfo from './teacherInfo';
 import InviteToCourse from './inviteToCourse';
 import Chat from '../../img/chat-icon.png';
-// import $ from 'jquery';
-
-//import axios from 'axios';
 
 import api from '../../api';
-// import builder from '../../utils/builder';
 import dragula from 'dragula';
+
 
 class FeedTab extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      courseId: this.props.course._id,
       courseName: props.course.name,
       articles: undefined,
-      file: undefined
+      file: undefined,
+      minimumSize: 2,
+      maximumSize: 4,
+      members: []
     }
   }
 
   componentDidMount() {
-    this.handleArticlesUpdate(this.props.course.name)
+    this.handleArticlesUpdate(this.state.courseId)
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.course.name !== nextProps.course.name) {
-      this.handleArticlesUpdate(nextProps.course.name)
+      this.handleArticlesUpdate(nextProps.course._id)
     }
   }
 
-  handleArticlesUpdate = (course_name) => {
-    api.getAllArticlesOfCourse(course_name)
+
+  handleArticlesUpdate = (courseid) => {
+    api.getAllArticles(courseid)
       .then(res => {
         this.setState({
           articles: res.reverse()
@@ -42,22 +44,23 @@ class FeedTab extends Component {
 
   postArticle = () => {
 
-    
+
 
     var text = document.getElementById("textteilen").value;
     var self = this;
     if (!this.state.file) {
-      api.createArticle(self.props.course.name, "", self.props.user.email, text, "", Date.now, "")
+      api.createArticle(self.props.course._id, 'Course', self.state.courseName, "", self.props.user.email, text, "", Date.now, "")
         .then(res => {
-          self.handleArticlesUpdate(self.props.course.name)
+          self.handleArticlesUpdate(self.props.course._id)
           document.getElementById("textteilen").value = ""
         });
     } else {
       self.getBase64(self.state.file, function(base64file) {
         var name = self.state.file.name;
-        api.createArticle(self.props.course.name, "", self.props.user.email, text, self.state.file.type, Date.now, base64file, self.state.file.name)
+        api.createArticle(self.props.course._id, 'Course', self.state.courseName, "", self.props.user.email, text, self.state.file.type, Date.now, base64file, self.state.file.name)
+
           .then(res => {
-            self.handleArticlesUpdate(self.props.course.name)
+            self.handleArticlesUpdate(self.props.course._id)
             document.getElementById("textteilen").value = ""
             self.setState({
               file: undefined
@@ -123,7 +126,7 @@ class FeedTab extends Component {
           </div>
           <div>
             { articles.map(function(article) {
-                return ( <Article key={ article._id } userEmail={ this.props.user.email } article={ article } isAdmin={this.props.user.isAdmin} />);
+                return ( <Article key={ article._id } userEmail={ this.props.user.email } article={ article } isAdmin={ this.props.user.isAdmin } />);
               }, this) }
           </div>
         </div>
@@ -133,7 +136,7 @@ class FeedTab extends Component {
         <div className="tab-pane fade" id="feed" role="tabpanel" aria-labelledby="feed-tab" style={ { padding: '20px' } }>
           <div>
             { articles.map(function(article) {
-                return ( <Article key={ article._id } user={ this.props.user.email } userEmail={ this.props.user.email } article={ article } isAdmin={this.props.user.isAdmin} />);
+                return ( <Article key={ article._id } user={ this.props.user.email } userEmail={ this.props.user.email } article={ article } isAdmin={ this.props.user.isAdmin } />);
               }, this) }
           </div>
         </div>
@@ -149,8 +152,12 @@ class MemberTab extends Component {
     super(props);
     this.state = {
       course: props.course,
-      members: undefined
+      members: undefined,
+      membersList: undefined,
+      tinderIsOn: false,
+      preference: undefined
     }
+    this.handleUpdateMembers = this.handleUpdateMembers.bind(this)
     this.render = this.render.bind(this)
   }
 
@@ -159,76 +166,119 @@ class MemberTab extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.handleUpdateMembers(nextProps.course.name)
     if (this.props.course.name !== nextProps.course.name) {
       this.handleUpdateMembers(nextProps.course.name)
     }
   }
 
   handleUpdateMembers = (course_name) => {
-    api.getAllUsersOfCourse(course_name).then(res => {
-      this.setState({
-        members: res.reverse()
+    api.getPref(this.props.course._id)
+      .then(res => {
+        if (res.status === 200) {
+          this.setState({
+            tinderIsOn: true,
+            preference: res.json()
+          })
+        }
       })
-    })
+      .then(() => api.getAllUsersOfCourse(course_name))
+      .then(res => {
+        var membersRes = res.reverse();
+        var memList = res.reverse().map((member, i) => {
+          return (
+            <ElementMember key={ i } isAllowed={ (this.props.isTeacher || this.props.isAdmin) } member={ member } course={ this.props.course } tinderIsOn={ this.state.tinderIsOn } handleUpdateMembers={ this.handleUpdateMembers }
+              handleCheckBox={ this.handleCheckBox } />
+            );
+        })
+        this.setState({
+          members: membersRes,
+          membersList: memList
+        })
+      })
   }
 
-
-
+  handleCheckBox = (e) => {
+    console.log(e.target.checked, e.target.value)
+    var preference = this.state.preference;
+    const val = (e.target.checked) ? 1 : 0;
+    var i = preference.users.findIndex(user => (this.props.user.email === user));
+    var j = preference.users.findIndex(user => (e.target.value === user));
+    preference.matrix[i][j] = val;
+    this.setState({
+      preference: preference
+    })
+    console.log(preference)
+  }
 
   render() {
-    const members = this.state.members;
-    var course = (this.props.course)
-    if (members && (this.props.enrolled || this.props.isTeacher)) {
-      if(this.props.isTeacher || this.props.isAdmin){
-        return (
-          <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
-            <ul>
-              { members.map(function(member, i) {
-                  unenrollUser = unenrollUser.bind(this)
-                  function unenrollUser() {
-                    api.unenrollUser(member.email, course.name).then(res => {
-                      window.location.reload(false);
-                    });
-                  }
-                  return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
-                           <Link to={ `/user/${member.email}` }>
-                             { member.firstname }
-                             { member.lastname }
-                           </Link>
-                           <button className="btn btn-danger btn-sm float-right" onClick={unenrollUser}> X </button>
-                           <Link className='float-right' to={ `/messages/${member.email}` }>
-                             <img id="chat" className="icon" src={ Chat } alt="Chat" />
-                           </Link>
-                         </li>
-                }) }
-            </ul>
-          </div>
-        )
-      } else {
+    const membersList = this.state.membersList;
+    console.log(membersList)
 
-        return (
-          <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
-            <ul>
-              { members.map(function(member, i) {
-                  return <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ i }>
-                           <Link to={ `/user/${member.email}` }>
-                             { member.firstname }
-                             { member.lastname }
-                           </Link>
-                           <Link className='float-right' to={ `/messages/${member.email}` }>
-                             <img id="chat" className="icon" src={ Chat } alt="Chat" />
-                           </Link>
-                         </li>
-                }) }
-            </ul>
+    var course = (this.props.course)
+    if (membersList && (this.props.enrolled || this.props.isTeacher)) {
+      return (
+        <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
+          <div className="d-block d-md-none order-md-last justify-content-center">
+            <div>
+              <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite={ this.handleUpdateMembers } />
+            </div>
           </div>
-        )
-      }
+          <ul>
+            { membersList }
+          </ul>
+        </div>
+      )
     } else {
-      return null;
+      return (
+        <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
+          <p>members loading ...</p>
+        </div>
+      )
     }
   }
 }
+class ElementMember extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      member: props.member,
+      course: props.course
+    }
+  }
+  unenrollUser = () => {
+    api.unenrollUser(this.props.member.email, this.props.course._id).then(() => {
+      this.props.handleUpdateMembers(this.props.course.name);
+    });
+  }
+
+  render() {
+    const member = this.props.member;
+    return (
+      <li className='clearfix' style={ { textTransform: 'capitalize' } } key={ this.props.i }>
+        <Link to={ `/user/${member.email}` }>
+          { member.firstname + " " }
+          { member.lastname }
+        </Link>
+        <PrefCheckBox member={ member } tinderIsOn={ this.props.tinderIsOn } handleCheckBox={ this.props.handleCheckBox } />
+        <button className={ (this.props.isAllowed) ? "btn btn-danger btn-sm float-right" : "d-none" } onClick={ this.unenrollUser }> X </button>
+        <Link className='float-right' to={ `/messages/${member.email}` }>
+          <img id="chat" className="icon" src={ Chat } alt="Chat" />
+        </Link>
+      </li>
+      );
+  }
+}
+
+function PrefCheckBox(props) {
+  if (props.tinderIsOn) {
+    return (
+      <input type="checkbox" name="member" value={ props.member.email } onChange={ props.handleCheckBox } />
+    )
+  } else return null
+
+}
+
 class EnrollButton extends Component {
   constructor(props) {
     super(props);
@@ -240,26 +290,35 @@ class EnrollButton extends Component {
   }
 
   leaveCourse = () => {
-    api.unenrollUser(this.props.user.email, this.props.course.name).then(res => {
+    api.unenrollUser(this.props.user.email, this.props.course._id).then(res => {
       window.location.reload(false);
     });
   }
 
   joinCourse = () => {
-    api.enrollUser(this.props.user.email, this.props.course.name).then(res => {
+    api.enrollUser(this.props.user.email, this.props.course._id, 'Course').then(res => {
       window.location.reload(false);
     });
   }
 
   render() {
     const {enrolled, user, course} = this.props;
-
     if (course.teacher.email !== user.email) {
-      return (
-        <button id={ (enrolled) ? 'leavecourse' : 'joincourse' } className='btn' onClick={ (enrolled) ? this.leaveCourse : this.joinCourse } style={ { position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2' } }>
-          { (enrolled) ? 'Abmelden' : 'mich einschreiben' }
-        </button>
-        );
+      if (course.isFree === true) {
+        return (
+          <button id={ (enrolled) ? 'leavecourse' : 'joincourse' } className='btn' onClick={ (enrolled) ? this.leaveCourse : this.joinCourse } style={ { position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2' } }>
+            { (enrolled) ? 'Abmelden' : 'mich einschreiben' }
+          </button>
+          );
+      } else if (course.isFree === false && enrolled === true) {
+        return (
+          <button id={ 'leavecourse' } className='btn' onClick={ this.leaveCourse } style={ { position: 'absolute', top: '50%', transform: 'translateY(-50%)', right: '8%', borderRadius: '20px', padding: '10px 30px', border: '1px solid #007fb2', color: '#007fb2' } }>
+            { 'Abmelden' }
+          </button>
+          );
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
@@ -274,15 +333,26 @@ class Course extends Component {
       enrolled: false,
       course: undefined,
       file: null,
-      isTeacher: false
+      isTeacher: false,
+      content: '',
+      prefDeadline: Date.now(),
+      members: undefined
     };
-    this.bearbeiten = this.bearbeiten.bind(this);
   }
+
 
   componentDidMount() {
     var course_name = this.props.location.pathname.split("/")[2];
     course_name = course_name.replace("%20", " ");
     this.handleUpdate(course_name);
+
+    api.getAllUsersOfCourse(course_name).then(res => {
+      this.setState({
+        members: res.reverse()
+      })
+
+    });
+
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.location.pathname !== nextProps.location.pathname) {
@@ -292,14 +362,22 @@ class Course extends Component {
     }
   }
 
-  handleUpdate(course_name) {
+  handleUpdate = (course_name) => {
     //get course
     api.getCourse(course_name)
       .then(course => {
         this.setState({
           course: course,
-          isTeacher: this.props.user.email === course.teacher.email
+          isTeacher: (this.props.user.email === course.teacher.email)
         })
+        if (course.content[0]) {
+          for (let i = 0; i < course.content.length; i++) {
+            document.getElementById('kursmaterial').innerHTML += course.content[i];
+          }
+        } else {
+          document.getElementById('kursmaterial').innerHTML = '<p>kein Inhalt..</p>'
+        }
+
       })
       // check if user is enrolled
       .then(() => api.getAllCoursesOfUser(this.props.user.email).then(res1 => {
@@ -311,7 +389,189 @@ class Course extends Component {
       }))
   }
 
+  setTinderPrefObj = () => {
+    
+  }
+  //make sure to update member tab when a member is added by teacher
+  onInvite = () => {
+    this.handleUpdate(this.state.course.name)
+  }
+
+
+  joinCourse = () => {
+    api.enrollUser(this.props.user.email, this.props.course._id, 'Course').then(res => {
+      window.location.reload(false);
+    });
+  }
+
+  render() {
+    const {enrolled, user, course, isTeacher} = this.state;
+
+
+    //make sure API calls are finished when rendering (better solution????)
+    if (!this.state.course) {
+      return null;
+    } else {
+      /*   const course_name = this.state.course.name;
+        const members = this.state.members;
+
+         if(members.length <2){
+          api.Group(course_name,i/2, [members[0]], "Wir sind Gruppenummer:"+ i/2);
+         }else{
+          var i;
+          for(i = 0; i < members.length-1; i= i+2){
+
+            /*last group if uneven number of members
+          if(!(members.length % 2 == 0) && (members.length-2 == i)){
+              api.Group(course_name,i/2, [members[i],members[i+1], members[i+2]], "Wir sind Gruppenummer:"+ i/2);
+          }else{
+            api.Group(course_name,i/2, [members[i],members[i+1]], "Wir sind Gruppenummer:"+ i/2);
+          }
+         }
+        }*/
+      return (
+        <div className="row">
+          <div className="col-md-8" style={ { paddingRight: '0', paddingLeft: '0', paddingTop: '20px' } }>
+            <div>
+              <div className="container-fluid" style={ { marginBottom: '20px', paddingRight: '54px', paddingLeft: '24px' } }>
+                <div className="row">
+                  <div className="col" style={ { backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px' } }>
+                    <div className="row">
+                      <div className="col-7" style={ { paddingRight: '0', paddingLeft: '20px' } }>
+                        <h1 style={ { textTransform: 'capitalize' } }>{ course.name }</h1>
+                      </div>
+                      <div className="col-4" style={ { paddingRight: '10px' } }>
+                        <EnrollButton user={ this.props.user } course={ course } enrolled={ enrolled } />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="background-fluid" style={ { borderBottom: '1px solid #e8e9eb' } }>
+                  <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
+                    <li className="nav-item">
+                      <a className="nav-link tab-title active" id="lehrer-tab" data-toggle="tab" href="#ubersicht" role="tab" aria-controls="ubersicht" aria-selected="true">Übersicht</a>
+                    </li>
+                    <li className="nav-item">
+                      <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="false">Feed</a>
+                    </li>
+                    <li className="nav-item">
+                      <a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="container-fluid row">
+                <div className="col col-sm-12">
+                  <div className="tab-content col-offset-6 centered">
+                    <CourseDescription enrolled={ enrolled } isTeacher={ isTeacher } location={ this.props.location } 
+                   user={ this.props.user } handleUpdate={ this.handleUpdate } makegroups={this.makegroups}
+                      course={ course } setTinderPrefObj={this.props.setTinderPrefObj} />
+                   }
+                    <FeedTab enrolled={ enrolled } user={ this.props.user } course={ course } isAdmin={ this.props.user.isAdmin } />
+                    <MemberTab enrolled={ enrolled } course={ course } isTeacher={ isTeacher } location={ this.props.location } user={ this.props.user }
+                      onInvite={ this.onInvite } />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="d-none d-md-block col-md-4 order-md-last" style={ { paddingRight: '0', paddingLeft: '0' } }>
+            <div style={ { paddingTop: '20px' } }>
+              <TeacherInfo location={ this.props.location } user={ this.props.user } />
+              <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite={ this.onInvite } mini={ true } />
+            </div>
+          </div>
+        </div>
+      )
+    }
+  }
+}
+
+class CourseDescription extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      minimumSize: 2,
+      maximumSize: 4,
+      displayGroupmaker: false
+    }
+  }
+
+  handleOnChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  gruppenbilden = () => {
+    console.log("gruppenbilden")
+    this.setState((prevState)=>{
+      return {displayGroupmaker: !prevState.displayGroupmaker}
+    })
+  }
+
+  saveGroups = () => {
+    //groups of two and one three, if one person only incourse then one
+    const course_name = this.props.course.name; 
+    api.getAllUsersOfCourse(course_name)
+    .then(res => {
+      this.setState({
+        members: res.reverse()
+      })
+    })
+      .then(() => {
+        console.log("these are the members");
+        console.log(this.state.members)
+        var members = this.state.members;
+        if (members.length < 4) {
+          api.Group(this.state.course._id, "Gruppe: " + this.state.course.name, members, "Das ist die Gruppe für '" + this.state.course.name + "'. Hier könnt ihr eure Abgaben besprechen")
+            .then((res) => {
+              var j;
+              for (j = 0; (j < members.length); j++) {
+                /*response message saves the id of the group*/
+                api.enrollUser(members[j].email, res.message, 'Group');
+              }
+            })
+        } else {
+          var i;
+          for (i = 0; (i < (members.length - 2)); i = i + 2) {
+            /*the last group will be three people if memebers has uneven length*/
+            if( ((members.length % 2 == 1) && ((members.length - 3) === i)) ) {
+              console.log("we are uneven number" + members.length + ", " + i)
+              api.Group(this.state.course._id, "Gruppe: " + this.state.course.name, [members[i], members[i + 1], members[i + 2]], "Das ist die Gruppe für '" + this.state.course.name + "'. Hier könnt ihr eure Abgaben besprechen");
+
+            } else {
+              console.log("we are even number" + members.length + ", " + i)
+              api.Group(this.state.course._id, "Gruppe: " + this.state.course.name, [members[i], members[i + 1]], "Das ist die Gruppe für '" + this.state.course.name + "'. Hier könnt ihr eure Abgaben besprechen");
+            }
+            this.refs.groupmaker.style["display"] = 'none';
+            this.refs.gruppenbilden.innerHTML = 'fertig'
+
+
+          }
+        }
+      })
+
+  /* if(res.length <2){
+     console.log("we are here one member only");
+    api.Group(this.state.course.name,i/2, [res[i]], "Wir sind Gruppenummer:"+ i/2).then(res => {console.log(res.message)});
+   }else{
+    var i;
+    for(i = 0; i < res.length-1; i= i+2){
+
+      /*last group if uneven number of members
+    if(!(res.length % 2 == 0) && (res.length-2 == i)){
+        api.Group(this.state.course.name,i/2, [res[i],res[i+1], res[i+2]], "Wir sind Gruppenummer:"+ i/2);
+    }else{
+      api.Group(this.state.course.name,i/2, [res[i],res[i+1]], "Wir sind Gruppenummer:"+ i/2);
+    }
+   }
+  }
+  });*/
+  }
+
   bearbeiten = () => {
+    const handleUpdate = this.props.handleUpdate; 
     const db = localStorage;
     const _ = (el) => {
       return document.querySelector(el);
@@ -350,6 +610,7 @@ class Course extends Component {
       return html;
     };
 
+
     const tpl = {
       'header1': '<h1>I am header 1</h1>',
       'header2': '<h2>I am header 2</h2>',
@@ -357,7 +618,6 @@ class Course extends Component {
       'shortparagraph': '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et</p>',
       'ullist': '<ul><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ul>',
       'ollist': '<ol><li>item 1</li><li>item 2</li><li>item 3</li><li>item 4</li></ol>',
-      'image': '<img src="">'
     };
 
     const containers = [_('.box-left'), _('.box-right')];
@@ -419,6 +679,22 @@ class Course extends Component {
       children = elementChildren(children)
       for (var i = 0; i < children.length; i++) {
         var child = children[i];
+        if (child.nodeName === 'H1') {
+          let child_div = document.createElement("div");
+          child_div.setAttribute('data-tpl', 'header1')
+          child_div.setAttribute('data-title', 'Header 1')
+          child_div.setAttribute('class', 'drop-element')
+          child_div.appendChild(child)
+          boxright.appendChild(child_div)
+        }
+        if (child.nodeName === 'H2') {
+          let child_div = document.createElement("div");
+          child_div.setAttribute('data-tpl', 'header2')
+          child_div.setAttribute('data-title', 'Header 2')
+          child_div.setAttribute('class', 'drop-element')
+          child_div.appendChild(child)
+          boxright.appendChild(child_div)
+        }
         if (child.nodeName === 'H3') {
           let child_div = document.createElement("div");
           child_div.setAttribute('data-tpl', 'header3')
@@ -435,7 +711,6 @@ class Course extends Component {
           child_div.appendChild(child)
           boxright.appendChild(child_div)
         }
-        console.log(child)
         console.log(child.nodeName)
       }
 
@@ -453,139 +728,126 @@ class Course extends Component {
         this.refs.kursmaterial.appendChild(children[i].childNodes[0])
       }
       console.log(array)
+      var course = this.props.course;
+      course.content = array;
+      api.updateCourse(course.name, course.name, this.props.user.email, course.description, array)
+        .then(() => handleUpdate(course.name))
 
     }
-
-
   }
 
+  renderGroupForm = () => {
+    if(this.state.displayGroupmaker){
+      return (
+        <GroupForm setTinderPrefObj={this.props.setTinderPrefObj} handleOnChange={ this.handleOnChange } saveGroups={ this.saveGroups }/>
+      )
+    }else return null
+    
+  }
 
   render() {
-    const {
-      enrolled,
-      user,
-      course,
-      isTeacher
-    } = this.state; 
-    //make sure API calls are finished when rendering (better solution????)
-    if (!this.state.course) {
-      return null;
-    }
-    // teacher view
-    else {
-      return (
-        <div>
-          <div className="container-fluid" style={ { marginBottom: '20px', paddingRight: '54px', paddingLeft: '24px' } }>
-            <div className="row">
-              <div className="col" style={ { backgroundColor: 'white', border: '1px solid #e8e9eb', paddingTop: '12px', paddingBottom: '12px' } }>
-                <div className="row">
-                  <div className="col" style={ { paddingRight: '0', paddingLeft: '20px' } }>
-                    <h1 style={ { textTransform: 'capitalize' } }>{ course.name }</h1>
-                  </div>
-                  <div className="col-4">
-                  </div>
-                  <div className="col" style={ { paddingRight: '10px' } }>
-                    <EnrollButton user={ this.props.user } course={ course } enrolled={ enrolled } />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="background-fluid" style={ { borderBottom: '1px solid #e8e9eb' } }>
-              <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
-                <li className="nav-item">
-                  <a className="nav-link tab-title active" id="lehrer-tab" data-toggle="tab" href="#ubersicht" role="tab" aria-controls="ubersicht" aria-selected="true">Übersicht</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="false">Feed</a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
-                </li>
-              </ul>
+    const {enrolled, user, course, isTeacher} = this.props;
+    const renderGroupForm = this.renderGroupForm(); 
+    return (
+      <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
+        <div className="clearfix">
+          <div className="d-block d-md-none order-md-last justify-content-center">
+            <div>
+              <TeacherInfo location={ this.props.location } user={ this.props.user } />
             </div>
           </div>
-          <div className="background container-fluid row">
-            <div className="col col-sm-12">
-              <div className="tab-content col-offset-6 centered">
-                <div className="tab-pane fade show active" id="ubersicht" role="tabpanel" aria-labelledby="ubersicht-tab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
-                  <div>
-                    <div className="d-block d-md-none order-md-last justify-content-center">
-                      <div>
-                        <TeacherInfo location={ this.props.location } user={ this.props.user } />
-                        <InviteToCourse location={ this.props.location } user={ this.props.user } />
-                      </div>
-                    </div>
-                    <div className="col-md-8">
-                      <h3 style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px' } }>Inhalt</h3>
-                    </div>
-                    <div className="">
-                      <button ref="bearbeiten" className='registrieren_botton' id="edit" style={ (course.teacher.email !== this.props.user.email) ? {
-                                                                                                   display: 'none'
-                                                                                                 } : {
-                                                                                                   color: 'rgb(24, 86, 169)',
-                                                                                                   marginTop: '-67px !important',
-                                                                                                   fontSize: '13px',
-                                                                                                   width: '104px',
-                                                                                                   float: 'right',
-                                                                                                   margin: '-12px 0'
-                                                                                                 } } onClick={ this.bearbeiten }>
-                        bearbeiten
-                      </button>
-                    </div>
-                  </div>
-                  <div style={ { display: 'none' } } id="wrapper" ref="wrapper">
-                    <div className="wrapper">
-                      <div className="box-left">
-                        <div data-tpl="header1" data-title="Header 1">
-                          Header 1
-                        </div>
-                        <div data-tpl="header2" data-title="Header 2">
-                          Header 2
-                        </div>
-                        <div data-tpl="header3" data-title="Header 3">
-                          Header 3
-                        </div>
-                        <div data-tpl="shortparagraph" data-title="Short paragraph">
-                          paragraph
-                        </div>
-                        <div data-tpl="ullist" data-title="Ordened list">
-                          Ordened list
-                        </div>
-                        <div data-tpl="ollist" data-title="Unordened list">
-                          Unordened list
-                        </div>
-                        <div data-tpl="heade12" data-title="Unordened list">
-                          Datei
-                        </div>
-                        <div data-tpl="header12" data-title="Unordened list">
-                          Picture
-                        </div>
-                      </div>
-                      <div id="boxright" ref="boxright" className="box-right"></div>
-                    </div>
-                  </div>
-                  <p id="description" ref="description">
-                    { course.description }
-                  </p>
-                  <div id="kursmaterial" ref="kursmaterial">
-                    <h3>Kursmaterial</h3>
-                    <h3>16. April - 22. April</h3>
-                    <p>
-                      Folie 01
-                    </p>
-                    <p>
-                      Folie 02
-                    </p>
-                  </div>
-                </div>
-                <MemberTab enrolled={ enrolled } course={ course } isTeacher={ isTeacher } />
-                <FeedTab enrolled={ enrolled } user={ this.props.user } isAdmin={ this.props.user.isAdmin} course={ course } />
+          <div className="">
+            <div style={ { position: 'absolute', top: '2px', right: '20px' } } className="bilden_bearbeiten_button">
+              <div className="float-right">
+                <button ref="gruppenbilden" className='registrieren_botton' id="makegroups" style={ (course.teacher.email !== this.props.user.email) ? {
+                                                                                                      display: 'none'
+                                                                                                    } : {
+                                                                                                      color: 'rgb(24, 86, 169)',
+                                                                                                      fontSize: '13px',
+                                                                                                      width: '139px',
+                                                                                                    } } onClick={ this.gruppenbilden }>
+                  Gruppen bilden
+                </button>
+              </div>
+              <div className="float-right">
+                <button ref="bearbeiten" className='registrieren_botton' id="edit" style={ (course.teacher.email !== this.props.user.email) ? {
+                                                                                             display: 'none'
+                                                                                           } : {
+                                                                                             color: 'rgb(24, 86, 169)',
+                                                                                             fontSize: '13px',
+                                                                                             width: '104px',
+                                                                                           } } onClick={ this.bearbeiten }>
+                  bearbeiten 
+                </button>
               </div>
             </div>
+            <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px', marginBottom: '20px' } }>Beschreibung</div>
           </div>
         </div>
-        );
-    }
+        <div style={ { display: 'none' } } id="wrapper" ref="wrapper">
+          <div className="wrapper">
+            <div className="box-left">
+              <div data-tpl="header1" data-title="Header 1">
+                Header 1
+              </div>
+              <div data-tpl="header2" data-title="Header 2">
+                Header 2
+              </div>
+              <div data-tpl="header3" data-title="Header 3">
+                Header 3
+              </div>
+              <div data-tpl="shortparagraph" data-title="Short paragraph">
+                paragraph
+              </div>
+              <div data-tpl="ullist" data-title="Ordened list">
+                Unordened list
+              </div>
+              <div data-tpl="ollist" data-title="Unordened list">
+                Ordened list
+              </div>
+            </div>
+            <div id="boxright" ref="boxright" className="box-right"></div>
+          </div>
+        </div>
+        { renderGroupForm }
+        <p id="description" ref="description">
+          { course.description }
+        </p>
+        <div style={ { borderBottom: '1px solid #efefef', paddingBottom: '15px', marginBottom: '20px' } }>Inhalt</div>
+        <div id="kursmaterial" ref="kursmaterial">
+        </div>
+      </div>
+    )
+  }
+}
+
+class GroupForm extends Component {
+  
+  render(){
+    return (
+    <div id="groupmaker" ref="groupmaker">
+      <form className="box">
+        <div id="maxSize">
+          <label htmlFor="maximumSize">maximale Gruppengröße:</label>
+          <input type="number" className="form-control" name="maximumSize" aria-describedby="Help" min={2} onChange={ this.props.handleOnChange } required></input>
+          <small id="Help" className="form-text text-muted">So groß soll eine Gruppe höhstens sein</small>
+        </div>
+        <div id="teach">
+          <label htmlFor="prefdeadline">Deadline:</label>
+          <input type="date" className="form-control" name="prefdeadline" aria-describedby="Help3" onChange={ this.props.handleOnChange } required></input>
+          <small id="Help3" className="form-text text-muted">Bis dahin haben die Studenten_innen Zeit, ihre Präferenzen abzugeben</small>
+        </div>
+        <div>
+        <button type="submit" ref="gruppenbildenspeichern" className='registrieren_botton float-right' id="grspeichern" style={ { color: 'rgb(24, 86, 169)'} } onClick={ this.props.saveGroups }>
+          manuell 
+        </button>
+        <button type="submit" ref="gruppenbildenspeichern" className='registrieren_botton float-right' style={ { color: 'rgb(24, 86, 169)'} } onClick={this.props.setTinderPrefObj}>
+          tinder 
+        </button>
+        </div>
+      </form>
+    </div>
+    )
   }
 }
 
