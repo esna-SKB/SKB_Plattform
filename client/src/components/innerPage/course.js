@@ -6,6 +6,7 @@ import InviteToCourse from './inviteToCourse';
 import Chat from '../../img/chat-icon.png';
 
 import api from '../../api';
+import pref_api from '../../utils/pref_api'; 
 import dragula from 'dragula';
 
 
@@ -155,7 +156,9 @@ class MemberTab extends Component {
       members: undefined,
       membersList: undefined,
       tinderIsOn: false,
-      preference: undefined
+      preference: undefined,
+      userIndex: -1, 
+      loadPref: false
     }
     this.handleUpdateMembers = this.handleUpdateMembers.bind(this)
     this.render = this.render.bind(this)
@@ -173,42 +176,64 @@ class MemberTab extends Component {
   }
 
   handleUpdateMembers = (course_name) => {
-    api.getPref(this.props.course._id)
+    if(!this.state.loadPref){
+      console.log(this.props.course._id)
+      pref_api.getPref(this.props.course._id)
       .then(res => {
-        if (res.status === 200) {
+        if(res.success) {
+          var now = Date.now(); 
+          const pref = JSON.parse(res.obj); 
+          console.log(pref)
+          var deadline = new Date(pref.deadline.substr(0,10))
           this.setState({
-            tinderIsOn: true,
-            preference: res.json()
+            loadPref: true,
+            tinderIsOn: (now < deadline.getTime()),
+            preference: pref,
+            userIndex: pref.users.findIndex(user => (this.props.user.email === user))
+          })
+        } else{
+          console.log("no pref")
+          this.setState({
+            loadPref: true
           })
         }
       })
-      .then(() => api.getAllUsersOfCourse(course_name))
+      .then(() => {this.handleUpdateMembers(course_name)}); 
+    } else {
+      api.getAllUsersOfCourse(course_name)
       .then(res => {
         var membersRes = res.reverse();
         var memList = res.reverse().map((member, i) => {
           return (
-            <ElementMember key={ i } isAllowed={ (this.props.isTeacher || this.props.isAdmin) } member={ member } course={ this.props.course } tinderIsOn={ this.state.tinderIsOn } handleUpdateMembers={ this.handleUpdateMembers }
-              handleCheckBox={ this.handleCheckBox } />
+            <ElementMember userChecked={(this.state.preference)? this.state.preference.matrix[this.state.userIndex][i]: undefined } key={ i } isAllowed={ (this.props.isTeacher || this.props.isAdmin) } member={ member } index={i} course={ this.props.course } 
+            tinderIsOn={ this.state.tinderIsOn } handleUpdateMembers={ this.handleUpdateMembers }
+            preference={this.state.preference}  handleCheckBox={ this.handleCheckBox } />
             );
         })
+        if(this.state.members && this.state.members.length!==membersRes.length) this.props.updateMembersInCourse(membersRes); 
+        
         this.setState({
           members: membersRes,
           membersList: memList
         })
+
       })
+    }
   }
 
   handleCheckBox = (e) => {
-    console.log(e.target.checked, e.target.value)
     var preference = this.state.preference;
     const val = (e.target.checked) ? 1 : 0;
-    var i = preference.users.findIndex(user => (this.props.user.email === user));
-    var j = preference.users.findIndex(user => (e.target.value === user));
-    preference.matrix[i][j] = val;
+    var j = e.target.value; //preference.users.findIndex(user => (e.target.value === user));
+    preference.matrix[this.state.userIndex][j] = val;
     this.setState({
-      preference: preference
+      preference: preference,
+      loadPref: false
     })
-    console.log(preference)
+    var update = {course: preference.course, matrix : preference.matrix}; 
+    console.log(update, 'matrix['+this.state.userIndex+']['+j+']', this.state.preference.matrix[this.state.userIndex][j])
+    pref_api.putPref(update)
+    .then(res => console.log(res))
   }
 
   render() {
@@ -246,6 +271,7 @@ class ElementMember extends Component {
       course: props.course
     }
   }
+
   unenrollUser = () => {
     api.unenrollUser(this.props.member.email, this.props.course._id).then(() => {
       this.props.handleUpdateMembers(this.props.course.name);
@@ -260,7 +286,7 @@ class ElementMember extends Component {
           { member.firstname + " " }
           { member.lastname }
         </Link>
-        <PrefCheckBox member={ member } tinderIsOn={ this.props.tinderIsOn } handleCheckBox={ this.props.handleCheckBox } />
+        <PrefCheckBox index={this.props.index} userChecked={this.props.userChecked} member={ member } tinderIsOn={ this.props.tinderIsOn } handleCheckBox={ this.props.handleCheckBox } />
         <button className={ (this.props.isAllowed) ? "btn btn-danger btn-sm float-right" : "d-none" } onClick={ this.unenrollUser }> X </button>
         <Link className='float-right' to={ `/messages/${member.email}` }>
           <img id="chat" className="icon" src={ Chat } alt="Chat" />
@@ -270,13 +296,28 @@ class ElementMember extends Component {
   }
 }
 
-function PrefCheckBox(props) {
-  if (props.tinderIsOn) {
-    return (
-      <input type="checkbox" name="member" value={ props.member.email } onChange={ props.handleCheckBox } />
-    )
-  } else return null
+class PrefCheckBox extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      userChecked: props.userChecked
+    }
+  }
+  
+  handleCheck = (e) => {
+    this.props.handleCheckBox(e); 
+    this.setState({
+      userChecked: (e.target.checked)? 1:0
+    })
+  }
 
+  render(){
+    if (this.props.tinderIsOn) {
+      return (
+        <input type="checkbox" name="member" value={ this.props.index } onChange={ this.handleCheck } checked={this.state.userChecked===1}/>
+      )
+    } else return 
+  }
 }
 
 class EnrollButton extends Component {
@@ -346,14 +387,15 @@ class Course extends Component {
     course_name = course_name.replace("%20", " ");
     this.handleUpdate(course_name);
 
-    api.getAllUsersOfCourse(course_name).then(res => {
-      this.setState({
-        members: res.reverse()
-      })
-
-    });
-
+    api.getAllUsersOfCourse(course_name)
+      .then(res => {
+        var membersRes = res.reverse();
+        this.setState({
+          members: membersRes
+          })
+        })
   }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.location.pathname !== nextProps.location.pathname) {
       var course_name = nextProps.location.pathname.split("/")[2];
@@ -377,7 +419,6 @@ class Course extends Component {
         } else {
           document.getElementById('kursmaterial').innerHTML = '<p>kein Inhalt..</p>'
         }
-
       })
       // check if user is enrolled
       .then(() => api.getAllCoursesOfUser(this.props.user.email).then(res1 => {
@@ -389,8 +430,36 @@ class Course extends Component {
       }))
   }
 
-  setTinderPrefObj = () => {
-    
+  updateMembersInCourse = (members) => {
+    this.setState({
+      members: members
+    })
+    console.log('members set', members)
+  }
+
+  setTinderPrefObj = (max, deadline) => {
+    const users = this.state.members.map(u=>u.email); 
+    console.log(max, deadline)
+    var mtx = []; 
+    for (var i = 0; i < users.length; i++) {
+      mtx[i]=new Array(users.length);
+      for (var j = 0; j < mtx[i].length; j++) {
+          mtx[i][j]=0; 
+        }  
+    }
+    var prefObj = {
+        course: this.state.course._id,
+        matrix: mtx,
+        users: users,
+        groupSize: max,
+        deadline: deadline
+    }; 
+    console.log(prefObj)
+    pref_api.putPref(prefObj)
+    .then(res => {
+      console.log(res)
+      this.handleUpdate(this.course.name)
+    })
   }
   //make sure to update member tab when a member is added by teacher
   onInvite = () => {
@@ -464,12 +533,11 @@ class Course extends Component {
                 <div className="col col-sm-12">
                   <div className="tab-content col-offset-6 centered">
                     <CourseDescription enrolled={ enrolled } isTeacher={ isTeacher } location={ this.props.location } 
-                   user={ this.props.user } handleUpdate={ this.handleUpdate } makegroups={this.makegroups}
-                      course={ course } setTinderPrefObj={this.props.setTinderPrefObj} />
-                   }
+                      user={ this.props.user } handleUpdate={ this.handleUpdate } makegroups={this.makegroups}
+                      course={ course } setTinderPrefObj={this.setTinderPrefObj} />
                     <FeedTab enrolled={ enrolled } user={ this.props.user } course={ course } isAdmin={ this.props.user.isAdmin } />
                     <MemberTab enrolled={ enrolled } course={ course } isTeacher={ isTeacher } location={ this.props.location } user={ this.props.user }
-                      onInvite={ this.onInvite } />
+                      onInvite={ this.onInvite } updateMembersInCourse={this.updateMembersInCourse}/>
                   </div>
                 </div>
               </div>
@@ -491,16 +559,8 @@ class CourseDescription extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      minimumSize: 2,
-      maximumSize: 4,
       displayGroupmaker: false
     }
-  }
-
-  handleOnChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
   }
 
   gruppenbilden = () => {
@@ -535,7 +595,7 @@ class CourseDescription extends Component {
         } else {
           var i;
           for (i = 0; (i < (members.length - 2)); i = i + 2) {
-            /*the last group will be three people if memebers has uneven length*/
+            /*the last group will be three people if members has uneven length*/
             if( ((members.length % 2 == 1) && ((members.length - 3) === i)) ) {
               console.log("we are uneven number" + members.length + ", " + i)
               api.Group(this.state.course._id, "Gruppe: " + this.state.course.name, [members[i], members[i + 1], members[i + 2]], "Das ist die Gruppe für '" + this.state.course.name + "'. Hier könnt ihr eure Abgaben besprechen");
@@ -739,7 +799,7 @@ class CourseDescription extends Component {
   renderGroupForm = () => {
     if(this.state.displayGroupmaker){
       return (
-        <GroupForm setTinderPrefObj={this.props.setTinderPrefObj} handleOnChange={ this.handleOnChange } saveGroups={ this.saveGroups }/>
+        <GroupForm setTinderPrefObj={this.props.setTinderPrefObj} saveGroups={ this.saveGroups }/>
       )
     }else return null
     
@@ -822,29 +882,50 @@ class CourseDescription extends Component {
 }
 
 class GroupForm extends Component {
-  
+  constructor(props){
+    super(props); 
+    this.state = {
+      maximumSize: 2,
+      deadline: '',
+      selectOpt: 'tinder'
+    }
+  }
+
+  handleOnChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  handleSubmit = (event) => {
+    //this.props.saveGroups
+    event.preventDefault(); 
+    if(this.state.selectOpt==='tinder'){
+      this.props.setTinderPrefObj(this.state.maximumSize, this.state.deadline)
+    }else{
+      this.props.saveGroups(this.state.maximumSize, this.state.deadline)
+    }
+    
+  }
+
   render(){
     return (
     <div id="groupmaker" ref="groupmaker">
-      <form className="box">
-        <div id="maxSize">
-          <label htmlFor="maximumSize">maximale Gruppengröße:</label>
-          <input type="number" className="form-control" name="maximumSize" aria-describedby="Help" min={2} onChange={ this.props.handleOnChange } required></input>
+      <form className="box" ref="form" onSubmit={this.handleSubmit} >
+          <label htmlFor="maximumSize">maximale Gruppengröße:
+          <input type="number" className="form-control" name="maximumSize" value={this.state.maximumSize} aria-describedby="Help" min={2} onChange={ this.handleOnChange } required/>
           <small id="Help" className="form-text text-muted">So groß soll eine Gruppe höhstens sein</small>
-        </div>
-        <div id="teach">
+        </label>
           <label htmlFor="prefdeadline">Deadline:</label>
-          <input type="date" className="form-control" name="prefdeadline" aria-describedby="Help3" onChange={ this.props.handleOnChange } required></input>
+          <input type="date" className="form-control" name="deadline" value={this.state.deadline} aria-describedby="Help3" onChange={ this.handleOnChange } required />
           <small id="Help3" className="form-text text-muted">Bis dahin haben die Studenten_innen Zeit, ihre Präferenzen abzugeben</small>
-        </div>
-        <div>
-        <button type="submit" ref="gruppenbildenspeichern" className='registrieren_botton float-right' id="grspeichern" style={ { color: 'rgb(24, 86, 169)'} } onClick={ this.props.saveGroups }>
-          manuell 
-        </button>
-        <button type="submit" ref="gruppenbildenspeichern" className='registrieren_botton float-right' style={ { color: 'rgb(24, 86, 169)'} } onClick={this.props.setTinderPrefObj}>
-          tinder 
-        </button>
-        </div>
+        <label> tinder-algo:
+        <input type="radio" name="selectOpt" value="tinder" onChange={ this.handleOnChange } checked={this.state.selectOpt === 'tinder'}/>
+         </label>
+        <label> manuell:
+        <input type="radio" name="selectOpt" value="manuell" onChange={ this.handleOnChange } checked={this.state.selectOpt === 'manuell'}/>
+         </label>
+      <input type="submit" value="Submit" className='registrieren_botton float-right' style={ { color: 'rgb(24, 86, 169)'} }  />
       </form>
     </div>
     )

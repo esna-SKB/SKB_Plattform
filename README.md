@@ -4,7 +4,6 @@
 Programmierpraktikum Soziale Netzwerke MERN Gruppe entwickelt eine Netzwerkplattform für die SKB [http://www.skb.tu-berlin.de/contao/index.php/en/](www.skb.tu-berlin.de)
 
 
-
 - Product Owner - [https://github.com/emle21](Emre)
 - Scrum Master - [https://github.com/luka1220](Luka)
 - Quality-Assurance Manager - [https://github.com/jamiYo](Jamina)
