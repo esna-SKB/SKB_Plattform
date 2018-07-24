@@ -205,8 +205,8 @@ class MemberTab extends Component {
         var membersRes = res.reverse();
         var memList = res.reverse().map((member, i) => {
           return (
-            <ElementMember userChecked={(this.state.preference)? this.state.preference.matrix[this.state.userIndex][i]: undefined } key={ i } isAllowed={ (this.props.isTeacher || this.props.isAdmin) } member={ member } index={i} course={ this.props.course } 
-            tinderIsOn={ this.state.tinderIsOn } handleUpdateMembers={ this.handleUpdateMembers }
+            <ElementMember userChecked={(this.state.preference && this.state.userIndex>=0)? this.state.preference.matrix[this.state.userIndex][i]: undefined } key={ i } isAllowed={ (this.props.isTeacher || this.props.isAdmin) } member={ member } index={i} course={ this.props.course } 
+            tinderIsOn={ (this.state.tinderIsOn && this.state.userIndex!=i && this.state.userIndex>=0)} handleUpdateMembers={ this.handleUpdateMembers }
             preference={this.state.preference}  handleCheckBox={ this.handleCheckBox } />
             );
         })
@@ -221,17 +221,16 @@ class MemberTab extends Component {
     }
   }
 
-  handleCheckBox = (e) => {
+  handleCheckBox = (event, indexOfMember) => {
     var preference = this.state.preference;
-    const val = (e.target.checked) ? 1 : 0;
-    var j = e.target.value; //preference.users.findIndex(user => (e.target.value === user));
-    preference.matrix[this.state.userIndex][j] = val;
+    const val = (event.target.checked) ? 1 : 0;
+    preference.matrix[this.state.userIndex][indexOfMember] = val;
     this.setState({
       preference: preference,
       loadPref: false
     })
     var update = {course: preference.course, matrix : preference.matrix}; 
-    console.log(update, 'matrix['+this.state.userIndex+']['+j+']', this.state.preference.matrix[this.state.userIndex][j])
+    console.log(update, 'matrix['+this.state.userIndex+']['+indexOfMember+']', this.state.preference.matrix[this.state.userIndex][indexOfMember])
     pref_api.putPref(update)
     .then(res => console.log(res))
   }
@@ -305,7 +304,7 @@ class PrefCheckBox extends Component {
   }
   
   handleCheck = (e) => {
-    this.props.handleCheckBox(e); 
+    this.props.handleCheckBox(e, this.props.index); 
     this.setState({
       userChecked: (e.target.checked)? 1:0
     })
@@ -314,9 +313,9 @@ class PrefCheckBox extends Component {
   render(){
     if (this.props.tinderIsOn) {
       return (
-        <input type="checkbox" name="member" value={ this.props.index } onChange={ this.handleCheck } checked={this.state.userChecked===1}/>
+        <input type="checkbox" name="member" value={ this.props.member } onChange={ this.handleCheck } checked={this.state.userChecked===1}/>
       )
-    } else return 
+    } else return null; 
   }
 }
 
