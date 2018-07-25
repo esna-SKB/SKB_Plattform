@@ -233,6 +233,8 @@ class MemberTab extends Component {
     .then(res => console.log(res))
   }
 
+ 
+
   render() {
     const membersList = this.state.membersList;
 
@@ -245,6 +247,7 @@ class MemberTab extends Component {
               <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite={ this.handleUpdateMembers } />
             </div>
           </div>
+          <RunTinderButton preference={this.state.preference} courseId={course._id} />
           <ul>
             { membersList }
           </ul>
@@ -313,6 +316,61 @@ class PrefCheckBox extends Component {
         <input type="checkbox" name="member" value={ this.props.member } onChange={ this.handleCheck } checked={this.state.userChecked===1}/>
       )
     } else return null; 
+  }
+}
+
+class RunTinderButton extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      groups : undefined
+    }
+  }
+
+  handleRunTinder = (e) => {
+    console.log(this.props.courseId)
+    pref_api.runTinder(this.props.courseId)
+    .then(res=>{
+      console.log(res)
+      this.setState({
+        groups : res 
+      })
+    })
+  }
+  render(){
+    var groups; 
+    if(this.state.groups){
+      groups = this.state.groups.map((group, i)=>{
+      var groupE = group.map(p=>{
+        return (
+          <li>{p}</li>
+          )
+      })
+      return (
+        <ul>
+        <h6>{'group '+i}</h6>
+        
+          {groupE}
+        </ul>
+        )
+    });
+    }
+     
+
+    if(this.props.preference /*&& this.props.tinderIsOn*/){
+      return(
+        <div>
+        <button  className='btn btn-dark' onClick={ this.handleRunTinder }>
+                 Run Tinder
+        </button>
+          <div>
+             {groups}
+          </div>
+        </div>
+        )
+    } else return (
+      <div></div>
+      )
   }
 }
 

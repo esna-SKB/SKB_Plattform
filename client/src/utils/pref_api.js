@@ -31,6 +31,15 @@ getPref: function(courseId){
         'Accept': 'application/json'
       }})
     .then(res => res.json())
+  },
+
+ runTinder: function(courseId){
+    return fetch('/preference/makegroups/' + courseId, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }})
+    .then(res => res.json())
   }
 
 }
