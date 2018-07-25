@@ -3,17 +3,17 @@ var router = express.Router();
 const Course = require('../models/course');
 const User = require('../models/user');
 const Preference = require('../models/preference');
-const tinder = require('./tinder');
+var tinder = require('./tinder');
 
 
 router.route('/makegroups/:courseId')
 	.get((req, res, next) => {
 		var courseId = req.params.courseId;
 			Preference.findOne({course: courseId}).exec(function(err, pref){
-				if(err) return res.status(500).send('error occured in the database');
-				else if(pref === null) return res.status(404).send('pref not found');
+				if(err) return res.status(500).send({message:'error occured in the database'});
+				else if(pref === null) return res.status(404).send({message:'pref not found'});
 				else{
-					var groups = tinder.main(pref.users, pref.matrix, pref.groupSize); 
+					var groups = tinder(pref.users, pref.matrix, pref.groupSize); 
 					return res.status(200).send(groups);
 				}
 			})

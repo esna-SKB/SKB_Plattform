@@ -58,7 +58,10 @@ function controlTinder(users, matrix, sizeOfG){
 
 function tinder(users, matrix, sizeOfG){
 	var nrOfGroups = Math.ceil(users.length/sizeOfG);
-	var rest = sizeOfG - (users.length % sizeOfG); //damit die Gruppen gleichmäßig verteilt sind. also keine einser Gruppen entstehen und so 
+	var groupSize = Math.ceil(users.length/nrOfGroups);
+
+	var rest = (users.length % groupSize); //damit die Gruppen gleichmäßig verteilt sind. also keine einser Gruppen entstehen und so 
+	console.log(rest, groupSize, nrOfGroups)
 	var groups = {
 		g: [],
 		value: 0, 
@@ -208,7 +211,14 @@ function singleSatisfation(group, matrix){
 	}
 	return sum; 
 }
-
+var mini = ["a", "b"]
+var minmtx = [
+			[0,1],
+			[1,0]
+			]
+var ming = main(mini, minmtx, 3); 
+console.log('g:');
+console.log(ming);
 
 var userArray = ["a", "b", "c", "d", "e", "f", "g", "h", "i"]; 
 var mtx = [
@@ -223,7 +233,7 @@ var mtx = [
 			[0,0,0,0,0,0,1,0,0]
 			]; 
 
-var groups = main(userArray, mtx, 4); 
+var groups = main(userArray, mtx, 3); 
 console.log('g:');
 console.log(groups);
 //console.log(floydWarshall(mtx)); 
@@ -282,3 +292,5 @@ mtx = [
 groups = main(userArray, mtx, 4);
 console.log('g:'); 
 console.log(groups);
+
+module.exports = main
