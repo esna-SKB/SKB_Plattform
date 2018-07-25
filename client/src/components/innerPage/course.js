@@ -169,41 +169,17 @@ class MemberTab extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.handleUpdateMembers(nextProps.course.name)
-    if (this.props.course.name !== nextProps.course.name) {
+    if (this.props.course.name != nextProps.course.name) {
       this.handleUpdateMembers(nextProps.course.name)
     }
   }
 
   handleUpdateMembers = (course_name) => {
-    if(!this.state.loadPref){
-      console.log(this.props.course._id)
-      pref_api.getPref(this.props.course._id)
-      .then(res => {
-        if(res.success) {
-          var now = Date.now(); 
-          const pref = JSON.parse(res.obj); 
-          console.log(pref)
-          var deadline = new Date(pref.deadline.substr(0,10))
-          this.setState({
-            loadPref: true,
-            tinderIsOn: (now < deadline.getTime()),
-            preference: pref,
-            userIndex: pref.users.findIndex(user => (this.props.user.email === user))
-          })
-        } else{
-          console.log("no pref")
-          this.setState({
-            loadPref: true
-          })
-        }
-      })
-      .then(() => {this.handleUpdateMembers(course_name)}); 
-    } else {
-      api.getAllUsersOfCourse(course_name)
-      .then(res => {
+    this.loadPreference()
+    .then(()=> api.getAllUsersOfCourse(course_name))
+    .then(res => {
         var membersRes = res.reverse();
-        var memList = res.reverse().map((member, i) => {
+        var memList = res.map((member, i) => {
           return (
             <ElementMember userChecked={(this.state.preference && this.state.userIndex>=0)? this.state.preference.matrix[this.state.userIndex][i]: undefined } key={ i } isAllowed={ (this.props.isTeacher || this.props.isAdmin) } member={ member } index={i} course={ this.props.course } 
             tinderIsOn={ (this.state.tinderIsOn && this.state.userIndex!=i && this.state.userIndex>=0)} handleUpdateMembers={ this.handleUpdateMembers }
@@ -216,9 +192,31 @@ class MemberTab extends Component {
           members: membersRes,
           membersList: memList
         })
+      }) 
+  }
 
+  loadPreference = () => {
+      console.log(this.props.course._id)
+      return pref_api.getPref(this.props.course._id)
+      .then(res => {
+        if(res.success) {
+          var now = Date.now(); 
+          const pref = JSON.parse(res.obj); 
+          console.log(pref)
+          var deadline = new Date(pref.deadline.substr(0,10))
+            this.setState({
+              loadPref: true,
+              tinderIsOn: (now < deadline.getTime()),
+              preference: pref,
+              userIndex: pref.users.findIndex(user => (this.props.user.email === user))
+            })
+        } else{
+          console.log("no pref")
+            this.setState({
+              loadPref: true
+            })
+        }
       })
-    }
   }
 
   handleCheckBox = (event, indexOfMember) => {
@@ -237,7 +235,6 @@ class MemberTab extends Component {
 
   render() {
     const membersList = this.state.membersList;
-    console.log(membersList)
 
     var course = (this.props.course)
     if (membersList && (this.props.enrolled || this.props.isTeacher)) {
