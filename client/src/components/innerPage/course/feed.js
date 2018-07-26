@@ -41,7 +41,7 @@ class Feed extends Component {
     var text = document.getElementById("textteilen").value;
     var self = this;
     if (!this.state.file) {
-      api.createArticle(self.props.course._id, 'Course', self.state.courseName, "", self.props.user.email, text, "", Date.now, "")
+      api.createArticle(self.props.course._id, 'Course', self.props.course.name, "", self.props.user.email, text, "", Date.now, "")
         .then(res => {
           self.handleArticlesUpdate(self.props.course._id)
           document.getElementById("textteilen").value = ""

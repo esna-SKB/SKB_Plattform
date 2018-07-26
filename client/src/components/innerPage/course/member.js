@@ -19,39 +19,35 @@ class Member extends Component {
       userIndex: -1, 
       loadPref: false
     }
-    this.handleUpdateMembers = this.handleUpdateMembers.bind(this)
-    this.render = this.render.bind(this)
   }
 
-  componentDidMount() {
-    this.handleUpdateMembers(this.props.course.name)
+  componentDidMount(){
+    this.loadPreference(this.props.course._id)
   }
-
   componentWillReceiveProps(nextProps) {
-    if (this.props.members != nextProps.members || this.props.course.name !== nextProps.course.name) {
-      this.handleUpdateMembers(nextProps.course.name)
+    if (this.props.course.name !== nextProps.course.name) {
+      this.loadPreference(nextProps.course._id)
+      console.log("is different")
     }
   }
 
-  handleUpdateMembers = (course_name) => {
-    this.loadPreference()
-    .then(() => {
-        var memList = this.props.members.reverse().map((member, i) => {
+  getMemberElements = (members) => {
+    if(members){
+        return members.map((member, i) => {
           return (
             <ElementMember userChecked={(this.state.preference && this.state.userIndex>=0)? this.state.preference.matrix[this.state.userIndex][i]: undefined } key={ i } isAllowed={ (this.props.isTeacher || this.props.isAdmin) } member={ member } index={i} course={ this.props.course } 
             tinderIsOn={ (this.state.tinderIsOn && this.state.userIndex!=i && this.state.userIndex>=0)} handleUpdateMembers={ this.handleUpdateMembers }
             preference={this.state.preference}  handleCheckBox={ this.handleCheckBox } />
             );
         })
-        this.setState({
-          membersList: memList
-        })
-      }) 
+      }else {
+        return null; 
+      }
   }
 
-  loadPreference = () => {
-      console.log(this.props.course._id)
-      return pref_api.getPref(this.props.course._id)
+  loadPreference = (courseId) => {
+      console.log(courseId)
+      return pref_api.getPref(courseId)
       .then(res => {
         if(res.success) {
           var now = Date.now(); 
@@ -67,7 +63,10 @@ class Member extends Component {
         } else{
           console.log("no pref")
             this.setState({
-              loadPref: true
+              loadPref: true,
+              tinderIsOn: false,
+              preference: undefined,
+              userIndex: -1
             })
         }
       })
@@ -88,7 +87,8 @@ class Member extends Component {
   }
 
   render() {
-    const membersList = this.state.membersList;
+    const { members } = this.props; 
+    const membersList = this.getMemberElements(members);
 
     var course = (this.props.course)
     if (this.props.members && (this.props.enrolled || this.props.isTeacher)) {
@@ -165,7 +165,7 @@ class PrefCheckBox extends Component {
   render(){
     if (this.props.tinderIsOn) {
       return (
-        <input type="checkbox" name="member" value={ this.props.member } onChange={ this.handleCheck } checked={this.state.userChecked===1}/>
+        <input type="checkbox" name="member" value={ this.props.member } onChange={ this.handleCheck } checked={this.props.userChecked===1}/>
       )
     } else return null; 
   }
@@ -216,6 +216,7 @@ class RunTinderButton extends Component {
                  Run Tinder
         </button>
           <div>
+          <h6>The Result will be displayed here: </h6>
           <ul> {groups} </ul>
           </div>
         </div>
