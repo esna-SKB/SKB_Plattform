@@ -28,7 +28,7 @@ class Member extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.members != nextProps.members) {
+    if (this.props.members != nextProps.members || this.props.course.name !== nextProps.course.name) {
       this.handleUpdateMembers(nextProps.course.name)
     }
   }

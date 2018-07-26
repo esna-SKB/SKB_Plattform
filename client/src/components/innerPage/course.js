@@ -108,13 +108,7 @@ class Course extends Component {
     course_name = course_name.replace("%20", " ");
     this.handleUpdate(course_name);
 
-    api.getAllUsersOfCourse(course_name)
-      .then(res => {
-        var membersRes = res.reverse();
-        this.setState({
-          members: membersRes
-          })
-        })
+    this.updateMembersInCourse(course_name)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -122,6 +116,7 @@ class Course extends Component {
       var course_name = nextProps.location.pathname.split("/")[2];
       course_name = course_name.replace("%20", " ");
       this.handleUpdate(course_name);
+      this.updateMembersInCourse(course_name)
     }
   }
 
@@ -160,7 +155,6 @@ class Course extends Component {
       this.setState({
         members: res.reverse()
       })
-      console.log('members set', res.reverse())
     })
     
   }
@@ -203,7 +197,7 @@ class Course extends Component {
 
   render() {
     const {enrolled, user, course, isTeacher} = this.state;
-
+    console.log('members set', this.state.members)
 
     //make sure API calls are finished when rendering (better solution????)
     if (!this.state.course) {
