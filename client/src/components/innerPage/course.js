@@ -145,7 +145,6 @@ class Course extends Component {
           })
         }
       })
-
       this.updateMembersInCourse()
   }
 
@@ -153,7 +152,7 @@ class Course extends Component {
     api.getAllUsersOfCourse(course_name)
     .then(res=>{
       this.setState({
-        members: res.reverse()
+        members: res
       })
     })
     

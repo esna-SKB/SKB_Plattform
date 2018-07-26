@@ -244,11 +244,16 @@ class Overview extends Component {
 
     }
   }
+  hideGroupmaker = () => {
+    this.setState({
+      displayGroupmaker : false
+    })
+  }
 
   renderGroupForm = () => {
     if(this.state.displayGroupmaker){
       return (
-        <GroupForm setTinderPrefObj={this.props.setTinderPrefObj} saveGroups={ this.saveGroups }/>
+        <GroupForm setTinderPrefObj={this.props.setTinderPrefObj} saveGroups={ this.saveGroups } hideGroupmaker={this.hideGroupmaker} />
       )
     }else return null
     
@@ -351,6 +356,7 @@ class GroupForm extends Component {
     event.preventDefault(); 
     if(this.state.selectOpt==='tinder'){
       this.props.setTinderPrefObj(this.state.maximumSize, this.state.deadline)
+      this.props.hideGroupmaker()
     }else{
       this.props.saveGroups(this.state.maximumSize, this.state.deadline)
     }

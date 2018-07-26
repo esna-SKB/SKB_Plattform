@@ -57,7 +57,9 @@ router.route('/:courseId')
 			Preference.find({course: id}).exec(function(err, preferences){
 				if (err){
 		        	return res.status(500).send({success : false, obj:'error occured in the database'});
-		       	}else {
+		       	} else if(preferences.length===0){
+		       		return res.status(200).send({success : false, obj:'no pref set'});
+		       	} else {
 					return res.status(200).send({success : true, obj: JSON.stringify(preferences[0])});
 		       	}
 			})
