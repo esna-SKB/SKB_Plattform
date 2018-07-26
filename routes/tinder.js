@@ -168,8 +168,7 @@ function getMaxDistUsers(distmtx){
 
 
 function dijkstraSuche(matrix, groups, sizeOfG, rest){
-	groups.g[0].unshift(0); 
-	groups.next = 1; 
+	groups.next = 0; 
 	var queue = new PriorityQueue({ comparator: function(a, b) { return a.value - b.value; }}); 
 	queue.queue(groups); 
 
