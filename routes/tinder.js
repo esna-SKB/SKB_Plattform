@@ -61,7 +61,6 @@ function tinder(users, matrix, sizeOfG){
 	var groupSize = Math.ceil(users.length/nrOfGroups);
 
 	var rest = (users.length % groupSize); //damit die Gruppen gleichmäßig verteilt sind. also keine einser Gruppen entstehen und so 
-	console.log(rest, groupSize, nrOfGroups)
 	var groups = {
 		g: [],
 		value: 0, 
