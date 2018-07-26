@@ -91,7 +91,7 @@ class Member extends Component {
     const membersList = this.state.membersList;
 
     var course = (this.props.course)
-    if (membersList && (this.props.enrolled || this.props.isTeacher)) {
+    if (this.props.members && (this.props.enrolled || this.props.isTeacher)) {
       return (
         <div className="tab-pane fade" id="members" role="tabpanel" aria-labelledby="memberstab" style={ { backgroundColor: 'white', border: '1px solid #efefef', padding: '20px' } }>
           <div className="d-block d-md-none order-md-last justify-content-center">
@@ -201,7 +201,7 @@ class RunTinderButton extends Component {
       return (
         <li key={i}>
         <ul>
-        <h6>{'Group '+i}</h6>
+        <h6>{'Group '+(i+1)}</h6>
           {groupE}
         </ul>
         </li>
