@@ -87,8 +87,6 @@ class Member extends Component {
     .then(res => console.log(res))
   }
 
- 
-
   render() {
     const membersList = this.state.membersList;
 
@@ -101,7 +99,7 @@ class Member extends Component {
               <InviteToCourse location={ this.props.location } user={ this.props.user } onInvite={ this.handleUpdateMembers } />
             </div>
           </div>
-          <RunTinderButton preference={this.state.preference} courseId={course._id} />
+          <RunTinderButton preference={this.state.preference} courseId={course._id} isTeacher={this.props.isTeacher} />
           <ul>
             { membersList }
           </ul>
@@ -195,30 +193,30 @@ class RunTinderButton extends Component {
     var groups; 
     if(this.state.groups){
       groups = this.state.groups.map((group, i)=>{
-      var groupE = group.map(p=>{
+      var groupE = group.map((p,j)=>{
         return (
-          <li>{p}</li>
+          <li key={j}>{p}</li>
           )
       })
       return (
+        <li key={i}>
         <ul>
-        <h6>{'group '+i}</h6>
-        
+        <h6>{'Group '+i}</h6>
           {groupE}
         </ul>
+        </li>
         )
     });
     }
      
-
-    if(this.props.preference /*&& this.props.tinderIsOn*/){
+    if(this.props.preference && this.props.isTeacher/*&& this.props.tinderIsOn*/){
       return(
         <div>
         <button  className='btn btn-dark' onClick={ this.handleRunTinder }>
                  Run Tinder
         </button>
           <div>
-             {groups}
+          <ul> {groups} </ul>
           </div>
         </div>
         )

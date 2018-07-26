@@ -57,6 +57,36 @@ class EnrollButton extends Component {
   }
 }
 
+function CourseNav(props){
+  if(props.enrolled || props.isTeacher){
+    return(
+      <div className="background-fluid" style={ { borderBottom: '1px solid #e8e9eb' } }>
+        <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
+          <li className="nav-item">
+            <a className="nav-link tab-title active" id="lehrer-tab" data-toggle="tab" href="#ubersicht" role="tab" aria-controls="ubersicht" aria-selected="true">Übersicht</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="false">Feed</a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
+          </li>
+        </ul>
+      </div>
+      )
+  }else{
+    return(
+      <div className="background-fluid" style={ { borderBottom: '1px solid #e8e9eb' } }>
+        <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
+          <li className="nav-item">
+            <a className="nav-link tab-title active" id="lehrer-tab" data-toggle="tab" href="#ubersicht" role="tab" aria-controls="ubersicht" aria-selected="true">Übersicht</a>
+          </li>
+        </ul>
+      </div>
+      )
+  }
+}
+
 class Course extends Component {
 
   constructor(props) {
@@ -213,19 +243,7 @@ class Course extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="background-fluid" style={ { borderBottom: '1px solid #e8e9eb' } }>
-                  <ul className="nav nav-tabs justify-content-center col-offset-6 centered" id="mytabs" role="tablist">
-                    <li className="nav-item">
-                      <a className="nav-link tab-title active" id="lehrer-tab" data-toggle="tab" href="#ubersicht" role="tab" aria-controls="ubersicht" aria-selected="true">Übersicht</a>
-                    </li>
-                    <li className="nav-item">
-                      <a className="nav-link tab-title" id="kurse-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="feed" aria-selected="false">Feed</a>
-                    </li>
-                    <li className="nav-item">
-                      <a className="nav-link tab-title" id="members-tab" data-toggle="tab" href="#members" role="tab" aria-controls="memberstab" aria-selected="false">Teilnehmer</a>
-                    </li>
-                  </ul>
-                </div>
+                <CourseNav enrolled={enrolled} isTeacher={this.state.isTeacher}/>
               </div>
               <div className="container-fluid row">
                 <div className="col col-sm-12">

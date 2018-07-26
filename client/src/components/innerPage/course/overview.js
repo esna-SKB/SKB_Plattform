@@ -57,8 +57,6 @@ class Overview extends Component {
             }
             this.refs.groupmaker.style["display"] = 'none';
             this.refs.gruppenbilden.innerHTML = 'fertig'
-
-
           }
         }
       })
