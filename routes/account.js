@@ -17,12 +17,10 @@ router.route('/signin')
  * Signin
  */
 	.post((req, res, next) => {
-			console.log(req)
 	    const { body } = req;
 	    const { password } = body;
 	    let { email } = body;
 
-	    console.log(password)
 	    console.log(email)
 
 	    User.findOne({email: email},{_id:0, email:1, password:2, isVerified:3},function(err,user){
@@ -30,7 +28,7 @@ router.route('/signin')
 	           console.log('error occured in the database');
 
 			//const user = users[0];
-			console.log(user);
+			
 			if (!user || !user.validPassword(password)){
 				console.log("no user / wrong passwort");
 				res.status(401).send({
@@ -74,11 +72,10 @@ router.route('/signin')
 					        	});
 							}
 						});
-						console.log(userSession);
+						
 					} else {
 						var d = new Date();
 						var t = crypto.randomBytes(16).toString('hex');
-						console.log('t ===== '+t);
 						usersession.token = t;
 						usersession.timestamp = d;
 						usersession.isDeleted = false;
@@ -99,7 +96,7 @@ router.route('/signin')
 							}
 						});
 					}
-		    	console.log(usersession);
+		    	//console.log(usersession);
 	    		});
 			}
 		});
@@ -115,7 +112,6 @@ router.route('/signup')
 		const { lastname } = body;
 		const { password } = body;
 		let { email } = body;
-		console.log(password);
 		email = email.toLowerCase();
 		email = email.trim();
 
@@ -291,7 +287,7 @@ router.route('/registration/verify')
 			const { body } = req;
 			const { id } = body;
 			const { password } = body;
-			console.log(password);
+			//console.log(password);
 	    User.findOne({_id: id},{},function(err,user){
 				if (err) {
 		           console.log('error occured in the database');
@@ -327,7 +323,7 @@ router.route('/registration/verify')
 	    const { password } = body;
 	    let { email } = body;
 
-	    console.log(password)
+	    //console.log(password)
 	    console.log(email)
 
 			User.findOne({email: email},{_id:0, email:1, password:2, isVerified:3},function(err,user){
@@ -335,7 +331,6 @@ router.route('/registration/verify')
 				   console.log('error occured in the database');
 
 				//const user = users[0];
-				console.log(user);
 				if (!user.validPassword(password)){
 					console.log("wrong password!");
 					res.status(401).send({

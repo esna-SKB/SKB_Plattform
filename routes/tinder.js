@@ -61,7 +61,6 @@ function tinder(users, matrix, sizeOfG){
 	var groupSize = Math.ceil(users.length/nrOfGroups);
 
 	var rest = (users.length % groupSize); //damit die Gruppen gleichmäßig verteilt sind. also keine einser Gruppen entstehen und so 
-	console.log(rest, groupSize, nrOfGroups)
 	var groups = {
 		g: [],
 		value: 0, 
@@ -168,8 +167,7 @@ function getMaxDistUsers(distmtx){
 
 
 function dijkstraSuche(matrix, groups, sizeOfG, rest){
-	groups.g[0].unshift(0); 
-	groups.next = 1; 
+	groups.next = 0; 
 	var queue = new PriorityQueue({ comparator: function(a, b) { return a.value - b.value; }}); 
 	queue.queue(groups); 
 
