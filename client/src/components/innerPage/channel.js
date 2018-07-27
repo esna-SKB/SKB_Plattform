@@ -39,7 +39,6 @@ class MemberTab extends Component {
       course: props.channel,
       members: undefined
     }
-    this.handleUpdateMembers = this.handleUpdateMembers.bind(this)
   }
 
   componentDidMount() {
@@ -47,19 +46,20 @@ class MemberTab extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.handleUpdateMembers(nextProps.channel._id)
     if (this.props.channel._id !== nextProps.channel._id) {
       this.handleUpdateMembers(nextProps.channel._id)
     }
   }
 
   handleUpdateMembers = (channelId) => {
-    api.getAllMembersOfChannel(channelId).then(res => {
+  	if(!this.state.members){
+  		api.getAllMembersOfChannel(channelId).then(res => {
       this.setState({
         members: res.reverse()
       })
 	  console.log(this.state.members)
     })
+  	}
   }
 
   render() {
