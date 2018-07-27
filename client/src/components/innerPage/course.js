@@ -151,7 +151,6 @@ class Course extends Component {
   updateMembersInCourse = (course_name) => {
     api.getAllUsersOfCourse(course_name)
     .then(res=>{
-      console.log(res)
       this.setState({
         members: res
       })
