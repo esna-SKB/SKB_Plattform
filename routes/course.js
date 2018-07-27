@@ -77,10 +77,9 @@ router.route('/:name/user')
 	       	} else {
 	       		Enrollment.find({'theChosenModel.ModelId':course._id}).populate('user').exec(function(err, enrolls){
 	       			if(err) return res.status(500).send({message:'error occured in the database'});
-	       			else if(enrolls == 0) return res.status(204).send({message:'there are no user in that course'});
 	       			else{
 	       				var users = enrolls.map(c => c.user)
-	       				return res.status(200).send(users);
+	       				return res.status(200).send(users.filter(u=>u!==null));
 	       			}
 	       		})
 	       	}
