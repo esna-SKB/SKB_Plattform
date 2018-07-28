@@ -159,7 +159,7 @@ class Course extends Component {
   }
 
   setTinderPrefObj = (max, deadline) => {
-    const users = this.state.members.map(u=>u.email); 
+    const users = this.state.members.map(u=>u._id); 
     console.log(max, deadline)
     var mtx = []; 
     for (var i = 0; i < users.length; i++) {
@@ -179,7 +179,7 @@ class Course extends Component {
     pref_api.putPref(prefObj)
     .then(res => {
       console.log(res)
-      this.handleUpdate(this.course.name)
+      this.handleUpdate(this.state.course.name)
     })
   }
   //make sure to update member tab when a member is added by teacher
