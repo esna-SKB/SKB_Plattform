@@ -5,6 +5,21 @@ const User = require('../models/user');
 const Preference = require('../models/preference');
 var tinder = require('./tinder');
 
+function mapGroups(groups){
+	const promise = groups.map((group) => {
+		User.find({_id:{$in: group}}).select('firstname lastname email')
+		.exec(function(err, users){
+			if(err) {
+				console.log(err); //res.status(500).send({message:'error acured finding users'});
+			}
+			else{
+				return users
+			}
+		}) 
+	})
+	.then((promise)=>console.log(promise))
+	return promise; 
+}
 
 router.route('/makegroups/:courseId')
 	.get((req, res, next) => {
@@ -14,7 +29,10 @@ router.route('/makegroups/:courseId')
 				else if(pref === null) return res.status(404).send({message:'pref not found'});
 				else{
 					var groups = tinder(pref.users, pref.matrix, pref.groupSize); 
-					return res.status(200).send(groups);
+					//const resGroups = mapGroups(groups)
+					//await Promise.all(promise)
+					//console.log(resGroups,'end')
+					return res.status(200).send(groups);						
 				}
 			})
 		})

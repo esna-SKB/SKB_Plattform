@@ -3,6 +3,33 @@ var router = express.Router();
 const Group = require('../models/group');
 const Enrollment = require('../models/enrollment');
 
+router.route('/collection/course/:courseId')
+
+	.post((req, res, next) => {
+		var courseID = req.params.name; 
+		const { body } = req;
+		console.log(body)
+		var groupname; 
+		body.forEach((group, index)=>{
+			groupname = 'Group '+index; 
+			const newGroup = new Group({course: courseId, name: groupname})
+			newGroup.save(function(err,savedGroup){
+				if(err) return res.status(500).send({message:'error occured in the database'});
+				else{
+					group.forEach((user)=>{
+						const enrollment = new Enrollment({user:user, theChosenModel:{kind: Group, ModelId: savedGroup._id}});
+						enrollment.save(function(err, enrollment){
+							if(err) return res.status(500).send({message:'error occured in the database while enrolling'});
+						})
+					})
+				}
+			})
+		})
+		return res.status(200).send({
+			success: true,
+			message: 'Groups fpr course '+courseId+ ' are set'
+		});
+	})
 
 router.route('/course/:courseId')
 
@@ -45,7 +72,6 @@ router.route('/course/:courseId')
 
 			try {
 				members.forEach((m) => {
-					const Enroll = new Enrollment();
 					var en = new Enrollment();
 					en.user = m._id;
 					en.theChosenModel.kind = 'Group';
