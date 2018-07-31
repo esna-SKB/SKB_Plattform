@@ -1,5 +1,16 @@
 module.exports = {
 
+postGroups: function(groups, courseId){
+    return fetch('/group/collection/'+ courseId,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(groups),
+    })
+},
+    
 
 postPref: function(prefobject){
     return fetch('/preference/', {

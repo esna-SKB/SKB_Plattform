@@ -145,7 +145,7 @@ class Course extends Component {
           })
         }
       })
-      this.updateMembersInCourse()
+      this.updateMembersInCourse(course_name)
   }
 
   updateMembersInCourse = (course_name) => {
